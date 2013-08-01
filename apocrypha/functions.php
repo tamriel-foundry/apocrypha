@@ -8,9 +8,7 @@
 ----------------------------------------------------------------
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
-1.0 - Load Core Framework
-	1.1 - Theme Setup
-	
+1.0 - Load Core Framework	
 	___________________________
 	
 2.0 - Head Functions
@@ -33,15 +31,14 @@
  * It runs immediately after WordPress loads the theme files.
  * @since 2.0
  */
-add_action( 'after_setup_theme' , 'apocrypha_theme_setup' , 10 );
+add_action( 'after_setup_theme' , 'apocrypha_theme_setup' , 1 );
 function apocrypha_theme_setup() {
 
+	/* Load the Apocrypha class */
 	require_once( trailingslashit( TEMPLATEPATH ) . 'library/apocrypha.php' );
-	
-	global $theme;
-	$theme = new Apocrypha();
-	
-	print_r( $theme );
+
+	/* Set it up */
+	$apocrypha = new Apocrypha();
 }
 ?>
 

@@ -12,32 +12,28 @@ class Apocrypha {
 	 * Constructor for the Apocrypha functions library
 	 * @since 2.0
 	 */
-	 
-	public $var1 = 'test';
 	function __construct() {
 	
-		
-	
 		/* Define theme constants */
-		//add_action( 'after_setup_theme', array( &$this, 'constants' ), 1 );
-		
+		add_action( 'after_setup_theme'	, array( &$this, 'constants' )	, 10 );
+	
 		/* Add theme supports */
-		//add_action( 'after_setup_theme', array( &$this, 'supports' ), 2 );	
+		add_action( 'after_setup_theme'	, array( &$this, 'supports' )	, 20 );	
 		
 		/* Load framework core functions */
-		//add_action( 'after_setup_theme', array( &$this, 'apocrypha_core' ), 3 );	
+		add_action( 'after_setup_theme'	, array( &$this, 'core' )		, 30 );	
 		
 		/* Load framework extensions */
-		//add_action( 'after_setup_theme', array( &$this, 'apocrypha_extensions' ), 11 );
+		add_action( 'after_setup_theme'	, array( &$this, 'extensions' )	, 40 );
 		
 		/* Load admin functions and files */
-		//add_action( 'wp_loaded' , array( &$this, 'apocrypha_admin' ) );
+		add_action( 'wp_loaded' 		, array( &$this, 'admin' ) 		, 10 );
 	}
 	
 	
 	/**
 	 * Define constant paths for use within theme functions
-	 * @since 0.1
+	 * @since 2.0
 	 */
 	function constants() {
 		
@@ -50,17 +46,17 @@ class Apocrypha {
 		/* Theme URI */
 		define( 'THEME_URI' , get_template_directory_uri() );
 		
-		/* Theme styles */
-		define( 'THEME_CSS' , trailingslashit( THEME_DIR ) . 'css' );
-		
-		/* Theme scripts */
-		define( 'THEME_JS' , trailingslashit( THEME_DIR ) . 'js' );
-		
 		/* Framework directory */
 		define( 'APOC_DIR' , trailingslashit( THEME_DIR ) . 'library' );
 		
 		/* Framework directory */
 		define( 'APOC_URI' , trailingslashit( THEME_URI ) . 'library' );
+		
+		/* CSS Styles */
+		define( 'APOC_CSS' , trailingslashit( APOC_DIR ) . 'css' );
+		
+		/* Javascript */
+		define( 'APOC_JS' , trailingslashit( APOC_DIR ) . 'js' );
 		
 		/* Framework functions */
 		define( 'APOC_FUNCTIONS' , trailingslashit( APOC_DIR ) . 'functions' );
@@ -73,7 +69,7 @@ class Apocrypha {
 	}
 	
 	/**
-	 * Add theme supports
+	 * Add WordPress recognized theme supports
 	 * @since 0.2
 	 */
 	function supports() {
@@ -89,10 +85,10 @@ class Apocrypha {
 	}
 	
 	/**
-	 * Load primary framework components
-	 * @since 0.1
+	 * Load primary function libraries
+	 * @since 2.0
 	 */
-	 function apocrypha_core() {
+	 function core() {
 	 
 		/* Core functions */
 		require_once( trailingslashit( APOC_FUNCTIONS ) . 'core.php' );
@@ -120,10 +116,10 @@ class Apocrypha {
 	 }
 	
 	/**
-	 * Load extension components
-	 * @since 0.1
+	 * Load theme extensions
+	 * @since 2.0
 	 */
-	function apocrypha_extensions() {
+	function extensions() {
 	
 		/* Content Slider */
 		require_once( trailingslashit( APOC_EXTENSIONS ) . 'content-slider.php' );
@@ -137,10 +133,10 @@ class Apocrypha {
 		/* Breadcrumbs */
 		require_once( trailingslashit( APOC_EXTENSIONS ) . 'breadcrumb-trail.php' );
 		
-		/* Justin Tadlock's "Get The Image" */
+		/* Justin Tadlock's Get The Image */
 		require_once( trailingslashit( APOC_EXTENSIONS ) . 'get-the-image.php' );
 
-		/* Justin Tadlock's "Loop Pagination" */
+		/* Justin Tadlock's Loop Pagination */
 		require_once( trailingslashit( APOC_EXTENSIONS ) . 'loop-pagination.php' );
 		
 		/* Login Functions */
@@ -157,11 +153,11 @@ class Apocrypha {
 	 
 	 
 	/**
-	 * Load admin files and functions
+	 * Load admin functions if we are in the wp-admin backend
 	 * @since 0.1
 	 */	 
-	function apocrypha_admin() {
-		/* Only load in the backend */
+	function admin() {
+
 		if ( is_admin() )
 			require_once( trailingslashit( APOC_ADMIN ) . 'admin.php' );
 	}

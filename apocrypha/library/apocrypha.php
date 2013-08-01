@@ -24,10 +24,10 @@ class Apocrypha {
 		add_action( 'after_setup_theme'	, array( &$this, 'core' )		, 30 );	
 		
 		/* Load framework extensions */
-		add_action( 'after_setup_theme'	, array( &$this, 'extensions' )	, 40 );
+		//add_action( 'after_setup_theme' , array( &$this, 'extensions' )	, 40 );
 		
 		/* Load admin functions and files */
-		add_action( 'wp_loaded' 		, array( &$this, 'admin' ) 		, 10 );
+		//add_action( 'wp_loaded' 		, array( &$this, 'admin' ) 		, 10 );
 	}
 	
 	
@@ -38,34 +38,34 @@ class Apocrypha {
 	function constants() {
 		
 		/* Site URL */
-		define( 'SITEURL' , get_home_url() );
+		define( 'SITEURL' 			, get_home_url() );
 		
 		/* Theme directory */
-		define( 'THEME_DIR' , get_template_directory() );
+		define( 'THEME_DIR' 		, get_template_directory() );
 		
 		/* Theme URI */
-		define( 'THEME_URI' , get_template_directory_uri() );
+		define( 'THEME_URI' 		, get_template_directory_uri() );
 		
 		/* Framework directory */
-		define( 'APOC_DIR' , trailingslashit( THEME_DIR ) . 'library' );
+		define( 'APOC_DIR' 			, trailingslashit( THEME_DIR ) . 'library' );
 		
 		/* Framework directory */
-		define( 'APOC_URI' , trailingslashit( THEME_URI ) . 'library' );
+		define( 'APOC_URI' 			, trailingslashit( THEME_URI ) . 'library' );
 		
 		/* CSS Styles */
-		define( 'APOC_CSS' , trailingslashit( APOC_DIR ) . 'css' );
+		define( 'APOC_CSS' 			, trailingslashit( APOC_DIR ) . 'css' );
 		
 		/* Javascript */
-		define( 'APOC_JS' , trailingslashit( APOC_DIR ) . 'js' );
+		define( 'APOC_JS' 			, trailingslashit( APOC_DIR ) . 'js' );
 		
 		/* Framework functions */
-		define( 'APOC_FUNCTIONS' , trailingslashit( APOC_DIR ) . 'functions' );
+		define( 'APOC_FUNCTIONS' 	, trailingslashit( APOC_DIR ) . 'functions' );
 		
 		/* Framework extensions */
-		define( 'APOC_EXTENSIONS' , trailingslashit( APOC_DIR ) . 'extensions' );
+		define( 'APOC_EXTENSIONS' 	, trailingslashit( APOC_DIR ) . 'extensions' );
 		
 		/* Admin functions */
-		define( 'APOC_ADMIN' , trailingslashit( APOC_DIR ) . 'admin' );
+		define( 'APOC_ADMIN'		, trailingslashit( APOC_DIR ) . 'admin' );
 	}
 	
 	/**
@@ -97,22 +97,22 @@ class Apocrypha {
 		require_once( trailingslashit( APOC_FUNCTIONS ) . 'context.php' );
 		
 		/* User functions */
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'users.php' );
+		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'users.php' );
 		
 		/* Post functions */
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'posts.php' );
+		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'posts.php' );
 		
 		/* Comment functions */
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'comments.php' );
+		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'comments.php' );
 		
 		/* Page title, meta description, SEO stuff */
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'seo.php' );
+		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'seo.php' );
 		
 		/* Template hierarchy */
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'template-hierarchy.php' );
+		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'template-hierarchy.php' );
 		
 		/* Shortcodes */
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'shortcodes.php' );
+		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'shortcodes.php' );
 	 }
 	
 	/**

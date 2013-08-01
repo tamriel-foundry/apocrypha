@@ -38,8 +38,11 @@ function apocrypha_theme_setup() {
 	require_once( trailingslashit( TEMPLATEPATH ) . 'library/apocrypha.php' );
 
 	/* Set it up */
+	global $apocrypha;
 	$apocrypha = new Apocrypha();
 }
+
+
 ?>
 
 

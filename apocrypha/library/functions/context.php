@@ -5,6 +5,29 @@
  * Version 2.0
  * 8-1-2013
  */
+ 
+/** 
+ * Populates the apocrypha global with some context
+ * @since 2.0
+ */
+add_action( 'template_redirect' , 'populate_apocrypha_global' );
+function populate_apocrypha_global() {
+	global $apocrypha;
+	
+	// Page context
+	get_page_context();
+	
+	// Current template
+	global $pagenow;
+	$apocrypha->template = $pagenow;
+	
+	// Information on the current user
+	$apocrypha->user = wp_get_current_user();
+	
+	// Mobile Devices
+	$apocrypha->is_mobile = wp_is_mobile();
+}
+	
 
 /**
  * Runs through a series of conditional checks to figure out the page context
@@ -13,42 +36,42 @@
  */
 function get_page_context() {
 	
-	/* Get the theme global */
+	// Get the theme global
 	global $apocrypha;
 	
-	/* If the context has already been set, don't repeat the process */
+	// If the context has already been set, don't repeat the process
 	if ( isset ( $apocrypha->context ) )
 		return $apocrypha->context;
 		
-	/* Set up some intial variables */
+	// Set up some intial variables
 	$apocrypha->context = array();
 	$object 			= get_queried_object();
 	$object_id 			= get_queried_object_id();
 	
-	/* Home page */
+	// Home page
 	if ( is_home() )
 		$apocrypha->context[] = 'home';
 		
-	/* BuddyPress */
+	// BuddyPress
 	elseif ( function_exists( 'is_bbpress' ) && is_bbpress() )
 		$apocrypha->context[] = 'bbpress';
 		
-	/* BuddyPress */
+	// BuddyPress
 	elseif ( function_exists( 'is_buddypress' ) && is_buddypress() )
 		$apocrypha->context[] = 'buddypress';
 		
-	/* Singular view */
+	// Singular view
 	elseif ( is_singular() ) {
 		$apocrypha->context[] = 'singular';
 		$apocrypha->context[] = "singular-{$object->post_type}";
 		$apocrypha->context[] = "singular-{$object->post_type}-{$object_id}";		
 	}
 	
-	/* Archive view */
+	// Archive view
 	elseif ( is_archive() ) {
 		$apocrypha->context[] = 'archive';
 		
-		/* Taxonomy archive */
+		// Taxonomy archive
 		if ( is_tax() || is_category() || is_tag() ) {
 			$slug = ( ( 'post_format' == $object->taxonomy ) ? str_replace( 'post-format-', '', $object->slug ) : $object->slug );
 			
@@ -57,14 +80,14 @@ function get_page_context() {
 			$apocrypha->context[] = "taxonomy-{$object->taxonomy}-" . sanitize_html_class( $slug, $object->term_id );
 		}
 		
-		/* Author archive */
+		// Author archive
 		if ( is_author() ) {
 			$author_id = get_query_var( 'author' );
 			$apocrypha->context[] = 'author';
 			$apocrypha->context[] = 'author-' . sanitize_html_class( get_the_author_meta( 'user_nicename', $author_id ), $author_id );
 		}
 	
-		/* Date archive */
+		// Date archive
 		if ( is_date() ) {
 			$apocrypha->context[] = 'date';
 
@@ -79,11 +102,11 @@ function get_page_context() {
 		}
 	}
 	
-	/* Search results */
+	// Search results
 	elseif ( is_search() )
 		$apocrypha->context[] = 'search';
 		
-	/* Error 404 */
+	// Error 404
 	elseif ( is_404() )
 		$hybrid->context[] = 'error-404';
 		
@@ -95,39 +118,41 @@ function get_page_context() {
  * @since 2.0
  */
 function display_body_class( $class = '' ) {
-	global $wp_query;
+	
+	// Load some info
 	$classes = array();
+	global $wp_query, $apocrypha;
 	
-	/* Is the current user logged in */
-	$classes[] = ( is_user_logged_in() ) ? 'logged-in' : 'logged-out';
+	// Is the current user logged in
+	$classes[] = ( $apocrypha->user->data->ID > 0 ) ? 'logged-in' : 'logged-out';
 	
-	/* Bring in the page context */
+	// Bring in the page context
 	$classes = array_merge( $classes, get_page_context() );
 	
-	/* Singular post classes */
+	// Singular post classes
 	if ( is_singular() ) {
 
-		/* Get the queried post object */
+		// Get the queried post object
 		$post = get_queried_object();
 
-		/* Checks for custom template */
+		// Checks for custom template
 		$template = str_replace( array ( "{$post->post_type}-template-", "{$post->post_type}-" ), '', basename( get_post_meta( get_queried_object_id(), "_wp_{$post->post_type}_template", true ), '.php' ) );
 		if ( !empty( $template ) )
 			$classes[] = "{$post->post_type}-template-{$template}";
 	}
 	
-	/* Paged views */
+	// Paged views
 	if ( ( ( $page = $wp_query->get( 'paged' ) ) || ( $page = $wp_query->get( 'page' ) ) ) && $page > 1 )
 		$classes[] = 'paged page-' . intval( $page );
 	
-	/* Bring in any user input classes */
+	// Bring in any user input classes
 	if ( !empty( $class ) ) {
 		if ( !is_array( $class ) )
 			$class = preg_split( '#\s+#', $class );
 		$classes = array_merge( $classes, $class );
 	}
 	
-	/* Browser detection */
+	// Browser detection
 	global $wp_query, $is_lynx, $is_gecko, $is_IE, $is_opera, $is_NS4, $is_safari, $is_chrome;
 	$browsers = array( 
 		'gecko' 	=> $is_gecko, 
@@ -145,10 +170,10 @@ function display_body_class( $class = '' ) {
 		}
 	}
 	
-	/* Apply the filters for WordPress 'body_class' */
+	// Apply the filters for WordPress 'body_class'
 	$classes = apply_filters( 'body_class', $classes, $class );
 
-	/* Construct the classes into a string and return it */
+	// Construct the classes into a string and return it
 	$class = join( ' ', $classes );
 	echo $class;
 }
@@ -161,33 +186,33 @@ function display_entry_class( $class = '', $post_id = null ) {
 	static $post_alt;
 	$post = get_post( $post_id );
 	
-	/* Make sure we have something to work with */
+	// Make sure we have something to work with
 	if ( !empty( $post ) ) {
 		$post_id = $post->ID;
 	
-		/* Start with some basic classes for every post */
+		// Start with some basic classes for every post
 		$classes = array( 'hentry' , $post->post_type , $post->post_status );
 		
-		/* Evens and odds */
+		// Evens and odds
 		$classes[] = 'post-' . ++$post_alt;
 		$classes[] = ( $post_alt % 2 ) ? 'odd' : 'even alt';
 		
-		/* Post author */
+		// Post author
 		$classes[] = 'author-' . sanitize_html_class( get_the_author_meta( 'user_nicename' ), get_the_author_meta( 'ID' ) );
 		
-		/* Sticky class on homepage */
+		// Sticky class on homepage
 		if ( is_home() && is_sticky() && !is_paged() )
 			$classes[] = 'sticky';
 			
-		/* Password-protected posts */
+		// Password-protected posts
 		if ( post_password_required() )
 			$classes[] = 'protected';
 			
-		/* Has more link */
+		// Has more link
 		if ( !is_singular() && false !== strpos( $post->post_content, '<!--more-->' ) )
 			$classes[] = 'has-more-link';
 			
-		/* Add post category tag */
+		// Add post category tag
 		if ( 'post' == $post->post_type ) {
 			foreach ( array( 'category', 'post_tag' ) as $tax ) {
 				foreach ( (array)get_the_terms( $post->ID, $tax ) as $term ) {
@@ -198,15 +223,15 @@ function display_entry_class( $class = '', $post_id = null ) {
 		}
 	} 
 	
-	/* Otherwise, it's not a post */
+	// Otherwise, it's not a post
 	else {
 		$classes = array( 'hentry', 'error' );
 	}
 	
-	/* Apply the filters for WordPress 'post_class' */
+	// Apply the filters for WordPress 'post_class'
 	$classes = apply_filters( 'post_class', $classes, $class, $post_id );
 	
-	/* Join all the classes into one string and return them */
+	// Join all the classes into one string and return them
 	$class = join( ' ', $classes );
 	echo $class;
 }
@@ -218,30 +243,30 @@ function display_entry_class( $class = '', $post_id = null ) {
 function display_comment_class( $class = '' ) {
 	global $comment, $apocrypha;
 
-	/* Gets default WP comment classes */
+	// Gets default WP comment classes
 	$classes = get_comment_class( $class );
 
-	/* Get the comment type */
+	// Get the comment type
 	$comment_type = get_comment_type();
 
-	/* If the comment type is 'pingback' or 'trackback', add the 'ping' comment class */
+	// If the comment type is 'pingback' or 'trackback', add the 'ping' comment class
 	if ( 'pingback' == $comment_type || 'trackback' == $comment_type )
 		$classes[] = 'ping';
 	
-	/* Guest comments */
+	// Guest comments
 	if ( $comment->user_id == 0 ) 
 		$classes[] = 'guest';
 	
-	/* Comment by the original post author */
+	// Comment by the original post author
 	if ( $post = get_post( get_the_ID() ) ) {
 		if ( $comment->user_id === $post->post_author )
 			$classes[] = 'post-author';
 	}
 	
-	/* Make sure comment classes doesn't have any duplicates */
+	// Make sure comment classes doesn't have any duplicates
 	$classes = array_unique( $classes );
 	
-	/* Join all the classes into one string and return them */
+	// Join all the classes into one string and return them
 	$class = join( ' ', $classes );
 	echo $class;
 }

@@ -24,9 +24,9 @@ function apoc_get_search_form( $search_type = '' ) {
  * Apocrypha Theme display the header search form
  * @since 0.1
  */
-function apoc_header_search() { ?>
-	<div id="header-search">
-		<div id="search-dropdown">';
+function apoc_header_search() { 
+	?><div id="header-search">
+		<div id="search-dropdown">
 		<?php apoc_get_search_form( 'posts' ); ?>
 		</div>
 	</div><?php

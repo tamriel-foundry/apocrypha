@@ -7,8 +7,4 @@
  *
  * This template is never used, but is required by WordPress for the theme to be recognized as valid.
  */
- 
-get_page_context();
-global $apocrypha;
-print_r( $apocrypha );
 ?>

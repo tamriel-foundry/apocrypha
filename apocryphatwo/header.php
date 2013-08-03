@@ -42,7 +42,7 @@
 	</div><!-- #header-container -->
 	
 	<nav id="primary-menu" role="navigation">
-		<?php //apoc_primary_menu(); ?>
+		<?php apoc_primary_menu(); ?>
 	</nav><!-- #primary-menu -->
 	
 	<div id="main-container">

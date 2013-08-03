@@ -15,20 +15,8 @@
  * @since 0.1
  */
 function apoc_get_search_form( $search_type = '' ) {
-	global $search_query_type;
-	$search_query_type = $search_type;
+	global $apocrypha;
+	$apocrypha->search = $search_type;
 	get_search_form();
-}
-
-/**
- * Apocrypha Theme display the header search form
- * @since 0.1
- */
-function apoc_header_search() { 
-	?><div id="header-search">
-		<div id="search-dropdown">
-		<?php apoc_get_search_form( 'posts' ); ?>
-		</div>
-	</div><?php
 }
 ?>

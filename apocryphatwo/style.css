@@ -1,0 +1,503 @@
+/* 
+	-----------------------------
+	Apocrypha Theme Stylesheet
+	-----------------------------
+Theme Name: 	Apocrypha Two
+Theme URI: 		http://tamrielfoundry.com
+Description: 	Custom Tamriel Foundry parent WordPress theme.
+Version: 		2.0
+Tags: 			bbpress, buddypress
+Author: 		Andrew Clayton
+Author URI: 	http://tamrielfoundry.com
+Updated:		8-1-2013
+Copyright(c):	2013 Andrew Clayton.  All rights reserved.
+
+----------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1.0 - Reset Browser Styles
+2.0 - Primary Structure
+	2.1 - Header
+	2.3 - Content
+	2.4 - Sidebars
+	2.5 - Footer
+3.0 - Non-structural Elements
+	3.1 - Text Elements
+	3.2 - Forms
+	3.3 - Fields
+	3.4 - Buttons
+	3.5 - Media
+
+	
+4.0 - Navigation
+	4.1 - Admin Bar
+
+--------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------
+1.0 - RESET BROWSER STYLES
+--------------------------------------------------------------*/
+html,body,div,span,applet,object,iframe,
+h1,h2,h3,h4,h5,h6,p,blockquote,pre,
+a,abbr,acronym,address,big,cite,code,
+del,dfn,em,font,img,ins,kbd,q,s,samp,
+small,strike,strong,sub,sup,tt,var,
+b,u,i,center,
+dl,dt,dd,ol,ul,li,
+fieldset,form,label,legend,
+table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent;}
+body{background:#fff;line-height:1;}
+ol,ul{list-style:none;}
+blockquote,q{quotes:none;}
+blockquote:before,blockquote:after,
+q:before,q:after{content:'';content:none;}
+:focus{outline:0;}
+ins{text-decoration:none;}
+del{text-decoration:line-through;}
+table{border-collapse:collapse;border-spacing:0;}
+a img{border:none;}
+
+/*--------------------------------------------------------------
+2.0 - PRIMARY STRUCTURE
+--------------------------------------------------------------*/
+body {
+	font-size: 100%;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-weight: normal;
+	line-height: 1.5em;
+	color: #CCC;
+	background-image: url("images/backgrounds/bg-loop.jpg");
+	background-position: 50% 0;
+	}
+div#header-container {
+	width: 100%;
+	height: 400px;
+	background-image: url("images/backgrounds/tf-banner.jpg");
+	background-repeat: repeat-x;
+	background-position: 50% 0;
+	}
+div#main-container {
+	width: 1200px;
+	margin: 1em auto 0;
+	clear: both;
+	}
+div#footer-container {
+	clear: both;
+	border-bottom: 1px solid #cc6600;
+	box-shadow: 0 0 10px #000;
+	}
+	
+	
+/*---------------------------------------------
+	2.1 - Header
+----------------------------------------------*/
+header#site-header {
+	width: 1200px;
+	height: 200px;
+	margin: 0 auto;
+	position: relative;
+	}
+a#main-banner {
+	width: 100%;
+	height: 210px;
+	display: block;
+	background-image: url("images/headers/tf-header.png");
+	background-repeat: no-repeat;
+	}
+
+	
+/*--------------------------------------------------------------
+3.0 - NON-STRUCTURAL ELEMENTS
+--------------------------------------------------------------*/	
+
+/*---------------------------------------------
+	3.1 - Text Elements
+----------------------------------------------*/
+p { margin: 0 0 1em 0; }
+
+/* Links */
+a {
+	color: #C60;
+	text-decoration: none;
+	-webkit-transition: color 0.2s;
+	-moz-transition: color 0.2s;
+	-ms-transition: color 0.2s;
+	-o-transition: color 0.2s;
+	transition: color 0.2s;
+	cursor: pointer;
+	}
+a:hover { color: #FC6; }
+
+/* Lists */
+ul {
+	list-style: circle;
+	margin: 0 0 1em 0;
+	padding: 0 0 0 3em;
+	}
+ol {
+	list-style: upper-roman;
+	margin: 0 0 1em 0;
+	padding: 0 0 0 3em;
+	}
+ol ol {
+	list-style: lower-roman;
+	padding: 0 0 0 1.5em;
+	}
+
+
+/*---------------------------------------------
+	3.2 - Forms
+----------------------------------------------*/
+form {
+	width: 100%;
+	float: left;
+	margin: 1em 0;
+	}
+form fieldset { clear: both; }
+form ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	clear: both;
+	}
+form ol li { 
+	width: 100%;
+	margin: 0.5em 0; 
+	float: left;
+	}
+form li.honeypot {
+	position: absolute;
+	left: -999em;
+	}
+form li.submit input[type="submit"],
+form li.submit button {
+	float: right;
+	font-size: 1em;
+	padding: 5px 24px;
+	}
+form ol li label { display: inline-block }
+label.settings-field-label {
+	display: inline-block;
+	width: 200px;
+	}
+	
+/*---------------------------------------------
+	3.3 - Fields
+----------------------------------------------*/
+input[type="text"],
+input[type="password"],
+input[type="url"],
+select {
+	height: 24px;
+	line-height: 24px;
+	padding: 3px 5px;
+	background: #AAA;
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #111;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	color: #111;
+	}
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="password"]:focus {
+	background: #DDD;
+	box-shadow: 0 0 3px #f90;
+	}
+
+/* Radios and Checkboxes */
+input[type="checkbox"], 
+input[type="radio"] {
+	position: relative;
+	width: 16px;
+	height: 16px;
+	margin: -4px -24px 0 0;
+	vertical-align: middle;
+	cursor: pointer;
+	opacity: 0;
+	}
+input[type='radio'] + label, 
+input[type='checkbox'] + label {
+	cursor: pointer;
+	padding: 5px 0 5px 24px;
+	background: url(images/icons/checkboxes.png) 4px -52px no-repeat;
+	}
+input[type='checkbox']:hover + label,
+input[type='checkbox']:hover + label,
+input[type='checkbox'] + label:hover,
+input[type='checkbox'] + label:hover {
+	background-position: 4px -22px;
+	}
+input[type='radio']:checked + label, 
+input[type='checkbox']:checked + label {
+	background-position: 4px 7px;
+	}
+	
+	
+/* Placeholder Values */
+::-webkit-input-placeholder { color: #444; }
+:-moz-placeholder { color: #444; }
+::-moz-placeholder { color: #444; }
+:-ms-input-placeholder { color: #444; }
+	
+/*---------------------------------------------
+	3.4 - Buttons
+----------------------------------------------*/
+button,
+input[type="submit"],
+input[type="button"],
+a.button {
+	position: relative;
+	display: inline-block;
+	padding: 3px 5px;
+	margin: 5px;
+	background: #AAA; /* Fallback */
+	background: -ms-linear-gradient(top, #BBB, #999); /* IE10 */
+    background: -moz-linear-gradient(top, #BBB, #999); /* Firefox */
+	background: -o-linear-gradient(top, #BBB, #999); /* Opera */
+	background: -webkit-gradient(linear, left top, left bottom, from(#BBB), to(#999)); /* old Webkit */
+	background: -webkit-linear-gradient(top, #BBB, #999); /* new Webkit */
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #000;
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size: 12px;
+	line-height: 16px;
+	color: #111;
+	cursor: pointer;
+	}
+a.button-dark,
+button.button-dark {
+	background: rgba(34,34,34,0.9); /* Fallback */
+	background: -ms-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9)); /* IE10 */
+    background: -moz-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9)); /* Firefox */
+	background: -o-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9)); /* Opera */
+	background: -webkit-gradient(linear, left top, left bottom, from(rgba(51,51,51,0.9)), to(rgba(17,17,17,0.9))); /* old Webkit */
+	background: -webkit-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9)); /* new Webkit */
+	border: 1px solid #000;
+	box-shadow: 0 0 2px #999 inset;
+	color: #CCC;
+	}
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+a.button:hover {
+	color: #c60;
+	box-shadow: 0 0 5px #c60;
+	}
+	
+/*---------------------------------------------
+	3.5 - Media
+----------------------------------------------*/
+
+/* Images */
+img { max-width: 100%;}
+img.avatar {
+	float: left;
+	margin: 2px;
+	padding: 2px;
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #666 inset;
+	}
+	
+/* Image Links */
+a img {
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	-ms-transition: all 0.2s;
+	-o-transition: all 0.2s;
+	transition: all 0.2s;
+	color: transparent;
+	}
+a img:hover  {
+	box-shadow: 0 0 3px #c60;
+	border-color: #000;
+	}
+
+
+/*--------------------------------------------------------------
+4.0 - NAVIGATION
+--------------------------------------------------------------*/	
+nav#primary-menu {
+	width: 1200px;
+	height: 50px;
+	overflow: visible;
+	margin: -250px auto 0;
+	}
+	
+	
+/*---------------------------------------------
+	4.1 - Admin Bar
+---------------------------------------------*/			
+nav#admin-bar {
+width: 500px;
+	height: 30px;
+	float: right;
+	margin: 0;
+	padding: 3px 0;
+	position: relative;
+	background-image: url(images/backgrounds/dark-denim.jpg);
+	border: 1px solid #222;
+	border-top: none;
+	border-radius: 0 0 5px 5px;
+	box-shadow: 0 0 20px #000;
+	font-size: 0.875em;
+	line-height: 30px;
+	}
+	
+/* Login */
+div#admin-bar-login {
+	max-width: 450px;
+	float: left;
+	padding: 0 5px;
+	}
+div#admin-bar-login img.avatar { margin: 0 3px 0 0; }
+div#admin-bar-login a.admin-bar-login-link,
+div#admin-bar-login input#login-submit {
+	font-size: 10px;
+	top: -1px;
+	margin: 5px 0;
+	}
+input#login-submit{ width: 44px; }
+div#admin-bar-login span.logged-in-welcome {
+	margin: 0 5px 0 0;
+	}
+form#top-login-form { margin: 0; }
+form#top-login-form input[type="text"],
+form#top-login-form input[type="password"] {
+	width: 75px;
+	float: left;
+	margin: 2px 3px 0 0;
+	padding: 2px 24px 0 3px;
+	font-size: 12px;
+	background-image: url(images/icons/login-icons.png);
+	background-repeat: no-repeat;
+	background-position: 100% 100%;
+	}
+form#top-login-form input[type="password"] {
+	background-position: 100% 3px;
+	}
+form#top-login-form label#remember-label {
+	display: inline-block;
+	font-size: 10px;
+	line-height: 20px;
+	}
+
+/* Front-end Notifications */
+ul#notifications-menu {
+	float: right;
+	list-style: none;
+	margin: 5px 10px 5px 0;
+	padding: 0;
+	position: relative;
+	}
+li.notification-type {
+	width: 24px;
+	height: 24px;
+	margin: 0 5px;
+	float: left;
+	background-image: url( images/icons/notification-icons.png);
+	background-repeat: no-repeat;
+	}
+li#notifications-activity 		{ background-position: 0 0; 		}
+li#notifications-activity:hover 	{ background-position: 0 100%; 		}
+li#notifications-messages 		{ background-position: -24px 0; 	}
+li#notifications-messages:hover 	{ background-position: -24px 100%; 	}
+li#notifications-friends 			{ background-position: -48px 0; 	}
+li#notifications-friends:hover 	{ background-position: -48px 100%; 	}
+li#notifications-groups 			{ background-position: -72px 0; 	}
+li#notifications-groups:hover 	{ background-position: -72px 100%; 	}
+	
+	
+/* Notification Dropdowns */
+div.admin-bar-dropdown {
+	visibility: hidden;
+	width: 250px;
+	margin: 29px 0 0;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-image: url(images/backgrounds/denim.jpg);
+	border: 1px solid #333;
+	border-top: 1px solid #000;
+	border-radius: 0 0 5px 5px;
+	box-shadow: 0 2px 5px #000;
+	opacity:0;
+	transition: visibility 0s linear 0.25s, opacity 0.25s linear;
+	-moz-transition: visibility 0s linear 0.25s, opacity 0.25s linear;
+	-webkit-transition: visibility 0s linear 0.25s, opacity 0.25s linear;
+	}
+li.notification-type:hover > div.admin-bar-dropdown,
+div#header-search:hover > div#search-dropdown {
+	visibility: visible;
+	opacity: 1;
+	}
+ul.notification-list {
+	width: 224px;
+	margin: -8px 5px 0;
+	padding: 12px 0 5px 16px;
+	font-size: 0.875em;
+	line-height: 1.25em;
+	background-image: url(images/icons/notification-drop-arrow.png);
+	background-repeat: no-repeat;
+	border-bottom: 1px solid #000;
+	}
+li#notifications-activity ul.notification-list { background-position: 120px 0; }
+li#notifications-messages ul.notification-list { background-position: 154px 0; }
+li#notifications-friends ul.notification-list 	{ background-position: 186px 0; }
+li#notifications-groups ul.notification-list 	{ background-position: 220px 0; }
+li.notification-entry {
+	margin: 3px 15px 3px 0;
+	position: relative;
+	}
+li.notification-entry a { color: #CCC; }
+li.notification-entry a:hover { color: #FC6; }
+ul.notification-links {
+	list-style: none;
+	margin: 0 5px 5px;
+	padding: 3px 0 0;
+	overflow: hidden;
+	border-top: 1px solid #444;
+	}
+ul.notification-links li { float: left; }
+ul.notification-links li a { margin: 2px 1px 0 2px; }
+
+/* Dropdown Search */
+div#header-search {
+	width: 24px;
+	height: 24px;
+	margin: 5px 10px 5px 0px;
+	background-image: url( images/icons/notification-icons.png);
+	background-repeat: no-repeat;
+	background-position: 100% 0;
+	float: right;
+	position: relative;
+	}
+div#header-search:hover { background-position: 100% 100%; }
+div#search-dropdown form.search-form {	
+	margin: -8px 0 0;
+	background-image: url(images/icons/notification-drop-arrow.png);
+	background-repeat: no-repeat;
+	background-position: 230px 0;
+	}
+div#search-dropdown label.search-label {
+	display: block;
+	width: 240px;
+	margin: 8px 5px 5px;
+	text-align: center;
+	border-bottom: 1px solid #444;
+	}
+div#search-dropdown label.search-label span {
+	display: block;
+	border-bottom: 1px solid #000;
+	}
+div#search-dropdown input.search-text {
+	display: block;
+	width: 216px;
+	margin: 0 auto 5px;
+	}
+
+
+	

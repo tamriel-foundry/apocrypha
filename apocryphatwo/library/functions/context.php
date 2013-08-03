@@ -7,12 +7,15 @@
  */
  
 /** 
- * Populates the apocrypha global with some context
+ * Populates the apocrypha global with some useful context
  * @since 2.0
  */
 add_action( 'template_redirect' , 'populate_apocrypha_global' );
 function populate_apocrypha_global() {
 	global $apocrypha;
+	
+	// Site name
+	$apocrypha->site = SITENAME;
 	
 	// Page context
 	get_page_context();
@@ -21,11 +24,11 @@ function populate_apocrypha_global() {
 	global $pagenow;
 	$apocrypha->template = $pagenow;
 	
-	// Information on the current user
-	$apocrypha->user = wp_get_current_user();
-	
 	// Mobile Devices
 	$apocrypha->is_mobile = wp_is_mobile();
+	
+	// Information on the current user
+	$apocrypha->user = wp_get_current_user();
 }
 	
 

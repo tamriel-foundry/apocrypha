@@ -24,7 +24,7 @@ class Apocrypha {
 		add_action( 'after_setup_theme'	, array( &$this, 'core' )		, 30 );	
 		
 		// Load framework extensions
-		//add_action( 'after_setup_theme' , array( &$this, 'extensions' )	, 40 );
+		add_action( 'after_setup_theme' , array( &$this, 'extensions' )	, 40 );
 		
 		// Load admin functions and files
 		//add_action( 'wp_loaded' 		, array( &$this, 'admin' ) 		, 10 );
@@ -36,6 +36,9 @@ class Apocrypha {
 	 * @since 2.0
 	 */
 	function constants() {
+	
+		// Site URL
+		define( 'SITENAME' 			, get_bloginfo( 'name' ) );
 		
 		// Site URL
 		define( 'SITEURL' 			, get_home_url() );
@@ -53,10 +56,10 @@ class Apocrypha {
 		define( 'APOC_URI' 			, trailingslashit( THEME_URI ) . 'library' );
 		
 		// CSS Styles
-		define( 'APOC_CSS' 			, trailingslashit( APOC_DIR ) . 'css' );
+		define( 'APOC_CSS' 			, trailingslashit( APOC_URI ) . 'css' );
 		
 		// Javascript
-		define( 'APOC_JS' 			, trailingslashit( APOC_DIR ) . 'js' );
+		define( 'APOC_JS' 			, trailingslashit( APOC_URI ) . 'js' );
 		
 		// Framework functions
 		define( 'APOC_FUNCTIONS' 	, trailingslashit( APOC_DIR ) . 'functions' );
@@ -96,21 +99,24 @@ class Apocrypha {
 		// Context functions
 		require_once( trailingslashit( APOC_FUNCTIONS ) . 'context.php' );
 		
+		// Template hierarchy
+		require_once( trailingslashit( APOC_FUNCTIONS ) . 'template-hierarchy.php' );
+		
+		// Page title and meta description
+		require_once( trailingslashit( APOC_FUNCTIONS ) . 'seo.php' );
+		
+		// Login functions
+		require_once( trailingslashit( APOC_FUNCTIONS ) . 'login.php' );
+		
 		// User functions
-		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'users.php' );
+		require_once( trailingslashit( APOC_FUNCTIONS ) . 'users.php' );
 		
 		// Post functions
 		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'posts.php' );
 		
 		// Comment functions
 		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'comments.php' );
-		
-		// Page title, meta description, SEO stuff
-		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'seo.php' );
-		
-		// Template hierarchy
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'template-hierarchy.php' );
-		
+				
 		// Shortcodes
 		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'shortcodes.php' );
 	 }
@@ -122,33 +128,30 @@ class Apocrypha {
 	function extensions() {
 	
 		// Content Slider
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'content-slider.php' );
+		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'content-slider.php' );
 		
 		// Calendar Events
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'events.php' );
+		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'events.php' );
 		
 		// Widgets
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'widgets.php' );
+		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'widgets.php' );
 		
 		// Breadcrumbs
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'breadcrumb-trail.php' );
+		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'breadcrumb-trail.php' );
 		
 		// Justin Tadlock's Get The Image
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'get-the-image.php' );
+		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'get-the-image.php' );
 
 		// Justin Tadlock's Loop Pagination
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'loop-pagination.php' );
-		
-		// Login Functions
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'login.php' );
+		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'loop-pagination.php' );
 		
 		// BuddyPress Functions
 		if ( function_exists( 'bp_version' ) )
 			require_once( trailingslashit( APOC_EXTENSIONS ) . 'buddypress.php' );
 			
 		// bbPress Functions
-		if ( function_exists( 'bbp_version' ) )
-			require_once( trailingslashit( APOC_EXTENSIONS ) . 'bbpress.php' );
+		//if ( function_exists( 'bbp_version' ) )
+			//require_once( trailingslashit( APOC_EXTENSIONS ) . 'bbpress.php' );
 	 }
 	 
 	 

@@ -112,10 +112,10 @@ class Apocrypha {
 		require_once( trailingslashit( APOC_FUNCTIONS ) . 'users.php' );
 		
 		// Post functions
-		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'posts.php' );
+		require_once( trailingslashit( APOC_FUNCTIONS ) . 'posts.php' );
 		
 		// Comment functions
-		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'comments.php' );
+		require_once( trailingslashit( APOC_FUNCTIONS ) . 'comments.php' );
 				
 		// Shortcodes
 		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'shortcodes.php' );
@@ -127,20 +127,20 @@ class Apocrypha {
 	 */
 	function extensions() {
 	
+		// Breadcrumb Trail
+		require_once( trailingslashit( APOC_EXTENSIONS ) . 'breadcrumbs.php' );
+	
 		// Content Slider
-		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'content-slider.php' );
+		require_once( trailingslashit( APOC_EXTENSIONS ) . 'slides.php' );
 		
 		// Calendar Events
 		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'events.php' );
 		
 		// Widgets
-		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'widgets.php' );
-		
-		// Breadcrumbs
-		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'breadcrumb-trail.php' );
+		require_once( trailingslashit( APOC_EXTENSIONS ) . 'widgets.php' );
 		
 		// Justin Tadlock's Get The Image
-		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'get-the-image.php' );
+		require_once( trailingslashit( APOC_EXTENSIONS ) . 'get-the-image.php' );
 
 		// Justin Tadlock's Loop Pagination
 		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'loop-pagination.php' );

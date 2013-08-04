@@ -42,6 +42,10 @@ function apocrypha_theme_setup() {
 	// Set it up
 	global $apocrypha;
 	$apocrypha = new Apocrypha();
+	
+	// Disable WordPress admin bar
+	if( function_exists( 'show_admin_bar' ) )
+		show_admin_bar(false);
 }
 
 
@@ -87,26 +91,19 @@ function remove_bbpress_head( $admin ) {
 ----------------------------------------------*/
 
 /**
- * Include the primary theme CSS stylesheet
- * @since 2.0
- */
-function apoc_primary_stylesheet() {
-	echo '<link rel="stylesheet" type="text/css" media="all" href="' . THEME_URI . '/style.css?v=' . filemtime( THEME_DIR . "/style.css" ) .'" />' . "\n";
-}
-
-/**
- * Load other stylesheets based on context
+ * Load stylesheets based on context
  * @since 2.0
  */
 add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_styles' );
 function apoc_enqueue_styles() {
 
 	/* Register first */
-	wp_register_style( 'slideshow' , APOC_CSS . '/flexslider.min.css' , false , $ver='1.0' );
+	wp_register_style( 'primary' , THEME_URI . '/style.css' , false , $ver=filemtime( THEME_DIR . "/style.css" ) );
+	wp_register_style( 'fonts' , 'http://fonts.googleapis.com/css?family=Cinzel|Bitter|Open+Sans' , false );
 	
 	/* Then enqueue - some styles are only needed on specific pages */
-	if ( is_home() || is_page_template( 'guild/guild-home.php' ) ) 
-		wp_enqueue_style( 'slideshow' );
+	wp_enqueue_style( 'fonts' );
+	wp_enqueue_style( 'primary' );
 }
 
 /**
@@ -153,8 +150,6 @@ function google_analytics_js() {
 	
 	echo '<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-33555290-2"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})();</script>' . "\n";
 }
-
-
 
 
 

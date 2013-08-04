@@ -15,7 +15,6 @@
 	<meta name="description" content="<?php display_meta_description(); ?>" />
 	<link rel="SHORTCUT ICON" href="<?php echo THEME_URI . '/images/icons/favicon.ico'; ?>">
 	<link rel="alternate" type="application/rss+xml" title="Tamriel Foundry RSS Feed" href="<?php echo SITEURL; ?>/feed">
-	<?php apoc_primary_stylesheet(); ?>
 	<?php wp_head(); ?>
 	<?php google_analytics_js(); ?>
 </head>

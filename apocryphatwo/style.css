@@ -280,6 +280,23 @@ sub{
 	top: 0.5em;
 	}
 	
+/* Double Borders */
+.double-border {	position: relative; }
+.double-border:before {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+	}
+.double-border.top { border-top: 1px solid #000; }	
+.double-border.top:before {	border-top: 1px solid #444; }
+.double-border.bottom { border-bottom: 1px solid #444;  }	
+.double-border.bottom:before { border-bottom: 1px solid #000; }
+	
 /* Alliances */
 p.aldmeri { color: #C90; }
 p.daggerfall { color: #33C; }
@@ -771,9 +788,9 @@ div#header-search:hover > div#search-dropdown {
 	opacity: 1;
 	}
 ul.notification-list {
-	width: 224px;
+	width: 220px;
 	margin: -8px 5px 0;
-	padding: 14px 0 5px 16px;
+	padding: 14px 0 5px 20px;
 	font-size: 0.875em;
 	line-height: 1.25em;
 	background-image: url(images/icons/notification-drop-arrow.png);
@@ -912,15 +929,10 @@ img.footer-nav-image {
 	margin: -55% 0 0 0;
 	}
 a.footer-nav-item h3 {
-	border-top: 1px solid #000;
+	padding: 5px 0 0;
+	margin: 0;
 	color: #BBB;
 	white-space: nowrap;
-	}
-a.footer-nav-item h3 span {
-	width: 100%;
-	float: left;
-	padding-top: 3px;
-	border-top: 1px solid #444;
 	}
 a.footer-nav-item:hover h3 {
 	color: #DDD;

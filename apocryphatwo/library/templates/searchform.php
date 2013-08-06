@@ -26,7 +26,7 @@ if ( 'topic' == $search_type ) :
 	$search_text = 'Search Articles...';
 	$search_class = 'posts'; ?>
 <form role="search" method="get" class="search-form"  action="<?php echo trailingslashit( SITEURL ); ?>">
-							<label for="s" class="search-label"><span>Search Tamriel Foundry:</span></label>
+							<label for="s" class="search-label double-border bottom"><span>Search Tamriel Foundry:</span></label>
 							<input class="search-text <?php echo $search_class; ?>" type="text" name="s" value="<?php echo $search_text; ?>" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"/>
 						</form><!-- .search-form -->
 <?php endif; ?>

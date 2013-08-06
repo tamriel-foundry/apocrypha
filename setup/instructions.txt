@@ -1,0 +1,40 @@
+Here are the basic instructions for configuring a clean local installation of the Tamriel Foundry theme.
+
+1) Create a clean WordPress installation.
+
+2) Before importing anything, install latest versions of the following essential plugins:
+
+	1. BuddyPress - http://wordpress.org/plugins/buddypress/
+	2. bbPress - http://wordpress.org/plugins/bbpress/
+	3. BuddyPress Pending Activations - http://wordpress.org/plugins/buddypress-pending-activations/
+	4. jQuery Colorbox - http://wordpress.org/plugins/jquery-colorbox/
+	5. Members - http://wordpress.org/plugins/members/
+	6. WordPress Console - http://wordpress.org/plugins/wordpress-console/
+	
+3) Download the "bpcustom.php" file from the "setup" folder of the repo. Place this folder in your plugins directory: /wp-content/plugins/
+
+4) Download the "apocryphatwo" theme from the repo. Unpack this folder in /wp-content/themes/apocryphatwo
+
+5) Download the database file localfoundry.sql from the "setup" folder of the repo, import all the tables into your local database.
+
+6) Download and unzip the media attachments for the lorem ipsum content "uploads.7z". Unpack this content into /wp-content/uploads/
+
+7) You should now have replicated my local install which contains the following:
+
+	* 3 Users
+	* 7 Posts
+	* 5 Pages
+	* 6 Forums
+	* 5 Topics
+	* 4 Replies
+	* 7 Comments
+	* 2 Groups
+	* 3 Slides
+	
+8) You can access two of pregenerated user accounts:
+
+	* Username/Password: Zaydok/zaydok - Has admin rights
+	* Username/Password: TestUser/testuser
+	
+9) Feel free to branch out from here, and create content as necessary for your own testing purposes. I hope these instructions work...but they may not.
+	

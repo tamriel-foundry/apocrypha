@@ -2,7 +2,7 @@
 /**
  * Apocrypha Content Slider
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-3-2013
  */
  

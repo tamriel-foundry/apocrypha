@@ -2,7 +2,7 @@
 /**
  * Apocrypha - Library of hidden things, and functional framework for the Tamriel Foundry WordPress theme.
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-1-2013
  */
 
@@ -10,7 +10,7 @@ class Apocrypha {
 	
 	/**
 	 * Constructor for the Apocrypha functions library
-	 * @since 2.0
+	 * @since 1.0
 	 */
 	function __construct() {
 	
@@ -33,7 +33,7 @@ class Apocrypha {
 	
 	/**
 	 * Define constant paths for use within theme functions
-	 * @since 2.0
+	 * @since 1.0
 	 */
 	function constants() {
 	
@@ -89,7 +89,7 @@ class Apocrypha {
 	
 	/**
 	 * Load primary function libraries
-	 * @since 2.0
+	 * @since 1.0
 	 */
 	 function core() {
 	 
@@ -123,7 +123,7 @@ class Apocrypha {
 	
 	/**
 	 * Load theme extensions
-	 * @since 2.0
+	 * @since 1.0
 	 */
 	function extensions() {
 	
@@ -143,7 +143,7 @@ class Apocrypha {
 		require_once( trailingslashit( APOC_EXTENSIONS ) . 'get-the-image.php' );
 
 		// Justin Tadlock's Loop Pagination
-		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'loop-pagination.php' );
+		require_once( trailingslashit( APOC_EXTENSIONS ) . 'loop-pagination.php' );
 		
 		// BuddyPress Functions
 		if ( function_exists( 'bp_version' ) )

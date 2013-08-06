@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Core Template Hierarchy
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-1-2013
  */
 
@@ -10,7 +10,7 @@
 /**
  * Controls template selection for author archive pages
  * The hierarchy is: author-{nicename}.php, author.php, archive.php
- * @since 2.0
+ * @since 1.0
  */
 add_filter( 'author_template', 'apoc_author_template' );
 function apoc_author_template( $template ) {
@@ -35,7 +35,7 @@ function apoc_author_template( $template ) {
 /**
  * Controls template selection for category, tag, and taxonomy pages
  * The hierarchy is: taxonomy-{taxonomy}.php, taxonomy.php, archive.php
- * @since 2.0
+ * @since 1.0
  */
 add_filter( 'tag_template'		, 'apoc_taxonomy_template' );
 add_filter( 'category_template'	, 'apoc_taxonomy_template' );
@@ -52,7 +52,7 @@ function apoc_taxonomy_template( $template ) {
 /**
  * Controls template selection for posts and custom post types
  * The hierarchy is: {custom-post-template}.php, singular-{post_type}.php, singular.php
- * @since 2.0
+ * @since 1.0
  */
 add_filter( 'single_template' , 'apoc_singular_template' );
 function apoc_singular_template( $template ) {
@@ -79,7 +79,7 @@ function apoc_singular_template( $template ) {
 /**
  * Controls template selection for comments on posts
  * The hierarchy is: {comments_template_function_arg}.php, comments-{post_type}.php, comments.php
- * @since 2.0
+ * @since 1.0
  */
 add_filter( 'comments_template'	, 'apoc_comments_template' );
 function apoc_comments_template( $template ) {

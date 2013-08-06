@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Custom Widgets
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-3-2013
  */
  
@@ -167,7 +167,7 @@ function recent_forums_widget( $args = '' ) {
 
 /** 
  * Display current online members in the community sidebar
- * @since 0.1
+ * @since 1.0
  */
 function community_online_widget() { 
 
@@ -189,9 +189,9 @@ function community_online_widget() {
 		<?php if ( $online_total == 0 ) : ?>
 			<p class="whos-online-total">There are no members currently online:</p>
 		<?php elseif ( $online_total == 1 ) : ?>
-			<p class="whos-online-total">There is currently <?php echo $online_total; ?> member online:</p>
+			<p class="whos-online-total">There is currently <span class="activity-count"><?php echo $online_total; ?></span> member online:</p>
 		<?php else : ?>
-			<p class="whos-online-total">There are currently <?php echo $online_total; ?> members online:</p>
+			<p class="whos-online-total">There are currently <span class="activity-count"><?php echo $online_total; ?></span> members online:</p>
 		<?php endif; ?>
 		
 			<ul class="whos-online-list">
@@ -235,15 +235,15 @@ function community_online_widget() {
 
 /** 
  * Display current Tamriel Foundry faction statistics
- * @since 0.1
+ * @since 1.0
  */
 function community_stat_counter() {
 	
 	// Get Faction Counts 
 	$o = bp_core_get_total_member_count();
-	$a = count_users_by_meta( 'faction' , 'aldmeri' );
-	$d = count_users_by_meta( 'faction' , 'daggerfall' );
-	$e = count_users_by_meta( 'faction' , 'ebonheart' );
+	$a = max( count_users_by_meta( 'faction' , 'aldmeri' ) 		, 1 );
+	$d = max( count_users_by_meta( 'faction' , 'daggerfall' ) 	, 1 );
+	$e = max( count_users_by_meta( 'faction' , 'ebonheart' ) 	, 1 );
 	$t = $a + $d + $e;
 	
 	// Compute Banner Heights - normalize max to 250px 
@@ -251,6 +251,8 @@ function community_stat_counter() {
 	$aheight = round( ( $a / $largest ) * 200 ) + 50;
 	$dheight = round( ( $d / $largest ) * 200 ) + 50;
 	$eheight = round( ( $e / $largest ) * 200 ) + 50;
+	
+	$groups = SITEURL . '/groups/';
 	?>
 	
 	<div id="stat-counter" class="widget stat-counter">
@@ -258,17 +260,17 @@ function community_stat_counter() {
 		<p class="stat-counter-total">Total Champions: <?php echo number_format( $o , 0 , '' , ',' ); ?></p>
 		<div class="banner-top aldmeri" style="height:<?php echo $aheight; ?>px">
 			<div class="banner-bottom aldmeri">
-				<span class="banner-count" title="<?php echo round( $a * 100 / $t ); ?>%"><?php echo number_format( $a , 0 , '' , ',' ); ?></span>
+				<a class="banner-count" href="<?php echo $groups; ?>aldmeri-dominion" title="Aldmeri Dominion - <?php echo round( $a * 100 / $t ); ?>%"><?php echo number_format( $a , 0 , '' , ',' ); ?></a>
 			</div>
 		</div>
 		<div class="banner-top daggerfall" style="height:<?php echo $dheight; ?>px">
 			<div class="banner-bottom daggerfall">
-				<span class="banner-count" title="<?php echo round( $d * 100 / $t ); ?>%"><?php echo number_format( $d , 0 , '' , ',' ); ?></span>
+				<a class="banner-count" href="<?php echo $groups; ?>daggerfall-covenant" title="Daggerfall Covenant - <?php echo round( $d * 100 / $t ); ?>%"><?php echo number_format( $d , 0 , '' , ',' ); ?></a>
 			</div>
 		</div>
 		<div class="banner-top ebonheart" style="height:<?php echo $eheight; ?>px">
 			<div class="banner-bottom ebonheart">
-				<span class="banner-count" title="<?php echo round( $e * 100 / $t ); ?>%"><?php echo number_format( $e , 0 , '' , ',' ); ?></span>
+				<a class="banner-count" href="<?php echo $groups; ?>ebonheart-pact" title="Ebonheart Pact - <?php echo round( $e * 100 / $t ); ?>%"><?php echo number_format( $e , 0 , '' , ',' ); ?></a>
 			</div>
 		</div>
 	</div><?php
@@ -287,7 +289,7 @@ function featured_guild_box() {
 	<div class="widget featured-guild-widget">
 		<header class="widget-header"><h3 class="widget-title">Featured Guild</h3></header>
 		<div id="featured-guild">
-			<a class="featured-guild-avatar" href="<?php bp_group_permalink(); ?>">
+			<a id="featured-guild-avatar" href="<?php bp_group_permalink(); ?>">
 				<?php bp_group_avatar( $args = array(
 					'type' 	=> 'thumb',
 					'height'	=> 100,

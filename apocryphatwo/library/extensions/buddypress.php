@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme BuddyPress Functions
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-2-2013
  
 ----------------------------------------------------------------
@@ -64,7 +64,7 @@ function apoc_profile_forums_screen( $template ) {
 
 /** 
  * Display the frontend notifications menu
- * @since 2.0
+ * @since 1.0
  */
 function apoc_notifications_menu() {
 	
@@ -183,7 +183,7 @@ function apoc_notifications_menu() {
 
 /** 
  * Get user notifications without default formatting
- * @since 2.0
+ * @since 1.0
  */
 function apoc_get_notifications( $user_id ) {
 	
@@ -337,7 +337,7 @@ function apoc_format_notification( $component , $action , $item_id , $secondary_
 
 /** 
  * Remove notifications with AJAX
- * @since 2.0
+ * @since 1.0
  */
 add_action( 'wp_ajax_apoc_clear_notification' , 'apoc_clear_notification' );
 function apoc_clear_notification() {
@@ -360,4 +360,35 @@ function apoc_clear_notification() {
 function delete_notification_by_id( $user_id , $notification_id ) {
 	global $bp, $wpdb;
 	return $wpdb->query( $wpdb->prepare( "DELETE FROM " . $bp->core->table_name_notifications . " WHERE user_id = %d AND id = %s", $user_id , $notification_id ) );
+}
+
+
+
+/*--------------------------------------------------------------
+X.0 - GROUPS
+--------------------------------------------------------------*/
+
+/**
+ * Get the allegiance of a guild from the database.
+ * Display an allegiance block with the faction listed.
+ * @Since 2.0
+ */
+function get_guild_allegiance( $group_id ) {
+	$faction = groups_get_groupmeta( $group_id, 'group_faction' );
+	$name = 'Neutral';
+	switch ( $faction ) {
+		case 'aldmeri' :
+			$name = 'Aldmeri Dominion';
+		break;
+		
+		case 'daggerfall' :
+			$name = 'Daggerfall Covenant';
+		break;
+		
+		case 'ebonheart' :
+			$name = 'Ebonheart Pact';
+		break;
+	}
+	$allegiance = '<p class="guild-allegiance ' . $faction . '">' . $name . '</p>';	
+	return $allegiance;
 }

@@ -1,9 +1,6 @@
 /*! Admin bar AJAX login function */
 jQuery(document).ready(function(){
 	jQuery('#top-login-form').submit( function(){
-	
-		// Fade out the error dialogue
-		jQuery('#top-login-error').fadeOut();
 		
 		// Prevent the user from taking any further action
 		jQuery('input#login-submit').attr('disabled', 'disabled');

@@ -2,7 +2,7 @@
 /**
  * Apocrypha Slideshow Template
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-1-2013
  */
 

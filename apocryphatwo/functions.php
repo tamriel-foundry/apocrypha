@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Functions
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-1-2013
  
 ----------------------------------------------------------------
@@ -31,7 +31,7 @@
 /**
  * This function initializes the Apocrypha theme framework.
  * It runs immediately after WordPress loads the theme files.
- * @since 2.0
+ * @since 1.0
  */
 add_action( 'after_setup_theme' , 'apocrypha_theme_setup' , 1 );
 function apocrypha_theme_setup() {
@@ -55,7 +55,7 @@ function apocrypha_theme_setup() {
 
 /**
  * Remove default WordPress head entries
- * @since 2.0
+ * @since 1.0
  */
 remove_action( 'wp_head' 	, 	'wp_generator' 								);
 remove_action( 'wp_head' 	, 	'feed_links'						, 2		); 
@@ -68,7 +68,7 @@ remove_action( 'wp_head' 	, 	'adjacent_posts_rel_link_wp_head'	, 10, 0 );
 
 /**
  * Remove default BuddyPress head entries
- * @since 2.0
+ * @since 1.0
  */
 remove_action( 'wp_head'	, 	'bp_core_add_ajax_url_js' 					);
 remove_action( 'wp_head'	, 	'bp_core_confirmation_js'			, 100 	);
@@ -77,7 +77,7 @@ remove_action( 'wp_head'	, 	'messages_add_autocomplete_css' 			);
 
 /**
  * Remove default bbPress head entries
- * @since 2.0
+ * @since 1.0
  */
 add_action( 'bbp_theme_compat_actions' , 'remove_bbpress_head' );
 function remove_bbpress_head( $admin ) {
@@ -92,14 +92,14 @@ function remove_bbpress_head( $admin ) {
 
 /**
  * Load stylesheets based on context
- * @since 2.0
+ * @since 1.0
  */
 add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_styles' );
 function apoc_enqueue_styles() {
 
 	/* Register first */
 	wp_register_style( 'primary' , THEME_URI . '/style.css' , false , $ver=filemtime( THEME_DIR . "/style.css" ) );
-	wp_register_style( 'fonts' , 'http://fonts.googleapis.com/css?family=Cinzel|Bitter|Open+Sans' , false );
+	wp_register_style( 'fonts' , 'http://fonts.googleapis.com/css?family=Cinzel|PT+Serif|Open+Sans' , false );
 	
 	/* Then enqueue - some styles are only needed on specific pages */
 	wp_enqueue_style( 'fonts' );
@@ -108,7 +108,7 @@ function apoc_enqueue_styles() {
 
 /**
  * Set a tinymce editor stylesheet version number to defeat caching
- * @since 2.0
+ * @since 1.0
  */
 function tinymce_editor_style_version() {
 	$version = "?ver=1.0.0";
@@ -121,7 +121,7 @@ function tinymce_editor_style_version() {
 
 /**
  * Include the primary theme JavaScript
- * @since 2.0
+ * @since 1.0
  */
 add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_scripts' );
 function apoc_enqueue_scripts() {
@@ -144,7 +144,7 @@ function apoc_enqueue_scripts() {
 }
 /* 
  * Display the google analytics tracking code for Tamriel Foundry
- * @since 2.0
+ * @since 1.0
  */
 function google_analytics_js() {
 	

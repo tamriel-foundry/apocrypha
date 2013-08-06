@@ -2,13 +2,13 @@
 /**
  * Apocrypha Theme Context Functions
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-1-2013
  */
  
 /** 
  * Populates the apocrypha global with some useful context
- * @since 2.0
+ * @since 1.0
  */
 add_action( 'template_redirect' , 'populate_apocrypha_global' );
 function populate_apocrypha_global() {
@@ -35,7 +35,7 @@ function populate_apocrypha_global() {
 /**
  * Runs through a series of conditional checks to figure out the page context
  * Stores the results in the framework global
- * @since 2.0
+ * @since 1.0
  */
 function get_page_context() {
 	
@@ -118,7 +118,7 @@ function get_page_context() {
 
 /**
  * Returns a set of classes to apply to the main body element
- * @since 2.0
+ * @since 1.0
  */
 function display_body_class( $class = '' ) {
 	
@@ -183,7 +183,7 @@ function display_body_class( $class = '' ) {
 
 /**
  * Returns a set of classes to apply to individual posts
- * @since 2.0
+ * @since 1.0
  */
 function display_entry_class( $class = '', $post_id = null ) {
 	static $post_alt;
@@ -241,7 +241,7 @@ function display_entry_class( $class = '', $post_id = null ) {
 
 /**
  * Returns a set of classes to apply to post comments
- * @since 2.0
+ * @since 1.0
  */
 function display_comment_class( $class = '' ) {
 	global $comment, $apocrypha;

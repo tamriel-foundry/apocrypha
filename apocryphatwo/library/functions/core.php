@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Core Functions
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-1-2013
  */
  
@@ -38,7 +38,7 @@ function apoc_get_search_form( $search_type = '' ) {
 ----------------------------------------------*/
 /**
  * Tamriel Foundry homepage have_posts query
- * @since 2.0
+ * @since 1.0
  */
 function homepage_have_posts() {
 	$posts_per_page = 6;

@@ -2,13 +2,13 @@
 /**
  * Apocrypha Comments Functions
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-3-2013
  */
 
 /**
  * Generate a number sensitive link to article comments
- * @since 2.0
+ * @since 1.0
  */
 function apoc_comments_link() {
 	$comments_link = '';

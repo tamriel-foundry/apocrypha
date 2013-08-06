@@ -2,13 +2,13 @@
 /**
  * Apocrypha Theme Login Functions
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-2-2013
  */
  
 /**
  * Overrides elements of wp-login.php
- * @since 2.0
+ * @since 1.0
  */
 add_action( 'login_enqueue_scripts', 'apoc_login_styles' );
 function apoc_login_styles() {
@@ -86,7 +86,7 @@ function apoc_header_login() {
 	<?php endif;
 	echo '</div>';
 	
-	if ($user_id == '') echo '<p id="top-login-error" class="error"></p>';
+	if ($user_id == '') echo '<div id="top-login-error" class="error"></div>';
 }
 
 /** 

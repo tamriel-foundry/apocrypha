@@ -2,7 +2,7 @@
 /**
  * Apocrypha Posts Functions
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-3-2013
  */
  
@@ -12,7 +12,7 @@
  
 /**
  * Add extra support for post types within the Apocrypha theme.
- * @since 2.0
+ * @since 1.0
  */
 add_action( 'init', 'apoc_post_type_support' );
 function apoc_post_type_support() {
@@ -23,7 +23,7 @@ function apoc_post_type_support() {
 
 /**
  * Registers custom metadata keys that are used for SEO
- * @since 2.0
+ * @since 1.0
  */
 add_action( 'init', 'apoc_register_postmeta' );
 function apoc_register_postmeta() {
@@ -54,8 +54,24 @@ function apoc_sanitize_meta( $meta_value , $meta_key , $meta_type ) {
 ----------------------------------------------*/
 
 /**
+ * Generates a class for the homepage headers
+ * @since 1.0
+ */
+function home_header_class() {
+	global $apocrypha;
+	if( !isset( $apocrypha->home_headers ) ) {
+		$headers = range( 1 , 6 );
+		shuffle( $headers );
+		$apocrypha->home_headers = $headers;
+	}
+
+	$header = array_shift( $apocrypha->home_headers );
+	echo 'home-header-' . $header;
+}
+
+/**
  * Titles a post within the loop
- * @since 2.0
+ * @since 1.0
  */
 function entry_header_title() {
 	$title = '<a href="' . get_permalink() . '" title="Read Post, ' . get_the_title() . '">' . get_the_title() . '</a>';
@@ -64,7 +80,7 @@ function entry_header_title() {
  
 /**
  * Describes a post within the loop
- * @since 2.0
+ * @since 1.0
  */
 function entry_header_description() {
 	global $post;

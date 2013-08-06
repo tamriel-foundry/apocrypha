@@ -2,14 +2,14 @@
 /**
  * Apocrypha Theme User Functions
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-1-2013
  */
  
 
 /** 
  * Get a user's avatar without using gravatar, uses custom defaults
- * @since 2.0
+ * @since 1.0
  */
 function apoc_fetch_avatar( $user_id , $type='thumb' , $size=100 ) {
 	
@@ -30,7 +30,7 @@ function apoc_fetch_avatar( $user_id , $type='thumb' , $size=100 ) {
 
 /**
  * Randomly selects and returns a guest avatar from the available choices
- * @since 2.0
+ * @since 1.0
  */
 function apoc_guest_avatar( $type ='thumb' , $size = 100 ) {
 	$avsize = ( 'full' == $type ) ? '-large' : '' ;
@@ -39,4 +39,23 @@ function apoc_guest_avatar( $type ='thumb' , $size = 100 ) {
     $src = trailingslashit( THEME_URI ) . "images/avatars/{$avatar}{$avsize}.jpg";
 	$guest_avatar = '<img src="' . $src . '" alt="Avatar Image" class="avatar" width="' . $size . '" height="' . $size . '">';
     return $guest_avatar;
+}
+
+
+/**
+ * Count users by a specific meta key
+ * @since 0.1
+ */
+function count_users_by_meta( $meta_key , $meta_value ) {
+	global $wpdb;
+	$user_meta_query = $wpdb->get_var( 
+		$wpdb->prepare(
+			"SELECT COUNT(*) 
+			FROM $wpdb->usermeta 
+			WHERE meta_key = %d 
+			AND meta_value = %s" , 
+			$meta_key , $meta_value 
+			) 
+		);
+	return intval($user_meta_query);
 }

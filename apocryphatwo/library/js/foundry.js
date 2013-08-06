@@ -6,9 +6,6 @@ var ajaxurl 	= siteurl + 'wp-admin/admin-ajax.php';
 /*! Admin bar AJAX login function */
 jQuery(document).ready(function(){
 	jQuery('#top-login-form').submit( function(){
-	
-		// Fade out the error dialogue
-		jQuery('#top-login-error').fadeOut();
 		
 		// Prevent the user from taking any further action
 		jQuery('input#login-submit').attr('disabled', 'disabled');
@@ -122,3 +119,11 @@ jQuery(document).ready(function(){
 	// Run it once on document ready
 	title_notification_count();
 });
+
+/*! Back To Top Link Scrolling */
+jQuery(document).ready(function(){
+		jQuery('a.backtotop').click(function () {
+			jQuery('html, body').animate({scrollTop: 0 }, 600);
+			return false;
+		});
+	});

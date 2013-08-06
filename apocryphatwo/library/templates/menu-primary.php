@@ -2,7 +2,7 @@
 /** 
  * Apocrypha Primary Navigation Menu
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-2-2012
  */
 

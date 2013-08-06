@@ -19,15 +19,15 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 2.0 - Primary Structure
 	2.1 - Header
 	2.2 - Content
-	2.3 - Showcase
-	2.4 - Sidebars
-	2.5 - Footer
+	2.3 - Sidebars
+	2.4 - Footer
 3.0 - Non-structural Elements
 	3.1 - Text Elements
 	3.2 - Forms
 	3.3 - Fields
 	3.4 - Buttons
 	3.5 - Media
+	3.6 - Feedback Elements
 4.0 - Navigation
 	4.1 - Admin Bar
 5.0 - Posts and Pages	
@@ -76,7 +76,7 @@ a img{border:none;}
 --------------------------------------------------------------*/
 body {
 	font-size: 100%;
-	font-family: Bitter, Georgia, serif;
+	font-family: 'Palatino Linotype', 'Book Antiqua' , serif;
 	font-weight: normal;
 	line-height: 1.5em;
 	color: #CCC;
@@ -136,6 +136,45 @@ div#content.no-sidebar {
 	width: 100%;
 	}
 	
+/*---------------------------------------------
+2.3 - Sidebars
+---------------------------------------------*/	
+div#primary-sidebar {
+	width: 300px;
+	float: right;
+	clear: right;
+	margin: 0 0 1em 0;
+	}
+	
+/*---------------------------------------------	
+2.4 - Footer
+---------------------------------------------*/		
+#footer-divider {
+	height: 25px;
+	background: rgba(51,51,51,0.75);
+	background: -ms-linear-gradient(top, #555, #222);
+    background: -moz-linear-gradient(top, #555, #222);
+	background: -o-linear-gradient(top, #555, #222);
+	background: -webkit-linear-gradient(top, #555, #222);
+	border-top: 1px solid #777;
+	border-bottom: 1px solid #444;
+	color: #BBB;
+	text-shadow: 1px 1px #000;
+	text-transform: uppercase;
+	box-shadow: 0 0 5px #000;
+	}
+div#footer {
+	width: 700px;
+	overflow: hidden;
+	clear: both;
+	margin: 1em auto;
+	font-size: 0.75em;
+	color: #BBB;
+	text-align: center;
+	}
+div#footer > p { margin: 0 }
+	
+	
 /*--------------------------------------------------------------
 3.0 - NON-STRUCTURAL ELEMENTS
 --------------------------------------------------------------*/	
@@ -151,7 +190,7 @@ p {
 
 /* Links */
 a {
-	color: #C60;
+	color: #c5772b;
 	text-decoration: none;
 	-webkit-transition: color 0.2s;
 	-moz-transition: color 0.2s;
@@ -160,7 +199,7 @@ a {
 	transition: color 0.2s;
 	cursor: pointer;
 	}
-a:hover { color: #FC6; }
+a:hover { color: #ffb14c; }
 
 /* Lists */
 ul {
@@ -240,6 +279,11 @@ sub{
 	vertical-align: baseline;
 	top: 0.5em;
 	}
+	
+/* Alliances */
+p.aldmeri { color: #C90; }
+p.daggerfall { color: #33C; }
+p.ebonheart { color: #900; }	
 
 
 /*---------------------------------------------
@@ -289,6 +333,10 @@ select {
 	line-height: 24px;
 	padding: 3px 5px;
 	background: #AAA;
+	background: -ms-linear-gradient(top, #BBB, #b3a695);
+    background: -moz-linear-gradient(top, #BBB, #b3a695);
+	background: -o-linear-gradient(top, #BBB, #b3a695);
+	background: -webkit-linear-gradient(top, #BBB, #b3a695);
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 2px #111;
@@ -298,7 +346,6 @@ select {
 input[type="text"]:focus,
 input[type="url"]:focus,
 input[type="password"]:focus {
-	background: #DDD;
 	box-shadow: 0 0 3px #f90;
 	}
 
@@ -308,15 +355,17 @@ input[type="radio"] {
 	position: relative;
 	width: 16px;
 	height: 16px;
-	margin: -4px -24px 0 0;
+	margin: -6px -24px 0 0;
 	vertical-align: middle;
 	cursor: pointer;
 	opacity: 0;
 	}
 input[type='radio'] + label, 
 input[type='checkbox'] + label {
+	position: relative;
+	top: -2px;
 	cursor: pointer;
-	padding: 5px 5px 5px 24px;
+	padding: 5px 3px 5px 24px;
 	background: url(images/icons/checkboxes.png) 4px -52px no-repeat;
 	}
 input[type='checkbox']:hover + label,
@@ -345,16 +394,15 @@ input[type="button"],
 a.button {
 	position: relative;
 	display: inline-block;
-	padding: 3px 5px;
+	padding: 4px 5px;
 	margin: 5px;
-	background: #AAA; /* Fallback */
-	background: -ms-linear-gradient(top, #BBB, #999); /* IE10 */
-    background: -moz-linear-gradient(top, #BBB, #999); /* Firefox */
-	background: -o-linear-gradient(top, #BBB, #999); /* Opera */
-	background: -webkit-gradient(linear, left top, left bottom, from(#BBB), to(#999)); /* old Webkit */
-	background: -webkit-linear-gradient(top, #BBB, #999); /* new Webkit */
-	border: 1px solid #CCC;
-	border-radius: 5px;
+	background: #AAA;
+	background: -ms-linear-gradient(top, #BBB, #b3a695);
+    background: -moz-linear-gradient(top, #BBB, #b3a695);
+	background: -o-linear-gradient(top, #BBB, #b3a695);
+	background: -webkit-linear-gradient(top, #BBB, #b3a695);
+	border: 1px solid #111;
+	border-radius: 3px;
 	box-shadow: 0 0 5px #000;
 	font-family: 'Open Sans' , sans-serif;
 	font-size: 12px;
@@ -364,12 +412,11 @@ a.button {
 	}
 a.button-dark,
 button.button-dark {
-	background: rgba(34,34,34,0.9); /* Fallback */
-	background: -ms-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9)); /* IE10 */
-    background: -moz-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9)); /* Firefox */
-	background: -o-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9)); /* Opera */
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(51,51,51,0.9)), to(rgba(17,17,17,0.9))); /* old Webkit */
-	background: -webkit-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9)); /* new Webkit */
+	background: rgba(34,34,34,0.9);
+	background: -ms-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
+    background: -moz-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
+	background: -o-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
+	background: -webkit-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
 	border: 1px solid #000;
 	box-shadow: 0 0 2px #999 inset;
 	color: #CCC;
@@ -378,7 +425,8 @@ button:hover,
 input[type="submit"]:hover,
 input[type="button"]:hover,
 a.button:hover {
-	color: #c60;
+	color: #000;
+	border: 1px solid #000;
 	box-shadow: 0 0 5px #c60;
 	}
 	
@@ -392,7 +440,7 @@ img { max-width: 100%;}
 	height: auto;
 	max-height: 600px;
 	padding: 2px;
-	border: 1px solid #444;
+	border: 1px solid #333;
 	border-radius: 2px;
 	box-shadow: 0 0 8px #000;
 	background: rgba( 17,17,17,0.5 );
@@ -423,7 +471,32 @@ a img:hover  {
 	box-shadow: 0 0 5px #c60;
 	border-color: #000;
 	}
-
+	
+/*---------------------------------------------
+	3.3 - Feedback Elements
+----------------------------------------------*/
+div.warning,
+div.error,
+div.updated {
+	width: 95%;
+	float: left;
+	margin: 0.5em 0;
+	padding: 0.25em 2.5%;
+	background: rgba(204, 153, 0, 0.75);
+	border: 1px solid #FC0;	
+	border-radius: 3px;
+	box-shadow: 0 0 5px #000;
+	font-size: 0.875em;
+	line-height: 1.5em;
+	color: #000;
+	}
+div.updated {
+	}
+div.error {
+	background: rgba(51,0,0,0.75);
+	border: 1px solid #900;
+	color: #DDD;
+	}
 
 /*--------------------------------------------------------------
 4.0 - NAVIGATION
@@ -599,12 +672,12 @@ div#admin-bar-login img.avatar:hover { box-shadow: 0 0 5px #c60; }
 div#admin-bar-login a.admin-bar-login-link,
 div#admin-bar-login input#login-submit {
 	font-size: 10px;
-	top: -1px;
+	top: -2px;
 	margin: 5px 0;
 	}
 input#login-submit{ width: 44px; }
 div#admin-bar-login span.logged-in-welcome {
-	margin: 0 5px 0 0;
+	margin: 0 5px;
 	}
 form#top-login-form { margin: 0; }
 form#top-login-form input[type="text"],
@@ -614,24 +687,29 @@ form#top-login-form input[type="password"] {
 	margin: 2px 3px 0 0;
 	padding: 2px 24px 0 3px;
 	font-size: 12px;
-	background-image: url(images/icons/login-icons.png);
+	background: #bbb;
+	background-image: url(images/icons/login-icons.png), -ms-linear-gradient(top, #BBB, #b3a695);
+	background-image: url(images/icons/login-icons.png), -moz-linear-gradient(top, #BBB, #b3a695);
+	background-image: url(images/icons/login-icons.png), -o-linear-gradient(top, #BBB, #b3a695);
+	background-image: url(images/icons/login-icons.png), -webkit-linear-gradient(top, #BBB, #b3a695);
 	background-repeat: no-repeat;
 	background-position: 100% 100%;
 	}
-form#top-login-form input[type="password"] {
-	background-position: 100% 3px;
-	}
+form#top-login-form input[type="password"] { background-position: 100% 1px; }
 form#top-login-form label#remember-label {
 	display: inline-block;
-	font-size: 12px;
+	font-size: 10px;
 	line-height: 20px;
+	}
+div#top-login-error {
+	display: none;
 	}
 
 /* Front-end Notifications */
 ul#notifications-menu {
 	float: right;
 	list-style: none;
-	margin: 5px 10px 5px 0;
+	margin: 3px 5px 0 0;
 	padding: 0;
 	position: relative;
 	}
@@ -640,8 +718,9 @@ li.notification-type {
 	height: 24px;
 	margin: 0 5px;
 	float: left;
-	background-image: url( images/icons/notification-icons.png);
+	background-image: url( images/icons/notifications.png);
 	background-repeat: no-repeat;
+	cursor: pointer;
 	}
 li#notifications-activity 		{ background-position: 0 0; 		}
 li#notifications-activity:hover 	{ background-position: 0 100%; 		}
@@ -651,13 +730,28 @@ li#notifications-friends 			{ background-position: -48px 0; 	}
 li#notifications-friends:hover 	{ background-position: -48px 100%; 	}
 li#notifications-groups 			{ background-position: -72px 0; 	}
 li#notifications-groups:hover 	{ background-position: -72px 100%; 	}
-	
+span.notifications-number {
+	display: block;
+	position: relative;
+	width: 12px;
+	height: 12px;
+	line-height: 12px;
+	text-align: center;
+	top: -3px;
+	right: -14px;
+	font-size: 10px;
+	background: #2e424d;
+	color: #3cf;
+	border: 1px solid #069;
+	border-radius: 2px;
+	box-shadow: 0 0 3px #000;
+	}
 	
 /* Notification Dropdowns */
 div.admin-bar-dropdown {
 	visibility: hidden;
 	width: 250px;
-	margin: 29px 0 0;
+	margin: 31px 0 0;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -679,7 +773,7 @@ div#header-search:hover > div#search-dropdown {
 ul.notification-list {
 	width: 224px;
 	margin: -8px 5px 0;
-	padding: 16px 0 5px 16px;
+	padding: 14px 0 5px 16px;
 	font-size: 0.875em;
 	line-height: 1.25em;
 	background-image: url(images/icons/notification-drop-arrow.png);
@@ -710,8 +804,8 @@ ul.notification-links li a { margin: 2px 1px 0 2px; }
 div#header-search {
 	width: 24px;
 	height: 24px;
-	margin: 5px 10px 5px 0px;
-	background-image: url( images/icons/notification-icons.png);
+	margin: 3px 10px 5px 0px;
+	background-image: url( images/icons/notifications.png);
 	background-repeat: no-repeat;
 	background-position: 100% 0;
 	float: right;
@@ -727,7 +821,7 @@ div#search-dropdown form.search-form {
 div#search-dropdown label.search-label {
 	display: block;
 	width: 240px;
-	margin: 12px 5px 5px;
+	margin: 10px 5px 5px;
 	text-align: center;
 	border-bottom: 1px solid #444;
 	font-size: 0.875em;
@@ -761,6 +855,95 @@ nav.breadcrumbs * {
 	margin: 0 1px;
 	}
 
+/*---------------------------------------------
+4.3 - Pagination
+---------------------------------------------*/	
+nav.pagination {
+	width: 100%;
+	float: left;
+	position: relative;
+	z-index: 999;
+	}
+div.pagination-links {
+	float: right;
+	margin-right: 10px;
+	}
+div.pagination-count {
+	float: left;
+	margin-left: 10px;
+	}
+nav.pagination .page-numbers {
+	padding: 2px 8px;
+	background-image: url(images/backgrounds/dark-denim.jpg);
+	border: 1px solid #000;
+	box-shadow: 0 0 2px #666 inset;
+	}
+nav.pagination .page-numbers.current {
+	background-image: url(images/backgrounds/light-denim.jpg);
+	}
+	
+	
+/*---------------------------------------------
+4.4 - Footer Navigation
+---------------------------------------------*/	
+nav#footer-navigation {
+	width: 900px;
+	margin: 0 auto;
+	padding: 0;
+	}
+a.footer-nav-item {
+	width: 20%;
+	float: left;
+	margin: 1em 0;
+	padding: 1%;
+	text-align: center;
+	background: rgba(51,51,51,0.75);
+	background: -ms-linear-gradient(top, #555, #222);
+    background: -moz-linear-gradient(top, #555, #222);
+	background: -o-linear-gradient(top, #555, #222);
+	background: -webkit-linear-gradient(top, #555, #222);
+	border: 1px solid #111;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #999 inset;
+	}
+a.footer-nav-item + a.footer-nav-item { margin-left: 3.0%; }
+img.footer-nav-image {
+	width: 100%;
+	margin: -55% 0 0 0;
+	}
+a.footer-nav-item h3 {
+	border-top: 1px solid #000;
+	color: #BBB;
+	white-space: nowrap;
+	}
+a.footer-nav-item h3 span {
+	width: 100%;
+	float: left;
+	padding-top: 3px;
+	border-top: 1px solid #444;
+	}
+a.footer-nav-item:hover h3 {
+	color: #DDD;
+	text-shadow: 1px 0 20px #c60;
+	}
+a.footer-nav-item:hover { box-shadow: 0 0 5px #c60; }
+a.footer-nav-item:hover > img { 
+	box-shadow: none;
+	background: none;
+	}
+div#footer-anvil {
+	height: 50px;
+	width: 135px;
+	margin: -13px auto 0;
+	}
+a#anvil-link {
+	height: 50px;
+	width: 100px;
+	display: block;
+	background: url(images/icons/footer-anvil.png) 0 100% no-repeat;
+	}
+a#anvil-link:hover { background-position: 0 0; }
+	
 	
 /*--------------------------------------------------------------
 5.0 - POSTS AND PAGES
@@ -788,8 +971,9 @@ header.entry-header {
 	overflow: hidden;
 	clear: both;
 	background-image: url(images/headers/page-headers.jpg);
-	background-position: 50% 0;
 	border: 1px solid #000;
+	border-radius: 3px;
+	box-shadow: 0 0 5px #111;
 	}
 .home-page .entry-header,
 .archive .entry-header {
@@ -797,6 +981,12 @@ header.entry-header {
 	margin: 0 0 0.5em 0;
 	background-image: url(images/headers/home-headers.jpg);
 	}
+.home-header-1 { background-position: 50% 0; }
+.home-header-2 { background-position: 50% -75px; }
+.home-header-3 { background-position: 50% -150px; }
+.home-header-4 { background-position: 50% -225px; }
+.home-header-5 { background-position: 50% -300px; }
+.home-header-6 { background-position: 50% -375px; }
 	
 /* Entry Title */
 .entry-title {
@@ -811,10 +1001,10 @@ header.entry-header {
 	font-size: 1.125em;
 	}
 .entry-title a {
-	color: #CCC;
+	color: #ccc;
 	}
 .entry-title a:hover {
-	color: #C60;
+	color: #c5772b;
 	}
 	
 /* Entry Byline */
@@ -847,18 +1037,16 @@ a.post-edit-link {
 div#showcase-container {
 	width: 100%;
 	float: left;
-	margin: 0 0 1em;
+	margin: 0 0 1.5em;
 	}
 div#showcase {
 	width: 60%;
-	margin: 0 0 1em 0;
 	float: right;
 	border-radius: 5px 5px 0 0;
 	box-shadow: 0 0 20px #000;
 	}
 div#showcase-sidebar {
 	width: 40%;
-	margin: 0 0 1em 0;
 	float: left;
 	}
 	
@@ -920,13 +1108,13 @@ div.entry-meta {
 	background-image: url(images/backgrounds/dark-denim.jpg);
 	border: 1px solid #000;
 	border-radius: 5px;
-	box-shadow: 0 0 2px #666 inset;
+	box-shadow: 0 0 2px #444 inset;
 	font-size: 0.75em;
 	}
 div.entry-meta > a { font-style: italic; }
 a.comments-link {
 	float: right;
-	margin-top: 0;
+	margin: 0;
 	}
 	
 /*---------------------------------------------
@@ -977,10 +1165,9 @@ li.recent-discussion a.discussion-avatar img {
 	box-shadow: 0 0 2px #000;
 	}
 li.recent-discussion div.recent-discussion-content{
-	height: 45px;
+	height: 50px;
 	position: relative;
 	margin: 0 0 0 60px;
-	padding: 3px 5px;	
 	background-image: url(images/backgrounds/denim.jpg);
 	border: 1px solid #000;
 	border-radius: 5px;
@@ -988,9 +1175,13 @@ li.recent-discussion div.recent-discussion-content{
 	font-size: 0.75em;
 	line-height: 1.5em;
 	}
+li.recent-discussion.even div.recent-discussion-content { 
+	background-image: url(images/backgrounds/light-denim.jpg); 
+	}
 li.recent-discussion span.recent-discussion-title {
-	margin: 0 0 0 -11px;
-	padding: 0 0 0 11px;
+	display: block;
+	margin: 4px 0 0 -6px;
+	padding: 0 0 0 14px;
 	background-image: url(images/icons/recent-discussion-arrow.png);
 	background-repeat: no-repeat;
 	background-position: 0 3px;
@@ -998,7 +1189,7 @@ li.recent-discussion span.recent-discussion-title {
 	}
 li.recent-discussion time.recent-discussion-time {
 	position: absolute;
-	bottom: 3px;
+	bottom: 5px;
 	right: 8px;
 	font-size: 10px;
 	color: #999;
@@ -1007,6 +1198,176 @@ li.recent-discussion:hover a.discussion-avatar img{
 	box-shadow: 0 0 5px #c60;
 	opacity: 1; 
 	}	
+	
+/* Welcome Text */
+div.welcome-text {
+	width: 85%;
+	margin: -0.5em 0 1em 5%;
+	padding: 0.5em 5%;
+	background: rgba(17,17,17,0.75);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #666 inset;
+	font-size: 0.875em;
+	font-style: italic;
+	}
+	
+/* Social Media Links */
+div.social-icons {
+	width: 230px;
+	margin: 0.5em auto;
+	}
+.social-icons a {
+	display: block;
+	height: 50px;
+	width: 50px;
+	float: left;
+	margin: 0 0 0 5px;
+	background-image: url(images/icons/social-icons.jpg);
+	background-repeat: none;
+	border: 1px solid #444;
+	border-radius: 8px;
+	box-shadow: 0 0 5px #000;
+	}
+.social-icons a:hover { border: 1px solid #c60; }
+.social-icons a.facebook { background-position: 0 50px; }
+.social-icons a.facebook:hover { background-position: 0 0; }
+.social-icons a.feed { background-position: -50px 50px; }
+.social-icons a.feed:hover { background-position: -50px 0; }
+.social-icons a.youtube {	background-position: -100px 50px; }
+.social-icons a.youtube:hover {	background-position: -100px 0 }
+.social-icons a.twitter { background-position: -150px 50px; }
+.social-icons a.twitter:hover { background-position: -150px 0 }
+
+/* Who's Online Widgets */
+div#whos-online-block {
+	overflow: hidden;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid #000;
+	}
+div#newest-members-block {
+	overflow: hidden;
+	padding-top: 0.5em;
+	border-top: 1px solid #333;
+	}
+p.whos-online-total {
+	margin: 0;
+	padding: 0 0 0.5em;
+	clear: both;
+	font-size: 0.75em;
+	}
+li.whos-online-member {
+	float: left;
+	margin: 0 5px 5px 0;
+	padding: 2px 8px;
+	border: 1px solid #000;
+	border-radius: 5px;
+	background-image: url(images/backgrounds/light-denim.jpg);
+	box-shadow: 0 0 2px #666 inset;
+	font-size: 0.875em;
+	}
+li.whos-online-member.even {
+	background-image: url(images/backgrounds/dark-denim.jpg);
+	}
+	
+/* Featured Guild Box */
+a#featured-guild-avatar img.avatar{
+	margin: 0;
+	}
+div#featured-guild-meta {
+	height: 94px;
+	margin: 5px 0 0 115px;
+	padding: 5px;
+	background-image: url(images/denim.jpg);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 3px #666 inset;
+	text-align: center;
+	}
+h4#featured-guild-name {
+	text-transform: none;
+	border-bottom: 1px solid #000;
+	padding: 0 0 3px;
+	}
+div#featured-guild-meta > p {
+	margin: 0;
+	padding: 0 0 3px 0;
+	font-size: 0.75em;
+	line-height: 1.5em;
+	}
+div#featured-guild-meta > p#featured-guild-type {
+	padding-top: 3px;
+	border-top: 1px solid #444;
+	font-style: italic;
+	}
+	
+/* Foundry Stats Counter */
+div#stat-counter {
+	height: 350px;
+	}
+p.stat-counter-total {
+	padding: 5px 10px;
+	margin: 0;
+	background-image: url(images/backgrounds/dark-denim.jpg);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #666 inset;
+	text-align: center;
+	font-weight: bold;
+	}
+div#stat-counter div.banner-top {
+	width: 100px;
+	margin: 0 0 0.5em -5px;
+	float: left;
+	position: relative;
+	background-image: url(images/backgrounds/counter-top.png);
+	background-repeat: no-repeat;
+	}
+div.banner-top.aldmeri {	background-position: 0 0; }
+div.banner-top.daggerfall { background-position: -100px 0; }
+div.banner-top.ebonheart { background-position: -200px 0; }
+div.banner-top div.banner-bottom {
+	width: 100%;
+	height: 100px;
+	position: absolute;
+	bottom: -90px;
+	background-image: url(images/backgrounds/counter-bottom.png);
+	background-repeat: no-repeat;
+	}
+div.banner-bottom.aldmeri {	background-position: 0 0; }
+div.banner-bottom.daggerfall { background-position: -100px 0; }
+div.banner-bottom.ebonheart { background-position: -200px 0; }
+a.banner-count {
+	display: block;
+	width: 50px;
+	height: 50px;
+	margin: 0 auto;
+	line-height: 50px;
+	position: relative;
+	top: -35px;
+	background: rgba(17,17,17,0.9);
+	border: 1px solid #000;
+	border-radius: 10px;
+	box-shadow: 0 0 2px #666 inset;
+	font-size: 1.25em;
+	color: #EEE;
+	text-align: center;
+	}
+div.aldmeri a.banner-count { text-shadow: 0 0 10px #FF0; }
+div.daggerfall a.banner-count { text-shadow: 0 0 10px #0CF; }
+div.ebonheart a.banner-count { text-shadow: 0 0 10px #F00; }
+div.aldmeri a.banner-count:hover { 
+	border: 1px solid #FF0;
+	box-shadow: 0 0 10px #FF0;
+	}
+div.daggerfall a.banner-count:hover { 
+	border: 1px solid #0CF;
+	box-shadow: 0 0 10px #0CF; 
+	}
+div.ebonheart a.banner-count:hover { 
+	border: 1px solid #F00;
+	box-shadow: 0 0 10px #F00; 
+	}
 
 /*---------------------------------------------
 	6.3 - Slideshow
@@ -1059,6 +1420,7 @@ li.slideshow-tab:last-child { border-right: none; }
 span.slideshow-tab-title {
 	display: block;
 	padding: 3px 0;
+	font-family: 'Cinzel' , Book Antiqua , Serif;
 	text-transform: uppercase;
 	font-size: 0.875em;
 	text-shadow: 1px 1px #000;
@@ -1145,8 +1507,8 @@ li.flex-active span.slideshow-tab-title {
 X.X - WHERE DO I PUT THIS STUFF?
 --------------------------------------------------------------*/		
 span.activity-count {
-	background: #356;
-	color: #DDD;
+	background: #2e424d;
+	color: #CCC;
 	padding: 0 4px;
 	margin: 0 2px;
 	border: 1px solid #000;

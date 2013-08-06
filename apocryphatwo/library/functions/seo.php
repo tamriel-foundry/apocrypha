@@ -2,14 +2,14 @@
 /**
  * Apocrypha Theme SEO Functions
  * Andrew Clayton
- * Version 2.0
+ * Version 1.0
  * 8-1-2013
  */
 
 /**
  * Sets a logical browser title for SEO. 
  * Adapts to handle WordPress/bbPress/BuddyPress pages
- * @since 2.0
+ * @since 1.0
  */
 remove_action( 'wp_title' , 'bbp_title' );
 function display_document_title() {
@@ -91,7 +91,7 @@ function display_document_title() {
  
  /**
  * Sets a SEO friendly meta description tag
- * @since 2.0
+ * @since 1.0
  */
 function display_meta_description() {
 	$description = '';

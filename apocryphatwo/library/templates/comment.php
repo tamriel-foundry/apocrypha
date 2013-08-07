@@ -43,7 +43,7 @@ $apocrypha->comment_count = $count;
 	
 	<div class="reply-body">
 		<div class="reply-author">
-			<?php apoc_comment_author_block(); ?>
+			<?php apoc_member_block( $comment->user_id , $context = 'reply' , $avatar = 'thumb' ); ?>
 		</div>
 		
 		<div class="reply-content">
@@ -52,6 +52,6 @@ $apocrypha->comment_count = $count;
 			<?php endif; ?>
 			<?php comment_text( $comment->comment_ID ); ?>
 		</div>
-		<?php // user_signature( $comment->user_id ); ?>
+		<?php user_signature( $comment->user_id ); ?>
 	</div>
 </li>

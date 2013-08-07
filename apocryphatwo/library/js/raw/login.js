@@ -1,25 +1,25 @@
 /*! Admin bar AJAX login function */
-jQuery(document).ready(function(){
-	jQuery('#top-login-form').submit( function(){
+$(document).ready(function(){
+	$('#top-login-form').submit( function(){
 		
 		// Prevent the user from taking any further action
-		jQuery('input#login-submit').attr('disabled', 'disabled');
-		jQuery('input#login-submit').attr('value', '...');
+		$('input#login-submit').attr('disabled', 'disabled');
+		$('input#login-submit').attr('value', '...');
 			
 		// Send the request
-		jQuery.ajax({
+		$.ajax({
 			type: 'POST',
 			dataType: 'json',
-			data: jQuery(this).serialize(),
+			data: $(this).serialize(),
 			url: ajaxurl,
 			success: function( result ){
 				if (result.success == 1) {
 					window.location = result.redirect;
 				} else {
-					jQuery('input#login-submit').removeAttr('disabled');
-					jQuery('input#login-submit').attr('value', 'Log In');
-					jQuery('#top-login-error').html(result.error);
-					jQuery('#top-login-error').fadeToggle('slow');
+					$('input#login-submit').removeAttr('disabled');
+					$('input#login-submit').attr('value', 'Log In');
+					$('#top-login-error').html(result.error);
+					$('#top-login-error').fadeToggle('slow');
 				}
 			}
 		});

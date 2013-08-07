@@ -162,65 +162,6 @@ function apoc_comment_delete_button() {
 	}
 }
 
-/**
- * Process delete request using AJAX
- * @since 0.3
- */
-add_action( 'wp_ajax_apoc_delete_comment' , 'apoc_delete_comment' );
-function apoc_delete_comment() {
-	
-	/* Check the nonce */
-	check_ajax_referer( 'delete-comment-nonce' , '_wpnonce' );	
-
-	/* Get the data */
-	$comment_id	= $_POST['commentid'];
-	
-	/* Delete it */
-	wp_delete_comment( $comment_id );
-	
-	echo "1";
-	exit(0);
-}
-
-
-/**
- * Display the comment author
- * @since 1.0
- */
-function apoc_comment_author_block() {
-	
-	/* Get some info */
-	global $comment;
-	$userid = $comment->user_id;
-	$author = $comment->comment_author;
-	$avatar = apoc_fetch_avatar( $comment->user_id , 'thumb' );
-	
-	if ( '0' != $comment->user_id ) :
-		$link 			= bp_core_get_user_domain( $userid );
-		$name	 		= '<a class="comment-author-name" title="' . $author . ' User Profile" href=' . $link . '>' . $author . '</a>' ;
-		$total_posts 	= get_user_post_count( $userid );
-		$user_rank		= get_user_rank( $userid , $total_posts['total'] );
-		$title			= get_user_title( $userid , $user_rank['rank_title'] );
-		$totalposts		= '<p class="user-post-count">Total Posts: ' . $total_posts['total'] . '</p>';
-		$expbar			= get_user_expbar( $total_posts['total'] , $user_rank['current_rank'] , $user_rank['next_rank'] );
-		$allegiance 	= get_user_raceclass( $userid );
-	else :
-		if ( $author == '' ) $author = 'Anonymous';
-		$name			= '<span class="comment-author-name">' . $author . '</span>' ;
-		$title			= get_user_title( $userid , 'Guest' );		
-	endif;
-	
-	$block 	 = $avatar;
-	$block 	.= $name;
-	$block	.= $title;	
-	$block	.= $allegiance;	
-	$block	.= $totalposts;
-	$block	.= $expbar;
-	echo $block;
-	}
-
-
-
 
 /*---------------------------------------------
 	FRONTEND COMMENT EDITING
@@ -254,3 +195,8 @@ function is_comment_edit() {
 		return true;
 	else return false;
 }
+
+
+
+
+?>

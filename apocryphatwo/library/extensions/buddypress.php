@@ -335,33 +335,6 @@ function apoc_format_notification( $component , $action , $item_id , $secondary_
 }
 
 
-/** 
- * Remove notifications with AJAX
- * @since 1.0
- */
-add_action( 'wp_ajax_apoc_clear_notification' , 'apoc_clear_notification' );
-function apoc_clear_notification() {
-	
-	// Get the current user
-	global $apocrypha;
-	$user_id = $apocrypha->user->data->ID;
-	$notification_id = $_REQUEST['notid'];
-	
-	// Check the nonce
-	check_ajax_referer( 'clear-single-notification' );
-	
-	// Delete the notification
-	delete_notification_by_id( $user_id , $notification_id );
-	echo "1";
-	exit(0);
-}
-
-// Helper function to remove the notification
-function delete_notification_by_id( $user_id , $notification_id ) {
-	global $bp, $wpdb;
-	return $wpdb->query( $wpdb->prepare( "DELETE FROM " . $bp->core->table_name_notifications . " WHERE user_id = %d AND id = %s", $user_id , $notification_id ) );
-}
-
 
 
 /*--------------------------------------------------------------
@@ -392,3 +365,6 @@ function get_guild_allegiance( $group_id ) {
 	$allegiance = '<p class="guild-allegiance ' . $faction . '">' . $name . '</p>';	
 	return $allegiance;
 }
+
+
+?>

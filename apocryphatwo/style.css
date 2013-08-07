@@ -93,7 +93,9 @@ div#main-container {
 	clear: both;
 	}
 div#footer-container {
-	clear: both;
+	width: 100%;
+	float: left;
+	margin: 1em 0 0;
 	border-bottom: 1px solid #cc6600;
 	box-shadow: 0 0 10px #000;
 	}
@@ -126,7 +128,7 @@ div#content {
 	min-height: 400px;
 	float: left;
 	clear: left;
-	margin: 0 0 1.5em 0;
+	margin: 0 0 1em 0;
 	}
 div#content.no-sidebar {
 	width: 100%;
@@ -1164,12 +1166,12 @@ div.entry-content {
 div#comments {
 	width: 100%;
 	float: left;
+	margin: 0 0 1em 0;
 	}
 header.comments-header,
 header.reply-header {
 	width: 98%;
 	height: 24px;
-	margin: 1em 0 0;
 	padding: 0.5em 1%;
 	background-image: url(images/backgrounds/dark-denim.jpg);
 	border: 1px solid #000;
@@ -1190,7 +1192,6 @@ li.reply {
 	
 /* Comment Header */
 header.reply-header {
-	margin: 0;
 	background: rgba(51,51,51,0.3);
 	border-top: none;
 	border-radius: 0 0 5px 5px;
@@ -1234,7 +1235,7 @@ a.report-post {
 	}
 a.report-post:hover { background-position: 24px 0; }
 
-/* Reply Body */
+/* Reply Author */
 div.reply-body {
 	width: 100%;
 	float: left;
@@ -1244,6 +1245,82 @@ div.reply-author {
 	width: 140px;
 	float: left;
 	text-align: center;
+	}
+.member-avatar img { 
+	float: none; 
+	margin: 0;
+	}
+.member-name {
+	display: block;
+	text-shadow: 1px 1px #000;
+	word-wrap: break-word;
+	}
+div.reply-author > p {
+	margin: 0;
+	font-size: 0.75em;
+	}
+div.reply-author > p.user-title {	
+	font-size: 0.875em;
+	font-style: italic;
+	}
+p.user-title.daedric-prince,
+p.user-title.moderator {
+	text-shadow: 1px 0 5px #F30;
+	}
+p.user-title.entropy-rising {
+	text-shadow: 1px 0 5px #0F0;
+	}
+div.user-exp-container {
+	width: 100px;
+	height: 8px;
+	clear: both;
+	margin: 0 auto;
+	background: #151515;
+	border: 1px solid #000;
+	border-radius: 4px;
+	box-shadow: 0 0 2px #666 inset;
+	}
+div.user-exp-container div.user-exp-bar {
+	height: 4px;
+	margin: 2px;
+	background: #69c;
+	border-radius: 3px 2px 2px 3px;
+	box-shadow: 0 0 2px #0CF inset;
+	}
+
+/* Reply Content */
+div.reply-content {
+	min-height: 175px;
+	margin: 0 1em 0 150px;
+	padding: 0 0 35px 0;
+	position: relative;
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 0.8em;
+	word-wrap: break-word;
+	}
+	
+/* User Signature */
+div.user-signature {
+	clear: right;
+	margin: 0 0 0 150px;
+	border-top: 1px solid #000;
+	}
+div.user-signature div.signature-content {
+	max-height: 150px;
+	overflow: hidden;
+	padding: 0.5em 0 0;
+	border-top: 1px solid #444;
+	font-size: 0.75em;
+	color: #AAA;
+	}
+div.signature-content > p { margin: 0; }
+div.signature-content img {
+	max-height: 150px;
+	width: auto;
+	margin: 0;
+	padding: 0;
+	border: none;
+	box-shadow: none;
 	}
 	
 /*--------------------------------------------------------------
@@ -1499,8 +1576,8 @@ a#featured-guild-avatar img.avatar{
 div#featured-guild-meta {
 	height: 94px;
 	margin: 5px 0 0 115px;
-	padding: 5px;
-	background-image: url(images/denim.jpg);
+	padding: 5px 8px;
+	background: rgba( 17,17,17,0.25 );
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 3px #666 inset;

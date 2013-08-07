@@ -1,17 +1,16 @@
 /*! Buddypress Frontend Notifications */
-jQuery(document).ready(function(){
-    var jq=jQuery;
-    jq("a.clear-notification").click( function(){
+$(document).ready(function(){
+    $("a.clear-notification").click( function(){
         
 		// Get some info about what we are doing 
-		var button	= jq(this);
+		var button	= $(this);
         var nonce	= get_var_in_url( button.attr('href') , '_wpnonce' );
 		var notid 	= get_var_in_url( button.attr('href') , 'notid' );
 		var type 	= get_var_in_url( button.attr('href') , 'type' );
 		button.addClass('loading');
 		        
 		// Submit the POST AJAX 
-		jq.ajax({
+		$.ajax({
 			type: 'POST',
 			url : ajaxurl,
 			data : { 
@@ -24,7 +23,7 @@ jQuery(document).ready(function(){
 				if( response == '1' ){
 				
 					// Change the notification count and remove the notification
-					counter = jq( "li#notifications-" + type + " span.notifications-number" );
+					counter = $( "li#notifications-" + type + " span.notifications-number" );
 					count = parseInt( counter.text() );
 					if ( count > 1 ) {
 						counter.text( count - 1 );
@@ -35,7 +34,7 @@ jQuery(document).ready(function(){
 					}
 					
 					// Update the document title
-					title = jq('title').text();
+					title = $('title').text();
 					count = title.split(']')[0].substr(1);
 					if ( 1 < count ) {
 						title.replace( count , count-1 );
@@ -66,8 +65,8 @@ jQuery(document).ready(function(){
 	// Add the total notification count to the title
 	function title_notification_count() {
 		count = 0;
-		jq.each( ['activity','messages','groups','friends'] , function(index,type) {
-			target = jq("li#notifications-"+type+" span.notifications-number");
+		$.each( ['activity','messages','groups','friends'] , function(index,type) {
+			target = $("li#notifications-"+type+" span.notifications-number");
 			if ( target.is('*') ) {
 				count = count + parseInt( target.text() );
 			}
@@ -75,9 +74,9 @@ jQuery(document).ready(function(){
 		
 		// If we have notifications, add them to the title
 		if ( count > 0 ) {
-			var doctitle = jq('title').text().replace(/\[.*\]/,'');
+			var doctitle = $('title').text().replace(/\[.*\]/,'');
 			doctitle = "["+count+"]"+doctitle;
-			jq('title').text(doctitle);
+			$('title').text(doctitle);
 		}
 	}
 	

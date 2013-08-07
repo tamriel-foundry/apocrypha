@@ -98,47 +98,6 @@ function get_current_url() {
 	$current_url .= esc_attr( $_SERVER['REQUEST_URI'] );
 	return esc_url( $current_url );
 }
-	
-/** 
- * Register and process the login AJAX action.
- * @since 0.1
- */
-add_action( 'wp_ajax_nopriv_toplogin', 'top_login_ajax' );
-function top_login_ajax() {
-	
-	// First validate the nonce
-	check_ajax_referer( 'ajax-login-nonce' , 'top-login' );
-	
-	// Next, get user credentials from the login form
-	$creds = array();
-	$creds['user_login'] 	= $_POST['username'];
-	$creds['user_password'] = $_POST['password'];
-	$creds['remember']		= isset( $_POST['rememberme'] ) ? $_POST['remember'] : false;
-	$redirect_url 			= $_REQUEST['redirect'];
-	
-	// Before proceeding, trim and replace any spaces in usernames with hyphens for BuddyPress
-	$creds['user_login'] 	= str_replace( ' ' , "-" , trim( $creds['user_login'] ) );
-	
-	// Process the signon!
-	$login = wp_signon( $creds , false );
-	
-	// Check results
-	$result = array();
-	if ( !is_wp_error($login) ) {
-		$result['success'] 	= 1;
-		$result['redirect'] = $redirect_url;
-	} else {
-		$result['success'] = 0;
-		if ( $login->errors )	
-			$result['error'] = $login->get_error_message();
-		else 
-			$result['error'] = "<strong>ERROR</strong>: Please enter a valid username and password to login.";
-	}
-	
-	// Send the JSON
-	echo json_encode( $result );
-	die();	
-}
 
 /** 
  * Filter the lostpassword URL and send it to my own password recovery page

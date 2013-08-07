@@ -161,8 +161,14 @@ class Apocrypha {
 	 */	 
 	function admin() {
 
-		if ( is_admin() )
+		// Backend administrative functions
+		if ( is_admin() && ( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) )
 			require_once( trailingslashit( APOC_ADMIN ) . 'admin.php' );
+		
+		// AJAX functions and hooks
+		elseif ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+			require_once( trailingslashit( APOC_ADMIN ) . 'ajax.php' );
+
 	}
 }
 ?>

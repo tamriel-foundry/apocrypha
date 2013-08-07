@@ -16,7 +16,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 	<ul id="top-menu">
 		<li id="home" class="top nodrop"><a href="<?php echo SITEURL; ?>">Home</a></li>
 	
-		<li id="gameinfo" class="top drop"><a href="#">Game <span style="font-size: 1.125em">I</span>nfo<span class="drop-icon"></span></a>
+		<li id="gameinfo" class="top drop"><a href="#">Game Info<span class="drop-icon"></span></a>
 			<div class="dropdown col4">
 				<div class="sub col">
 					<h3>Factions</h3>

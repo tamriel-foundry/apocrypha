@@ -70,11 +70,23 @@ function home_header_class() {
 }
 
 /**
- * Titles a post within the loop
+ * Generates a class for a single post
  * @since 1.0
  */
-function entry_header_title() {
-	$title = '<a href="' . get_permalink() . '" title="Read Post, ' . get_the_title() . '">' . get_the_title() . '</a>';
+function post_header_class() {
+	$header = rand( 1 , 6 );
+	echo 'post-header-' . $header;
+}
+
+/**
+ * Display the post title, either as a link or plain text
+ * @since 1.0
+ */
+function entry_header_title( $link = true ) {
+
+	$title = get_the_title();
+	if ( true == $link )
+		$title = '<a href="' . get_permalink() . '" title="Read Post, ' . get_the_title() . '">' . get_the_title() . '</a>';
 	echo $title;
 	}
  
@@ -138,6 +150,37 @@ function custom_excerpt_length( $length ) {
 		return 45;
 	else
 		return $length;
+}
+
+
+/**
+ * Generate post report buttons
+ * @since 1.0
+ */
+function apoc_report_post_button( $type ) {
+	
+	// Only let members report stuff
+	if ( !is_user_logged_in() ) return false;
+	
+	// Otherwise get the data
+	switch( $type ) {
+		case 'reply' :
+			$post_id		= bbp_get_reply_id();
+			$reported_user	= bbp_get_reply_author();
+			$post_number 	= bbp_get_reply_position();
+			break;
+		
+		case 'comment' :
+			global $comment, $comment_count;
+			$post_id		= $comment->comment_ID;
+			$reported_user	= $comment->comment_author;
+			$post_number 	= $comment_count['count'];
+			break;
+	}
+	
+	$button = '<a class="report-post" title="Report This Post" data-id="' . $post_id . '" data-number="' . $post_number . '" data-user="' . $reported_user . '" data-type="' . $type . '"></a>';
+	
+	echo $button;
 }
 
 ?>

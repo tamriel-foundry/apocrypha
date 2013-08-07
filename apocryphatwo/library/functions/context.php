@@ -244,18 +244,18 @@ function display_entry_class( $class = '', $post_id = null ) {
  * @since 1.0
  */
 function display_comment_class( $class = '' ) {
-	global $comment, $apocrypha;
+	global $comment;
+	$classes = array();
+	
+	// Add 'reply' to use same CSS as forums
+	$classes[] = 'reply';
 
-	// Gets default WP comment classes
-	$classes = get_comment_class( $class );
-
+	// Bring in default WP comment classes
+	$classes = array_merge( $classes , get_comment_class( $class ) );
+	
 	// Get the comment type
 	$comment_type = get_comment_type();
 
-	// If the comment type is 'pingback' or 'trackback', add the 'ping' comment class
-	if ( 'pingback' == $comment_type || 'trackback' == $comment_type )
-		$classes[] = 'ping';
-	
 	// Guest comments
 	if ( $comment->user_id == 0 ) 
 		$classes[] = 'guest';

@@ -15,7 +15,6 @@
 		'container' => 		'nav',
 		'separator' => 		'&raquo;',
 		'before' => 		'Viewing:',
-		'after' => 			false,
 		'show_home' => 		'Home',
 		'echo' => 			true,
 	);	
@@ -31,20 +30,14 @@
 		$breadcrumb = '<'.$args['container']. ' class="breadcrumb-trail breadcrumbs">';
 		$breadcrumb .= ( !empty( $args['before'] ) ? '<span class="trail-before">' . $args['before'] . '</span> ' : '' );
 		
-		// Adds the 'trail-begin' class around first item if there's more than one item 
-		if ( 1 < count( $trail ) ) array_unshift( $trail, '<span class="trail-begin">' . array_shift( $trail ) . '</span>' );
-		
 		// Adds the 'trail-end' class around last item 
 		array_push( $trail, '<span class="trail-end">' . array_pop( $trail ) . '</span>' );
 		
 		// Format the separator 
-		$separator = ( !empty( $args['separator'] ) ? '<span class="sep">' . $args['separator'] . '</span>' : '<span class="sep"></span>' );
+		$separator = ( !empty( $args['separator'] ) ? $args['separator'] : '' );
 
 		// Join the individual trail items into a single string 
 		$breadcrumb .= join( " {$separator} ", $trail );
-
-		// If $after was set, wrap it in a container 
-		$breadcrumb .= ( !empty( $args['after'] ) ? ' <span class="trail-after">' . $args['after'] . '</span>' : '' );
 
 		// Close the breadcrumb trail containers 
 		$breadcrumb .= '</' . tag_escape( $args['container'] ) . '>';

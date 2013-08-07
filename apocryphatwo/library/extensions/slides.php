@@ -128,15 +128,6 @@ function register_slideshow_taxonomy() {
 $slide_dimensions = slideshow_slide_dimensions();
 add_image_size( 'featured-slide' , $slide_dimensions['width'] , $slide_dimensions['height'] , true );
 
-
-/**
- * Load admin functions only in the backend
- * @since 0.1
- */
-if ( is_admin() ) {
-	require_once( trailingslashit( APOC_ADMIN ) . 'slides-admin.php' );
-}
-
 /**
  * Function to load the slideshow in a theme template
  * @since 0.1

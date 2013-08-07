@@ -27,7 +27,7 @@ class Apocrypha {
 		add_action( 'after_setup_theme' , array( &$this, 'extensions' )	, 40 );
 		
 		// Load admin functions and files
-		//add_action( 'wp_loaded' 		, array( &$this, 'admin' ) 		, 10 );
+		add_action( 'wp_loaded' 		, array( &$this, 'admin' ) 		, 10 );
 	}
 	
 	

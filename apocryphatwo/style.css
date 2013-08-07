@@ -1,7 +1,7 @@
 /* 
-	-----------------------------
-	Apocrypha Theme Stylesheet
-	-----------------------------
+-----------------------------
+Apocrypha Theme Stylesheet
+-----------------------------
 Theme Name: 	Apocrypha Two
 Theme URI: 		http://tamrielfoundry.com
 Description: 	Custom Tamriel Foundry parent WordPress theme.
@@ -32,6 +32,8 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	4.1 - Admin Bar
 5.0 - Posts and Pages	
 	5.1 - Headers
+	5.2 - Content
+	5.3 - Comments
 6.0 - Home Page
 	6.1 - Posts Loop
 	6.2 - Widgets
@@ -60,16 +62,10 @@ b,u,i,center,
 dl,dt,dd,ol,ul,li,
 fieldset,form,label,legend,
 table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent;}
-body{background:#fff;line-height:1;}
-ol,ul{list-style:none;}
-blockquote,q{quotes:none;}
-blockquote:before,blockquote:after,
-q:before,q:after{content:'';content:none;}
 :focus{outline:0;}
 ins{text-decoration:none;}
 del{text-decoration:line-through;}
 table{border-collapse:collapse;border-spacing:0;}
-a img{border:none;}
 
 /*--------------------------------------------------------------
 2.0 - PRIMARY STRUCTURE
@@ -164,15 +160,15 @@ div#primary-sidebar {
 	box-shadow: 0 0 5px #000;
 	}
 div#footer {
-	width: 700px;
+	width: 750px;
 	overflow: hidden;
 	clear: both;
 	margin: 1em auto;
+	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.75em;
 	color: #BBB;
 	text-align: center;
 	}
-div#footer > p { margin: 0 }
 	
 	
 /*--------------------------------------------------------------
@@ -184,8 +180,6 @@ div#footer > p { margin: 0 }
 ----------------------------------------------*/
 p { 
 	margin: 0 0 1em 0;
-	font-family: 'Open Sans', sans-serif;
-	font-size: 0.875em;
 	}
 
 /* Links */
@@ -203,9 +197,14 @@ a:hover { color: #ffb14c; }
 
 /* Lists */
 ul {
-	list-style: circle;
+	list-style: square;
 	margin: 0 0 1em 0;
 	padding: 0 0 0 3em;
+	}
+ul ul {
+	list-style: circle;
+	margin: 0;
+	padding: 0 0 0 1.5em;
 	}
 ol {
 	list-style: upper-roman;
@@ -213,7 +212,8 @@ ol {
 	padding: 0 0 0 3em;
 	}
 ol ol {
-	list-style: lower-roman;
+	list-style: decimal;
+	margin: 0;
 	padding: 0 0 0 1.5em;
 	}
 	
@@ -224,9 +224,11 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 1em;
 	}
 h1 { 
-	font-size: 1.5em; 
-	margin-bottom: 0.75em; 
 	font-family: Cinzel , Book Antiqua , Serif;
+	font-size: 1.75em; 
+	font-weight: bold;
+	text-shadow: 2px 2px #000;
+	margin-bottom: 0.6em; 	
 	}
 h2 { 
 	font-size: 1.25em; 
@@ -234,8 +236,8 @@ h2 {
 	font-weight: bold; 
 	}
 h3 { 
-	font-size: 1.125em; 
-	margin-bottom: 0.88em;
+	font-size: 1.25em; 
+	margin-bottom: 0.75em;
 	font-family: Cinzel , Book Antiqua , Serif;
 	}
 h4 { 
@@ -279,6 +281,43 @@ sub{
 	vertical-align: baseline;
 	top: 0.5em;
 	}
+	
+/* Quotes */
+blockquote {
+	position: relative;
+	float: left;
+	margin: 0 1em 1em;
+	padding: 0 2em;
+	quotes:"\201C""\201D""\2018""\2019";
+	font-family: 'Palatino Linotype' , 'Book Antiqua' , serif;
+	font-size: 1.25em;
+	color: #bbb;
+	background: rgba(17,17,17,0.25);
+	border: 1px solid #111;
+	border-radius: 3px;
+	box-shadow: 0 0 2px #444 inset;
+	}
+blockquote:before,
+blockquote:after {
+	position: absolute;
+	top: 20px;
+	left: 0;
+	color: #aaa;
+	content: open-quote;
+	font-size: 2em;
+	line-height: 0;
+	margin: 0 0.25em;
+	vertical-align: -0.25em;
+	}
+blockquote:after {
+	content: close-quote;
+	left: auto;
+	right: 0;
+	}
+blockquote > p { margin: 0.5em 0; }
+blockquote + * { clear: left; }
+
+
 	
 /* Double Borders */
 .double-border {	position: relative; }
@@ -427,6 +466,14 @@ a.button {
 	color: #111;
 	cursor: pointer;
 	}
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+a.button:hover {
+	color: #000;
+	border: 1px solid #000;
+	box-shadow: 0 0 5px #c60;
+	}
 a.button-dark,
 button.button-dark {
 	background: rgba(34,34,34,0.9);
@@ -438,14 +485,9 @@ button.button-dark {
 	box-shadow: 0 0 2px #999 inset;
 	color: #CCC;
 	}
-button:hover,
-input[type="submit"]:hover,
-input[type="button"]:hover,
-a.button:hover {
-	color: #000;
-	border: 1px solid #000;
-	box-shadow: 0 0 5px #c60;
-	}
+a.button-dark:hover,
+button.button-dark:hover { color: #EEE; }
+
 	
 /*---------------------------------------------
 	3.5 - Media
@@ -462,17 +504,24 @@ img { max-width: 100%;}
 	box-shadow: 0 0 8px #000;
 	background: rgba( 17,17,17,0.5 );
 	}
-
-
-img.avatar {
-	float: left;
-	margin: 2px;
-	padding: 2px;
-	border: 1px solid #000;
-	border-radius: 5px;
-	box-shadow: 0 0 2px #666 inset;
+img.alignright, .wp-caption.alignright {
+	float:right;
+	clear: right;
+	margin: 0 0 1em 2em;
 	}
-
+img.alignleft, .wp-caption.alignleft {
+	float:left;
+	clear: left;
+	margin: 0 2em 1em 0;
+	}
+img.aligncenter, .wp-caption.aligncenter {
+	display: block; 
+	margin: 0 auto 1em;
+	}
+img.thumbnail {
+	float: right;
+	margin: 0 0 1em 1em;
+	}
 	
 /* Image Links */
 a img {
@@ -487,6 +536,48 @@ a img:hover  {
 	background: rgba( 34,34,34,0.5 );
 	box-shadow: 0 0 5px #c60;
 	border-color: #000;
+	}
+	
+/* Captions */
+.wp-caption img {
+	display: block;
+	margin: 0 auto;
+	}
+.wp-caption .wp-caption-text {
+	width: 98%;
+	margin: 0 auto;
+	padding: 3px 0;
+	text-align: center;
+	font-style: italic;
+	color: #AAA;
+	font-size: 0.875em;
+	background: rgba(17,17,17,0.25);
+	border: 1px solid #111;
+	border-top-color: #000;
+	border-radius: 0 0 3px 3px;
+	box-shadow: 0 0 2px #555 inset;
+	}
+	
+/* Avatars */	
+img.avatar {
+	float: left;
+	margin: 2px;
+	padding: 2px;
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #666 inset;
+	}
+	
+/* Smileys */
+img.wp-smiley {
+	max-width: 15px;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	border: none !important;
+	position: relative;
+	top: 2px;
+	box-shadow: none !important;
 	}
 	
 /*---------------------------------------------
@@ -564,10 +655,11 @@ li.top > a {
 	margin: 0 0 0 1px;
 	border-right: 1px solid #000;
 	font-family: Cinzel , Book Antiqua , Serif;
-	font-size: 1.125em;
+	font-size: 1.25em;
 	color: #CCC;
 	text-align: center;
 	text-shadow: 1px 1px 3px #000;
+	letter-spacing: -1px;
 	}
 ul#top-menu li#menu-forums { border-right: none; }
 li#menu-forums > a { border-right: none; }
@@ -859,17 +951,21 @@ div#search-dropdown input.search-text {
 nav.breadcrumbs {
 	float: left;
 	margin: 0 0 0.5em 0;
-	padding: 2px 1em;
-	background-image: url(images/backgrounds/dark-denim.jpg);
+	padding: 1px 1em;
+	background: rgba( 17,17,17,0.9 );
 	border: 1px solid #000;
-	border-radius: 5px;
-	box-shadow: 0 0 2px #555 inset;
+	border-radius: 3px;
+	box-shadow: 0 0 2px #666 inset;
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 0.75em;
 	font-style: italic;
 	letter-spacing: -1px;
 	color: #AAA:
 	}
-nav.breadcrumbs * {
-	margin: 0 1px;
+nav.breadcrumbs > * { margin: 0 2px; }
+nav.breadcrumbs > span.trail-before { 
+	margin: 0;
+	font-style: normal; 
 	}
 
 /*---------------------------------------------
@@ -967,11 +1063,6 @@ div.page {
 	position: relative;
 	margin: 0;
 	}
-div.entry-content {
-	width: 100%;
-	float: left;
-	padding: 0 0 40px 0;
-	}
 	
 /*---------------------------------------------
 	5.1 - Headers
@@ -982,41 +1073,51 @@ header.entry-header {
 	position: relative;
 	overflow: hidden;
 	clear: both;
-	background-image: url(images/headers/page-headers.jpg);
+	background-image: url(images/headers/headers.jpg);
 	border: 1px solid #000;
 	border-radius: 3px;
-	box-shadow: 0 0 5px #111;
+	box-shadow: 0 0 20px #000;
 	}
+.post-header-1 { background-position: -440px 0; }
+.post-header-2 { background-position: -440px -100px; }
+.post-header-3 { background-position: -440px -200px; }
+.post-header-4 { background-position: -440px -300px; }
+.post-header-5 { background-position: -440px -400px; }
+.post-header-6 { background-position: -440px -500px; }
+
 .home-page .entry-header,
 .archive .entry-header {
 	height: 75px;
 	margin: 0 0 0.5em 0;
-	background-image: url(images/headers/home-headers.jpg);
+	box-shadow: 0 0 8px #111;
 	}
-.home-header-1 { background-position: 50% 0; }
-.home-header-2 { background-position: 50% -75px; }
-.home-header-3 { background-position: 50% -150px; }
-.home-header-4 { background-position: 50% -225px; }
-.home-header-5 { background-position: 50% -300px; }
-.home-header-6 { background-position: 50% -375px; }
+.home-page .entry-header:hover {
+	box-shadow: 0 0 5px #c60;
+	}
+.home-header-1 { background-position: 0 0; }
+.home-header-2 { background-position: 0 -75px; }
+.home-header-3 { background-position: 0 -150px; }
+.home-header-4 { background-position: 0 -225px; }
+.home-header-5 { background-position: 0 -300px; }
+.home-header-6 { background-position: 0 -375px; }
 	
 /* Entry Title */
 .entry-title {
 	height: 65px;
 	line-height: 65px;
-	padding: 0 0.5em;
+	padding: 0 0.75em;
 	margin: 0;
 	}
 .home-page .entry-title {
 	height: 50px;
 	line-height: 50px;
+	padding: 0;
 	font-size: 1.125em;
 	}
-.entry-title a {
+.entry-title > a {
+	display: block;
+	padding: 0 0.5em;
 	color: #ccc;
-	}
-.entry-title a:hover {
-	color: #c5772b;
 	}
 	
 /* Entry Byline */
@@ -1041,6 +1142,108 @@ a.post-edit-link {
 	position: absolute;
 	top: 10px;
 	right: 10px;
+	}
+	
+/*---------------------------------------------
+	5.2 - Content
+---------------------------------------------*/
+div.entry-content {
+	width: 98%;
+	float: left;
+	padding: 0 1% 40px;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 0.8em;
+	line-height: 2em;
+	}
+.singular .entry-content > p:first-child { text-indent: 2em; }
+
+
+/*---------------------------------------------
+	5.3 - Comments
+---------------------------------------------*/
+div#comments {
+	width: 100%;
+	float: left;
+	}
+header.comments-header,
+header.reply-header {
+	width: 98%;
+	height: 24px;
+	margin: 1em 0 0;
+	padding: 0.5em 1%;
+	background-image: url(images/backgrounds/dark-denim.jpg);
+	border: 1px solid #000;
+	border-radius: 5px 5px 0 0;
+	box-shadow: 0 0 3px #666 inset;
+	}
+header.comments-header > h2 { margin: 0; }
+ol#comment-list {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	}
+li.reply {
+	width: 100%;
+	float: left;
+	margin: 0 0 0.5em 0;
+	}
+	
+/* Comment Header */
+header.reply-header {
+	margin: 0;
+	background: rgba(51,51,51,0.3);
+	border-top: none;
+	border-radius: 0 0 5px 5px;
+	color: #BBB;
+	}
+li + li.reply header.reply-header {
+	border-top: 1px solid #000;
+	border-radius: 5px;
+	}
+time.reply-time {
+	float: left;
+	font-family: 'Open Sans';
+	font-size: 0.75em;
+	text-shadow: 1px 1px #000;
+	}
+	
+/* Admin Links */
+div.reply-admin-links {
+	float: right;
+	}
+div.reply-admin-links a {
+	margin: 0 0 0 5px;
+	padding: 5px 10px;
+	position: relative;
+	top: -1px;
+	}
+a.reply-permalink {
+	color: #BBB;
+	padding: 0;
+	top: -1px;
+	}
+a.reply-permalink:hover { color: #FC6; }
+a.report-post {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin: 0 0 0 8px;
+	padding: 0;
+	background-image: url("images/icons/report-post.png");
+	cursor: pointer;
+	}
+a.report-post:hover { background-position: 24px 0; }
+
+/* Reply Body */
+div.reply-body {
+	width: 100%;
+	float: left;
+	margin: 0.5em 0 0;
+	}
+div.reply-author {
+	width: 140px;
+	float: left;
+	text-align: center;
 	}
 	
 /*--------------------------------------------------------------
@@ -1076,7 +1279,6 @@ h1#home-posts-title {
 	margin: -19px auto 0;
 	font-size: 1.25em;
 	color: #CCC;
-	font-weight: lighter;
 	text-align: center;
 	background: rgb(34,34,34); 
 	background: -ms-linear-gradient(top, rgb(51,51,51), rgb(17,17,17));
@@ -1086,6 +1288,7 @@ h1#home-posts-title {
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 2px #999 inset;
+	letter-spacing: -1px;
 	}
 	
 /* Posts Inside Loop */
@@ -1097,13 +1300,15 @@ h1#home-posts-title {
 	border-bottom: 1px solid #444;
 	}
 .home-page div.post.even { float: right; }
+.home-page div.entry-content { font-size: 0.75em; }
 div.entry-content a img.thumbnail {
 	float: right;
 	margin: 5px 0 1em 0.5em;
 	}
 div.entry-excerpt {
+	max-height: 170px;
+	overflow: hidden;
 	margin-right: 165px;
-	font-size: 0.875em;
 	color: #BBB;
 	}
 footer.entry-footer {
@@ -1111,8 +1316,8 @@ footer.entry-footer {
 	width: 100%;
 	position: absolute;
 	bottom: 0;
-	border-bottom: 1px solid #000;
 	}
+.home-page footer.entry-footer { 	border-bottom: 1px solid #000; }
 div.entry-meta {
 	float: left;
 	margin: -1px 0 0;
@@ -1121,6 +1326,7 @@ div.entry-meta {
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 2px #444 inset;
+	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.75em;
 	}
 div.entry-meta > a { font-style: italic; }
@@ -1189,6 +1395,7 @@ li.recent-discussion div.recent-discussion-content{
 	}
 li.recent-discussion.even div.recent-discussion-content { 
 	background-image: url(images/backgrounds/light-denim.jpg); 
+	margin-right: 0.5em;
 	}
 li.recent-discussion span.recent-discussion-title {
 	display: block;
@@ -1213,15 +1420,17 @@ li.recent-discussion:hover a.discussion-avatar img{
 	
 /* Welcome Text */
 div.welcome-text {
-	width: 85%;
-	margin: -0.5em 0 1em 5%;
+	width: 80%;
+	margin: -0.5em 2.5% 0.5em 7.5%;
 	padding: 0.5em 5%;
 	background: rgba(17,17,17,0.75);
 	border: 1px solid #000;
-	border-radius: 5px;
+	border-radius: 3px;
 	box-shadow: 0 0 2px #666 inset;
+	color: #bbb;
 	font-size: 0.875em;
 	font-style: italic;
+	text-align: center;
 	}
 	
 /* Social Media Links */
@@ -1266,6 +1475,7 @@ p.whos-online-total {
 	margin: 0;
 	padding: 0 0 0.5em;
 	clear: both;
+	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.75em;
 	}
 li.whos-online-member {
@@ -1304,6 +1514,7 @@ h4#featured-guild-name {
 div#featured-guild-meta > p {
 	margin: 0;
 	padding: 0 0 3px 0;
+	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.75em;
 	line-height: 1.5em;
 	}
@@ -1314,9 +1525,7 @@ div#featured-guild-meta > p#featured-guild-type {
 	}
 	
 /* Foundry Stats Counter */
-div#stat-counter {
-	height: 350px;
-	}
+div#stat-counter { height: 350px; }
 p.stat-counter-total {
 	padding: 5px 10px;
 	margin: 0;
@@ -1325,7 +1534,7 @@ p.stat-counter-total {
 	border-radius: 5px;
 	box-shadow: 0 0 2px #666 inset;
 	text-align: center;
-	font-weight: bold;
+	text-transform: uppercase;
 	}
 div#stat-counter div.banner-top {
 	width: 100px;
@@ -1467,6 +1676,7 @@ li.flex-active span.slideshow-tab-title {
 	max-height: 1px;
 	overflow: hidden;
 	margin: 0;
+	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.75em;
 	border-top: 1px solid #444;
 	transition: max-height 1s ease;

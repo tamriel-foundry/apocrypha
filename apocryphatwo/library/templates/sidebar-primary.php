@@ -8,7 +8,7 @@
 ?>
 
 <div id="primary-sidebar" class="sidebar">
-	<div class="welcome-text">Welcome to Tamriel Foundry, your home for theorycrafting, strategies, guides, and discussion for Elder Scrolls Online.</div>
+	<div class="welcome-text">Welcome to Tamriel Foundry - Your home for theorycrafting, strategies, discussion, and guides for The Elder Scrolls Online.</div>
 	<div class="social-media-widget widget">
 		<header class="widget-header"><h3 class="widget-title">Get Connected</h3></header>
 		<div class="social-icons">

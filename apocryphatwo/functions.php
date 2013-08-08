@@ -106,15 +106,6 @@ function apoc_enqueue_styles() {
 	wp_enqueue_style( 'primary' );
 }
 
-/**
- * Set a tinymce editor stylesheet version number to defeat caching
- * @since 1.0
- */
-function tinymce_editor_style_version() {
-	$version = "?ver=1.0.0";
-	echo $version;
-}
-
 /*---------------------------------------------
 	2.2 - JavaScript
 ----------------------------------------------*/
@@ -150,6 +141,41 @@ function google_analytics_js() {
 	
 	echo '<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-33555290-2"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})();</script>' . "\n";
 }
+
+
+
+
+/*---------------------------------------------
+	TinyMCE
+----------------------------------------------*/
+
+/**
+ * Set some TinyMCE options
+ * @since 1.0
+ */
+add_filter( 'tiny_mce_before_init' , 'apoc_mce_options' );
+function apoc_mce_options( $init ) {
+    
+	// Get the proper URL format
+	$stylesheet = substr( APOC_CSS , strpos( APOC_CSS , '/' , 7 ) );
+	
+	// TinyMce initialization options
+	$init['wordpress_adv_hidden'] 	= false;
+	$init['content_css']			= $stylesheet . '/editor-content.css';
+    return $init;
+
+}
+
+
+/**
+ * Set a tinymce editor stylesheet version number to defeat caching
+ * @since 1.0
+ */
+function tinymce_editor_style_version() {
+	$version = "?ver=1.0.0";
+	return $version;
+}
+
 
 
 

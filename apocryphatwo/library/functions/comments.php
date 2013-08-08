@@ -96,7 +96,7 @@ function apoc_comments_end_callback() {
 function apoc_comment_admin_links() {
 	global $comment;
 	$links = apoc_comment_quote_button();
-	$links .= '<a class="comment-reply-link button button-dark" href="#respond" title="Quick Reply">Reply</a>';
+	$links .= '<a class="reply-link button button-dark" href="#respond" title="Quick Reply">Reply</a>';
 	$links 	.= apoc_comment_edit_button();
 	$links	.= apoc_comment_delete_button();
 	echo $links;
@@ -167,6 +167,53 @@ function apoc_comment_delete_button() {
 	FRONTEND COMMENT EDITING
 ----------------------------------------------*/
 
+/**
+ * Frontend Article Comment Editing Class
+ * @since 1.0
+ */
+class Frontend_Comment_Edit {
+
+	// Construct the class
+	function __construct() {
+		add_action( 'init', array( &$this, 'generate_rewrite_rules' ) ); 
+		add_action( 'init', array( &$this, 'add_rewrite_tags' ) ); 
+		add_action( 'template_redirect', array( &$this , 'comment_edit_template' ) );
+	}
+
+	// Define the rule for parsing new query variables
+	function add_rewrite_tags() {
+		add_rewrite_tag( '%comment%' , '([0-9]{1,})' ); // Comment Number
+	}
+	
+	// Define the rule for identifying comment edits
+	function generate_rewrite_rules() {
+	
+		$rule	= '[0-9]{4}/[0-9]{2}/([^/]+)/comment-([0-9]{1,})/edit/?$';
+		$query	= 'index.php?name=$matches[1]&comment=$matches[2]&edit=1';
+		add_rewrite_rule( $rule , $query , 'top' );
+	}
+	
+	// Redirect the template to use comment edit
+	function comment_edit_template() {
+		
+		global $wp_query;
+		
+		if ( $wp_query->query_vars['comment'] && $wp_query->query_vars['edit'] == 1 ) {
+		
+			// Get the comment
+			$comment_id = $wp_query->query_vars['comment'];
+			global $comment;
+			$comment = get_comment( $comment_id  );
+			
+			if ( user_can_edit_comment() ) 
+				include ( APOC_DIR . '/templates/comment-edit.php' );
+			else
+				include ( THEME_DIR . '/404.php' );
+			exit();
+		}
+	}
+}
+$edit = new Frontend_Comment_Edit();
 
 /**
  * Determines if the current user can edit a comment;
@@ -184,7 +231,6 @@ function user_can_edit_comment() {
 		return true;
 }
 
-
 /**
  * Context function for detecting whether we are editing an article comment
  * @since 1.0
@@ -196,7 +242,17 @@ function is_comment_edit() {
 	else return false;
 }
 
-
-
-
+/**
+ * Header description for the comment edit page
+ * @since 1.0
+ */
+function comment_edit_header_description() {
+	global $comment;
+	$author_id = $comment->user_id;
+	
+	$description = 'By ' . bp_core_get_userlink( $author_id );
+	$description .= ' on <time datetime="' . date( 'Y-m-d\TH:i' , strtotime( $comment->comment_date ) ) . '">' . date( 'l, F j' , strtotime( $comment->comment_date ) ) . '</time>';
+	
+	echo $description;	
+}
 ?>

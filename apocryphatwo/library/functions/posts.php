@@ -114,7 +114,8 @@ function entry_header_description() {
 		if ( is_home() ) :
 			$description = 'By ' . $author . ' on ' . $published . $edit_link;
 		else : 
-			$description = 'By ' . $author . ' on ' . $published . $edit_link;
+			$category = get_the_term_list( $post_ID, 'category', ' in ' , ', ', '' );
+			$description = 'By ' . $author . ' on ' . $published . $category . $edit_link;
 		endif;
 			
 	// Pages 

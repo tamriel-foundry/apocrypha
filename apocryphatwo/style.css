@@ -30,10 +30,14 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	3.6 - Feedback Elements
 4.0 - Navigation
 	4.1 - Admin Bar
+	4.2 - Breadcrumbs
+	4.3 - Pagination
+	4.4 - Footer Navigation
 5.0 - Posts and Pages	
 	5.1 - Headers
 	5.2 - Content
 	5.3 - Comments
+	5.4 - Respond
 6.0 - Home Page
 	6.1 - Posts Loop
 	6.2 - Widgets
@@ -198,22 +202,26 @@ a {
 a:hover { color: #ffb14c; }
 
 /* Lists */
-ul {
+ul,
+.reply-content ul {
 	list-style: square;
 	margin: 0 0 1em 0;
 	padding: 0 0 0 3em;
 	}
-ul ul {
+ul ul,
+.reply-content ul ul {
 	list-style: circle;
 	margin: 0;
 	padding: 0 0 0 1.5em;
 	}
-ol {
+ol,
+.reply-content ol {
 	list-style: upper-roman;
 	margin: 0 0 1em 0;
 	padding: 0 0 0 3em;
 	}
-ol ol {
+ol ol,
+.reply-content ol ol {
 	list-style: decimal;
 	margin: 0;
 	padding: 0 0 0 1.5em;
@@ -364,6 +372,7 @@ form ol li {
 	margin: 0.5em 0; 
 	float: left;
 	}
+form p { margin: 0.5em 0; }
 form li.honeypot {
 	position: absolute;
 	left: -999em;
@@ -489,6 +498,13 @@ button.button-dark {
 	}
 a.button-dark:hover,
 button.button-dark:hover { color: #EEE; }
+
+input[type="submit"],
+button.submit { 
+	float: right;
+	font-size: 14px;
+	padding: 0.5em 1em;
+	}
 
 	
 /*---------------------------------------------
@@ -1152,12 +1168,16 @@ a.post-edit-link {
 div.entry-content {
 	width: 98%;
 	float: left;
-	padding: 0 1% 40px;
+	padding: 0 1%;
 	font-family: 'Open Sans', sans-serif;
 	font-size: 0.8em;
 	line-height: 2em;
 	}
+.home-page .entry-content,
+.archive. .entry-content { padding-bottom: 40px; }
+
 .singular .entry-content > p:first-child { text-indent: 2em; }
+
 
 
 /*---------------------------------------------
@@ -1168,7 +1188,7 @@ div#comments {
 	float: left;
 	margin: 0 0 1em 0;
 	}
-header.comments-header,
+header.discussion-header,
 header.reply-header {
 	width: 98%;
 	height: 24px;
@@ -1178,7 +1198,7 @@ header.reply-header {
 	border-radius: 5px 5px 0 0;
 	box-shadow: 0 0 3px #666 inset;
 	}
-header.comments-header > h2 { margin: 0; }
+header.discussion-header > h2 { margin: 0; }
 ol#comment-list {
 	margin: 0;
 	padding: 0;
@@ -1309,7 +1329,7 @@ div.user-signature div.signature-content {
 	max-height: 150px;
 	overflow: hidden;
 	padding: 0.5em 0 0;
-	border-top: 1px solid #444;
+	border-top: 1px solid #333;
 	font-size: 0.75em;
 	color: #AAA;
 	}
@@ -1322,6 +1342,38 @@ div.signature-content img {
 	border: none;
 	box-shadow: none;
 	}
+
+/*---------------------------------------------
+	5.4 - Respond
+---------------------------------------------*/	
+div#respond {
+	width: 100%;
+	float: left;
+	margin: 0 0 1em;
+	}
+h2#respond-title {
+	float: left;
+	margin: 0;
+	}
+header.discussion-header > a.backtotop { 
+	float: right; 
+	margin: 0;
+	}
+header#respond-subheader {
+	width: 98%;
+	margin: 0 0 0.5em 0;
+	padding: 0.5em 1%;
+	float: left;
+	background: rgba(51,51,51,0.3);
+	border: 1px solid #000;
+	border-top: none;
+	border-radius: 0 0 5px 5px;
+	box-shadow: 0 0 3px #666 inset;
+	color: #BBB;
+	}
+
+
+
 	
 /*--------------------------------------------------------------
 6.0 - HOME PAGE
@@ -1465,7 +1517,7 @@ li.recent-discussion div.recent-discussion-content{
 	margin: 0 0 0 60px;
 	background-image: url(images/backgrounds/denim.jpg);
 	border: 1px solid #000;
-	border-radius: 5px;
+	border-radius: 3px;
 	box-shadow: 0 0 2px #666 inset;
 	font-size: 0.75em;
 	line-height: 1.5em;
@@ -1813,3 +1865,14 @@ span.activity-count {
 	border: 1px solid #000;
 	border-radius: 2px;
 	}
+	
+	
+/*---------------------------------------------
+X.X - TINYMCE
+----------------------------------------------*/
+div.wp-editor-wrap {
+	width: 98%;
+	float: left;
+	margin: 0 1% 1em;
+	}
+div.wp-editor-container{padding:0;width:100%;float:left;overflow:hidden;border:1px solid #666;border-radius:5px;box-shadow:0 0 8px #000}div.wp-editor-container td.mceIframeContainer iframe{min-height:150px;height:150px}div.wp-editor-container .quicktags-toolbar,table.mceLayout tr.mceFirst td.mceToolbar{padding:5px 0;border-bottom:3px solid #111;background:#333;background:-ms-linear-gradient(bottom,#333,#444);background:-moz-linear-gradient(bottom,#333,#444);background:-o-linear-gradient(bottom,#333,#444);background:-webkit-linear-gradient(bottom,#333,#444);background:linear-gradient(bottom,#333,#444);box-shadow:0 0 3px #000 inset}div.wp-editor-container .quicktags-toolbar{padding:5px 10px}table.mceLayout tr.mceLast td.mceStatusbar{background:#151515;border:0}table.mceLayout tr.mceLast td.mceStatusbar *{color:#AAA}.wp-editor-tools .wp-switch-editor{background:#222;border:1px solid #666;border-bottom:0;box-shadow:1px 1px 1px #000 inset}.tmce-active .wp-editor-tools .switch-tmce,.html-active .wp-editor-tools .switch-html{background:#555;border:1px solid #666;border-bottom:0;color:#AAA}.wp-editor-tools .wp-switch-editor:hover,.tmce-active .wp-editor-tools .switch-tmce:hover,.html-active .wp-editor-tools .switch-html:hover{background:#666}table.mceLayout td.mceToolbar span.mce_undo,table.mceLayout td.mceToolbar span.mce_redo,table.mceLayout td.mceToolbar span.mce_bullist,table.mceLayout td.mceToolbar span.mce_numlist,table.mceLayout td.mceToolbar span.mce_blockquote,table.mceLayout td.mceToolbar span.mce_charmap,table.mceLayout td.mceToolbar span.mce_bold,table.mceLayout td.mceToolbar span.mce_italic,table.mceLayout td.mceToolbar span.mce_underline,table.mceLayout td.mceToolbar span.mce_justifyleft,table.mceLayout td.mceToolbar span.mce_justifyright,table.mceLayout td.mceToolbar span.mce_justifycenter,table.mceLayout td.mceToolbar span.mce_justifyfull,table.mceLayout td.mceToolbar span.mce_indent,table.mceLayout td.mceToolbar span.mce_outdent,table.mceLayout td.mceToolbar span.mce_link,table.mceLayout td.mceToolbar span.mce_unlink,table.mceLayout td.mceToolbar span.mce_help,table.mceLayout td.mceToolbar span.mce_removeformat,table.mceLayout td.mceToolbar span.mce_fullscreen,table.mceLayout td.mceToolbar span.mce_wp_fullscreen,table.mceLayout td.mceToolbar span.mce_media,table.mceLayout td.mceToolbar span.mce_pastetext,table.mceLayout td.mceToolbar span.mce_pasteword,table.mceLayout td.mceToolbar span.mce_wp_help,table.mceLayout td.mceToolbar span.mce_wp_adv,table.mceLayout td.mceToolbar span.mce_wp_more,table.mceLayout td.mceToolbar span.mce_strikethrough,table.mceLayout td.mceToolbar span.mce_spellchecker,table.mceLayout td.mceToolbar span.mce_forecolor,table.mceLayout td.mceToolbar .mce_forecolorpicker,table.mceLayout td.mceToolbar .mceSplitButton .mce_spellchecker span.mce_spellchecker,table.mceLayout td.mceToolbar .mceSplitButton .mce_forecolor span.mce_forecolor,table.mceLayout td.mceToolbar .mceSplitButton span.mce_numlist,table.mceLayout td.mceToolbar .mceSplitButton span.mce_bullist{background-image:url(images/icons/mceicons.png)}table.mceLayout td.mceToolbar span.mce_strikethrough{background-position:-540px -18px}table.mceLayout td.mceToolbar a.mceButton,table.mceLayout td.mceToolbar a.mceText,table.mceLayout table.mceListBox .mceText,table.mceLayout td.mceToolbar a.mceOpen,table.mceLayout table.mceListBox .mceOpen,table.mceLayout td.mceToolbar a.mceAction{color:#CCC;background:#333;background:-ms-linear-gradient(bottom,#222,#444);background:-moz-linear-gradient(bottom,#222,#444);background:-o-linear-gradient(bottom,#222,#444);background:-webkit-gradient(linear,left bottom,left top,from(#222),to(#444));background:-webkit-linear-gradient(bottom,#222,#444);background:linear-gradient(bottom,#222,#444);border:1px solid #111;border-radius:3px;box-shadow:0 0 2px #666 inset}table.mceLayout td.mceToolbar a.mceButton:hover{background:#555;background:-ms-linear-gradient(bottom,#444,#666);background:-moz-linear-gradient(bottom,#444,#666);background:-o-linear-gradient(bottom,#444,#666);background:-webkit-gradient(linear,left bottom,left top,from(#444),to(#666));background:-webkit-linear-gradient(bottom,#444,#666);background:linear-gradient(bottom,#444,#666);box-shadow:0 0 2px #999 inset}table.mceLayout table.mceListBox,table.mceLayout table.mceSplitButton{background:none!important;border:none!important}table.mceLayout table.mceListBox a.mceOpen,table.mceLayout table.mceSplitButton a.mceOpen{background-image:url(images/icons/down-arrow.gif);background-position:2px 2px;background-repeat:no-repeat;border:1px solid #111;width:12px}table.mceLayout table.mceListBox:hover a.mceOpen,table.mceLayout table.mceSplitButton:hover a.mceOpen{background:#bbb;background-image:url(images/icons/down-arrow.gif);background-position:2px 2px;background-repeat:no-repeat;border:1px solid #111}table.mceLayout table.mceSplitButton:hover a.mceAction,table.mceLayout table.mceListBox:hover a.mceText{color:#111;background:#bbb;background:-ms-linear-gradient(bottom,#aaa,#ccc);background:-moz-linear-gradient(bottom,#aaa,#ccc);background:-o-linear-gradient(bottom,#aaa,#ccc);background:-webkit-gradient(linear,left bottom,left top,from(#aaa),to(#ccc));background:-webkit-linear-gradient(bottom,#aaa,#ccc);background:linear-gradient(bottom,#aaa,#ccc);border:1px solid #111;box-shadow:0 0 2px #000 inset}div.mceMenu tr.mceMenuItem td.mceMenuItemTitle a,div.mceMenu tr.mceMenuItem td.mceMenuItemTitle span.mceText{background:#333!important;color:#BBB}div.mceMenu tr.mceMenuItem td.mce_formatPreview span.mceText{color:#111!important;background:#bbb!important}div.mceMenu tr.mceMenuItem td.mce_formatPreview a:hover{background:#c60!important}table.mceLayout td.mceToolbar a.mceButton.mceButtonDisabled,table.mceLayout td.mceToolbar a.mceButton.mceButtonDisabled:hover{background:#333;background:-ms-linear-gradient(bottom,#222,#444);background:-moz-linear-gradient(bottom,#222,#444);background:-o-linear-gradient(bottom,#222,#444);background:-webkit-gradient(linear,left bottom,left top,from(#222),to(#444));background:-webkit-linear-gradient(bottom,#222,#444);background:linear-gradient(bottom,#222,#444);box-shadow:0 0 3px #111 inset;border:1px solid #666!important}table.mceLayout td.mceToolbar a.mceButton:active,table.mceLayout td.mceToolbar a.mceButtonEnabled:active,table.mceLayout td.mceToolbar a.mceButtonSelected:active,table.mceLayout td.mceToolbar a.mceButtonActive,table.mceLayout td.mceToolbar a.mceButtonActive:active,table.mceLayout td.mceToolbar a.mceButtonActive:hover{background:#BBB;background:-ms-linear-gradient(bottom,#CCC,#AAA);background:-moz-linear-gradient(bottom,#CCC,#AAA);background:-o-linear-gradient(bottom,#CCC,#AAA);background:-webkit-gradient(linear,left bottom,left top,from(#CCC),to(#AAA));background:-webkit-linear-gradient(bottom,#CCC,#AAA);background:linear-gradient(bottom,#CCC,#AAA);box-shadow:0 0 2px #222 inset}table.mceLayout td.mceToolbar table.mce_spellchecker,table.mceLayout td.mceToolbar a.mce_wp_more,table.mceLayout td.mceToolbar a.mce_wp_help{display:none}.ui-dialog{color:#222;padding-bottom:10px}form#wp-link p#internal-toggle{display:none}form#wp-link div.submitbox{overflow:visible}div.wp-editor-container,div.wp-editor-container textarea.wp-editor-area{background:#151515;color:#CCC}div.wp-editor-container div.quicktags-toolbar input{color:#CCC;border:1px solid #111;border-radius:3px;background:#333;background:-ms-linear-gradient(bottom,#222,#444);background:-moz-linear-gradient(bottom,#222,#444);background:-o-linear-gradient(bottom,#222,#444);background:-webkit-linear-gradient(bottom,#222,#444);background:linear-gradient(bottom,#222,#444);box-shadow:0 0 2px #666 inset}div.wp-editor-container div.quicktags-toolbar input:hover{border-color:#111;background:#666;box-shadow:0 0 2px #999 inset}

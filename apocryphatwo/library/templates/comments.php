@@ -13,7 +13,7 @@ if ( 'comments.php' == basename( $_SERVER['SCRIPT_FILENAME'] ) )
 // Grab the comments and loop them!
 if ( have_comments() ) : ?>
 <div id="comments">
-	<header class="comments-header">
+	<header class="discussion-header">
 		<h2><?php comments_number( sprintf( 'No responses to %1$s' , the_title( '&#8220;', '&#8221;', false ) ) ,sprintf( 'One response to %1$s' , the_title( '&#8220;', '&#8221;', false ) ), sprintf( '%1$s responses to %2$s' , '%' , the_title( '&#8220;', '&#8221;', false ) ) ); ?></h2>
 	</header>
 	
@@ -28,4 +28,4 @@ if ( have_comments() ) : ?>
 </div><!-- #comments -->
 <?php endif; ?>
 	
-<?php // apoc_comment_form(); ?>
+<?php apoc_comment_form(); ?>

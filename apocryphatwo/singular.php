@@ -23,13 +23,6 @@
 			<div class="entry-content">
 				<?php the_content(); ?>
 			</div>
-			
-			<footer class="entry-footer">
-				<div class="entry-meta">
-					<?php echo get_the_term_list( $post->ID, 'category', 'Posted In: ', ', ', '' ); ?> 
-				</div>
-				<?php apoc_comments_link(); ?>
-			</footer>
 
 		</div><!-- #post-<?php the_ID(); ?> -->
 		<?php endwhile; endif; ?>

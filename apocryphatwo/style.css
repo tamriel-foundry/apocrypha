@@ -499,13 +499,6 @@ button.button-dark {
 a.button-dark:hover,
 button.button-dark:hover { color: #EEE; }
 
-input[type="submit"],
-button.submit { 
-	float: right;
-	font-size: 14px;
-	padding: 0.5em 1em;
-	}
-
 	
 /*---------------------------------------------
 	3.5 - Media
@@ -603,7 +596,8 @@ img.wp-smiley {
 ----------------------------------------------*/
 div.warning,
 div.error,
-div.updated {
+div.updated,
+div.success {
 	width: 95%;
 	float: left;
 	margin: 0.5em 0;
@@ -615,8 +609,6 @@ div.updated {
 	font-size: 0.875em;
 	line-height: 1.5em;
 	color: #000;
-	}
-div.updated {
 	}
 div.error {
 	background: rgba(51,0,0,0.75);
@@ -1370,6 +1362,11 @@ header#respond-subheader {
 	border-radius: 0 0 5px 5px;
 	box-shadow: 0 0 3px #666 inset;
 	color: #BBB;
+	}
+#respond input[type="submit"] {
+	float: right;
+	font-size: 14px;
+	padding: 0.5em 1em;
 	}
 
 

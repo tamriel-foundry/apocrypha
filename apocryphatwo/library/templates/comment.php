@@ -8,29 +8,9 @@
 
 // Get some information
 global $comment, $apocrypha;
+$count = $apocrypha->comment_count
 
-// Maybe get comments per page from options
-if ( '' === $args['per_page'] )
-	$args['per_page'] = get_option('comments_per_page');
-
-// Maybe deduce the current page from the query
-if ( '' == $args['page'] )
-	$args['page'] = get_query_var('cpage');
-
-// Calculate an adjustor variable
-$adj = ( $args['page'] - 1 ) * $args['per_page'];
-
-// Compute the comment number
-if ( isset ( $apocrypha->comment_count ) )
-		$count = $apocrypha->comment_count + 1;
-else
-	$count = 1;
-	
-// Update the global
-$coubt = $count + $adj;
-$apocrypha->comment_count = $count;
-?>
-
+// Display the comment ?>
 <li id="comment-<?php echo $comment->comment_ID; ?>" class="<?php display_comment_class(); ?>">
 	<header class="reply-header">
 		<time class="reply-time" datetime="<?php echo date( 'Y-m-d\TH:i' , strtotime($comment->comment_date) ); ?>"><?php echo bp_core_time_since( $comment->comment_date_gmt , current_time( 'timestamp' , true ) )?></time>

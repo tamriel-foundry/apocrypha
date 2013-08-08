@@ -4,8 +4,18 @@
  * Andrew Clayton
  * Version 1.0
  * 8-3-2013
- */
 
+----------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1.0 - Comments Template
+2.0 - Comment Editing
+3.0 - Comment Submission AJAX
+--------------------------------------------------------------*/
+ 
+/*---------------------------------------------
+1.0 - COMMENTS TEMPLATE
+----------------------------------------------*/
 /**
  * Generate a number sensitive link to article comments
  * @since 1.0
@@ -22,7 +32,6 @@ function apoc_comments_link() {
 	$comments_link .= '</a>';
 	if( $comments_link ) echo $comments_link;
 }
-
 
 /**
  * Set up arguments for wp_list_comments() used in the comments template
@@ -75,6 +84,21 @@ function apoc_comments_template( $comment , $args , $depth ) {
 		// Set the template in the comment template array
 		$apocrypha->comment_template[ $comment_type ] = $template;
 	}
+	
+	// Count comments
+	if ( '' === $args['per_page'] )
+		$args['per_page'] = get_option('comments_per_page');
+	if ( '' == $args['page'] )
+		$args['page'] = get_query_var('cpage');
+	$adj = ( $args['page'] - 1 ) * $args['per_page'];
+	if ( isset ( $apocrypha->comment_count ) )
+			$count = $apocrypha->comment_count + 1;
+	else
+		$count = 1;
+		
+	// Update the global
+	$coubt = $count + $adj;
+	$apocrypha->comment_count = $count;
 
 	// If a template was found, load the template
 	if ( !empty( $apocrypha->comment_template[ $comment_type ] ) )
@@ -162,9 +186,8 @@ function apoc_comment_delete_button() {
 	}
 }
 
-
 /*---------------------------------------------
-	FRONTEND COMMENT EDITING
+	2.0 - COMMENT EDITING
 ----------------------------------------------*/
 
 /**
@@ -255,4 +278,47 @@ function comment_edit_header_description() {
 	
 	echo $description;	
 }
+
+
+/*---------------------------------------------
+	3.0 - COMMENT SUBMISSION AJAX
+----------------------------------------------*/
+/**
+ * Handles comment submission with AJAX
+ * @Since 1.0
+ */
+add_action(	'comment_post' , 'apoc_ajax_comment' , 20 , 2 );
+function apoc_ajax_comment( $comment_ID , $comment_status ) {
+	
+	// Make sure the comment was submitted via AJAX before proceeding
+	if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
+	
+		// Format the comment and return it's HTML
+		$content  	= apoc_display_comment( $comment_ID , $count );
+	
+		// Kill the script, returning the comment HTML
+		die( $content );	
+	}
+}
+
+/**
+ * Gets comment HTML from the comment template to insert with AJAX
+ * @Since 1.0
+ */
+function apoc_display_comment( $comment_ID , $count ) {
+
+	// Get the current comment
+	global $comment , $post , $apocrypha;
+	
+	// If the ID which was passed belongs to a different comment, get that one instead
+	$comment = get_comment( $comment_ID );
+		
+	// Tell it which comment number to use
+	$apocrypha->comment_count = $post->comment_count + 1;
+		
+	// Get the comment HTML
+	include( APOC_DIR . '/templates/comment.php' );
+}
+
+
 ?>

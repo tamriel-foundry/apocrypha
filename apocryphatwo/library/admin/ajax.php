@@ -4,9 +4,18 @@
  * Andrew Clayton
  * Version 1.0
  * 8-6-2013
- */
- 
 
+----------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1.0 - Login
+2.0 - Notifications
+3.0 - Comments
+--------------------------------------------------------------*/
+ 
+/*---------------------------------------------
+1.0 - LOGIN
+----------------------------------------------*/
 /** 
  * Register and process the login AJAX action.
  * @since 0.1
@@ -47,29 +56,10 @@ function top_login_ajax() {
 	echo json_encode( $result );
 	die();	
 }
- 
 
-/**
- * Delete article comments comments
- * @since 0.3
- */
-add_action( 'wp_ajax_apoc_delete_comment' , 'apoc_delete_comment' );
-function apoc_delete_comment() {
-	
-	/* Check the nonce */
-	check_ajax_referer( 'delete-comment-nonce' , '_wpnonce' );	
-
-	/* Get the data */
-	$comment_id	= $_POST['commentid'];
-	
-	/* Delete it */
-	wp_delete_comment( $comment_id );
-	
-	echo "1";
-	exit(0);
-}
-
-
+/*---------------------------------------------
+2.0 - NOTIFICATIONS
+----------------------------------------------*/
 /** 
  * Remove frontend BuddyPress notifications with AJAX
  * @since 1.0
@@ -91,6 +81,30 @@ function apoc_clear_notification() {
 	exit(0);
 }
 
+ 
+/*---------------------------------------------
+3.0 - COMMENTS
+----------------------------------------------*/
+
+/**
+ * Delete article comments with AJAX
+ * @since 1.0
+ */
+add_action( 'wp_ajax_apoc_delete_comment' , 'apoc_delete_comment' );
+function apoc_delete_comment() {
+	
+	/* Check the nonce */
+	check_ajax_referer( 'delete-comment-nonce' , '_wpnonce' );	
+
+	/* Get the data */
+	$comment_id	= $_POST['commentid'];
+	
+	/* Delete it */
+	wp_delete_comment( $comment_id );
+	
+	echo "1";
+	exit(0);
+}
 
 
 ?>

@@ -22,7 +22,7 @@ if ( have_comments() ) : ?>
 	</ol>
 
 	<nav class="comment-navigation pagination">
-		<div class="comment-pagination-links"><?php // paginate_comments_links(); ?></div>
+		<div class="pagination-links"><?php paginate_comments_links(); ?></div>
 	</nav>
 
 </div><!-- #comments -->

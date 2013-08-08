@@ -95,7 +95,7 @@ function apoc_notifications_menu() {
 					<ul class="notification-list">
 					<?php if ( !empty( $notifications['activity'] ) ) : for ( $i=0 ; $i<count( $notifications['activity'] ) ; $i++ ) : ?>
 						<li id="notification-<?php echo $notifications['activity'][$i]['id']; ?>" class="notification-entry">
-							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=activity&amp;notid='.$notifications['activity'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"></a>'; ?>
+							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=activity&amp;notid='.$notifications['activity'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '">&#x2717;</a>'; ?>
 							<?php echo '<a href="'.$notifications['activity'][$i]['href'] .'">'.$notifications['activity'][$i]['content'] .'</a>'; ?>
 						</li>
 					<?php endfor; else: ?>
@@ -118,7 +118,7 @@ function apoc_notifications_menu() {
 					<ul class="notification-list">
 					<?php if ( !empty( $notifications['messages'] ) ) : for ( $i=0 ; $i<count( $notifications['messages'] ) ; $i++ ) : ?>
 						<li id="notification-<?php echo $notifications['messages'][$i]['id']; ?>" class="notification-entry">
-							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=messages&amp;notid='.$notifications['messages'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"></a>'; ?>
+							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=messages&amp;notid='.$notifications['messages'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '">&#x2717;</a>'; ?>
 							<?php echo '<a href="'.$notifications['messages'][$i]['href'] .'">'.$notifications['messages'][$i]['content'] .'</a>'; ?>
 						</li>
 					<?php endfor; else: ?>
@@ -141,7 +141,7 @@ function apoc_notifications_menu() {
 					<ul class="notification-list">
 					<?php if ( !empty( $notifications['friends'] ) ) : for ( $i=0 ; $i<count( $notifications['friends'] ) ; $i++ ) : ?>
 						<li id="notification-<?php echo $notifications['friends'][$i]['id']; ?>" class="notification-entry">
-							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=friends&amp;notid='.$notifications['friends'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"></a>'; ?>
+							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=friends&amp;notid='.$notifications['friends'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '">&#x2717;</a>'; ?>
 							<?php echo '<a href="'.$notifications['friends'][$i]['href'] .'">'.$notifications['friends'][$i]['content'] .'</a>'; ?>
 						</li>
 					<?php endfor; else: ?>
@@ -163,7 +163,7 @@ function apoc_notifications_menu() {
 					<ul class="notification-list">
 					<?php if ( !empty( $notifications['groups'] ) ) : for ( $i=0 ; $i<count( $notifications['groups'] ) ; $i++ ) : ?>
 						<li id="notification-<?php echo $notifications['groups'][$i]['id']; ?>" class="notification-entry">
-							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=groups&amp;notid='.$notifications['groups'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"></a>'; ?>
+							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=groups&amp;notid='.$notifications['groups'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '">&#x2717;</a>'; ?>
 							<?php echo '<a href="'.$notifications['groups'][$i]['href'] .'">'.$notifications['groups'][$i]['content'] .'</a>'; ?>
 						</li>
 					<?php endfor; else: ?>

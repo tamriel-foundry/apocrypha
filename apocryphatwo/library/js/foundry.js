@@ -8,7 +8,89 @@ var $			= jQuery;
 ;$(document).ready(function(){$("#top-login-form").submit(function(){$("input#login-submit").attr("disabled","disabled");$("input#login-submit").attr("value","...");$.ajax({type:"POST",dataType:"json",data:$(this).serialize(),url:ajaxurl,success:function(a){if(a.success==1){window.location=a.redirect}else{$("input#login-submit").removeAttr("disabled");$("input#login-submit").attr("value","Log In");$("#top-login-error").html(a.error);$("#top-login-error").fadeToggle("slow")}}});return false})});
 
 /*! Buddypress Frontend Notifications */
-;$(document).ready(function(){$("a.clear-notification").click(function(){var c=$(this);var f=b(c.attr("href"),"_wpnonce");var e=b(c.attr("href"),"notid");var d=b(c.attr("href"),"type");c.addClass("loading");$.ajax({type:"POST",url:ajaxurl,data:{action:"apoc_clear_notification",_wpnonce:f,notid:e},success:function(g){if(g=="1"){counter=$("li#notifications-"+d+" span.notifications-number");count=parseInt(counter.text());if(count>1){counter.text(count-1);c.parent().remove()}else{counter.remove();c.parent().text("Notifications cleared!")}title=$("title").text();count=title.split("]")[0].substr(1);if(1<count){title.replace(count,count-1)}else{title.replace(/\[.*\]/,"")}document.title=title}}});return false});function b(d,c){var g=d.split("?");var f=g[1].split("&");for(var e=0;e<f.length;e++){var h=f[e].split("=");if(h[0]==c){return h[1]}}return""}function a(){count=0;$.each(["activity","messages","groups","friends"],function(d,e){target=$("li#notifications-"+e+" span.notifications-number");if(target.is("*")){count=count+parseInt(target.text())}});if(count>0){var c=$("title").text().replace(/\[.*\]/,"");c="["+count+"]"+c;$("title").text(c)}}a()});
+$(document).ready(function(){
+    $("a.clear-notification").click( function( event ){
+        
+		// Get some info about what we are doing 
+		var button	= $(this);
+        var nonce	= get_var_in_url( button.attr('href') , '_wpnonce' );
+		var notid 	= get_var_in_url( button.attr('href') , 'notid' );
+		var type 	= get_var_in_url( button.attr('href') , 'type' );
+		
+		// Prevent default
+		event.preventDefault();		
+
+		// Tooltip
+		button.removeAttr('href');
+		button.html(' &#x2713;' );
+		        
+		// Submit the POST AJAX 
+		$.post( ajaxurl, {
+				'action'	: 'apoc_clear_notification',
+				'_wpnonce'	: nonce,
+				'notid' 	: notid,
+			},
+			function( response ){
+				if( response ){
+				
+					// Change the notification count and remove the notification
+					counter = $( "li#notifications-" + type + " span.notifications-number" );
+					count = parseInt( counter.text() );
+					if ( count > 1 ) {
+						counter.text( count - 1 );
+						button.parent().remove();
+					} else {
+						counter.remove();
+						button.parent().text("Notifications cleared!");
+					}
+					
+					// Update the document title
+					title = $('title').text();
+					count = title.split(']')[0].substr(1);
+					if ( 1 < count ) {
+						title = title.replace( count , count-1 );
+					} else {
+						title = title.replace(/\[(.*)\]/,'');
+					}
+					document.title = title;
+				}
+			}
+		);
+    });
+	
+	// Helper function to get url variables
+	function get_var_in_url(url,name){
+		var urla = url.split( "?" );
+		var qvars = urla[1].split( "&" );
+		for( var i=0; i < qvars.length; i++ ){
+			var qv = qvars[i].split( "=" );
+			if( qv[0] == name )
+				return qv[1];
+		}
+		return '';
+	}
+	
+	// Add the total notification count to the title
+	function title_notification_count() {
+		count = 0;
+		$.each( ['activity','messages','groups','friends'] , function(index,type) {
+			target = $("li#notifications-"+type+" span.notifications-number");
+			if ( target.is('*') ) {
+				count = count + parseInt( target.text() );
+			}
+		});
+		
+		// If we have notifications, add them to the title
+		if ( count > 0 ) {
+			var doctitle = $('title').text().replace(/\[.*\]/,'');
+			doctitle = "["+count+"]"+doctitle;
+			$('title').text(doctitle);
+		}
+	}
+	
+	// Run it once on document ready
+	title_notification_count();
+});
 
 /*! Back To Top Link Scrolling */
 ;$(document).ready(function(){$("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);return false})});

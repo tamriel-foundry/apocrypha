@@ -918,6 +918,11 @@ ul.notification-links {
 	}
 ul.notification-links li { float: left; }
 ul.notification-links li a { margin: 2px 1px 0 2px; }
+a.clear-notification {
+	float: right;
+	position: relative;
+	right: -10px;
+	}	
 
 /* Dropdown Search */
 div#header-search {

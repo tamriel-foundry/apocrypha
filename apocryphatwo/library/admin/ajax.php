@@ -66,19 +66,21 @@ function top_login_ajax() {
  */
 add_action( 'wp_ajax_apoc_clear_notification' , 'apoc_clear_notification' );
 function apoc_clear_notification() {
-	
-	// Get the current user
-	global $apocrypha, $bp, $wpdb;
-	$user_id = $apocrypha->user->data->ID;
-	$notification_id = $_REQUEST['notid'];
-	
+
 	// Check the nonce
-	check_ajax_referer( 'clear-single-notification' );
+	check_ajax_referer( 'clear-single-notification' , '_wpnonce' );
+	
+	// Get some data
+	global $bp, $wpdb;
+	$user_id = get_current_user_id();
+	$notification_id = $_POST['notid'];
 	
 	// Delete the notification
 	$wpdb->query( $wpdb->prepare( "DELETE FROM " . $bp->core->table_name_notifications . " WHERE user_id = %d AND id = %s", $user_id , $notification_id ) );
+	
+	// Send a response
 	echo "1";
-	exit(0);
+	die();
 }
 
  
@@ -93,17 +95,17 @@ function apoc_clear_notification() {
 add_action( 'wp_ajax_apoc_delete_comment' , 'apoc_delete_comment' );
 function apoc_delete_comment() {
 	
-	/* Check the nonce */
+	// Check the nonce
 	check_ajax_referer( 'delete-comment-nonce' , '_wpnonce' );	
 
-	/* Get the data */
+	// Get the data
 	$comment_id	= $_POST['commentid'];
 	
-	/* Delete it */
+	// Delete it
 	wp_delete_comment( $comment_id );
 	
 	echo "1";
-	exit(0);
+	die();
 }
 
 

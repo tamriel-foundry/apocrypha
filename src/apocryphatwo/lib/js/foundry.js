@@ -10,21 +10,21 @@ var $			= jQuery;
 /*! Buddypress Frontend Notifications */
 $(document).ready(function(){
     $("a.clear-notification").click( function( event ){
-        
-		// Get some info about what we are doing 
+
+		// Get some info about what we are doing
 		var button	= $(this);
         var nonce	= get_var_in_url( button.attr('href') , '_wpnonce' );
 		var notid 	= get_var_in_url( button.attr('href') , 'notid' );
 		var type 	= get_var_in_url( button.attr('href') , 'type' );
-		
+
 		// Prevent default
-		event.preventDefault();		
+		event.preventDefault();
 
 		// Tooltip
 		button.removeAttr('href');
 		button.html(' &#x2713;' );
-		        
-		// Submit the POST AJAX 
+
+		// Submit the POST AJAX
 		$.post( ajaxurl, {
 				'action'	: 'apoc_clear_notification',
 				'_wpnonce'	: nonce,
@@ -32,7 +32,7 @@ $(document).ready(function(){
 			},
 			function( response ){
 				if( response ){
-				
+
 					// Change the notification count and remove the notification
 					counter = $( "li#notifications-" + type + " span.notifications-number" );
 					count = parseInt( counter.text() );
@@ -43,7 +43,7 @@ $(document).ready(function(){
 						counter.remove();
 						button.parent().text("Notifications cleared!");
 					}
-					
+
 					// Update the document title
 					title = $('title').text();
 					count = title.split(']')[0].substr(1);
@@ -57,7 +57,7 @@ $(document).ready(function(){
 			}
 		);
     });
-	
+
 	// Helper function to get url variables
 	function get_var_in_url(url,name){
 		var urla = url.split( "?" );
@@ -69,7 +69,7 @@ $(document).ready(function(){
 		}
 		return '';
 	}
-	
+
 	// Add the total notification count to the title
 	function title_notification_count() {
 		count = 0;
@@ -79,7 +79,7 @@ $(document).ready(function(){
 				count = count + parseInt( target.text() );
 			}
 		});
-		
+
 		// If we have notifications, add them to the title
 		if ( count > 0 ) {
 			var doctitle = $('title').text().replace(/\[.*\]/,'');
@@ -87,7 +87,7 @@ $(document).ready(function(){
 			$('title').text(doctitle);
 		}
 	}
-	
+
 	// Run it once on document ready
 	title_notification_count();
 });

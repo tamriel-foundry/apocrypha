@@ -117,7 +117,7 @@ function recent_forums_widget( $args = '' ) {
 		<ul class="recent-discussion-list">
 		
 
-		<?php $post_alt++;
+		<?php $post_alt = 1;
 		while ( $widget_query->have_posts() ) : $widget_query->the_post(); 		
 		
 			// Get some info about the post 

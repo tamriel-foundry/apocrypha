@@ -52,8 +52,10 @@ function get_page_context() {
 	$object_id 			= get_queried_object_id();
 	
 	// Home page
-	if ( is_home() )
+	if ( is_home() ) {
 		$apocrypha->context[] = 'home';
+		$apocrypha->context[] = 'archive';
+	}
 		
 	// BuddyPress
 	elseif ( function_exists( 'is_bbpress' ) && is_bbpress() )
@@ -203,7 +205,7 @@ function display_entry_class( $class = '', $post_id = null ) {
 		// Post author
 		$classes[] = 'author-' . sanitize_html_class( get_the_author_meta( 'user_nicename' ), get_the_author_meta( 'ID' ) );
 		
-		// Sticky class on homepage
+		// Homepage
 		if ( is_home() && is_sticky() && !is_paged() )
 			$classes[] = 'sticky';
 			

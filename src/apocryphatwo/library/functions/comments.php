@@ -12,7 +12,7 @@
 2.0 - Comment Editing
 3.0 - Comment Submission AJAX
 --------------------------------------------------------------*/
-
+ 
 /*---------------------------------------------
 1.0 - COMMENTS TEMPLATE
 ----------------------------------------------*/
@@ -40,11 +40,13 @@ function apoc_comments_link() {
 function apoc_comments_args() {
 
 	$args = array(
-		'style'        => 'ol',
-		'type'         => 'all',
-		'avatar_size'  => 100,
-		'callback'     => 'apoc_comments_template',
-		'end-callback' => 'apoc_comments_end_callback'
+		'style'        		=> 'ol',
+		'type'        		=> 'all',
+		'per_page'			=> 10,
+		'reverse_top_level'	=> false,
+		'avatar_size'  		=> 100,
+		'callback'     		=> 'apoc_comments_template',
+		'end-callback' 		=> 'apoc_comments_end_callback'
 	);
 
 	return $args;
@@ -55,36 +57,36 @@ function apoc_comments_args() {
  * @since 1.0
  */
 function apoc_comments_template( $comment , $args , $depth ) {
-
+	
 	// Determine the post type for this comment
 	global $apocrypha;
-	$post_type 		= $apocrypha->post_type;
+	$post_type 		= isset( $apocrypha->post_type ) ? 	$apocrypha->post_type : 'post';
 	$comment_type 	= get_comment_type( $comment->comment_ID );
-
+	
 	// Create an empty array to store the proper comment template
 	if ( !isset( $apocrypha->comment_template ) || !is_array( $apocrypha->comment_template ) )
 		$apocrypha->comment_template = array();
-
+		
 	// Only determine the proper template if it's not already set
-	if ( !isset( $apocrpyha->comment_template[$comment_type] ) ) {
-
+	if ( !isset( $apocrpyha->comment_template[$comment_type] ) ) {	
+	
 		// Comment templates by post type
-		$templates[] = "lib/templates/comment-{$post_type}.php";
-
+		$templates[] = "library/templates/comment-{$post_type}.php";	
+		
 		// Pingbacks or trackbacks
 		if ( 'pingback' == $comment_type || 'trackback' == $comment_type )
-			$templates[] = 'lib/templates/comment-ping.php';
+			$templates[] = 'library/templates/comment-ping.php';
 
 		// Add the default comment template
-		$templates[] = 'lib/templates/comment.php';
-
+		$templates[] = 'library/templates/comment.php';
+	
 		// Locate the template
 		$template = locate_template( $templates );
-
+		
 		// Set the template in the comment template array
 		$apocrypha->comment_template[ $comment_type ] = $template;
 	}
-
+	
 	// Count comments
 	if ( '' === $args['per_page'] )
 		$args['per_page'] = get_option('comments_per_page');
@@ -95,7 +97,7 @@ function apoc_comments_template( $comment , $args , $depth ) {
 			$count = $apocrypha->comment_count + 1;
 	else
 		$count = 1;
-
+		
 	// Update the global
 	$coubt = $count + $adj;
 	$apocrypha->comment_count = $count;
@@ -118,6 +120,11 @@ function apoc_comments_end_callback() {
  * @since 1.0
  */
 function apoc_comment_admin_links() {
+	
+	// Make sure it's a logged-in user
+	if ( !is_user_logged_in() ) return false;
+	
+	// If so, go ahead
 	global $comment;
 	$links = apoc_comment_quote_button();
 	$links .= '<a class="reply-link button button-dark" href="#respond" title="Quick Reply">Reply</a>';
@@ -132,8 +139,6 @@ function apoc_comment_admin_links() {
  */
 function apoc_comment_quote_button() {
 
-	if ( !is_user_logged_in() ) return false;
-
 	/* Verify reply id, get author id */
 	global $comment;
 	$comment_id  	= $comment->comment_ID;
@@ -144,7 +149,7 @@ function apoc_comment_quote_button() {
 	$quoteButton = '<a class="quote-link button button-dark" href="#respond" title="Click here to quote selected text" ';
 	$quoteButton .= 'data-id="'.$comment_id.'" data-author="'.$author_name.'" data-date="'.$post_date.'">';
 	$quoteButton .= 'Quote</a>';
-
+    
 	return $quoteButton;
 }
 
@@ -153,9 +158,9 @@ function apoc_comment_quote_button() {
  * @since 0.3
  */
 function apoc_comment_edit_button() {
-
+	
 	if ( user_can_edit_comment() ) {
-
+	
 		global $comment;
 
 		/* Build the link */
@@ -164,7 +169,7 @@ function apoc_comment_edit_button() {
 
 		/* Create quote link using data attributes to pass parameters */
 		$edit_button = '<a class="edit-comment-link button button-dark" href="' . $edit_url . '" title="Edit this comment" >Edit</a>';
-
+		
 		return $edit_button;
 	}
 }
@@ -176,12 +181,12 @@ function apoc_comment_edit_button() {
 function apoc_comment_delete_button() {
 
 	if ( current_user_can( 'moderate' ) || current_user_can( 'moderate_comments' ) ) {
-
+	
 		global $comment;
 
 		/* Build the link */
 		$delete_button = '<a class="delete-comment-link button button-dark" title="Delete this comment"  data-id="' . $comment->comment_ID . '" data-nonce="' . wp_create_nonce( 'delete-comment-nonce' ) . '">Trash</a>';
-
+		
 		return $delete_button;
 	}
 }
@@ -198,8 +203,8 @@ class Frontend_Comment_Edit {
 
 	// Construct the class
 	function __construct() {
-		add_action( 'init', array( &$this, 'generate_rewrite_rules' ) );
-		add_action( 'init', array( &$this, 'add_rewrite_tags' ) );
+		add_action( 'init', array( &$this, 'generate_rewrite_rules' ) ); 
+		add_action( 'init', array( &$this, 'add_rewrite_tags' ) ); 
 		add_action( 'template_redirect', array( &$this , 'comment_edit_template' ) );
 	}
 
@@ -207,28 +212,28 @@ class Frontend_Comment_Edit {
 	function add_rewrite_tags() {
 		add_rewrite_tag( '%comment%' , '([0-9]{1,})' ); // Comment Number
 	}
-
+	
 	// Define the rule for identifying comment edits
 	function generate_rewrite_rules() {
-
+	
 		$rule	= '[0-9]{4}/[0-9]{2}/([^/]+)/comment-([0-9]{1,})/edit/?$';
 		$query	= 'index.php?name=$matches[1]&comment=$matches[2]&edit=1';
 		add_rewrite_rule( $rule , $query , 'top' );
 	}
-
+	
 	// Redirect the template to use comment edit
 	function comment_edit_template() {
-
+		
 		global $wp_query;
-
-		if ( $wp_query->query_vars['comment'] && $wp_query->query_vars['edit'] == 1 ) {
-
+		
+		if ( isset( $wp_query->query_vars['comment'] ) && $wp_query->query_vars['edit'] == 1 ) {
+		
 			// Get the comment
 			$comment_id = $wp_query->query_vars['comment'];
 			global $comment;
 			$comment = get_comment( $comment_id  );
-
-			if ( user_can_edit_comment() )
+			
+			if ( user_can_edit_comment() ) 
 				include ( APOC_DIR . '/templates/comment-edit.php' );
 			else
 				include ( THEME_DIR . '/404.php' );
@@ -250,7 +255,7 @@ function user_can_edit_comment() {
 	$author_id = $comment->user_id;
 
 	/* Comment authors and moderators are allowed */
-	if ( $user_id == $author_id || current_user_can( 'moderate_comments' ) || current_user_can( 'moderate' ) )
+	if ( $user_id == $author_id || current_user_can( 'moderate_comments' ) || current_user_can( 'moderate' ) ) 
 		return true;
 }
 
@@ -272,11 +277,11 @@ function is_comment_edit() {
 function comment_edit_header_description() {
 	global $comment;
 	$author_id = $comment->user_id;
-
+	
 	$description = 'By ' . bp_core_get_userlink( $author_id );
 	$description .= ' on <time datetime="' . date( 'Y-m-d\TH:i' , strtotime( $comment->comment_date ) ) . '">' . date( 'l, F j' , strtotime( $comment->comment_date ) ) . '</time>';
-
-	echo $description;
+	
+	echo $description;	
 }
 
 
@@ -289,15 +294,15 @@ function comment_edit_header_description() {
  */
 add_action(	'comment_post' , 'apoc_ajax_comment' , 20 , 2 );
 function apoc_ajax_comment( $comment_ID , $comment_status ) {
-
+	
 	// Make sure the comment was submitted via AJAX before proceeding
 	if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
-
+	
 		// Format the comment and return it's HTML
 		$content  	= apoc_display_comment( $comment_ID , $count );
-
+	
 		// Kill the script, returning the comment HTML
-		die( $content );
+		die( $content );	
 	}
 }
 
@@ -309,13 +314,13 @@ function apoc_display_comment( $comment_ID , $count ) {
 
 	// Get the current comment
 	global $comment , $post , $apocrypha;
-
+	
 	// If the ID which was passed belongs to a different comment, get that one instead
 	$comment = get_comment( $comment_ID );
-
+		
 	// Tell it which comment number to use
 	$apocrypha->comment_count = $post->comment_count + 1;
-
+		
 	// Get the comment HTML
 	include( APOC_DIR . '/templates/comment.php' );
 }

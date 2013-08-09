@@ -46,7 +46,7 @@ function apoc_taxonomy_template( $template ) {
 	$term = get_queried_object();
 
 	// Return the available templates.
-	return locate_template( array( "taxonomy-{$term->taxonomy}.php", 'taxonomy.php', 'archive.php' ) );
+	return locate_template( array( "{$term->taxonomy}.php", 'taxonomy.php', 'archive.php' ) );
 }
 
 /**

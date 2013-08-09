@@ -94,7 +94,7 @@ function apoc_header_login() {
  * @since 0.1
  */
 function get_current_url() {
-	$current_url .= esc_attr( $_SERVER['HTTP_HOST'] );
+	$current_url = esc_attr( $_SERVER['HTTP_HOST'] );
 	$current_url .= esc_attr( $_SERVER['REQUEST_URI'] );
 	return esc_url( $current_url );
 }

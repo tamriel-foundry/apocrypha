@@ -1,1 +1,0 @@
-$(document).ready(function(){$("a.backtotop").click(function(){return $("html, body").animate({scrollTop:0},600),!1})});

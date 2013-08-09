@@ -24,7 +24,7 @@ module.exports = function( grunt ){
 			},
 			files: {
 				src: {
-					files: [ 'apocryphatwo/lib/js/**/*.js' ]
+					files: [ 'apocryphatwo/library/js/**/*.js' ]
 				}
 			}
 		},
@@ -32,15 +32,15 @@ module.exports = function( grunt ){
 			dist: {
 				files: {
 					// TODO: Simplify using wildcards once supported by Uglify.js
-					'dist/apocryphatwo/lib/js/default_head_js.js': 'src/apocryphatwo/lib/js/default_head_js.js',
-					'dist/apocryphatwo/lib/js/flexslider.min.js': 'src/apocryphatwo/lib/js/flexslider.min.js',
-					'dist/apocryphatwo/lib/js/foundry.js': 'src/apocryphatwo/lib/js/foundry.js',
-					'dist/apocryphatwo/lib/js/raw/backtotop.js': 'src/apocryphatwo/lib/js/raw/backtotop.js',
-					'dist/apocryphatwo/lib/js/raw/comments.js': 'src/apocryphatwo/lib/js/raw/comments.js',
-					'dist/apocryphatwo/lib/js/raw/flexslider.js': 'src/apocryphatwo/lib/js/raw/flexslider.js',
-					'dist/apocryphatwo/lib/js/raw/login.js': 'src/apocryphatwo/lib/js/raw/login.js',
-					'dist/apocryphatwo/lib/js/raw/notifications.js': 'src/apocryphatwo/lib/js/raw/notifications.js',
-					'dist/apocryphatwo/lib/js/raw/quotes.js': 'src/apocryphatwo/lib/js/raw/quotes.js'
+					'dist/apocryphatwo/library/js/default_head_js.js': 'src/apocryphatwo/library/js/default_head_js.js',
+					'dist/apocryphatwo/library/js/flexslider.min.js': 'src/apocryphatwo/library/js/flexslider.min.js',
+					'dist/apocryphatwo/library/js/foundry.js': 'src/apocryphatwo/library/js/foundry.js',
+					'dist/apocryphatwo/library/js/raw/backtotop.js': 'src/apocryphatwo/library/js/raw/backtotop.js',
+					'dist/apocryphatwo/library/js/raw/comments.js': 'src/apocryphatwo/library/js/raw/comments.js',
+					'dist/apocryphatwo/library/js/raw/flexslider.js': 'src/apocryphatwo/library/js/raw/flexslider.js',
+					'dist/apocryphatwo/library/js/raw/login.js': 'src/apocryphatwo/library/js/raw/login.js',
+					'dist/apocryphatwo/library/js/raw/notifications.js': 'src/apocryphatwo/library/js/raw/notifications.js',
+					'dist/apocryphatwo/library/js/raw/quotes.js': 'src/apocryphatwo/library/js/raw/quotes.js'
 				}
 			}
 		},
@@ -57,8 +57,8 @@ module.exports = function( grunt ){
 				files: {
 					// TODO: Simplify using wildcards once supported by CSSMin
 					'dist/apocryphatwo/style.css': 'src/apocryphatwo/style.css',
-					'dist/apocryphatwo/lib/css/editor-content.css': 'src/apocryphatwo/lib/css/editor-content.css',
-					'dist/apocryphatwo/lib/css/login-style.css': 'src/apocryphatwo/lib/css/login-style.css',
+					'dist/apocryphatwo/library/css/editor-content.css': 'src/apocryphatwo/library/css/editor-content.css',
+					'dist/apocryphatwo/library/css/login-style.css': 'src/apocryphatwo/library/css/login-style.css',
 				}
 			}
 		},

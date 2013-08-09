@@ -42,6 +42,10 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	6.1 - Posts Loop
 	6.2 - Widgets
 	6.3 - Showcase
+7.0 - WordPress
+	7.1 - Archives
+	7.2 - Search
+	7.3 - 404
 	
 	
 X.X - WHERE DO I PUT THIS STUFF?
@@ -209,7 +213,9 @@ ul,
 	padding: 0 0 0 3em;
 	}
 ul ul,
-.reply-content ul ul {
+ol ul,
+.reply-content ul ul,
+.reply-content ol ul {
 	list-style: circle;
 	margin: 0;
 	padding: 0 0 0 1.5em;
@@ -221,7 +227,9 @@ ol,
 	padding: 0 0 0 3em;
 	}
 ol ol,
-.reply-content ol ol {
+ul ol,
+.reply-content ol ol,
+.reply-content ul ol {
 	list-style: decimal;
 	margin: 0;
 	padding: 0 0 0 1.5em;
@@ -1100,13 +1108,12 @@ header.entry-header {
 .post-header-5 { background-position: -440px -400px; }
 .post-header-6 { background-position: -440px -500px; }
 
-.home-page .entry-header,
-.archive .entry-header {
+.archive .post .entry-header {
 	height: 75px;
 	margin: 0 0 0.5em 0;
 	box-shadow: 0 0 8px #111;
 	}
-.home-page .entry-header:hover {
+.archive .post .entry-header:hover {
 	box-shadow: 0 0 5px #c60;
 	}
 .home-header-1 { background-position: 0 0; }
@@ -1123,7 +1130,7 @@ header.entry-header {
 	padding: 0 0.75em;
 	margin: 0;
 	}
-.home-page .entry-title {
+.archive .post .entry-title {
 	height: 50px;
 	line-height: 50px;
 	padding: 0;
@@ -1170,12 +1177,8 @@ div.entry-content {
 	font-size: 0.8em;
 	line-height: 2em;
 	}
-.home-page .entry-content,
-.archive. .entry-content { padding-bottom: 40px; }
-
+.archive .post .entry-content { padding-bottom: 40px; }
 .singular .entry-content > p:first-child { text-indent: 2em; }
-
-
 
 /*---------------------------------------------
 	5.3 - Comments
@@ -1196,6 +1199,7 @@ header.reply-header {
 	box-shadow: 0 0 3px #666 inset;
 	}
 header.discussion-header > h2 { margin: 0; }
+header.discussion-header.noreplies { border-radius: 5px; }
 ol#comment-list {
 	margin: 0;
 	padding: 0;
@@ -1373,9 +1377,7 @@ header#respond-subheader {
 	font-size: 14px;
 	padding: 0.5em 1em;
 	}
-
-
-
+	
 	
 /*--------------------------------------------------------------
 6.0 - HOME PAGE
@@ -1409,8 +1411,10 @@ h1#home-posts-title {
 	line-height: 36px;
 	margin: -19px auto 0;
 	font-size: 1.25em;
-	color: #CCC;
 	text-align: center;
+	font-weight: normal;
+	letter-spacing: -1px;
+	text-shadow: 1px 1px #000;
 	background: rgb(34,34,34); 
 	background: -ms-linear-gradient(top, rgb(51,51,51), rgb(17,17,17));
     background: -moz-linear-gradient(top, rgb(51,51,51), rgb(17,17,17));
@@ -1419,19 +1423,18 @@ h1#home-posts-title {
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 2px #999 inset;
-	letter-spacing: -1px;
 	}
 	
 /* Posts Inside Loop */
-.home-page div.post {
+.archive div.post {
 	width: 49%;
 	height: 300px;
 	margin: 0 0 1em 0;
 	float: left;
 	border-bottom: 1px solid #444;
 	}
-.home-page div.post.even { float: right; }
-.home-page div.entry-content { font-size: 0.75em; }
+.archive .post.even { float: right; }
+.archive .post div.entry-content { font-size: 0.75em; }
 div.entry-content a img.thumbnail {
 	float: right;
 	margin: 5px 0 1em 0.5em;
@@ -1448,7 +1451,7 @@ footer.entry-footer {
 	position: absolute;
 	bottom: 0;
 	}
-.home-page footer.entry-footer { 	border-bottom: 1px solid #000; }
+.archive .post footer.entry-footer { border-bottom: 1px solid #000; }
 div.entry-meta {
 	float: left;
 	margin: -1px 0 0;
@@ -1822,6 +1825,11 @@ li.flex-active span.slideshow-tab-title {
 	}
 	
 /* Arrow Navigation */
+.flex-direction-nav {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	}
 .flex-direction-nav a {
 	width: 30px; 
 	height: 30px; 
@@ -1854,7 +1862,38 @@ li.flex-active span.slideshow-tab-title {
 	}
 
 	
+/*--------------------------------------------------------------
+7.0 - WORDPRESS
+--------------------------------------------------------------*/	
 	
+/*---------------------------------------------
+	7.1 - Archives
+----------------------------------------------*/
+header#archive-header {
+	width: 96%;
+	float: left;
+	margin: 0 0 1em 0;
+	padding: 1em 2% 0;
+	position: relative;
+	background-image: url(images/backgrounds/dark-denim.jpg);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #666 inset;
+	}
+h1#archive-title {
+	float: left;
+	padding: 0 1em 0.25em 0;
+	}
+div#archive-description {
+	clear: left;
+	}
+div#archive-author-info {
+	width: 100%;
+	float: left;
+	margin: 0 0 1em;
+	}
+	
+
 	
 /*--------------------------------------------------------------
 X.X - WHERE DO I PUT THIS STUFF?

@@ -10,7 +10,8 @@
 ----------------------------------------------------------------
 1.0 - Login
 2.0 - Notifications
-3.0 - Comments
+3.0 - Posts
+4.0 - Comments
 --------------------------------------------------------------*/
  
 /*---------------------------------------------
@@ -60,7 +61,7 @@ function top_login_ajax() {
 /*---------------------------------------------
 2.0 - NOTIFICATIONS
 ----------------------------------------------*/
-/** 
+/**
  * Remove frontend BuddyPress notifications with AJAX
  * @since 1.0
  */
@@ -83,10 +84,105 @@ function apoc_clear_notification() {
 	die();
 }
 
+/*---------------------------------------------
+3.0 - POSTS
+----------------------------------------------*/
+add_action( 'wp_ajax_nopriv_apoc_load_posts' 	, 'apoc_load_posts' );
+add_action( 'wp_ajax_apoc_load_posts' 			, 'apoc_load_posts' );
+function apoc_load_posts() {
+
+	// Get the post data
+	$type 	= $_POST['type'];
+	$paged	= $_POST['paged'];
+	$url	= $_POST['baseurl'];
+	
+	// Setup post query variables
+	$args = array();
+	$args['paged'] 	= $paged;
+	
+	// Add additional query variables depending on context
+	switch ( $type ) {
+		case 'author' :
+			$args['author'] = $_POST['id'];
+			break;
+		
+		case 'category' :
+			$args['cat']	= $_POST['id'];
+			break;	
+	}
+		
+	// Issue the posts query
+	global $ajax_query;
+	$ajax_query = new WP_Query( $args );
+	ob_start();
+	
+	// Check if we found anything
+	if ( $ajax_query->have_posts() ) :
+
+		// If we have posts, build the HTML for the set
+		while ( $ajax_query->have_posts() ) :
+			$ajax_query->the_post();
+			apoc_display_post();
+		endwhile;
+		
+		// Next we need to build some new pagination
+		echo '<nav class="pagination ajaxed" data-type="' . $type . '">';
+			ajax_pagination( $args = array() , $url  );
+		echo '</nav>';
+				
+	endif;
+	
+	// Get everything from the output buffer
+	$content = ob_get_contents();
+	ob_end_clean();
+	
+	// Send a response and return the HTML
+	die( $content );
+}
  
 /*---------------------------------------------
-3.0 - COMMENTS
+4.0 - COMMENTS
 ----------------------------------------------*/
+add_action( 'wp_ajax_nopriv_apoc_load_comments' , 'apoc_load_comments' );
+add_action( 'wp_ajax_apoc_load_comments' 		, 'apoc_load_comments' );
+function apoc_load_comments() {
+
+	// Get the post data
+	$postid	= $_POST['postid'];
+	$paged	= $_POST['paged'];
+	$url	= $_POST['baseurl'];
+	
+
+	// Setup post query variables
+	$args = apoc_comments_args();
+	$args['page'] 	= $paged;
+	
+	// Get the comments for the relevant post
+	$comments = get_comments(array(
+		'post_id' 	=> $postid,
+		'status' 	=> 'approve',
+		'order'		=> 'ASC',
+	));
+
+	// Display the comments into the buffer
+	ob_start();
+	wp_list_comments( $args , $comments );
+
+	/*
+	// Next we need to build some new pagination
+	echo '<nav class="pagination ajaxed" data-type="' . $type . '">';
+		ajax_pagination( $args = array() , $url  );
+	echo '</nav>';
+	*/
+
+	
+	// Get everything from the output buffer
+	$content = ob_get_contents();
+	ob_end_clean();
+	
+	// Send a response and return the HTML
+	die( $content );
+}
 
 /**
  * Delete article comments with AJAX

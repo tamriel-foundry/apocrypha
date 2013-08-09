@@ -8,89 +8,7 @@ var $			= jQuery;
 ;$(document).ready(function(){$("#top-login-form").submit(function(){$("input#login-submit").attr("disabled","disabled");$("input#login-submit").attr("value","...");$.ajax({type:"POST",dataType:"json",data:$(this).serialize(),url:ajaxurl,success:function(a){if(a.success==1){window.location=a.redirect}else{$("input#login-submit").removeAttr("disabled");$("input#login-submit").attr("value","Log In");$("#top-login-error").html(a.error);$("#top-login-error").fadeToggle("slow")}}});return false})});
 
 /*! Buddypress Frontend Notifications */
-$(document).ready(function(){
-    $("a.clear-notification").click( function( event ){
-
-		// Get some info about what we are doing
-		var button	= $(this);
-        var nonce	= get_var_in_url( button.attr('href') , '_wpnonce' );
-		var notid 	= get_var_in_url( button.attr('href') , 'notid' );
-		var type 	= get_var_in_url( button.attr('href') , 'type' );
-
-		// Prevent default
-		event.preventDefault();
-
-		// Tooltip
-		button.removeAttr('href');
-		button.html(' &#x2713;' );
-
-		// Submit the POST AJAX
-		$.post( ajaxurl, {
-				'action'	: 'apoc_clear_notification',
-				'_wpnonce'	: nonce,
-				'notid' 	: notid,
-			},
-			function( response ){
-				if( response ){
-
-					// Change the notification count and remove the notification
-					counter = $( "li#notifications-" + type + " span.notifications-number" );
-					count = parseInt( counter.text() );
-					if ( count > 1 ) {
-						counter.text( count - 1 );
-						button.parent().remove();
-					} else {
-						counter.remove();
-						button.parent().text("Notifications cleared!");
-					}
-
-					// Update the document title
-					title = $('title').text();
-					count = title.split(']')[0].substr(1);
-					if ( 1 < count ) {
-						title = title.replace( count , count-1 );
-					} else {
-						title = title.replace(/\[(.*)\]/,'');
-					}
-					document.title = title;
-				}
-			}
-		);
-    });
-
-	// Helper function to get url variables
-	function get_var_in_url(url,name){
-		var urla = url.split( "?" );
-		var qvars = urla[1].split( "&" );
-		for( var i=0; i < qvars.length; i++ ){
-			var qv = qvars[i].split( "=" );
-			if( qv[0] == name )
-				return qv[1];
-		}
-		return '';
-	}
-
-	// Add the total notification count to the title
-	function title_notification_count() {
-		count = 0;
-		$.each( ['activity','messages','groups','friends'] , function(index,type) {
-			target = $("li#notifications-"+type+" span.notifications-number");
-			if ( target.is('*') ) {
-				count = count + parseInt( target.text() );
-			}
-		});
-
-		// If we have notifications, add them to the title
-		if ( count > 0 ) {
-			var doctitle = $('title').text().replace(/\[.*\]/,'');
-			doctitle = "["+count+"]"+doctitle;
-			$('title').text(doctitle);
-		}
-	}
-
-	// Run it once on document ready
-	title_notification_count();
-});
+;$(document).ready(function(){$("a.clear-notification").click(function(g){var c=$(this);var f=b(c.attr("href"),"_wpnonce");var e=b(c.attr("href"),"notid");var d=b(c.attr("href"),"type");g.preventDefault();c.removeAttr("href");c.html(" &#x2713;");$.post(ajaxurl,{action:"apoc_clear_notification",_wpnonce:f,notid:e},function(h){if(h){counter=$("li#notifications-"+d+" span.notifications-number");count=parseInt(counter.text());if(count>1){counter.text(count-1);c.parent().remove()}else{counter.remove();c.parent().text("Notifications cleared!")}title=$("title").text();count=title.split("]")[0].substr(1);if(1<count){title=title.replace(count,count-1)}else{title=title.replace(/\[(.*)\]/,"")}document.title=title}})});function b(d,c){var g=d.split("?");var f=g[1].split("&");for(var e=0;e<f.length;e++){var h=f[e].split("=");if(h[0]==c){return h[1]}}return""}function a(){count=0;$.each(["activity","messages","groups","friends"],function(d,e){target=$("li#notifications-"+e+" span.notifications-number");if(target.is("*")){count=count+parseInt(target.text())}});if(count>0){var c=$("title").text().replace(/\[.*\]/,"");c="["+count+"]"+c;$("title").text(c)}}a()});
 
 /*! Back To Top Link Scrolling */
 ;$(document).ready(function(){$("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);return false})});
@@ -107,8 +25,14 @@ $(document).ready(function(){
 /*! Collapsing Spoilers */
 ;$(document).ready(function(){$("div.spoiler").children("p.spoiler-title").append('<button class="spoiler-toggle button-dark">Reveal Spoiler</button>');$("div.spoiler").children().not("p.spoiler-title").hide();$("button.spoiler-toggle").click(function(){var a=newtext="";$(this).parent().parent().children().not("p.spoiler-title").slideToggle(500,"swing");a=$(this).text();newtext=(a=="Reveal Spoiler")?"Conceal Spoiler":"Reveal Spoiler";$(this).text(newtext)})});
 
-/*! Delete Comments */
-;$(document).ready(function(){$("a.delete-comment-link").click(function(){confirmation=confirm("Permanently delete this comment?");if(confirmation){button=$(this);button.text("Deleting...");commentid=$(this).data("id");nonce=$(this).data("nonce");$.post(ajaxurl,{action:"apoc_delete_comment",_wpnonce:nonce,commentid:commentid},function(a){if(a){$("li#comment-"+commentid+" div.reply-body").slideUp("slow",function(){$("li#comment-"+commentid).remove()})}})}})});
+/*! AJAX Posts Loop */
+;$(document).ready(function(){$("#content").on("click","nav.ajaxed a.page-numbers",function(c){var b=newPage=type=id=tooltip=dir="";var a=$(this);c.preventDefault();type=$("nav.pagination").data("type");id=$("nav.pagination").data("id");baseURL=window.location.href;b=parseInt($(".page-numbers.current").text());newPage=parseInt(a.text());if(a.hasClass("next")){newPage=b+1}else{if(a.hasClass("prev")){newPage=b-1}}dir=(newPage>b)?".next":".prev";tooltip=(newPage>b)?"Loading &raquo;":"&laquo; Loading";$("a.page-numbers"+dir).html(tooltip);$.post(ajaxurl,{action:"apoc_load_posts",type:type,id:id,paged:newPage,baseurl:baseURL},function(d){if(d!="0"){$(".post").fadeOut("slow").promise().done(function(){$(".post").remove();$("nav.pagination").remove();$("#content").append(d);$(".post").hide().fadeIn("slow")})}})})});
+
+/*! Load Comments */
+;$(document).ready(function(){$("#comments").on("click","nav.ajaxed a.page-numbers",function(c){var b=newPage=postid=tooltip=dir="";var a=$(this);c.preventDefault();postid=$("nav.pagination").data("postid");baseURL=window.location.href;b=parseInt($(".page-numbers.current").text());newPage=parseInt(a.text());if(a.hasClass("next")){newPage=b+1}else{if(a.hasClass("prev")){newPage=b-1}}dir=(newPage>b)?".next":".prev";tooltip=(newPage>b)?"Loading &raquo;":"&laquo; Loading";$("a.page-numbers"+dir).html(tooltip);$.post(ajaxurl,{action:"apoc_load_comments",postid:postid,paged:newPage,baseurl:baseURL},function(d){if(d!="0"){$(".reply").fadeOut("slow").promise().done(function(){$(".reply").remove();$("nav.pagination").remove();$("ol#comment-list").append(d);$(".reply").hide().fadeIn("slow")})}})})});
 
 /*! Insert Comments */
-;$(document).ready(function(){$("form#commentform").submit(function(f){var c="";var e=$(this);var a=e.attr("action");var d=$("#submit",e);var b=$("#comment",e);f.preventDefault();d.attr("disabled","disabled");d.parent().prepend('<div id="comment-notice"></div>');$("#comment-notice").hide();tinyMCE.triggerSave();if(""==b.val()){c="You didn't write anything!"}if(!c){d.attr("value","Submitting...");$.ajax({url:a,type:"post",data:e.serialize(),success:function(g){$("#respond").slideUp("slow",function(){$("#respond").remove();$("ol#comment-list").append(g);$("ol#comment-list li.reply:last-child").hide().slideDown("slow")})},error:function(g,i,h){c="An error occurred during posting."}})}if(c){$("#comment-notice").addClass("error").text(c).fadeToggle("slow");d.removeAttr("disabled")}})});
+;$(document).ready(function(){$("form#commentform").submit(function(f){var c="";var e=$(this);var a=e.attr("action");var d=$("#submit",e);var b=$("#comment",e);f.preventDefault();d.attr("disabled","disabled");d.parent().prepend('<div id="comment-notice"></div>');$("#comment-notice").hide();tinyMCE.triggerSave();if(""==b.val()){c="You didn't write anything!"}if(!c){d.attr("value","Submitting...");$.ajax({url:a,type:"post",data:e.serialize(),success:function(g){$("#respond").slideUp("slow",function(){$("#respond").remove();$("ol#comment-list").append(g);$("#comments .discussion-header").removeClass("noreplies");$("ol#comment-list li.reply:last-child").hide().slideDown("slow")})},error:function(g,i,h){alert(g.status+" : "+h);c="An error occurred during posting."}})}if(c){$("#comment-notice").addClass("error").text(c).fadeToggle("slow");d.removeAttr("disabled")}})});
+
+/*! Delete Comments */
+;$(document).ready(function(){$("a.delete-comment-link").click(function(){confirmation=confirm("Permanently delete this comment?");if(confirmation){button=$(this);button.text("Deleting...");commentid=$(this).data("id");nonce=$(this).data("nonce");$.post(ajaxurl,{action:"apoc_delete_comment",_wpnonce:nonce,commentid:commentid},function(a){if(a){$("li#comment-"+commentid+" div.reply-body").slideUp("slow",function(){$("li#comment-"+commentid).remove()})}})}})});

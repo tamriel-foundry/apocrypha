@@ -28,6 +28,7 @@ I've gone ahead and already setup some Grunt tasks, so once you have Grunt insta
 From your Command Line (Windows) or Terminal (OSX, Linux) you can run any of the following commands:
 
 `grunt build`: This will run all of the linting and minification tasks and push new versions of the files into `dist/`.
+
 `grunt watch`: You can run this command at the beginning of a development session to have Grunt actively watch files for changes and run the tasks on file save.
 
 ** Use the following tasks commands only for release!!! **
@@ -44,7 +45,7 @@ If you haven't done your first release, make sure and check with Zaydok so he ca
 
 ###### Release Info
 
-The version number system goes off [SemVer](http://semver.org). It is highly recommended that you take time to read through the SemVer site so you can understand what the proper release task to use would be given the amount of changes made to the repo. 
+The version number system goes off [SemVer](http://semver.org). It is highly recommended that you take time to read through the SemVer site so you can understand what the proper release task to use would be given the amount of changes made to the repo.
 
 It is also important to note that not every commit needs to be a release. In fact very few should be releases. A release should only be done when the theme is at a point where it is ready to be rolled out to the live site.
 

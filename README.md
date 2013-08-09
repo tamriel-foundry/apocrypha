@@ -21,7 +21,7 @@ Node.js will also install Node Package Manager (NPM). Grunt runs on Node.js, and
 
 Once you have Node.js installed, head to the [Grunt - Getting started page](http://gruntjs.com/getting-started). You will only need to worry about following the instructions up to installing Grunt and Grunt-CLI.
 
-I've gone ahead and already setup some Grunt tasks, so once you have Grunt installed you'll be good to go.
+I've gone ahead and already setup some Grunt tasks, so once you have Grunt installed you'll be good to go. The last thing you'll need to do is from the Command Line (Windows) or Terminal (OSX, Linux) run the command `npm install`. This will automatically install all of the development dependencies for using Grunt that are contained with the `package.json` file.
 
 ##### Grunt tasks
 

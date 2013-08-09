@@ -10,7 +10,7 @@ module.exports = function( grunt ){
 		},
 		watch: {
 			files: [ 'src/apocryphatwo/**/*.php', 'src/apocryphatwo/**/.*css', 'src/apocryphatwo/**/*.js' ],
-			tasks: [ 'jshint', 'uglify' ]
+			tasks: [ 'jshint', 'uglify', 'csslint', 'cssmin', 'phplint' ]
 		},
 		jshint: {
 			options: {
@@ -69,26 +69,6 @@ module.exports = function( grunt ){
 			all: [
 				'src/apocryphatwo/**/*.php'
 			]
-		},
-		banner: '/* <%= pkg.name %> - version <%= pkg.version %> - ' +
-						'<%= grunt.template.today("mm-dd-yyyy") %>\n' +
-						'<%= pkg.description %>\n ' +
-						'&#169 <%= grunt.template.today("yyyy") %> <%= pkg.author.name %> ' +
-						'- <%= pkg.author.email %> */\n',
-		usebanner: {
-			dist: {
-				options: {
-					position: 'top',
-					banner: '<%= banner %>'
-				},
-				files: {
-					src: [
-						'src/apocryphatwo/**/*.js',
-						'src/apocryphatwo/**/*.css',
-						'src/apocryphatwo/**/*.php'
-					]
-				}
-			}
 		}
 	});
 
@@ -100,12 +80,12 @@ module.exports = function( grunt ){
 	grunt.loadNpmTasks( 'grunt-contrib-csslint' );
 	grunt.loadNpmTasks( 'grunt-contrib-cssmin' );
 	grunt.loadNpmTasks( 'grunt-phplint' );
-	grunt.loadNpmTasks( 'grunt-banner' );
 
 	// Register tasks
 	grunt.registerTask( 'default', [] );
-	grunt.registerTask( 'rel:major', [ 'release:major' ] );
-	grunt.registerTask( 'rel:minor', [ 'release:minor' ] );
-	grunt.registerTask( 'rel:patch', [ 'release:patch' ] );
-	grunt.registerTask( 'rel:prerelease', [ 'release:prerelease' ] );
+	grunt.registerTask( 'build', [ 'jshint', 'uglify', 'csslint', 'cssmin', 'phplint' ] );
+	grunt.registerTask( 'rel:major', [ 'build', 'release:major' ] );
+	grunt.registerTask( 'rel:minor', [ 'build', 'release:minor' ] );
+	grunt.registerTask( 'rel:patch', [ 'build', 'release:patch' ] );
+	grunt.registerTask( 'rel:prerelease', [ 'build', 'release:prerelease' ] );
 };

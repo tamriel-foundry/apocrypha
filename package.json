@@ -1,5 +1,5 @@
 {
-  "name": "apocrypha",
+  "name": "Apocrypha",
   "version": "2.0.0",
   "description": "Custom Wordpress theme for TamrielFoundry.com",
   "keywords": [
@@ -9,7 +9,10 @@
     "eso",
     "elder scrolls online"
   ],
-  "author": "TamrielFoundry <admin@tamrielfoundry.com>",
+  "author": {
+    "name": "TamrielFoundry",
+    "email": "admin@tamrielfoundry.com"
+  },
   "contributors": [
     {
       "name": "Andrew Clayton",
@@ -33,7 +36,6 @@
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-csslint": "~0.1.2",
     "grunt-contrib-cssmin": "~0.6.1",
-    "grunt-phplint": "0.0.5",
-    "grunt-banner": "~0.1.4"
+    "grunt-phplint": "0.0.5"
   }
 }

@@ -163,18 +163,19 @@ function apoc_load_comments() {
 		'status' 	=> 'approve',
 		'order'		=> 'ASC',
 	));
-
+	
+	// Get the comment count and max pages
+	$count 		= get_comments_number( $postid );
+	$max_pages	= ceil( $count / 10 );
+	
 	// Display the comments into the buffer
 	ob_start();
 	wp_list_comments( $args , $comments );
 
-	/*
 	// Next we need to build some new pagination
-	echo '<nav class="pagination ajaxed" data-type="' . $type . '">';
-		ajax_pagination( $args = array() , $url  );
+	echo '<nav class="pagination ajaxed" data-postid="' . $postid . '">';
+		ajax_comment_pagination( $args = array() , $url , $paged  );
 	echo '</nav>';
-	*/
-
 	
 	// Get everything from the output buffer
 	$content = ob_get_contents();

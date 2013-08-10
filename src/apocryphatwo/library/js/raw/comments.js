@@ -46,7 +46,10 @@ $(document).ready(function() {
 						$('.reply').remove();
 						$('nav.pagination').remove();
 						$('ol#comment-list').append(response);
-						$('.reply').hide().fadeIn('slow');				
+						$('html, body').animate({ 
+							scrollTop: $( "#comments" ).offset().top 
+						}, 600 );
+						$('.reply').hide().fadeIn('slow');			
 					});			
 				}
 			}

@@ -48,6 +48,9 @@ $(document).ready(function() {
 						$('.post').remove();
 						$('nav.pagination').remove();
 						$('#content').append(response);
+						$('html, body').animate({ 
+							scrollTop: $( "#content" ).offset().top 
+						}, 600 );
 						$('.post').hide().fadeIn('slow');				
 					});			
 				}

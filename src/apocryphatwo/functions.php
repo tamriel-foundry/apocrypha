@@ -24,6 +24,9 @@
 7.0 - Entropy Rising
 --------------------------------------------------------------*/
 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 /*--------------------------------------------------------------
 1.0 - LOAD CORE FRAMEWORK
 --------------------------------------------------------------*/
@@ -120,7 +123,7 @@ function apoc_enqueue_scripts() {
 	/* Register first */
 	wp_register_script( 'foundry' 		, APOC_JS . '/foundry.js' 			,'jquery' , $ver='0.1' 	);
 	wp_register_script( 'flexslider' 	, APOC_JS . '/flexslider.min.js' 	,'jquery' , $ver='0.1' 	);	
-	wp_register_script( 'buddypress'	, APOC_JS . '/buddypress.js' 		,'jquery' , $ver='0.1' 	);	
+	//wp_register_script( 'buddypress'	, APOC_JS . '/buddypress.js' 		,'jquery' , $ver='0.1' 	);	
 	
 	/* Then enqueue */
 	wp_enqueue_script( 'jquery' );

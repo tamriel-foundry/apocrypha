@@ -6,6 +6,9 @@
  * 8-3-2013
  */
  
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+ 
 /** 
  * Display recent comments on front page articles
  * @since 0.1

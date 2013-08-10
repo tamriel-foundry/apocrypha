@@ -6,6 +6,9 @@
  * 8-1-2013
  */
  
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+ 
 /** 
  * Populates the apocrypha global with some useful context
  * @since 1.0

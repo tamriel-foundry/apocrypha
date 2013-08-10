@@ -5,6 +5,9 @@
  * Version 1.0
  * 8-3-2013
  */
+ 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
 
 /**
  * Customize backend messages when a slide is updated

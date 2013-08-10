@@ -6,6 +6,9 @@
  * 8-1-2013
  */
  
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+ 
 /*---------------------------------------------
 1.0 - INCLUDE TEMPLATE ELEMENTS
 ----------------------------------------------*/

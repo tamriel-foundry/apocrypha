@@ -6,6 +6,9 @@
  * 8-3-2013
  */
  
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+ 
 // Display the breadcrumb trail 
  function apoc_breadcrumbs( $args = array() ) {
 	$breadcrumb = '';

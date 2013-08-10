@@ -5,6 +5,9 @@
  * Version 1.0
  * 8-1-2013
  */
+ 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
 
 
 /**

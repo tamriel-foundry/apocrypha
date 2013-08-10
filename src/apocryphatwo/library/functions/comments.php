@@ -12,6 +12,9 @@
 2.0 - Comment Editing
 3.0 - Comment Submission AJAX
 --------------------------------------------------------------*/
+
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
  
 /*---------------------------------------------
 1.0 - COMMENTS TEMPLATE
@@ -88,18 +91,19 @@ function apoc_comments_template( $comment , $args , $depth ) {
 	}
 	
 	// Count comments
-	if ( '' === $args['per_page'] )
-		$args['per_page'] = get_option('comments_per_page');
-	if ( '' == $args['page'] )
-		$args['page'] = get_query_var('cpage');
-	$adj = ( $args['page'] - 1 ) * $args['per_page'];
 	if ( isset ( $apocrypha->comment_count ) )
-			$count = $apocrypha->comment_count + 1;
-	else
-		$count = 1;
+		$count = $apocrypha->comment_count + 1;
+		
+	else {
+		if ( '' === $args['per_page'] )
+			$args['per_page'] = get_option('comments_per_page');
+		if ( '' == $args['page'] )
+			$args['page'] = get_query_var('cpage');
+		$adj = ( $args['page'] - 1 ) * $args['per_page'];
+		$count = $adj + 1;
+	}
 		
 	// Update the global
-	$coubt = $count + $adj;
 	$apocrypha->comment_count = $count;
 
 	// If a template was found, load the template

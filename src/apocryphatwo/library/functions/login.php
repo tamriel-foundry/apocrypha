@@ -6,6 +6,9 @@
  * 8-2-2013
  */
  
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+ 
 /**
  * Overrides elements of wp-login.php
  * @since 1.0

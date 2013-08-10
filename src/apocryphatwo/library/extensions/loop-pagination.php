@@ -9,6 +9,10 @@
  * @param array $args Arguments to customize how the page links are output.
  * @return string $page_links
  */
+ 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 function loop_pagination( $args = array() ) {
 	global $wp_rewrite, $wp_query;
 

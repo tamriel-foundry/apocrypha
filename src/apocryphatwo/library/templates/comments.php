@@ -6,9 +6,8 @@
  * 8-6-2013
  */
 
-// Kill the page if trying to access this template directly.
-if ( 'comments.php' == basename( $_SERVER['SCRIPT_FILENAME'] ) )
-	die( 'Please do not attempt to load this page directly!' );
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
 	
 // Grab the comments and loop them! ?>
 <div id="comments">

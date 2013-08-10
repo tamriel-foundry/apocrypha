@@ -5,6 +5,9 @@
  * Version 0.1
  * 1-11-2013
  */
+ 
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
 
 // Add the post SEO meta box on the 'add_meta_boxes' hook
 add_action( 'add_meta_boxes', 'apoc_add_meta_box_seo', 10, 2 );

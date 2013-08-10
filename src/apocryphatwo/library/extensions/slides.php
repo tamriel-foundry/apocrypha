@@ -6,6 +6,9 @@
  * 8-3-2013
  */
  
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+ 
 /**
 * Set slideshow slide dimensions
 * @since 1.0

@@ -6,6 +6,9 @@
  * 1-11-2013
  */
  
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+ 
 // Add the admin setup function to the 'admin_menu' hook.
 add_action( 'admin_menu', 'setup_apocrypha_admin' ); 
  

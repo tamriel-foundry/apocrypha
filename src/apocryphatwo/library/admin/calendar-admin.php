@@ -5,8 +5,10 @@
  * Version 0.2
  * 7-24-2013
  */
-
  
+// Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) exit;
+
 /**
  * Customize backend messages when an event is updated.
  * @since 0.1

@@ -153,8 +153,8 @@ class Apocrypha {
 			require_once( trailingslashit( APOC_EXTENSIONS ) . 'buddypress.php' );
 			
 		// bbPress Functions
-		//if ( function_exists( 'bbp_version' ) )
-			//require_once( trailingslashit( APOC_EXTENSIONS ) . 'bbpress.php' );
+		if ( function_exists( 'bbp_version' ) )
+			require_once( trailingslashit( APOC_EXTENSIONS ) . 'bbpress.php' );
 	 }
 	 
 	 

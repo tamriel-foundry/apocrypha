@@ -82,6 +82,15 @@ function post_header_class() {
 }
 
 /**
+ * Generates a class for a single post
+ * @since 1.0
+ */
+function page_header_class() {
+	$header = rand( 1 , 6 );
+	echo 'page-header-' . $header;
+}
+
+/**
  * Display the post title, either as a link or plain text
  * @since 1.0
  */

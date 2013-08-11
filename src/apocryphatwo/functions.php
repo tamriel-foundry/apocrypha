@@ -183,11 +183,23 @@ function tinymce_editor_style_version() {
 
 
 
+/**
+ * Used for troubleshooting and development to output a global object
+ * @since 1.0
+ */
+function dump_global( $global = 'apocrypha' , $component = '' ) {
+	global ${$global};
+	echo '<pre style="display:block; overflow:hidden; font-size: 12px;">';
+	if ( '' != $component )
+		print_r( ${$global}->$component );
+	else
+		print_r( ${$global} );
+	echo '</pre>';
+}
 
-function dump_apoc() {
-	global $apocrypha; 
-	echo '<pre>';
-	print_r($apocrypha);
+function dump_variable( $var = '' ) {
+	echo '<pre style="display:block; overflow:hidden; font-size: 12px;">';
+		print_r( $var );
 	echo '</pre>';
 }
 ?>

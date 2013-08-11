@@ -24,7 +24,7 @@ $name		= $user->display_name;
 	
 	<header id="respond-subheader" class="reply-header" >	
 	<?php if ( $user_id == 0 ) : ?>
-		You are not currently logged in. You must <a class="backtotop" href="#admin-bar" title="Please Log In">log in</a> before commenting.
+		You are not currently logged in. You must <a class="backtotop" href="<?php echo SITEURL . '/wp-login.php'; ?>" title="Please Log In">log in</a> before commenting.
 	</header>
 
 	<?php else : ?>
@@ -32,19 +32,27 @@ $name		= $user->display_name;
 	</header>
 	
 	<form action="<?php echo SITEURL . '/wp-comments-post.php'; ?>" method="post" id="commentform">	
-		<?php wp_editor( '' , 'comment' , array(
-			'media_buttons' => false,
-			'wpautop'		=> true,
-			'editor_class'  => 'comment',
-			'quicktags'		=> true,
-			'teeny'			=> false,
-			)
-		); ?>		
-		<p class="form-submit">
-			<input name="submit" type="submit" id="submit" value="Post Comment" />
-			<?php comment_id_fields( $post_id ); ?>
-		</p>	
-		<?php do_action( 'comment_form', $post_id ); ?>	
+		<ol>
+			<li class="wp-editor">
+				<?php wp_editor( '' , 'comment' , array(
+					'media_buttons' => false,
+					'wpautop'		=> true,
+					'editor_class'  => 'comment',
+					'quicktags'		=> true,
+					'teeny'			=> false,
+					)
+				); ?>
+			</li>
+			
+			<li class="hidden">
+				<?php do_action( 'comment_form', $post_id ); ?>	
+			</li>
+			
+			<li class="submit">
+				<input name="submit" type="submit" id="submit" value="Post Comment" />
+				<?php comment_id_fields( $post_id ); ?>
+			</li>	
+		</ol>
 	</form>
 	<?php endif; ?>
 <?php endif; ?>

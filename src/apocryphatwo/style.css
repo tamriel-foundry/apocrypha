@@ -244,7 +244,7 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 1em;
 	}
 h1 { 
-	font-family: Cinzel , Book Antiqua , Serif;
+	font-family: Cinzel , 'Book Antiqua' , Serif;
 	font-size: 1.75em; 
 	font-weight: bold;
 	text-shadow: 2px 2px #000;
@@ -258,7 +258,7 @@ h2 {
 h3 { 
 	font-size: 1.25em; 
 	margin-bottom: 0.75em;
-	font-family: Cinzel , Book Antiqua , Serif;
+	font-family: Cinzel , 'Book Antiqua' , Serif;
 	}
 h4 { 
 	font-size: 1em; 
@@ -387,6 +387,16 @@ form li.honeypot {
 	position: absolute;
 	left: -999em;
 	}
+form li.form-right,
+form li.form-left { 
+	width: 45%; 
+	float: left;
+	text-align: left;
+	}
+form li.form-right { 
+	float: right; 
+	text-align: right;
+	}
 form li.submit input[type="submit"],
 form li.submit button {
 	float: right;
@@ -397,6 +407,12 @@ form ol li label { display: inline-block }
 label.settings-field-label {
 	display: inline-block;
 	width: 200px;
+	}
+form li.wp-editor { margin: -1em 0 0; }
+form li.hidden { margin: 0; }
+form li.submit { 
+	float: right;
+	margin: 0;
 	}
 	
 /*---------------------------------------------
@@ -425,6 +441,10 @@ input[type="url"]:focus,
 input[type="password"]:focus {
 	box-shadow: 0 0 3px #f90;
 	}
+	
+/* Selects */
+select { height: 32px; }
+select option {	background: #b3a695;}
 
 /* Radios and Checkboxes */
 input[type="checkbox"], 
@@ -440,20 +460,20 @@ input[type="radio"] {
 input[type='radio'] + label, 
 input[type='checkbox'] + label {
 	position: relative;
-	top: -2px;
+	top: 0px;
 	cursor: pointer;
 	padding: 5px 3px 5px 24px;
-	background: url(images/icons/checkboxes.png) 4px -52px no-repeat;
+	background: url(images/icons/checkboxes.png) 4px -50px no-repeat;
 	}
 input[type='checkbox']:hover + label,
 input[type='checkbox']:hover + label,
 input[type='checkbox'] + label:hover,
 input[type='checkbox'] + label:hover {
-	background-position: 4px -22px;
+	background-position: 4px -20px;
 	}
 input[type='radio']:checked + label, 
 input[type='checkbox']:checked + label {
-	background-position: 4px 7px;
+	background-position: 4px 9px;
 	}
 	
 /* Placeholder Values */
@@ -611,7 +631,7 @@ div.success {
 	width: 95%;
 	float: left;
 	margin: 0.5em 0;
-	padding: 0.25em 2.5%;
+	padding: 0.5em 2.5%;
 	background: rgba(204, 153, 0, 0.75);
 	border: 1px solid #FC0;	
 	border-radius: 3px;
@@ -619,6 +639,11 @@ div.success {
 	font-size: 0.875em;
 	line-height: 1.5em;
 	color: #000;
+	}
+div.updated {
+	color: #CCC;
+	background: rgba( 51,85,102,0.5);
+	border: 1px solid #BBB;
 	}
 div.error {
 	background: rgba(51,0,0,0.75);
@@ -674,7 +699,7 @@ li.top > a {
 	line-height: 48px;
 	margin: 0 0 0 1px;
 	border-right: 1px solid #000;
-	font-family: Cinzel , Book Antiqua , Serif;
+	font-family: Cinzel , 'Book Antiqua' , Serif;
 	font-size: 1.25em;
 	color: #CCC;
 	text-align: center;
@@ -826,6 +851,7 @@ form#top-login-form input[type="password"] {
 	}
 form#top-login-form input[type="password"] { background-position: 100% 1px; }
 form#top-login-form label#remember-label {
+	top: -3px;
 	display: inline-block;
 	font-size: 10px;
 	line-height: 20px;
@@ -985,7 +1011,7 @@ nav.breadcrumbs {
 	font-size: 0.75em;
 	font-style: italic;
 	letter-spacing: -1px;
-	color: #AAA:
+	color: #AAA;
 	}
 nav.breadcrumbs > * { margin: 0 2px; }
 nav.breadcrumbs > span.trail-before { 
@@ -1410,6 +1436,9 @@ header#respond-subheader {
 	font-size: 14px;
 	padding: 0.5em 1em;
 	}
+#respond form li.text label ,
+#respond form li.select label { width: 100px; }
+
 	
 	
 /*--------------------------------------------------------------
@@ -1612,7 +1641,7 @@ div.social-icons {
 	float: left;
 	margin: 0 0 0 5px;
 	background-image: url(images/icons/social-icons.jpg);
-	background-repeat: none;
+	background-repeat: no-repeat;
 	border: 1px solid #444;
 	border-radius: 8px;
 	box-shadow: 0 0 5px #000;
@@ -1808,7 +1837,7 @@ li.slideshow-tab:last-child { border-right: none; }
 span.slideshow-tab-title {
 	display: block;
 	padding: 3px 0;
-	font-family: 'Cinzel' , Book Antiqua , Serif;
+	font-family: Cinzel , 'Book Antiqua' , Serif;
 	text-transform: uppercase;
 	font-size: 0.875em;
 	text-shadow: 1px 1px #000;
@@ -1973,7 +2002,8 @@ li.topic {
 	}
 li + li.sub-forum,
 li + li.topic { border-top: 1px solid #333; }
-li.sub-forum:last-child {	border-bottom: none; }
+li.sub-forum:last-child,
+li.topic:last-child {	border-bottom: none; }
 div.forum-content  {
 	width: 50%;
 	height: 100%;
@@ -1996,7 +2026,7 @@ div.forum-count {
 	width: 10%;
 	height: 100%;
 	float: left;
-	margin: 0 -1px;
+	margin: 0 -1px 0;
 	border-left: 1px solid #000;
 	border-right: 1px solid #333;
 	text-align: center;
@@ -2049,6 +2079,12 @@ div.freshest-meta span.freshest-time {
 	}
 li.topic div.freshest-meta span.freshest-time {	float: left; }
 
+
+/*---------------------------------------------
+	8.3 - New Topic and Reply Forms
+----------------------------------------------*/
+form#new-post { margin: 0 0 1em; }
+
 /*--------------------------------------------------------------
 X.X - WHERE DO I PUT THIS STUFF?
 --------------------------------------------------------------*/		
@@ -2064,9 +2100,4 @@ span.activity-count {
 /*---------------------------------------------
 X.X - TINYMCE
 ----------------------------------------------*/
-div.wp-editor-wrap {
-	width: 98%;
-	float: left;
-	margin: 0 1% 1em;
-	}
-div.wp-editor-container{padding:0;width:100%;float:left;overflow:hidden;border:1px solid #666;border-radius:5px;box-shadow:0 0 8px #000}div.wp-editor-container td.mceIframeContainer iframe{min-height:150px;height:150px}div.wp-editor-container .quicktags-toolbar,table.mceLayout tr.mceFirst td.mceToolbar{padding:5px 0;border-bottom:3px solid #111;background:#333;background:-ms-linear-gradient(bottom,#333,#444);background:-moz-linear-gradient(bottom,#333,#444);background:-o-linear-gradient(bottom,#333,#444);background:-webkit-linear-gradient(bottom,#333,#444);background:linear-gradient(bottom,#333,#444);box-shadow:0 0 3px #000 inset}div.wp-editor-container .quicktags-toolbar{padding:5px 10px}table.mceLayout tr.mceLast td.mceStatusbar{background:#151515;border:0}table.mceLayout tr.mceLast td.mceStatusbar *{color:#AAA}.wp-editor-tools .wp-switch-editor{background:#222;border:1px solid #666;border-bottom:0;box-shadow:1px 1px 1px #000 inset}.tmce-active .wp-editor-tools .switch-tmce,.html-active .wp-editor-tools .switch-html{background:#555;border:1px solid #666;border-bottom:0;color:#AAA}.wp-editor-tools .wp-switch-editor:hover,.tmce-active .wp-editor-tools .switch-tmce:hover,.html-active .wp-editor-tools .switch-html:hover{background:#666}table.mceLayout td.mceToolbar span.mce_undo,table.mceLayout td.mceToolbar span.mce_redo,table.mceLayout td.mceToolbar span.mce_bullist,table.mceLayout td.mceToolbar span.mce_numlist,table.mceLayout td.mceToolbar span.mce_blockquote,table.mceLayout td.mceToolbar span.mce_charmap,table.mceLayout td.mceToolbar span.mce_bold,table.mceLayout td.mceToolbar span.mce_italic,table.mceLayout td.mceToolbar span.mce_underline,table.mceLayout td.mceToolbar span.mce_justifyleft,table.mceLayout td.mceToolbar span.mce_justifyright,table.mceLayout td.mceToolbar span.mce_justifycenter,table.mceLayout td.mceToolbar span.mce_justifyfull,table.mceLayout td.mceToolbar span.mce_indent,table.mceLayout td.mceToolbar span.mce_outdent,table.mceLayout td.mceToolbar span.mce_link,table.mceLayout td.mceToolbar span.mce_unlink,table.mceLayout td.mceToolbar span.mce_help,table.mceLayout td.mceToolbar span.mce_removeformat,table.mceLayout td.mceToolbar span.mce_fullscreen,table.mceLayout td.mceToolbar span.mce_wp_fullscreen,table.mceLayout td.mceToolbar span.mce_media,table.mceLayout td.mceToolbar span.mce_pastetext,table.mceLayout td.mceToolbar span.mce_pasteword,table.mceLayout td.mceToolbar span.mce_wp_help,table.mceLayout td.mceToolbar span.mce_wp_adv,table.mceLayout td.mceToolbar span.mce_wp_more,table.mceLayout td.mceToolbar span.mce_strikethrough,table.mceLayout td.mceToolbar span.mce_spellchecker,table.mceLayout td.mceToolbar span.mce_forecolor,table.mceLayout td.mceToolbar .mce_forecolorpicker,table.mceLayout td.mceToolbar .mceSplitButton .mce_spellchecker span.mce_spellchecker,table.mceLayout td.mceToolbar .mceSplitButton .mce_forecolor span.mce_forecolor,table.mceLayout td.mceToolbar .mceSplitButton span.mce_numlist,table.mceLayout td.mceToolbar .mceSplitButton span.mce_bullist{background-image:url(images/icons/mceicons.png)}table.mceLayout td.mceToolbar span.mce_strikethrough{background-position:-540px -18px}table.mceLayout td.mceToolbar a.mceButton,table.mceLayout td.mceToolbar a.mceText,table.mceLayout table.mceListBox .mceText,table.mceLayout td.mceToolbar a.mceOpen,table.mceLayout table.mceListBox .mceOpen,table.mceLayout td.mceToolbar a.mceAction{color:#CCC;background:#333;background:-ms-linear-gradient(bottom,#222,#444);background:-moz-linear-gradient(bottom,#222,#444);background:-o-linear-gradient(bottom,#222,#444);background:-webkit-gradient(linear,left bottom,left top,from(#222),to(#444));background:-webkit-linear-gradient(bottom,#222,#444);background:linear-gradient(bottom,#222,#444);border:1px solid #111;border-radius:3px;box-shadow:0 0 2px #666 inset}table.mceLayout td.mceToolbar a.mceButton:hover{background:#555;background:-ms-linear-gradient(bottom,#444,#666);background:-moz-linear-gradient(bottom,#444,#666);background:-o-linear-gradient(bottom,#444,#666);background:-webkit-gradient(linear,left bottom,left top,from(#444),to(#666));background:-webkit-linear-gradient(bottom,#444,#666);background:linear-gradient(bottom,#444,#666);box-shadow:0 0 2px #999 inset}table.mceLayout table.mceListBox,table.mceLayout table.mceSplitButton{background:none!important;border:none!important}table.mceLayout table.mceListBox a.mceOpen,table.mceLayout table.mceSplitButton a.mceOpen{background-image:url(images/icons/down-arrow.gif);background-position:2px 2px;background-repeat:no-repeat;border:1px solid #111;width:12px}table.mceLayout table.mceListBox:hover a.mceOpen,table.mceLayout table.mceSplitButton:hover a.mceOpen{background:#bbb;background-image:url(images/icons/down-arrow.gif);background-position:2px 2px;background-repeat:no-repeat;border:1px solid #111}table.mceLayout table.mceSplitButton:hover a.mceAction,table.mceLayout table.mceListBox:hover a.mceText{color:#111;background:#bbb;background:-ms-linear-gradient(bottom,#aaa,#ccc);background:-moz-linear-gradient(bottom,#aaa,#ccc);background:-o-linear-gradient(bottom,#aaa,#ccc);background:-webkit-gradient(linear,left bottom,left top,from(#aaa),to(#ccc));background:-webkit-linear-gradient(bottom,#aaa,#ccc);background:linear-gradient(bottom,#aaa,#ccc);border:1px solid #111;box-shadow:0 0 2px #000 inset}div.mceMenu tr.mceMenuItem td.mceMenuItemTitle a,div.mceMenu tr.mceMenuItem td.mceMenuItemTitle span.mceText{background:#333!important;color:#BBB}div.mceMenu tr.mceMenuItem td.mce_formatPreview span.mceText{color:#111!important;background:#bbb!important}div.mceMenu tr.mceMenuItem td.mce_formatPreview a:hover{background:#c60!important}table.mceLayout td.mceToolbar a.mceButton.mceButtonDisabled,table.mceLayout td.mceToolbar a.mceButton.mceButtonDisabled:hover{background:#333;background:-ms-linear-gradient(bottom,#222,#444);background:-moz-linear-gradient(bottom,#222,#444);background:-o-linear-gradient(bottom,#222,#444);background:-webkit-gradient(linear,left bottom,left top,from(#222),to(#444));background:-webkit-linear-gradient(bottom,#222,#444);background:linear-gradient(bottom,#222,#444);box-shadow:0 0 3px #111 inset;border:1px solid #666!important}table.mceLayout td.mceToolbar a.mceButton:active,table.mceLayout td.mceToolbar a.mceButtonEnabled:active,table.mceLayout td.mceToolbar a.mceButtonSelected:active,table.mceLayout td.mceToolbar a.mceButtonActive,table.mceLayout td.mceToolbar a.mceButtonActive:active,table.mceLayout td.mceToolbar a.mceButtonActive:hover{background:#BBB;background:-ms-linear-gradient(bottom,#CCC,#AAA);background:-moz-linear-gradient(bottom,#CCC,#AAA);background:-o-linear-gradient(bottom,#CCC,#AAA);background:-webkit-gradient(linear,left bottom,left top,from(#CCC),to(#AAA));background:-webkit-linear-gradient(bottom,#CCC,#AAA);background:linear-gradient(bottom,#CCC,#AAA);box-shadow:0 0 2px #222 inset}table.mceLayout td.mceToolbar table.mce_spellchecker,table.mceLayout td.mceToolbar a.mce_wp_more,table.mceLayout td.mceToolbar a.mce_wp_help{display:none}.ui-dialog{color:#222;padding-bottom:10px}form#wp-link p#internal-toggle{display:none}form#wp-link div.submitbox{overflow:visible}div.wp-editor-container,div.wp-editor-container textarea.wp-editor-area{background:#151515;color:#CCC}div.wp-editor-container div.quicktags-toolbar input{color:#CCC;border:1px solid #111;border-radius:3px;background:#333;background:-ms-linear-gradient(bottom,#222,#444);background:-moz-linear-gradient(bottom,#222,#444);background:-o-linear-gradient(bottom,#222,#444);background:-webkit-linear-gradient(bottom,#222,#444);background:linear-gradient(bottom,#222,#444);box-shadow:0 0 2px #666 inset}div.wp-editor-container div.quicktags-toolbar input:hover{border-color:#111;background:#666;box-shadow:0 0 2px #999 inset}
+div.wp-editor-wrap{width:98%;float:left;margin:0 1% 1em}div.wp-editor-container{width:auto;padding:0;width:100%;overflow:hidden;border:1px solid #666;border-radius:5px;box-shadow:0 0 8px #000}div.wp-editor-container td.mceIframeContainer iframe{min-height:150px}div.wp-editor-container .quicktags-toolbar,table.mceLayout tr.mceFirst td.mceToolbar{padding:5px 0;border-bottom:3px solid #111;background:#333;background:-ms-linear-gradient(top,#444,#333);background:-moz-linear-gradient(top,#444,#333);background:-o-linear-gradient(top,#444,#333);background:-webkit-linear-gradient(top,#444,#333);box-shadow:0 0 3px #000 inset}div.wp-editor-container .quicktags-toolbar{padding:5px 10px}table.mceLayout tr.mceLast td.mceStatusbar{background:#151515;border:0}table.mceLayout tr.mceLast td.mceStatusbar *{color:#AAA}.wp-editor-tools .wp-switch-editor{background:#222;border:1px solid #666;border-bottom:0;box-shadow:1px 1px 1px #000 inset}.tmce-active .wp-editor-tools .switch-tmce,.html-active .wp-editor-tools .switch-html{background:#555;border:1px solid #666;border-bottom:0;color:#AAA}.wp-editor-tools .wp-switch-editor:hover,.tmce-active .wp-editor-tools .switch-tmce:hover,.html-active .wp-editor-tools .switch-html:hover{background:#666}table.mceLayout td.mceToolbar span.mce_undo,table.mceLayout td.mceToolbar span.mce_redo,table.mceLayout td.mceToolbar span.mce_bullist,table.mceLayout td.mceToolbar span.mce_numlist,table.mceLayout td.mceToolbar span.mce_blockquote,table.mceLayout td.mceToolbar span.mce_charmap,table.mceLayout td.mceToolbar span.mce_bold,table.mceLayout td.mceToolbar span.mce_italic,table.mceLayout td.mceToolbar span.mce_underline,table.mceLayout td.mceToolbar span.mce_justifyleft,table.mceLayout td.mceToolbar span.mce_justifyright,table.mceLayout td.mceToolbar span.mce_justifycenter,table.mceLayout td.mceToolbar span.mce_justifyfull,table.mceLayout td.mceToolbar span.mce_indent,table.mceLayout td.mceToolbar span.mce_outdent,table.mceLayout td.mceToolbar span.mce_link,table.mceLayout td.mceToolbar span.mce_unlink,table.mceLayout td.mceToolbar span.mce_help,table.mceLayout td.mceToolbar span.mce_removeformat,table.mceLayout td.mceToolbar span.mce_fullscreen,table.mceLayout td.mceToolbar span.mce_wp_fullscreen,table.mceLayout td.mceToolbar span.mce_media,table.mceLayout td.mceToolbar span.mce_pastetext,table.mceLayout td.mceToolbar span.mce_pasteword,table.mceLayout td.mceToolbar span.mce_wp_help,table.mceLayout td.mceToolbar span.mce_wp_adv,table.mceLayout td.mceToolbar span.mce_wp_more,table.mceLayout td.mceToolbar span.mce_strikethrough,table.mceLayout td.mceToolbar span.mce_spellchecker,table.mceLayout td.mceToolbar span.mce_forecolor,table.mceLayout td.mceToolbar .mce_forecolorpicker,table.mceLayout td.mceToolbar .mceSplitButton .mce_spellchecker span.mce_spellchecker,table.mceLayout td.mceToolbar .mceSplitButton .mce_forecolor span.mce_forecolor,table.mceLayout td.mceToolbar .mceSplitButton span.mce_numlist,table.mceLayout td.mceToolbar .mceSplitButton span.mce_bullist{background-image:url(images/icons/mceicons.png)}table.mceLayout td.mceToolbar span.mce_strikethrough{background-position:-540px -18px}table.mceLayout td.mceToolbar a.mceButton,table.mceLayout td.mceToolbar a.mceText,table.mceLayout table.mceListBox .mceText,table.mceLayout td.mceToolbar a.mceOpen,table.mceLayout table.mceListBox .mceOpen,table.mceLayout td.mceToolbar a.mceAction{color:#CCC;background:#333;background:-ms-linear-gradient(top,#444,#222);background:-moz-linear-gradient(top,#444,#222);background:-o-linear-gradient(top,#444,#222);background:-webkit-linear-gradient(top,#444,#222);border:1px solid #111;border-radius:3px;box-shadow:0 0 2px #666 inset}table.mceLayout td.mceToolbar a.mceButton:hover{background:#555;background:-ms-linear-gradient(top,#666,#444);background:-moz-linear-gradient(top,#666,#444);background:-o-linear-gradient(top,#666,#444);background:-webkit-linear-gradient(top,#666,#444);box-shadow:0 0 2px #999 inset}table.mceLayout table.mceListBox,table.mceLayout table.mceSplitButton{background:none !important;border:none !important}table.mceLayout table.mceListBox a.mceOpen,table.mceLayout table.mceSplitButton a.mceOpen{background-image:url(images/icons/down-arrow.gif);background-position:2px 2px;background-repeat:no-repeat;border:1px solid #111;width:12px}table.mceLayout table.mceListBox:hover a.mceOpen,table.mceLayout table.mceSplitButton:hover a.mceOpen{background:#bbb;background-image:url(images/icons/down-arrow.gif);background-position:2px 2px;background-repeat:no-repeat;border:1px solid #111}table.mceLayout table.mceSplitButton:hover a.mceAction,table.mceLayout table.mceListBox:hover a.mceText{color:#111;background:#bbb;background:-ms-linear-gradient(top,#AAA,#CCC);background:-moz-linear-gradient(top,#AAA,#CCC);background:-o-linear-gradient(top,#AAA,#CCC);background:-webkit-linear-gradient(top,#AAA,#CCC);border:1px solid #111;box-shadow:0 0 2px #000 inset}div.mceMenu tr.mceMenuItem td.mceMenuItemTitle a,div.mceMenu tr.mceMenuItem td.mceMenuItemTitle span.mceText{background:#333 !important;color:#BBB}div.mceMenu tr.mceMenuItem td.mce_formatPreview span.mceText{color:#111 !important;background:#bbb !important}div.mceMenu tr.mceMenuItem td.mce_formatPreview a:hover{background:#c60 !important}table.mceLayout td.mceToolbar a.mceButton.mceButtonDisabled,table.mceLayout td.mceToolbar a.mceButton.mceButtonDisabled:hover{background:#333;background:-ms-linear-gradient(top,#444,#222);background:-moz-linear-gradient(top,#444,#222);background:-o-linear-gradient(top,#444,#222);background:-webkit-linear-gradient(top,#444,#222);box-shadow:0 0 3px #111 inset;border:1px solid #666 !important}table.mceLayout td.mceToolbar a.mceButton:active,table.mceLayout td.mceToolbar a.mceButtonEnabled:active,table.mceLayout td.mceToolbar a.mceButtonSelected:active,table.mceLayout td.mceToolbar a.mceButtonActive,table.mceLayout td.mceToolbar a.mceButtonActive:active,table.mceLayout td.mceToolbar a.mceButtonActive:hover{background:#BBB;background:-ms-linear-gradient(top,#AAA,#CCC);background:-moz-linear-gradient(top,#AAA,#CCC);background:-o-linear-gradient(top,#AAA,#CCC);background:-webkit-linear-gradient(top,#AAA,#CCC);box-shadow:0 0 2px #222 inset}table.mceLayout td.mceToolbar table.mce_spellchecker,table.mceLayout td.mceToolbar a.mce_wp_more,table.mceLayout td.mceToolbar a.mce_wp_help{display:none}.ui-dialog{color:#222;padding-bottom:10px}form#wp-link p#internal-toggle{display:none}form#wp-link div.submitbox{overflow:visible}div.wp-editor-container,div.wp-editor-container textarea.wp-editor-area{background:#151515;color:#CCC}div.wp-editor-container div.quicktags-toolbar input{color:#CCC;border:1px solid #111;border-radius:3px;background:#333;background:-ms-linear-gradient(top,#444,#222);background:-moz-linear-gradient(top,#444,#222);background:-o-linear-gradient(top,#444,#222);background:-webkit-linear-gradient(top,#444,#222);box-shadow:0 0 2px #666 inset}div.wp-editor-container div.quicktags-toolbar input:hover{border-color:#111;background:#666;box-shadow:0 0 2px #999 inset}

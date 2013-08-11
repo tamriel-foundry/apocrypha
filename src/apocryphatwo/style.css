@@ -33,6 +33,7 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	4.2 - Breadcrumbs
 	4.3 - Pagination
 	4.4 - Footer Navigation
+	4.5 - Forum Navigation
 5.0 - Posts and Pages	
 	5.1 - Headers
 	5.2 - Content
@@ -1075,6 +1076,31 @@ a#anvil-link {
 	background: url(images/icons/footer-anvil.png) 0 100% no-repeat;
 	}
 a#anvil-link:hover { background-position: 0 0; }
+
+/*---------------------------------------------
+4.5 - Forum Navigation and Controls
+----------------------------------------------*/
+nav.topic-pagination {
+	width: auto;
+	margin: 0;
+	float: right;
+	position: absolute;
+	bottom: -2px;
+	right: -4px;
+	}
+nav.topic-pagination .page-numbers {
+	padding: 1px 5px;
+	font-size: 12px;
+	}
+a.last-reply-link {
+	float: right;
+	color: #666;
+	font-size: 1.25em;
+	}
+a.last-reply-link:hover {
+	color: #C60;
+	text-shadow: 0 0 10px #c60;
+	}
 	
 	
 /*--------------------------------------------------------------
@@ -1108,15 +1134,6 @@ header.entry-header {
 .post-header-4 { background-position: -440px -300px; }
 .post-header-5 { background-position: -440px -400px; }
 .post-header-6 { background-position: -440px -500px; }
-
-.page-header-1 { background-position: 0 -600px; }
-.page-header-2 { background-position: 0 -700px; }
-.page-header-3 { background-position: 0 -700px; }
-.page-header-4 { background-position: 0 -800px; }
-.page-header-5 { background-position: 0 -900px; }
-.page-header-6 { background-position: 0 -1000px; }
-
-
 .archive .post .entry-header {
 	height: 75px;
 	margin: 0 0 0.5em 0;
@@ -1131,6 +1148,13 @@ header.entry-header {
 .home-header-4 { background-position: 0 -225px; }
 .home-header-5 { background-position: 0 -300px; }
 .home-header-6 { background-position: 0 -375px; }
+
+.page-header-1 { background-position: 0 -600px; }
+.page-header-2 { background-position: 0 -700px; }
+.page-header-3 { background-position: 0 -700px; }
+.page-header-4 { background-position: 0 -800px; }
+.page-header-5 { background-position: 0 -900px; }
+.page-header-6 { background-position: 0 -1000px; }
 	
 /* Entry Title */
 .entry-title {
@@ -1957,6 +1981,8 @@ div.forum-content  {
 	border-right: 1px solid #333;
 	margin-right: -1px;
 	}
+li.topic div.forum-content,
+header.topics div.forum-content { width: 65%; }
 h3.forum-title {
 	margin: 0 10px;
 	font-size: 1.125em;
@@ -1966,7 +1992,6 @@ p.forum-description {
 	font-size: 0.8em;
 	font-family: 'Open Sans' , sans-serif;
 	}
-	
 div.forum-count {
 	width: 10%;
 	height: 100%;
@@ -1994,6 +2019,8 @@ div.forum-freshness {
 	border-left: 1px solid #000;
 	margin-left: -1px;
 	}
+li.topic div.forum-freshness,
+header.topics div.forum-freshness  { width: 25%; }
 header.forum-header div.forum-freshness { text-align: center; }
 div.forum-freshness > a.bbp-author-avatar {
 	display: block;
@@ -2020,6 +2047,7 @@ div.freshest-meta span.freshest-time {
 	font-size: 0.75em;
 	color: #AAA;
 	}
+li.topic div.freshest-meta span.freshest-time {	float: left; }
 
 /*--------------------------------------------------------------
 X.X - WHERE DO I PUT THIS STUFF?

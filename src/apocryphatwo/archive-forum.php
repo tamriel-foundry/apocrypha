@@ -8,7 +8,6 @@
 ?>
 
 <?php get_header(); ?>
-	
 	<div id="content" class="no-sidebar" role="main">
 		<?php apoc_breadcrumbs(); ?>
 		
@@ -22,10 +21,6 @@
 			<?php do_action( 'bbp_template_notices' ); ?>
 			<?php do_action( 'template_notices' ); ?>
 			
-			<div class="forum-search">
-				<?php // bbp_get_template_part( 'form', 'search' ); ?>
-			</div>
-
 			<?php if ( bbp_has_forums() ) : while ( bbp_forums() ) : bbp_the_forum(); ?>
 				<?php bbp_get_template_part( 'loop', 'single-forum' ); ?>
 			<?php endwhile;	else : ?>
@@ -34,5 +29,4 @@
 
 		</div><!-- #forums -->	
 	</div><!-- #content -->
-	
 <?php get_footer(); // Load the footer ?>

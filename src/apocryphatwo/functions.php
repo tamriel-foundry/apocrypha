@@ -102,10 +102,12 @@ function apoc_enqueue_styles() {
 
 	/* Register first */
 	wp_register_style( 'primary' , THEME_URI . '/style.css' , false , $ver=filemtime( THEME_DIR . "/style.css" ) );
-	wp_register_style( 'fonts' , 'http://fonts.googleapis.com/css?family=Cinzel|PT+Serif|Open+Sans' , false );
+	wp_register_style( 'google-fonts' , 'http://fonts.googleapis.com/css?family=Cinzel|PT+Serif|Open+Sans' , false );
+	wp_register_style( 'font-awesome' , 'http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css' , false );
 	
 	/* Then enqueue - some styles are only needed on specific pages */
-	wp_enqueue_style( 'fonts' );
+	wp_enqueue_style( 'google-fonts' );
+	wp_enqueue_style( 'font-awesome' );
 	wp_enqueue_style( 'primary' );
 }
 

@@ -4,12 +4,6 @@ var themeurl	= siteurl + 'wp-content/themes/apocrypha/';
 var ajaxurl 	= siteurl + 'wp-admin/admin-ajax.php';
 var $			= jQuery;
 
-/*! Admin bar AJAX login function */
-;$(document).ready(function(){$("#top-login-form").submit(function(){$("input#login-submit").attr("disabled","disabled");$("input#login-submit").attr("value","...");$.ajax({type:"POST",dataType:"json",data:$(this).serialize(),url:ajaxurl,success:function(a){if(a.success==1){window.location=a.redirect}else{$("input#login-submit").removeAttr("disabled");$("input#login-submit").attr("value","Log In");$("#top-login-error").html(a.error);$("#top-login-error").fadeToggle("slow")}}});return false})});
-
-/*! Buddypress Frontend Notifications */
-;$(document).ready(function(){$("a.clear-notification").click(function(g){var c=$(this);var f=b(c.attr("href"),"_wpnonce");var e=b(c.attr("href"),"notid");var d=b(c.attr("href"),"type");g.preventDefault();c.removeAttr("href");c.html(" &#x2713;");$.post(ajaxurl,{action:"apoc_clear_notification",_wpnonce:f,notid:e},function(h){if(h){counter=$("li#notifications-"+d+" span.notifications-number");count=parseInt(counter.text());if(count>1){counter.text(count-1);c.parent().remove()}else{counter.remove();c.parent().text("Notifications cleared!")}title=$("title").text();count=title.split("]")[0].substr(1);if(1<count){title=title.replace(count,count-1)}else{title=title.replace(/\[(.*)\]/,"")}document.title=title}})});function b(d,c){var g=d.split("?");var f=g[1].split("&");for(var e=0;e<f.length;e++){var h=f[e].split("=");if(h[0]==c){return h[1]}}return""}function a(){count=0;$.each(["activity","messages","groups","friends"],function(d,e){target=$("li#notifications-"+e+" span.notifications-number");if(target.is("*")){count=count+parseInt(target.text())}});if(count>0){var c=$("title").text().replace(/\[.*\]/,"");c="["+count+"]"+c;$("title").text(c)}}a()});
-
 /*! Back To Top Link Scrolling */
 ;$(document).ready(function(){$("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);return false})});
 
@@ -27,6 +21,12 @@ var $			= jQuery;
 
 /*! jQuery Document Ready Functions */
 ;$(document).ready(function(){
+
+/*! Admin bar AJAX login function */
+;$("#top-login-form").submit(function(){$("#login-submit").attr("disabled","disabled");$("#login-submit").html('<i class="icon-unlock-alt"></i> ... ');$.ajax({type:"POST",dataType:"json",data:$(this).serialize(),url:ajaxurl,success:function(a){if(a.success==1){window.location=a.redirect}else{$("#login-submit").removeAttr("disabled");$("#login-submit").html('<i class="icon-lock"></i>Log In');$("#top-login-error").html(a.error);$("#top-login-error").fadeToggle("slow")}}});return false});$("#top-login-logout").click(function(){$(this).html('<i class="icon-lock"></i>Logging Out')});
+
+/*! Buddypress Frontend Notifications */
+;$("a.clear-notification").click(function(e){var a=$(this);var d=get_var_in_url(a.attr("href"),"_wpnonce");var c=get_var_in_url(a.attr("href"),"notid");var b=get_var_in_url(a.attr("href"),"type");e.preventDefault();a.removeAttr("href");a.html('<i class="icon-ok"></i>');$.post(ajaxurl,{action:"apoc_clear_notification",_wpnonce:d,notid:c},function(f){if(f){counter=$("li#notifications-"+b+" span.notifications-number");count=parseInt(counter.text());if(count>1){counter.text(count-1);a.parent().remove()}else{counter.remove();a.parent().text("Notifications cleared!")}title=$("title").text();count=title.split("]")[0].substr(1);if(1<count){title.replace(count,count-1)}else{title.replace(/\[.*\]/,"")}document.title=title}})});function get_var_in_url(b,a){var e=b.split("?");var d=e[1].split("&");for(var c=0;c<d.length;c++){var f=d[c].split("=");if(f[0]==a){return f[1]}}return""}function title_notification_count(){count=0;$.each(["activity","messages","groups","friends"],function(b,c){target=$("li#notifications-"+c+" span.notifications-number");if(target.is("*")){count=count+parseInt(target.text())}});if(count>0){var a=$("title").text().replace(/\[.*\]/,"");a="["+count+"]"+a;$("title").text(a)}}title_notification_count();
 
 /*! AJAX Posts Loop */
 ;$("#content").on("click","nav.ajaxed a.page-numbers",function(c){var b=newPage=type=id=tooltip=dir="";var a=$(this);c.preventDefault();type=$("nav.pagination").data("type");id=$("nav.pagination").data("id");baseURL=window.location.href;b=parseInt($(".page-numbers.current").text());newPage=parseInt(a.text());if(a.hasClass("next")){newPage=b+1}else{if(a.hasClass("prev")){newPage=b-1}}dir=(newPage>b)?".next":".prev";tooltip=(newPage>b)?"Loading &raquo;":"&laquo; Loading";$("a.page-numbers"+dir).html(tooltip);$.post(ajaxurl,{action:"apoc_load_posts",type:type,id:id,paged:newPage,baseurl:baseURL},function(d){if(d!="0"){$(".post").fadeOut("slow").promise().done(function(){$(".post").remove();$("nav.pagination").remove();$("#content").append(d);$("html, body").animate({scrollTop:$("#content").offset().top-15},600);$(".post").hide().fadeIn("slow")})}})});

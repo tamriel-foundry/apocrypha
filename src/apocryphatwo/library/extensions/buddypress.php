@@ -79,6 +79,7 @@ function apoc_notifications_menu() {
 	global $apocrypha;
 	$user 		= $apocrypha->user->data;
 	$user_id	= $user->ID;
+	$name		= $user->user_nicename;
 	
 	// Bail if it's a guest
 	if ( $user_id == '' )
@@ -95,20 +96,19 @@ function apoc_notifications_menu() {
 				<span class="notifications-number"><?php echo count( $notifications['activity'] ); ?></span>
 			<?php endif; ?>		
 				<div class="admin-bar-dropdown">
-					<ul class="notification-list">
+					<ul class="notification-list icons-ul">
 					<?php if ( !empty( $notifications['activity'] ) ) : for ( $i=0 ; $i<count( $notifications['activity'] ) ; $i++ ) : ?>
-						<li id="notification-<?php echo $notifications['activity'][$i]['id']; ?>" class="notification-entry">
-							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=activity&amp;notid='.$notifications['activity'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '">&#x2717;</a>'; ?>
+						<li id="notification-<?php echo $notifications['activity'][$i]['id']; ?>" class="notification-entry"><i class="icon-li icon-chevron-right"></i>
+							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=activity&amp;notid='.$notifications['activity'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"><i class="icon-remove"></i></a>'; ?>
 							<?php echo '<a href="'.$notifications['activity'][$i]['href'] .'">'.$notifications['activity'][$i]['content'] .'</a>'; ?>
 						</li>
 					<?php endfor; else: ?>
-						<li class="notification-entry">You have no new mentions.</li>
+						<li class="notification-entry"><i class="icon-li icon-chevron-right"></i>You have no new mentions.</li>
 					<?php endif; ?>	
 					</ul>
 					<ul class="notification-links">
-						<li><a class="button" href="<?php echo SITEURL . '/activity/'; ?>" title="The sitewide activity feed">Site Feed</a></li>
-						<li><a class="button" href="<?php echo SITEURL . '/members/' . $current_user->user_nicename . '/activity/friends/'; ?>" title="Recent activity by your friends">Friend Activity</a></li>
-						<li><a class="button" href="<?php echo SITEURL . '/members/' . $current_user->user_nicename . '/activity/mentions/'; ?>" title="Your mentions in the community">Mentions</a></li>
+						<li><a class="button" href="<?php echo SITEURL . '/activity/'; ?>" title="The sitewide activity feed"><i class="icon-gears"></i>Site Feed</a></li>
+						<li><a class="button" href="<?php echo SITEURL . '/members/' . $name . '/activity/mentions/'; ?>" title="Your mentions in the community"><i class="icon-comments-alt"></i>Your Mentions</a></li>
 					</ul>					
 				</div>
 			</li>
@@ -118,20 +118,20 @@ function apoc_notifications_menu() {
 				<span class="notifications-number"><?php echo count( $notifications['messages'] ); ?></span>
 			<?php endif; ?>		
 				<div class="admin-bar-dropdown">
-					<ul class="notification-list">
+					<ul class="notification-list icons-ul">
 					<?php if ( !empty( $notifications['messages'] ) ) : for ( $i=0 ; $i<count( $notifications['messages'] ) ; $i++ ) : ?>
-						<li id="notification-<?php echo $notifications['messages'][$i]['id']; ?>" class="notification-entry">
-							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=messages&amp;notid='.$notifications['messages'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '">&#x2717;</a>'; ?>
+						<li id="notification-<?php echo $notifications['messages'][$i]['id']; ?>" class="notification-entry"><i class="icon-li icon-chevron-right"></i>
+							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=messages&amp;notid='.$notifications['messages'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"><i class="icon-remove"></i></a>'; ?>
 							<?php echo '<a href="'.$notifications['messages'][$i]['href'] .'">'.$notifications['messages'][$i]['content'] .'</a>'; ?>
 						</li>
 					<?php endfor; else: ?>
-						<li class="notification-entry">You have no new messages.</li>
+						<li class="notification-entry"><i class="icon-li icon-chevron-right"></i>You have no new messages.</li>
 					<?php endif; ?>	
 					</ul>
 					<ul class="notification-links">
-						<li><a class="button" href="<?php echo SITEURL . '/members/' . $current_user->user_nicename . '/messages/'; ?>" title="Go to your inbox">Inbox</a></li>
-						<li><a class="button" href="<?php echo SITEURL . '/members/' . $current_user->user_nicename . '/messages/sentbox/'; ?>" title="Browse your sent messages">Outbox</a></li>
-						<li><a class="button" href="<?php echo SITEURL . '/members/' . $current_user->user_nicename . '/messages/compose/'; ?>" title="Send a new message">New Message</a></li>
+						<li><a class="button" href="<?php echo SITEURL . '/members/' . $name . '/messages/'; ?>" title="Go to your inbox"><i class="icon-inbox"></i>Inbox</a></li>
+						<li><a class="button" href="<?php echo SITEURL . '/members/' . $name . '/messages/sentbox/'; ?>" title="Browse your sent messages"><i class="icon-envelope-alt"></i>Outbox</a></li>
+						<li><a class="button" href="<?php echo SITEURL . '/members/' . $name . '/messages/compose/'; ?>" title="Send a new message"><i class="icon-edit"></i>New Message</a></li>
 					</ul>					
 				</div>
 			</li>
@@ -141,19 +141,19 @@ function apoc_notifications_menu() {
 				<span class="notifications-number"><?php echo count( $notifications['friends'] ); ?></span>
 			<?php endif; ?>		
 				<div class="admin-bar-dropdown">
-					<ul class="notification-list">
+					<ul class="notification-list icons-ul">
 					<?php if ( !empty( $notifications['friends'] ) ) : for ( $i=0 ; $i<count( $notifications['friends'] ) ; $i++ ) : ?>
-						<li id="notification-<?php echo $notifications['friends'][$i]['id']; ?>" class="notification-entry">
-							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=friends&amp;notid='.$notifications['friends'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '">&#x2717;</a>'; ?>
+						<li id="notification-<?php echo $notifications['friends'][$i]['id']; ?>" class="notification-entry"><i class="icon-li icon-chevron-right"></i>
+							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=friends&amp;notid='.$notifications['friends'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"><i class="icon-remove"></i></a>'; ?>
 							<?php echo '<a href="'.$notifications['friends'][$i]['href'] .'">'.$notifications['friends'][$i]['content'] .'</a>'; ?>
 						</li>
 					<?php endfor; else: ?>
-						<li class="notification-entry">You have no new friend requests.</li>
+						<li class="notification-entry"><i class="icon-li icon-chevron-right"></i>You have no new friend requests.</li>
 					<?php endif; ?>	
 					</ul>
 					<ul class="notification-links">
-						<li><a class="button" href="<?php echo SITEURL . '/members/' . $current_user->user_nicename . '/friends/'; ?>" title="View your friends list">Your Friends</a></li>
-						<li><a class="button" href="<?php echo SITEURL . '/members/' . $current_user->user_nicename . '/activity/friends'; ?>" title="Recent activity by your friends">Friend Activity</a></li>
+						<li><a class="button" href="<?php echo SITEURL . '/members/' . $name . '/friends/'; ?>" title="View your friends list"><i class="icon-user"></i>Your Friends</a></li>
+						<li><a class="button" href="<?php echo SITEURL . '/members/' . $name . '/activity/friends'; ?>" title="Recent activity by your friends"><i class="icon-gears"></i>Friend Activity</a></li>
 					</ul>					
 				</div>
 			</li>
@@ -163,20 +163,20 @@ function apoc_notifications_menu() {
 				<span class="notifications-number"><?php echo count( $notifications['groups'] ); ?></span>
 			<?php endif; ?>		
 				<div class="admin-bar-dropdown">
-					<ul class="notification-list">
+					<ul class="notification-list icons-ul">
 					<?php if ( !empty( $notifications['groups'] ) ) : for ( $i=0 ; $i<count( $notifications['groups'] ) ; $i++ ) : ?>
-						<li id="notification-<?php echo $notifications['groups'][$i]['id']; ?>" class="notification-entry">
-							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=groups&amp;notid='.$notifications['groups'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '">&#x2717;</a>'; ?>
+						<li id="notification-<?php echo $notifications['groups'][$i]['id']; ?>" class="notification-entry"><i class="icon-li icon-chevron-right"></i>
+							<?php echo '<a class="clear-notification" href="' . bp_core_get_user_domain( $user_id ) . '?type=groups&amp;notid='.$notifications['groups'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"><i class="icon-remove"></i></a>'; ?>
 							<?php echo '<a href="'.$notifications['groups'][$i]['href'] .'">'.$notifications['groups'][$i]['content'] .'</a>'; ?>
 						</li>
 					<?php endfor; else: ?>
-						<li class="notification-entry">You have no new group notifications.</li>
+						<li class="notification-entry"><i class="icon-li icon-chevron-right"></i>You have no new group notifications.</li>
 					<?php endif; ?>	
 					</ul>
 					<ul class="notification-links">
-						<li><a class="button" href="<?php echo SITEURL . '/groups/'; ?>" title="View the sitewide guild listing">Groups</a></li>
-						<li><a class="button" href="<?php echo SITEURL . '/members/' . $current_user->user_nicename . '/groups/'; ?>" title="View your groups listing">Your Groups</a></li>
-						<li><a class="button" href="<?php echo SITEURL . '/members/' . $current_user->user_nicename . '/activity/groups/'; ?>" title="View recent activity within your groups">Group Activity</a></li>
+						<li><a class="button" href="<?php echo SITEURL . '/groups/'; ?>" title="View the sitewide guild listing"><i class="icon-globe"></i>Guilds</a></li>
+						<li><a class="button" href="<?php echo SITEURL . '/members/' . $name . '/groups/'; ?>" title="View your groups listing"><i class="icon-group"></i>Your Guilds</a></li>
+						<li><a class="button" href="<?php echo SITEURL . '/members/' . $name . '/activity/groups/'; ?>" title="View recent activity within your groups"><i class="icon-gears"></i>Guild Feed</a></li>
 					</ul>					
 				</div>
 			</li>

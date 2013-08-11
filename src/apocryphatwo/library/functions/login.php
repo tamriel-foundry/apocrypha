@@ -54,8 +54,8 @@ function apoc_header_login() {
 		$redirect 	= wp_logout_url( get_current_url() ); ?>	
 		
 		<a href="<?php echo $link; ?>" title="Visit your user profile"><?php echo $avatar; ?></a>
-		<span class="logged-in-welcome">Welcome back, <?php echo $name; ?></span>
-		<a id="top-login-logout" class="admin-bar-login-link button" href="<?php echo $redirect; ?>" title="Log out of this account.">Logout</a>
+		<span id="logged-in-welcome">Welcome back, <?php echo $name; ?></span>
+		<a id="top-login-logout" class="admin-bar-login-link button" href="<?php echo $redirect; ?>" title="Log out of this account."><i class="icon-lock"></i>Logout</a>
 		
 	<?php // Otherwise we need to display the login form
 	else :?>
@@ -73,13 +73,13 @@ function apoc_header_login() {
 			<input type="hidden" name="redirect" value="<?php echo get_current_url(); ?>">
 			<input type="hidden" name="action" value="toplogin">
 			
-			<input type="submit" name="login-submit" id="login-submit" class="admin-bar-login-link" value="Log In" tabindex="1">
+			<button type="submit" name="login-submit" id="login-submit" class="admin-bar-login-link" tabindex="1"><i class="icon-lock"></i>Log In</button>
 			
 			<?php if ( get_option( 'users_can_register' ) ) : ?>
-				<a class="admin-bar-login-link button" href="<?php echo trailingslashit(SITEURL) . BP_REGISTER_SLUG; ?>" title="Register a new user account!">Register</a>
+				<a class="admin-bar-login-link button" href="<?php echo trailingslashit(SITEURL) . BP_REGISTER_SLUG; ?>" title="Register a new user account!"><i class="icon-user"></i>Register</a>
 			<?php endif; ?>
 			
-			<a class="admin-bar-login-link button" href="<?php echo wp_lostpassword_url(); ?>" title="Lost your password?">Lost Password</a>
+			<a class="admin-bar-login-link button" href="<?php echo wp_lostpassword_url(); ?>" title="Lost your password?"><i class="icon-question"></i>Lost Password</a>
 			
 			<?php wp_nonce_field( 'ajax-login-nonce', 'top-login' ); ?>
 		

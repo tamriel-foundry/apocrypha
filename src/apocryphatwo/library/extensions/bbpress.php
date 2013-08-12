@@ -189,87 +189,47 @@ function apoc_reply_admin_links() {
 	
 	// Make sure it's a logged-in user
 	if ( !is_user_logged_in() ) return false;
-	
-	// If so, go ahead
-	$links = apoc_quote_button( 'reply' );
-	$links .= '<a class="reply-link button button-dark" href="#new-post" title="Quick Reply"><i class="icon-reply"></i>Reply</a>';
-	
-	// Topic or Reply?
-	global $id;
-	$context = ( bbp_is_reply( $id ) ) ? 'reply' : 'topic';
-	switch ( $context ) {
-		case 'reply' :
-			$links 	.= apoc_reply_edit_link();
-			break;
-			
-		case 'topic' :
-			$links 	.= apoc_topic_edit_link();
-			break;
-	
-	}
-	
-	// Output the links
-	echo $links;
-}
-
-/**
- * Custom edit reply button
- * @since 1.0
- */
-function apoc_reply_edit_link() {
-	
-	// Get the reply;
-	global $id;
-	$reply = bbp_get_reply( $id );
-
-	// Bypass check if user has caps
-	if ( !current_user_can( 'edit_others_replies' ) ) {
-
-		// User cannot edit or it is past the lock time
-		if ( empty( $reply ) || !current_user_can( 'edit_reply', $reply->ID ) || bbp_past_edit_lock( $reply->post_date_gmt ) )
-			return;
-	}
-
-	// Get uri
-	$uri = bbp_get_reply_edit_url( $reply->ID );
-
-	// Bail if no uri
-	if ( empty( $uri ) )
-		return; 
 		
-	// Build button and return
-	$edit_button = '<a class="edit-reply-button button button-dark" href="' . $uri . '" title="Edit this post" ><i class="icon-edit"></i>Edit</a>';
-	return $edit_button;
-}
-
-/**
- * Custom edit topic button
- * @since 1.0
- */
-function apoc_topic_edit_link() {
-	
-	// Get the topic;
+	// Get post id and setup desired links
 	global $id;
-	$reply = bbp_get_topic( $id );
-
-	// Bypass check if user has caps
-	if ( !current_user_can( 'edit_others_topics' ) ) {
-		
-		// User cannot edit or it is past the lock time
-		if ( empty( $topic ) || !current_user_can( 'edit_topic', $topic->ID ) || bbp_past_edit_lock( $topic->post_date_gmt ) ) 
-			return;
-	}
-
-	// Get uri
-	$uri = bbp_get_topic_edit_url( $id );
-
-	// Bail if no uri
-	if ( empty( $uri ) )
-	return;
-
-	// Build the button and return
-	$edit_button = '<a class="edit-reply-button button button-dark" href="' . $uri . '" title="Edit this post" ><i class="icon-edit"></i>Edit</a>';
-	return $edit_button;
+	$links = array();
+	
+	// Topic admin links
+	if( bbp_is_topic( $id ) ) :
+		$links['edit'] 		= bbp_get_topic_edit_link  ( $r = array( 'edit_text' => '<i class="icon-edit"></i>Edit' ) );
+		$links['close']		= bbp_get_topic_close_link ( $r = array( 'close_text'=> '<i class="icon-lock"></i>Close') );
+		$links['stick']		= bbp_get_topic_stick_link ( $r = array(
+								'stick_text' 	=> '<i class="icon-pin"></i>Stick',
+								'unstick_text' 	=> '<i class="icon-level-down"></i>Unstick',
+								'super_text' 	=> '<i class="icon-paper-clip"></i>Notice', ) );
+		$links['merge']		= bbp_get_topic_merge_link ( $r = array( 'merge_text'=> '<i class="icon-code-fork"></i>Merge') );
+		$links['trash']		= bbp_get_topic_trash_link ( $r = array(
+								'trash_text' 	=> '<i class="icon-trash"></i>Trash',
+								'restore_text' 	=> '<i class="icon-undo"></i>Restore',
+								'delete_text' 	=> '<i class="icon-remove"></i>Delete' ) );
+									
+	// Reply admin links
+	else :
+		$links['edit'] 		= bbp_get_reply_edit_link (	$r = array( 'edit_text'  => '<i class="icon-edit"></i>Edit' ) );
+		$links['move'] 		= bbp_get_reply_move_link (	$r = array( 'split_text' => '<i class="icon-move"></i>Move' ) );		
+		$links['split'] 	= bbp_get_topic_split_link( $r = array( 'split_text' => '<i class="icon-code-fork"></i>Split' ) );
+		$links['trash'] 	= bbp_get_reply_trash_link( $r = array( 
+								'trash_text' 	=> '<i class="icon-trash"></i>Trash',
+								'restore_text' 	=> '<i class="icon-undo"></i>Restore',
+								'delete_text' 	=> '<i class="icon-remove"></i>Delete' ) );
+	endif;
+	
+	// Add common quote and reply links
+	$links['quote'] 		= apoc_quote_button( 'reply' );
+	$links['reply']			= '<a class="reply-link button button-dark" href="#new-post" title="Quick Reply"><i class="icon-reply"></i>Reply</a>';
+	
+	// Get the admin links!
+	bbp_reply_admin_links( $args = array(
+		'before'	=> '',
+		'after'		=> '',
+		'sep'		=> '',
+		'links'		=> $links,
+	));
 }
  
 /*---------------------------------------------

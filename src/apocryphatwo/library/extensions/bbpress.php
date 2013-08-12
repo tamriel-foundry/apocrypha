@@ -91,7 +91,8 @@ function apoc_list_subforums( $args = array() ) {
 	}
 }
 
-/* Display a custom freshness block for subforums
+/* 
+ * Display a custom freshness block for subforums
  * @since 0.1
  */
 function apoc_subforum_freshness( $subforum_id = '' ) {			
@@ -111,8 +112,14 @@ function apoc_subforum_freshness( $subforum_id = '' ) {
 	return $output;
 } 
 
+/*---------------------------------------------
+2.0 - SINGLE TOPICS
+----------------------------------------------*/
 
-
+/* 
+ * Display a custom freshness block for subforums
+ * @since 0.1
+ */
 function apoc_topic_description( $args = '' ) {
 
 	// Default arguments
@@ -163,8 +170,107 @@ function apoc_topic_description( $args = '' ) {
 		return $retstr;
 }
  
+/**
+ * Filter the element class list for topics to only say replies
+ * @since 1.0
+ */
+add_filter( 'bbp_get_reply_class', 'apoc_reply_class' );
+function apoc_reply_class( $classes ) {
+	$classes[1] = 'reply';
+	return $classes;
+}
 
- 
+
+/**
+ * Output custom bbPress admin links
+ * @since 1.0
+ */
+function apoc_reply_admin_links() {
+	
+	// Make sure it's a logged-in user
+	if ( !is_user_logged_in() ) return false;
+	
+	// If so, go ahead
+	$links = apoc_quote_button( 'reply' );
+	$links .= '<a class="reply-link button button-dark" href="#new-post" title="Quick Reply"><i class="icon-reply"></i>Reply</a>';
+	
+	// Topic or Reply?
+	global $id;
+	$context = ( bbp_is_reply( $id ) ) ? 'reply' : 'topic';
+	switch ( $context ) {
+		case 'reply' :
+			$links 	.= apoc_reply_edit_link();
+			break;
+			
+		case 'topic' :
+			$links 	.= apoc_topic_edit_link();
+			break;
+	
+	}
+	
+	// Output the links
+	echo $links;
+}
+
+/**
+ * Custom edit reply button
+ * @since 1.0
+ */
+function apoc_reply_edit_link() {
+	
+	// Get the reply;
+	global $id;
+	$reply = bbp_get_reply( $id );
+
+	// Bypass check if user has caps
+	if ( !current_user_can( 'edit_others_replies' ) ) {
+
+		// User cannot edit or it is past the lock time
+		if ( empty( $reply ) || !current_user_can( 'edit_reply', $reply->ID ) || bbp_past_edit_lock( $reply->post_date_gmt ) )
+			return;
+	}
+
+	// Get uri
+	$uri = bbp_get_reply_edit_url( $reply->ID );
+
+	// Bail if no uri
+	if ( empty( $uri ) )
+		return; 
+		
+	// Build button and return
+	$edit_button = '<a class="edit-reply-button button button-dark" href="' . $uri . '" title="Edit this post" ><i class="icon-edit"></i>Edit</a>';
+	return $edit_button;
+}
+
+/**
+ * Custom edit topic button
+ * @since 1.0
+ */
+function apoc_topic_edit_link() {
+	
+	// Get the topic;
+	global $id;
+	$reply = bbp_get_topic( $id );
+
+	// Bypass check if user has caps
+	if ( !current_user_can( 'edit_others_topics' ) ) {
+		
+		// User cannot edit or it is past the lock time
+		if ( empty( $topic ) || !current_user_can( 'edit_topic', $topic->ID ) || bbp_past_edit_lock( $topic->post_date_gmt ) ) 
+			return;
+	}
+
+	// Get uri
+	$uri = bbp_get_topic_edit_url( $id );
+
+	// Bail if no uri
+	if ( empty( $uri ) )
+	return;
+
+	// Build the button and return
+	$edit_button = '<a class="edit-reply-button button button-dark" href="' . $uri . '" title="Edit this post" ><i class="icon-edit"></i>Edit</a>';
+	return $edit_button;
+}
  
 /*---------------------------------------------
 X.X - NEW POSTS

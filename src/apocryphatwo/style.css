@@ -1263,13 +1263,17 @@ header.discussion-header,
 header.reply-header {
 	width: 98%;
 	height: 24px;
+	position: relative;
 	padding: 0.5em 1%;
 	background-image: url(images/backgrounds/dark-denim.jpg);
 	border: 1px solid #000;
 	border-radius: 3px 3px 0 0;
 	box-shadow: 0 0 2px #444 inset;
 	}
-header.discussion-header > h2 { margin: 0; }
+header.discussion-header > h2 { 
+	margin: 0; 
+	font-weight: normal;
+	}
 header.discussion-header.noreplies { border-radius: 5px; }
 ol#comment-list {
 	margin: 0;
@@ -1315,17 +1319,12 @@ div.reply-admin-links a.reply-permalink {
 	padding: 0;
 	top: -1px;
 	}
-a.reply-permalink:hover { color: #FC6; }
 a.report-post {
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	margin: 0 0 0 8px;
-	padding: 0;
-	background-image: url("images/icons/report-post.png");
-	cursor: pointer;
+	margin: 0 8px;
+	color: #b3a695;
+	text-shadow: 1px 1px #000;
 	}
-a.report-post:hover { background-position: 24px 0; }
+a.report-post:hover { color: #FC6; }
 
 /* Reply Author */
 div.reply-body {
@@ -2008,6 +2007,7 @@ ol.topic {
 	list-style: none;
 	}
 header.forum-header {
+	width: 100%;
 	padding: 0.5em 0;
 	overflow: hidden;
 	background-image: url(images/backgrounds/dark-denim.jpg);
@@ -2055,6 +2055,7 @@ p.forum-description {
 	margin: 2px 10px 0;
 	font-size: 0.8em;
 	font-family: 'Open Sans' , sans-serif;
+	color: #bbb;
 	}
 div.forum-count {
 	width: 10%;
@@ -2112,12 +2113,42 @@ div.freshest-meta span.freshest-time {
 	color: #AAA;
 	}
 li.topic div.freshest-meta span.freshest-time {	float: left; }
-
+a.topic-location { color: #bbb; }
+a.topic-location:hover { color: #ffb14c; }
 
 /*---------------------------------------------
 	8.2 - Single Topics
 ----------------------------------------------*/
-
+.topic  header.discussion-header {
+	width: 100%;
+	position: relative;
+	padding: 0.5em 0;
+	}
+.topic header.discussion-header > div {
+	font-family: 'Cinzel' , sans-serif;
+	font-size: 1.25em;
+	}
+div#subscription-controls {
+	position: absolute;
+	top: 7px;
+	right: 10px;
+	}
+div#subscription-controls a {
+	padding: 4px 5px;
+	background: #AAA;
+	background: -ms-linear-gradient(top, #BBB, #b3a695);
+    background: -moz-linear-gradient(top, #BBB, #b3a695);
+	background: -o-linear-gradient(top, #BBB, #b3a695);
+	background: -webkit-linear-gradient(top, #BBB, #b3a695);
+	border: 1px solid #111;
+	border-radius: 3px;
+	box-shadow: 0 0 5px #000;
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 12px;
+	line-height: 16px;
+	color: #111;
+	cursor: pointer;
+	}
 	
 /*---------------------------------------------
 	8.3 - New Topic and Reply Forms

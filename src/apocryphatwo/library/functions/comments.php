@@ -130,7 +130,7 @@ function apoc_comment_admin_links() {
 	
 	// If so, go ahead
 	global $comment;
-	$links = apoc_comment_quote_button();
+	$links = apoc_quote_button( 'comment' );
 	$links .= '<a class="reply-link button button-dark" href="#respond" title="Quick Reply"><i class="icon-reply"></i>Reply</a>';
 	$links 	.= apoc_comment_edit_button();
 	$links	.= apoc_comment_delete_button();
@@ -141,13 +141,26 @@ function apoc_comment_admin_links() {
  * Quote button for comments
  * @since 1.0
  */
-function apoc_comment_quote_button() {
+function apoc_quote_button( $context = 'comment' ) {
 
-	/* Verify reply id, get author id */
-	global $comment;
-	$comment_id  	= $comment->comment_ID;
-	$author_name 	= $comment->comment_author;
-	$post_date 		= get_comment_date( 'F j, Y' , $comment_id );
+	// Get information by context
+	switch( $context ) {
+		
+		// Article comments
+		case 'comment' :
+			global $comment;
+			$comment_id  	= $comment->comment_ID;
+			$author_name 	= $comment->comment_author;
+			$post_date 		= get_comment_date( 'F j, Y' , $comment_id );
+			break;
+		
+		// Forum replies
+		case 'reply' :
+			$reply_id  		= bbp_get_reply_id( $reply_id );
+			$author_name 	= bbp_get_reply_author( $reply_id );
+			$post_date 		= get_the_date();	
+			break;
+	}
 
     /* Create quote link using data attributes to pass parameters */
 	$quoteButton = '<a class="quote-link button button-dark" href="#respond" title="Click here to quote selected text" ';

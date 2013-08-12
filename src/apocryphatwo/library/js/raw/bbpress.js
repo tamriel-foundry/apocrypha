@@ -1,11 +1,4 @@
 /*! Submit Topic */
-<<<<<<< HEAD
-$( ".#bbp_topic_submit" ).click( function( event ) {
-
-	// Give a tooltip
-	$(this).html( '<i class="icon-pencil"></i>Submitting ...' );
-}
-=======
 $( "form#new-post" ).submit( function( event ) {
 
 	// Get the form
@@ -51,7 +44,6 @@ $( "form#new-post" ).submit( function( event ) {
 	}
 });
 
->>>>>>> origin/andrew-dev
 
 /*! Submit Reply */
 $( ".topic form#new-post" ).submit( function( event ) {

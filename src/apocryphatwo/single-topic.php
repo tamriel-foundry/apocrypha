@@ -21,8 +21,7 @@
 			</header>		
 
 			<div id="forums">
-				<?php // bbp_get_template_part( 'content', 'single-topic' ); ?>
-				this is the single topic template
+				<?php bbp_get_template_part( 'content', 'single-topic' ); ?>
 			</div><!-- #forums -->
 			<?php endwhile; ?>
 

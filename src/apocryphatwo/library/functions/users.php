@@ -222,10 +222,14 @@ function update_user_post_count( $user_id ) {
  * Update the user's post count after they submit a new topic or reply
  * @since 1.0
  */
-add_action( 'bbp_new_topic' 	, 'new_bbpress_post_count' );
-add_action( 'bbp_new_reply' 	, 'new_bbpress_post_count' );
-function new_bbpress_post_count( $reply_author , $topic_author ) {
-	$user_id 	= ( isset( $reply_author ) ) ? $reply_author : $topic_author;
+add_action( 'bbp_new_topic' , 'new_bbpress_topic_count' , 10 , 4 );
+function new_bbpress_topic_count( $topic_id, $forum_id, $anonymous_data, $topic_author ) {
+	update_user_post_count( $topic_author );
+}
+add_action( 'bbp_new_reply' , 'new_bbpress_reply_count' , 10 , 5);
+function new_bbpress_reply_count( $reply_id, $topic_id, $forum_id, $anonymous_data, $reply_author ) {
+	$post 		= get_post( $post_id );
+	$user_id 	= $post->post_author;
 	update_user_post_count( $user_id );
 }
 
@@ -233,12 +237,13 @@ function new_bbpress_post_count( $reply_author , $topic_author ) {
  * Update the user's post count after a topic or reply is trashed or untrashed
  * @since 1.0
  */
-add_action( 'bbp_trash_reply' 	, 'trash_bbpress_post_count' );
-add_action( 'bbp_trash_topic' 	, 'trash_bbpress_post_count' );
-add_action( 'bbp_untrash_reply' , 'trash_bbpress_post_count' );
-add_action( 'bbp_untrash_topic' , 'trash_bbpress_post_count' );
-function trash_bbpress_post_count( $reply_id , $topic_id ) {
-	$post_id 	= ( isset( $reply_id ) ) ? $reply_id : $topic_id;
+add_action( 'bbp_new_topic' 	, 'update_bbpress_post_count' );
+add_action( 'bbp_new_reply' 	, 'update_bbpress_post_count' );
+add_action( 'bbp_trash_reply' 	, 'update_bbpress_post_count' );
+add_action( 'bbp_trash_topic' 	, 'update_bbpress_post_count' );
+add_action( 'bbp_untrash_reply' , 'update_bbpress_post_count' );
+add_action( 'bbp_untrash_topic' , 'update_bbpress_post_count' );
+function update_bbpress_post_count( $post_id ) {
 	$post 		= get_post( $post_id );
 	$user_id 	= $post->post_author;
 	update_user_post_count( $user_id );

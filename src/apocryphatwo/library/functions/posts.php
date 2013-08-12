@@ -194,7 +194,7 @@ function apoc_report_post_button( $type ) {
 			break;
 	}
 	
-	$button = '<a class="report-post" title="Report This Post" data-id="' . $post_id . '" data-number="' . $post_number . '" data-user="' . $reported_user . '" data-type="' . $type . '"></a>';
+	$button = '<a class="report-post" title="Report This Post" data-id="' . $post_id . '" data-number="' . $post_number . '" data-user="' . $reported_user . '" data-type="' . $type . '"><i class="icon-warning-sign"></i></a>';
 	
 	echo $button;
 }

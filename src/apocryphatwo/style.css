@@ -1,4 +1,4 @@
-/* 
+/*
 -----------------------------
 Apocrypha Theme Stylesheet
 -----------------------------
@@ -34,7 +34,7 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	4.3 - Pagination
 	4.4 - Footer Navigation
 	4.5 - Forum Navigation
-5.0 - Posts and Pages	
+5.0 - Posts and Pages
 	5.1 - Headers
 	5.2 - Content
 	5.3 - Comments
@@ -45,14 +45,14 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	6.3 - Showcase
 7.0 - WordPress
 	7.1 - Archives
-	7.2 - Search
+	7.2 - Advanced Search
 	7.3 - 404
 8.0 - bbPress
-	
-	
+
+
 X.X - WHERE DO I PUT THIS STUFF?
-	
-	
+
+
 
 
 
@@ -109,8 +109,8 @@ div#footer-container {
 	border-bottom: 1px solid #cc6600;
 	box-shadow: 0 0 10px #000;
 	}
-	
-	
+
+
 /*---------------------------------------------
 	2.1 - Header
 ----------------------------------------------*/
@@ -143,20 +143,20 @@ div#content {
 div#content.no-sidebar {
 	width: 100%;
 	}
-	
+
 /*---------------------------------------------
 2.3 - Sidebars
----------------------------------------------*/	
+---------------------------------------------*/
 div#primary-sidebar {
 	width: 300px;
 	float: right;
 	clear: right;
 	margin: 0 0 1em 0;
 	}
-	
-/*---------------------------------------------	
+
+/*---------------------------------------------
 2.4 - Footer
----------------------------------------------*/		
+---------------------------------------------*/
 #footer-divider {
 	height: 25px;
 	background: rgba(51,51,51,0.75);
@@ -181,16 +181,16 @@ div#footer {
 	color: #BBB;
 	text-align: center;
 	}
-	
-	
+
+
 /*--------------------------------------------------------------
 3.0 - NON-STRUCTURAL ELEMENTS
---------------------------------------------------------------*/	
+--------------------------------------------------------------*/
 
 /*---------------------------------------------
 	3.1 - Text Elements
 ----------------------------------------------*/
-p { 
+p {
 	margin: 0 0 1em 0;
 	}
 
@@ -236,41 +236,41 @@ ul ol,
 	margin: 0;
 	padding: 0 0 0 1.5em;
 	}
-	
+
 /* Headers */
 h1, h2, h3, h4, h5, h6 {
 	font-weight: normal;
 	text-shadow: 1px 1px #000;
 	margin-bottom: 1em;
 	}
-h1 { 
+h1 {
 	font-family: Cinzel , 'Book Antiqua' , Serif;
-	font-size: 1.75em; 
+	font-size: 1.75em;
 	font-weight: bold;
 	text-shadow: 2px 2px #000;
-	margin-bottom: 0.6em; 	
+	margin-bottom: 0.6em;
 	}
-h2 { 
-	font-size: 1.25em; 
-	margin-bottom: 0.8em; 
-	font-weight: bold; 
+h2 {
+	font-size: 1.25em;
+	margin-bottom: 0.8em;
+	font-weight: bold;
 	}
-h3 { 
-	font-size: 1.25em; 
+h3 {
+	font-size: 1.25em;
 	margin-bottom: 0.75em;
 	font-family: Cinzel , 'Book Antiqua' , Serif;
 	}
-h4 { 
-	font-size: 1em; 
-	text-transform: uppercase; 
-	margin-bottom: 0;  
+h4 {
+	font-size: 1em;
+	text-transform: uppercase;
+	margin-bottom: 0;
 	}
-h5 { 
-	font-size: 1em; 
+h5 {
+	font-size: 1em;
 	font-weight: bold; }
-h6 { 
+h6 {
 	font-size: 0.875em;
-	margin-bottom: 0; 
+	margin-bottom: 0;
 	}
 
 /* Stylings */
@@ -301,7 +301,7 @@ sub{
 	vertical-align: baseline;
 	top: 0.5em;
 	}
-	
+
 /* Quotes */
 blockquote {
 	position: relative;
@@ -343,7 +343,7 @@ i[class*=" icon-"] {
 	opacity: 0.9;
 	margin: 0 2px 0 0;
 }
-	
+
 /* Double Borders */
 .double-border {	position: relative; }
 .double-border:before {
@@ -356,15 +356,15 @@ i[class*=" icon-"] {
     width: 100%;
     box-sizing: border-box;
 	}
-.double-border.top { border-top: 1px solid #000; }	
+.double-border.top { border-top: 1px solid #000; }
 .double-border.top:before {	border-top: 1px solid #444; }
-.double-border.bottom { border-bottom: 1px solid #444;  }	
+.double-border.bottom { border-bottom: 1px solid #444;  }
 .double-border.bottom:before { border-bottom: 1px solid #000; }
-	
+
 /* Alliances */
 p.aldmeri { color: #C90; }
 p.daggerfall { color: #33C; }
-p.ebonheart { color: #900; }	
+p.ebonheart { color: #900; }
 
 
 /*---------------------------------------------
@@ -382,9 +382,9 @@ form ol {
 	padding: 0;
 	clear: both;
 	}
-form ol li { 
+form ol li {
 	width: 100%;
-	margin: 0.5em 0; 
+	margin: 0.5em 0;
 	float: left;
 	}
 form p { margin: 0.5em 0; }
@@ -393,13 +393,13 @@ form li.honeypot {
 	left: -999em;
 	}
 form li.form-right,
-form li.form-left { 
-	width: 45%; 
+form li.form-left {
+	width: 45%;
 	float: left;
 	text-align: left;
 	}
-form li.form-right { 
-	float: right; 
+form li.form-right {
+	float: right;
 	text-align: right;
 	}
 form li.submit input[type="submit"],
@@ -415,17 +415,18 @@ label.settings-field-label {
 	}
 form li.wp-editor { margin: -1em 0 0; }
 form li.hidden { margin: 0; }
-form li.submit { 
+form li.submit {
 	float: right;
 	margin: 0;
 	}
-	
+
 /*---------------------------------------------
 	3.3 - Fields
 ----------------------------------------------*/
 input[type="text"],
 input[type="password"],
 input[type="url"],
+input[type="search"],
 select {
 	height: 24px;
 	line-height: 24px;
@@ -443,16 +444,17 @@ select {
 	}
 input[type="text"]:focus,
 input[type="url"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="search"]:focus {
 	box-shadow: 0 0 3px #f90;
 	}
-	
+
 /* Selects */
 select { height: 32px; }
 select option {	background: #b3a695;}
 
 /* Radios and Checkboxes */
-input[type="checkbox"], 
+input[type="checkbox"],
 input[type="radio"] {
 	position: relative;
 	width: 16px;
@@ -462,7 +464,7 @@ input[type="radio"] {
 	cursor: pointer;
 	opacity: 0;
 	}
-input[type='radio'] + label, 
+input[type='radio'] + label,
 input[type='checkbox'] + label {
 	position: relative;
 	top: 0px;
@@ -476,17 +478,17 @@ input[type='checkbox'] + label:hover,
 input[type='checkbox'] + label:hover {
 	background-position: 4px -20px;
 	}
-input[type='radio']:checked + label, 
+input[type='radio']:checked + label,
 input[type='checkbox']:checked + label {
 	background-position: 4px 9px;
 	}
-	
+
 /* Placeholder Values */
 ::-webkit-input-placeholder { color: #444; }
 :-moz-placeholder { color: #444; }
 ::-moz-placeholder { color: #444; }
 :-ms-input-placeholder { color: #444; }
-	
+
 /*---------------------------------------------
 	3.4 - Buttons
 ----------------------------------------------*/
@@ -534,7 +536,7 @@ button.button-dark {
 a.button-dark:hover,
 button.button-dark:hover { color: #EEE; }
 
-	
+
 /*---------------------------------------------
 	3.5 - Media
 ----------------------------------------------*/
@@ -561,14 +563,14 @@ img.alignleft, .wp-caption.alignleft {
 	margin: 0 2em 1em 0;
 	}
 img.aligncenter, .wp-caption.aligncenter {
-	display: block; 
+	display: block;
 	margin: 0 auto 1em;
 	}
 img.thumbnail {
 	float: right;
 	margin: 0 0 1em 1em;
 	}
-	
+
 /* Image Links */
 a img {
 	-webkit-transition: all 0.2s;
@@ -583,7 +585,7 @@ a img:hover  {
 	box-shadow: 0 0 5px #c60;
 	border-color: #000;
 	}
-	
+
 /* Captions */
 .wp-caption img {
 	display: block;
@@ -603,8 +605,8 @@ a img:hover  {
 	border-radius: 0 0 3px 3px;
 	box-shadow: 0 0 2px #555 inset;
 	}
-	
-/* Avatars */	
+
+/* Avatars */
 img.avatar {
 	float: left;
 	margin: 2px;
@@ -613,7 +615,7 @@ img.avatar {
 	border-radius: 5px;
 	box-shadow: 0 0 2px #666 inset;
 	}
-	
+
 /* Smileys */
 img.wp-smiley {
 	max-width: 15px;
@@ -625,7 +627,7 @@ img.wp-smiley {
 	top: 2px;
 	box-shadow: none !important;
 	}
-	
+
 /*---------------------------------------------
 	3.3 - Feedback Elements
 ----------------------------------------------*/
@@ -638,7 +640,7 @@ div.success {
 	margin: 0.5em 0;
 	padding: 0.5em 2.5%;
 	background: rgba(204, 153, 0, 0.75);
-	border: 1px solid #FC0;	
+	border: 1px solid #FC0;
 	border-radius: 3px;
 	box-shadow: 0 0 5px #000;
 	font-size: 0.875em;
@@ -658,7 +660,7 @@ div.error {
 
 /*--------------------------------------------------------------
 4.0 - NAVIGATION
---------------------------------------------------------------*/	
+--------------------------------------------------------------*/
 nav#primary-menu {
 	width: 1200px;
 	height: 50px;
@@ -671,8 +673,8 @@ div#menu-container {
 	margin: 0 0 0 130px;
 	background: rgba(34,34,34,0.9);
 	background: -ms-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
-    background: -moz-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9)); 
-	background: -o-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9)); 
+    background: -moz-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
+	background: -o-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
 	background: -webkit-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
 	border: 1px solid #111;
 	border-radius: 5px;
@@ -688,7 +690,7 @@ ul#top-menu {
 	border-top: 1px solid #444;
 	border-radius: 4px;
 	}
-	
+
 /* Top level buttons */
 ul#top-menu li.top {
 	width: 25%;
@@ -735,7 +737,7 @@ li.top.drop:hover span.drop-icon{ background-position: 0 0 ; }
 
 /* Dropdown Containers */
 li.top div.dropdown {
-	position:absolute;  
+	position:absolute;
 	left: -999em;
 	background: #999;
 	background: -ms-linear-gradient(top, #999, #666);
@@ -754,9 +756,9 @@ div.dropdown.col2 { width: 200%; }
 div.dropdown.col3 { width: 300%; }
 div.dropdown.col4 { width: 400%; }
 li.top.drop:hover div.dropdown { left: -100% }
-li.top.drop.right:hover div.dropdown { 
+li.top.drop.right:hover div.dropdown {
 	left: auto;
-	right: -1px; 
+	right: -1px;
 	}
 
 /* Items Within A Dropdown */
@@ -766,8 +768,8 @@ div.dropdown.col3 div.sub.col { width: 33%; }
 div.dropdown.col4 div.sub.col { width: 25%; }
 div.dropdown.col5 div.sub.col { width: 20%; }
 div.dropdown div.sub.col,
-div.dropdown div.sub.full {  
-    float: left;  
+div.dropdown div.sub.full {
+    float: left;
     position: relative;
 	}
 div.sub.col h3 {
@@ -791,14 +793,14 @@ ul.submenu {
 ul.submenu li { padding: 3px 0; }
 ul.submenu li > a { color: #111; }
 ul.submenu li:hover > a { color: #FC6; }
-ul.submenu.noheader { 
+ul.submenu.noheader {
 	margin-top: 0.5em;
-	border-top: none; 
+	border-top: none;
 	}
 
 /*---------------------------------------------
 	4.1 - Admin Bar
----------------------------------------------*/			
+---------------------------------------------*/
 nav#admin-bar {
 	position: relative;
 	width: 500px;
@@ -815,15 +817,15 @@ nav#admin-bar {
 	line-height: 30px;
 	z-index: 100;
 	}
-	
+
 /* Login */
 div#admin-bar-login {
 	max-width: 460px;
 	float: left;
 	padding: 0 5px;
 	}
-div#admin-bar-login img.avatar { 
-	margin: 2px 3px 0 0; 
+div#admin-bar-login img.avatar {
+	margin: 2px 3px 0 0;
 	padding: 0;
 	box-shadow: 0 0 2px #000;
 	}
@@ -909,7 +911,7 @@ span.notifications-number {
 	border-radius: 2px;
 	box-shadow: 0 0 3px #000;
 	}
-	
+
 /* Notification Dropdowns */
 div.admin-bar-dropdown {
 	visibility: hidden;
@@ -964,7 +966,7 @@ ul.notification-links {
 	border-top: 1px solid #444;
 	}
 ul.notification-links li { float: left; }
-ul.notification-links li a { 
+ul.notification-links li a {
 	margin: 2px 2px 0 0;
 	padding: 4px 4px;
 	}
@@ -973,7 +975,7 @@ a.clear-notification {
 	float: right;
 	position: relative;
 	right: -10px;
-	}	
+	}
 
 /* Dropdown Search */
 div#header-search {
@@ -987,7 +989,7 @@ div#header-search {
 	position: relative;
 	}
 div#header-search:hover { background-position: 100% 100%; }
-div#search-dropdown form.search-form {	
+div#search-dropdown form.search-form {
 	margin: -13px 0 0;
 	background-image: url(images/icons/notification-drop-arrow.png);
 	background-repeat: no-repeat;
@@ -1029,14 +1031,14 @@ nav.breadcrumbs {
 	color: #AAA;
 	}
 nav.breadcrumbs > * { margin: 0 2px; }
-nav.breadcrumbs > span.trail-before { 
+nav.breadcrumbs > span.trail-before {
 	margin: 0;
-	font-style: normal; 
+	font-style: normal;
 	}
 
 /*---------------------------------------------
 4.3 - Pagination
----------------------------------------------*/	
+---------------------------------------------*/
 nav.pagination {
 	width: 100%;
 	float: left;
@@ -1060,11 +1062,11 @@ nav.pagination .page-numbers {
 nav.pagination .page-numbers.current {
 	background-image: url(images/backgrounds/light-denim.jpg);
 	}
-	
-	
+
+
 /*---------------------------------------------
 4.4 - Footer Navigation
----------------------------------------------*/	
+---------------------------------------------*/
 nav#footer-navigation {
 	width: 900px;
 	margin: 0 auto;
@@ -1101,7 +1103,7 @@ a.footer-nav-item:hover h3 {
 	text-shadow: 1px 0 20px #c60;
 	}
 a.footer-nav-item:hover { box-shadow: 0 0 5px #c60; }
-a.footer-nav-item:hover > img { 
+a.footer-nav-item:hover > img {
 	box-shadow: none;
 	background: none;
 	}
@@ -1142,11 +1144,11 @@ a.last-reply-link:hover {
 	color: #C60;
 	text-shadow: 0 0 10px #c60;
 	}
-	
-	
+
+
 /*--------------------------------------------------------------
 5.0 - POSTS AND PAGES
---------------------------------------------------------------*/	
+--------------------------------------------------------------*/
 div.post,
 div.page {
 	width: 100%;
@@ -1154,7 +1156,7 @@ div.page {
 	position: relative;
 	margin: 0;
 	}
-	
+
 /*---------------------------------------------
 	5.1 - Headers
 ---------------------------------------------*/
@@ -1196,7 +1198,7 @@ header.entry-header {
 .page-header-4 { background-position: 0 -800px; }
 .page-header-5 { background-position: 0 -900px; }
 .page-header-6 { background-position: 0 -1000px; }
-	
+
 /* Entry Title */
 .entry-title {
 	height: 65px;
@@ -1215,7 +1217,7 @@ header.entry-header {
 	padding: 0 0.5em;
 	color: #ccc;
 	}
-	
+
 /* Entry Byline */
 p.entry-byline {
 	height: 24px;
@@ -1228,7 +1230,7 @@ p.entry-byline {
 	border-top: 1px solid #000;
 	border-bottom: 1px solid #000;
 	}
-	
+
 /* Post Edit Link */
 a.post-edit-link {
 	float: right;
@@ -1239,7 +1241,7 @@ a.post-edit-link {
 	top: 10px;
 	right: 10px;
 	}
-	
+
 /*---------------------------------------------
 	5.2 - Content
 ---------------------------------------------*/
@@ -1284,7 +1286,7 @@ li.reply {
 	float: left;
 	margin: 0 0 0.5em 0;
 	}
-	
+
 /* Comment Header */
 header.reply-header {
 	background: rgba(51,51,51,0.25);
@@ -1302,7 +1304,7 @@ time.reply-time {
 	font-size: 0.75em;
 	text-shadow: 1px 1px #000;
 	}
-	
+
 /* Admin Links */
 div.reply-admin-links {
 	float: right;
@@ -1341,8 +1343,8 @@ div.reply-author {
 	float: left;
 	text-align: center;
 	}
-.member-avatar img { 
-	float: none; 
+.member-avatar img {
+	float: none;
 	margin: 0;
 	}
 .member-name {
@@ -1354,7 +1356,7 @@ div.reply-author > p {
 	margin: 0;
 	font-size: 0.75em;
 	}
-div.reply-author > p.user-title {	
+div.reply-author > p.user-title {
 	font-size: 0.875em;
 	font-style: italic;
 	}
@@ -1393,7 +1395,7 @@ div.reply-content {
 	font-size: 0.8em;
 	word-wrap: break-word;
 	}
-	
+
 /* User Signature */
 div.user-signature {
 	clear: right;
@@ -1420,7 +1422,7 @@ div.signature-content img {
 
 /*---------------------------------------------
 	5.4 - Respond
----------------------------------------------*/	
+---------------------------------------------*/
 div#respond {
 	width: 100%;
 	float: left;
@@ -1430,8 +1432,8 @@ h2#respond-title {
 	float: left;
 	margin: 0;
 	}
-header.discussion-header > a.backtotop { 
-	float: right; 
+header.discussion-header > a.backtotop {
+	float: right;
 	margin: 0;
 	}
 header#respond-subheader {
@@ -1454,11 +1456,11 @@ header#respond-subheader {
 #respond form li.text label ,
 #respond form li.select label { width: 100px; }
 
-	
-	
+
+
 /*--------------------------------------------------------------
 6.0 - HOME PAGE
---------------------------------------------------------------*/	
+--------------------------------------------------------------*/
 div#showcase-container {
 	width: 100%;
 	float: left;
@@ -1474,7 +1476,7 @@ div#showcase-sidebar {
 	width: 40%;
 	float: left;
 	}
-	
+
 /*---------------------------------------------
 	6.1 - Posts Loop
 ----------------------------------------------*/
@@ -1492,7 +1494,7 @@ h1#home-posts-title {
 	font-weight: normal;
 	letter-spacing: -1px;
 	text-shadow: 1px 1px #000;
-	background: rgb(34,34,34); 
+	background: rgb(34,34,34);
 	background: -ms-linear-gradient(top, rgb(51,51,51), rgb(17,17,17));
     background: -moz-linear-gradient(top, rgb(51,51,51), rgb(17,17,17));
 	background: -o-linear-gradient(top, rgb(51,51,51), rgb(17,17,17));
@@ -1501,7 +1503,7 @@ h1#home-posts-title {
 	border-radius: 5px;
 	box-shadow: 0 0 2px #999 inset;
 	}
-	
+
 /* Posts Inside Loop */
 .archive div.post {
 	width: 49%;
@@ -1545,7 +1547,7 @@ a.comments-link {
 	float: right;
 	margin: 0;
 	}
-	
+
 /*---------------------------------------------
 	6.2 - Widgets
 ----------------------------------------------*/
@@ -1582,12 +1584,12 @@ div.widget ul {
 	list-style: none;
 	clear: both;
 	}
-	
+
 /* Recent Discussion Widgets */
 li.recent-discussion { margin: 3px 0; }
 li.recent-discussion a.discussion-avatar {	float: left; }
-li.recent-discussion a.discussion-avatar img { 
-	margin: 0; 
+li.recent-discussion a.discussion-avatar img {
+	margin: 0;
 	opacity: 0.5;
 	padding: 0;
 	border: 1px solid #000;
@@ -1604,8 +1606,8 @@ li.recent-discussion div.recent-discussion-content{
 	font-size: 0.75em;
 	line-height: 1.5em;
 	}
-li.recent-discussion.even div.recent-discussion-content { 
-	background-image: url(images/backgrounds/light-denim.jpg); 
+li.recent-discussion.even div.recent-discussion-content {
+	background-image: url(images/backgrounds/light-denim.jpg);
 	margin-right: 0.5em;
 	}
 li.recent-discussion span.recent-discussion-title {
@@ -1624,11 +1626,11 @@ li.recent-discussion time.recent-discussion-time {
 	font-size: 10px;
 	color: #999;
 	}
-li.recent-discussion:hover a.discussion-avatar img{ 
+li.recent-discussion:hover a.discussion-avatar img{
 	box-shadow: 0 0 5px #c60;
-	opacity: 1; 
-	}	
-	
+	opacity: 1;
+	}
+
 /* Welcome Text */
 div.welcome-text {
 	width: 80%;
@@ -1643,7 +1645,7 @@ div.welcome-text {
 	font-style: italic;
 	text-align: center;
 	}
-	
+
 /* Social Media Links */
 div.social-icons {
 	width: 230px;
@@ -1702,7 +1704,7 @@ li.whos-online-member {
 li.whos-online-member.even {
 	background-image: url(images/backgrounds/dark-denim.jpg);
 	}
-	
+
 /* Featured Guild Box */
 a#featured-guild-avatar img.avatar{
 	margin: 0;
@@ -1734,7 +1736,7 @@ div#featured-guild-meta > p#featured-guild-type {
 	border-top: 1px solid #444;
 	font-style: italic;
 	}
-	
+
 /* Foundry Stats Counter */
 div#stat-counter { height: 350px; }
 p.stat-counter-total {
@@ -1788,17 +1790,17 @@ a.banner-count {
 div.aldmeri a.banner-count { text-shadow: 0 0 10px #FF0; }
 div.daggerfall a.banner-count { text-shadow: 0 0 10px #0CF; }
 div.ebonheart a.banner-count { text-shadow: 0 0 10px #F00; }
-div.aldmeri a.banner-count:hover { 
+div.aldmeri a.banner-count:hover {
 	border: 1px solid #FF0;
 	box-shadow: 0 0 10px #FF0;
 	}
-div.daggerfall a.banner-count:hover { 
+div.daggerfall a.banner-count:hover {
 	border: 1px solid #0CF;
-	box-shadow: 0 0 10px #0CF; 
+	box-shadow: 0 0 10px #0CF;
 	}
-div.ebonheart a.banner-count:hover { 
+div.ebonheart a.banner-count:hover {
 	border: 1px solid #F00;
-	box-shadow: 0 0 10px #F00; 
+	box-shadow: 0 0 10px #F00;
 	}
 
 /*---------------------------------------------
@@ -1819,13 +1821,13 @@ ul.slides {
 	}
 .flexslider .slides > li:first-child { display: block; }
 .flexslider .slides img {
-	width: 100%; 
-	height: auto; 
+	width: 100%;
+	height: auto;
 	display: block;
 	}
 .flexslider .slides img:hover { box-shadow: none; }
 
-/* Slideshow Tabs */	
+/* Slideshow Tabs */
 ol.slideshow-tabs {
 	margin: 0;
 	padding: 0;
@@ -1858,11 +1860,11 @@ span.slideshow-tab-title {
 	text-shadow: 1px 1px #000;
 	}
 span.slideshow-tab-title:hover {	text-shadow: 0 0 16px #c60;	}
-li.flex-active span.slideshow-tab-title { 
+li.flex-active span.slideshow-tab-title {
 	border-bottom: 2px groove #c60;
 	padding-bottom: 1px;
 	}
-	
+
 /* Captions */
 .flex-caption {
 	width: 200px;
@@ -1894,13 +1896,13 @@ li.flex-active span.slideshow-tab-title {
     -webkit-transition: max-height 1s ease;
 	-moz-transition: max-height 1s ease;
 	}
-.flexslider:hover .flex-caption p.slide-content { 
-	max-height: 300px; 
+.flexslider:hover .flex-caption p.slide-content {
+	max-height: 300px;
 	transition: max-height .5s ease;
     -webkit-transition: max-height .5s ease;
 	-moz-transition: max-height .5s ease;
 	}
-	
+
 /* Arrow Navigation */
 .flex-direction-nav {
 	list-style: none;
@@ -1908,24 +1910,24 @@ li.flex-active span.slideshow-tab-title {
 	padding: 0;
 	}
 .flex-direction-nav a {
-	width: 30px; 
-	height: 30px; 
-	display: block; 
-	background: url(images/icons/slideshow-nav.png) no-repeat 0 0; 
-	position: absolute; 
+	width: 30px;
+	height: 30px;
+	display: block;
+	background: url(images/icons/slideshow-nav.png) no-repeat 0 0;
+	position: absolute;
 	bottom: 10px;
-	z-index: 10; 
-	cursor: pointer; 
-	text-indent: -9999px; 
-	opacity: 0; 
+	z-index: 10;
+	cursor: pointer;
+	text-indent: -9999px;
+	opacity: 0;
 	-webkit-transition: all .3s ease;
 	}
 .flex-direction-nav .flex-prev {
 	left: -30px;
 	}
 .flex-direction-nav .flex-next {
-	background-position: 100% 0; 
-	right: -30px; 
+	background-position: 100% 0;
+	right: -30px;
 	}
 .flexslider:hover .flex-next {
 	opacity: 0.9; right: 10px;
@@ -1933,16 +1935,16 @@ li.flex-active span.slideshow-tab-title {
 .flexslider:hover .flex-prev {
 	opacity: 0.9; left: 10px;
 	}
-.flexslider:hover .flex-next:hover, 
+.flexslider:hover .flex-next:hover,
 .flexslider:hover .flex-prev:hover {
 	opacity: 1;
 	}
 
-	
+
 /*--------------------------------------------------------------
 7.0 - WORDPRESS
---------------------------------------------------------------*/	
-	
+--------------------------------------------------------------*/
+
 /*---------------------------------------------
 	7.1 - Archives
 ----------------------------------------------*/
@@ -1969,7 +1971,28 @@ div#archive-author-info {
 	float: left;
 	margin: 0 0 1em;
 	}
-	
+
+/*--------------------------------------------------------------
+7.2 - ADVANCED SEARCH
+--------------------------------------------------------------*/
+#advanced-search fieldset {
+	padding: 1em 2% 0;
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #666;
+}
+#advanced-search fieldset input[type="checkbox"],
+#advanced-search fieldset input[type="radio"] {
+	opacity: 1;
+}
+#advanced-search fieldset input[type="radio"] {
+	margin: 3px 0.5ex;
+}
+#if-topics, #if-members,
+#if-guilds {
+	display: none;
+}
+
 /*--------------------------------------------------------------
 8.0 - BBPRESS
 --------------------------------------------------------------*/
@@ -2003,7 +2026,7 @@ header.forum-header h2 {
 	font-size: 1em;
 	font-weight: normal;
 	}
-	
+
 /*---------------------------------------------
 	8.1 - Forums and Topics Loops
 ----------------------------------------------*/
@@ -2056,7 +2079,7 @@ li.sub-forum:hover div.forum-count,
 li.topic:hover div.forum-count { border-right: 1px solid #c5772b; }
 li.sub-forum:hover div.forum-content,
 li.topic:hover div.forum-content { border-right: 1px solid #c5772b; }
-	
+
 div.forum-freshness {
 	width: 40%;
 	height: 100%;
@@ -2087,7 +2110,7 @@ div.freshest-meta span {
 	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.8em;
 	}
-div.freshest-meta span.freshest-time { 
+div.freshest-meta span.freshest-time {
 	float: right;
 	font-size: 0.75em;
 	color: #AAA;
@@ -2102,7 +2125,7 @@ form#new-post { margin: 0 0 1em; }
 
 /*--------------------------------------------------------------
 X.X - WHERE DO I PUT THIS STUFF?
---------------------------------------------------------------*/		
+--------------------------------------------------------------*/
 span.activity-count {
 	background: #2e424d;
 	color: #CCC;
@@ -2111,7 +2134,7 @@ span.activity-count {
 	border: 1px solid #000;
 	border-radius: 2px;
 	}
-	
+
 /*---------------------------------------------
 X.X - TINYMCE
 ----------------------------------------------*/

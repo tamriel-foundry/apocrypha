@@ -42,3 +42,43 @@ var $			= jQuery;
 
 /*! End Document Ready */
 ;});
+
+
+
+/* ______ REFACTORED / NEW BY ZAYDOK BELOW (TEMPORARY COMMENT) _____ */
+
+// DOM ready
+jQuery(function() {
+	// Assign jQuery back to $ alias
+	var $ = jQuery,
+	// Define faux constants
+			SITE_URL = document.URL,
+			AJAX_URL 	= SITE_URL + 'wp-admin/admin-ajax.php',
+	// Define elements
+			advSearchForm = $( '#advanced-search' ),
+			searchFor = advSearchForm.find( '#search-for' ),
+			submitBtn = advSearchForm.find( 'input[type=submit]' )
+	;
+
+	// Display appropriate form fields based on "Search For" dropdown
+	searchFor.bind( 'change', function() {
+		var currentValue = searchFor.val(),
+				currentFields = advSearchForm.find( '.dynamic-form-section:visible' ),
+				inboundFields = $( '#if-' + currentValue )
+		;
+		// Animate out current fields
+		currentFields
+			.hide()
+			.slideUp( 'slow' );
+		// Animate in new fields based on newly selected "Search For" value
+		inboundFields
+			.show()
+			.slideDown( 'slow' );
+	});
+
+	// Custom "Advanced Search" submit handling via AJAX
+	submitBtn.bind( 'click', function() {
+		// Temporarily do nothing until queries are worked out.
+		return false;
+	});
+});

@@ -49,7 +49,7 @@ $name		= $user->display_name;
 			</li>
 			
 			<li class="submit">
-				<input name="submit" type="submit" id="submit" value="Post Comment" />
+				<button name="submit" type="submit" id="submit"><i class="icon-pencil"></i>Post Comment</button>	
 				<?php comment_id_fields( $post_id ); ?>
 			</li>	
 		</ol>

@@ -16,7 +16,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 	<ul id="top-menu">
 		<li id="home" class="top nodrop"><a href="<?php echo SITEURL; ?>">Home</a></li>
 	
-		<li id="gameinfo" class="top drop"><a href="#">Game Info<span class="drop-icon"></span></a>
+		<li id="gameinfo" class="top drop"><a href="#">Game Info<i class="drop-icon icon-angle-down"></i></a>
 			<div class="dropdown col4">
 				<div class="sub col">
 					<h3>Factions</h3>
@@ -57,7 +57,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 			</div>
 		</li>	
 
-		<li id="community" class="top drop"><a href="#">Community<span class="drop-icon"></span></a>
+		<li id="community" class="top drop"><a href="#">Community<i class="drop-icon icon-angle-down"></i></a>
 			
 			<?php if ( $loggedin ) : ?>
 			<div class="dropdown col3">
@@ -97,7 +97,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 			</div>
 		</li>	
 		
-		<li id="menu-forums" class="top drop right"><a href="<?php echo SITEURL . '/forums/' ?>">Forums<span class="drop-icon"></span></a>
+		<li id="menu-forums" class="top drop right"><a href="<?php echo SITEURL . '/forums/' ?>">Forums<i class="drop-icon icon-angle-down"></i></a>
 			<div class="dropdown col1">
 				<div class="sub col">
 					<ul class="submenu noheader">

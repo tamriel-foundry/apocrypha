@@ -73,6 +73,27 @@ function get_user_rank( $user_id , $totalposts=0 ) {
 /*--------------------------------------------------------------
 2.0 - PROFILE FUNCTIONS
 --------------------------------------------------------------*/
+/** 
+ * Get a user's avatar link
+ * @since 1.0
+ */
+function apoc_fetch_avatar_link( $user_id , $type='thumb' , $size=100 ) {
+	
+	// Get the avatar
+	$avatar	= apoc_fetch_avatar( $user_id , $type , $size );
+	
+	// For members, give a profile link
+	if ( $user_id > 0 ) {
+		$url 	= bp_core_get_user_domain( $user_id );
+		$link	= '<a class="member-avatar" href="' . $link . '" title="View User Profile">' . $avatar . '</a>';
+		
+	// Otherwise just the avatar is fine
+	} else $link	= $avatar;
+	
+	// Echo it
+	echo $link;		
+}
+
 
 /** 
  * Get a user's avatar without using gravatar, uses custom defaults

@@ -26,7 +26,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 function apoc_comments_link() {
 	$comments_link = '';
 	$number = doubleval( get_comments_number() );
-	$comments_link = '<a class="comments-link button" href="' . get_comments_link() . '" title="Article Comments">';
+	$comments_link = '<a class="comments-link button" href="' . get_comments_link() . '" title="Article Comments"><i class="icon-comments"></i>';
 	if( $number == 0 ) :
 		$comments_link .= 'Leave a Comment';
 	elseif ( $number > 0 ) :
@@ -131,7 +131,7 @@ function apoc_comment_admin_links() {
 	// If so, go ahead
 	global $comment;
 	$links = apoc_comment_quote_button();
-	$links .= '<a class="reply-link button button-dark" href="#respond" title="Quick Reply">Reply</a>';
+	$links .= '<a class="reply-link button button-dark" href="#respond" title="Quick Reply"><i class="icon-reply"></i>Reply</a>';
 	$links 	.= apoc_comment_edit_button();
 	$links	.= apoc_comment_delete_button();
 	echo $links;
@@ -152,7 +152,7 @@ function apoc_comment_quote_button() {
     /* Create quote link using data attributes to pass parameters */
 	$quoteButton = '<a class="quote-link button button-dark" href="#respond" title="Click here to quote selected text" ';
 	$quoteButton .= 'data-id="'.$comment_id.'" data-author="'.$author_name.'" data-date="'.$post_date.'">';
-	$quoteButton .= 'Quote</a>';
+	$quoteButton .= '<i class="icon-comment"></i>Quote</a>';
     
 	return $quoteButton;
 }
@@ -172,7 +172,7 @@ function apoc_comment_edit_button() {
 		$edit_url 	= $parent_url . 'comment-' . $comment->comment_ID . '/edit/';
 
 		/* Create quote link using data attributes to pass parameters */
-		$edit_button = '<a class="edit-comment-link button button-dark" href="' . $edit_url . '" title="Edit this comment" >Edit</a>';
+		$edit_button = '<a class="edit-comment-link button button-dark" href="' . $edit_url . '" title="Edit this comment" ><i class="icon-edit"></i>Edit</a>';
 		
 		return $edit_button;
 	}
@@ -189,7 +189,7 @@ function apoc_comment_delete_button() {
 		global $comment;
 
 		/* Build the link */
-		$delete_button = '<a class="delete-comment-link button button-dark" title="Delete this comment"  data-id="' . $comment->comment_ID . '" data-nonce="' . wp_create_nonce( 'delete-comment-nonce' ) . '">Trash</a>';
+		$delete_button = '<a class="delete-comment-link button button-dark" title="Delete this comment"  data-id="' . $comment->comment_ID . '" data-nonce="' . wp_create_nonce( 'delete-comment-nonce' ) . '"><i class="icon-trash"></i>Trash</a>';
 		
 		return $delete_button;
 	}

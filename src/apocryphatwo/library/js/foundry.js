@@ -35,10 +35,56 @@ var $			= jQuery;
 ;$("#comments").on("click","nav.ajaxed a.page-numbers",function(c){var b=newPage=postid=tooltip=dir="";var a=$(this);c.preventDefault();postid=$("nav.pagination").data("postid");baseURL=window.location.href;b=parseInt($(".page-numbers.current").text());newPage=parseInt(a.text());if(a.hasClass("next")){newPage=b+1}else{if(a.hasClass("prev")){newPage=b-1}}dir=(newPage>b)?".next":".prev";tooltip=(newPage>b)?"Loading &raquo;":"&laquo; Loading";$("a.page-numbers"+dir).html(tooltip);$.post(ajaxurl,{action:"apoc_load_comments",postid:postid,paged:newPage,baseurl:baseURL},function(d){if(d!="0"){$(".reply").fadeOut("slow").promise().done(function(){$(".reply").remove();$("nav.pagination").remove();$("ol#comment-list").append(d);$("ol#comment-list").after($("nav.pagination"));$("html, body").animate({scrollTop:$("#comments").offset().top},600);$(".reply").hide().fadeIn("slow");$("#respond").show()})}})});
 
 /*! Insert Comments */
-;$("form#commentform").submit(function(f){var c="";var e=$(this);var a=e.attr("action");var d=$("#submit",e);var b=$("#comment",e);f.preventDefault();d.attr("disabled","disabled");d.parent().prepend('<div id="comment-notice"></div>');$("#comment-notice").hide();tinyMCE.triggerSave();if(""==b.val()){c="You didn't write anything!"}if(!c){d.attr("value","Submitting...");$.ajax({url:a,type:"post",data:e.serialize(),success:function(g){$("#respond").slideUp("slow",function(){$("ol#comment-list").append(g);$("#comments .discussion-header").removeClass("noreplies");$("ol#comment-list li.reply:last-child").hide().slideDown("slow");tinyMCE.activeEditor.setContent("");tinyMCE.triggerSave();d.removeAttr("disabled");d.attr("value","Post Comment")})},error:function(g,i,h){c="An error occurred during posting."}})}if(c){$("#comment-notice").addClass("error").text(c).fadeToggle("slow");d.removeAttr("disabled");d.removeAttr("disabled");d.attr("value","Post Comment")}});
+;$("form#commentform").submit(function(f){var c="";var e=$(this);var a=e.attr("action");var d=$("#submit",e);var b=$("#comment",e);f.preventDefault();d.attr("disabled","disabled");if($("#comment-notice").length==0){d.parent().prepend('<div id="comment-notice"></div>');$("#comment-notice").hide()}tinyMCE.triggerSave();if(""==b.val()){c="You didn't write anything!"}if(!c){d.html('<i class="icon-pencil"></i>Submitting...');$.ajax({url:a,type:"post",data:e.serialize(),success:function(g){$("#respond").slideUp("slow",function(){$("ol#comment-list").append(g);$("#comments .discussion-header").removeClass("noreplies");$("ol#comment-list li.reply:last-child").hide().slideDown("slow");tinyMCE.activeEditor.setContent("");tinyMCE.triggerSave();d.removeAttr("disabled");d.html('<i class="icon-pencil"></i>Post Comment')})},error:function(g,i,h){c="An error occurred during posting."}})}if(c){$("#comment-notice").addClass("error").text(c).fadeIn("slow");d.removeAttr("disabled");d.removeAttr("disabled");d.html('<i class="icon-pencil"></i>Post Comment')}});
 
 /*! Delete Comments */
 ;$("ol#comment-list").on("click","a.delete-comment-link",function(a){a.preventDefault();confirmation=confirm("Permanently delete this comment?");if(confirmation){button=$(this);button.text("Deleting...");commentid=$(this).data("id");nonce=$(this).data("nonce");$.post(ajaxurl,{action:"apoc_delete_comment",_wpnonce:nonce,commentid:commentid},function(b){if(b){$("li#comment-"+commentid+" div.reply-body").slideUp("slow",function(){$("li#comment-"+commentid).remove()})}})}});
 
+/*! Submit Topic */
+;$("form#new-post").submit(function(e){var b="";var d=$(this);var c=$("#bbp_topic_submit",d);var a=$("#bbp_topic_content",d);var f=$("#bbp_topic_title",d);c.attr("disabled","disabled");if($("#topic-notice").length==0){d.prepend('<div id="topic-notice"></div>');$("#topic-notice").hide()}c.html('<i class="icon-pencil"></i>Submitting ...');tinyMCE.triggerSave();if(""==f.val()){b="Your topic must have a title!"}else{if(""==a.val()){b="You didn't write anything!"}}if(b){e.preventDefault();$("#topic-notice").addClass("error").text(b).fadeIn("slow");c.removeAttr("disabled");c.removeAttr("disabled");c.html('<i class="icon-pencil"></i>Post New Topic')}});
+
+/*! Tab Into TinyMCE From Topic Title */
+;$("#bbp_topic_title").bind("keydown.editor-focus",function(b){if(b.which!==9){return}if(!b.ctrlKey&&!b.altKey&&!b.shiftKey){if(typeof(tinymce)!=="undefined"){if(!tinymce.activeEditor.isHidden()){var a=tinymce.activeEditor.editorContainer;$("#"+a+" td.mceToolbar > a").focus()}else{$("textarea.bbp-the-content").focus()}}else{$("textarea.bbp-the-content").focus()}b.preventDefault()}});
+
 /*! End Document Ready */
 ;});
+
+
+
+/* ______ REFACTORED / NEW BY ZAYDOK BELOW (TEMPORARY COMMENT) _____ */
+
+// DOM ready
+jQuery(function() {
+	// Assign jQuery back to $ alias
+	var $ = jQuery,
+	// Define faux constants
+			SITE_URL = document.URL,
+			AJAX_URL 	= SITE_URL + 'wp-admin/admin-ajax.php',
+	// Define elements
+			advSearchForm = $( '#advanced-search' ),
+			searchFor = advSearchForm.find( '#search-for' ),
+			submitBtn = advSearchForm.find( 'input[type=submit]' )
+	;
+
+	// Display appropriate form fields based on "Search For" dropdown
+	searchFor.bind( 'change', function() {
+		var currentValue = searchFor.val(),
+				currentFields = advSearchForm.find( '.dynamic-form-section:visible' ),
+				inboundFields = $( '#if-' + currentValue )
+		;
+		// Animate out current fields
+		currentFields
+			.hide()
+			.slideUp( 'slow' );
+		// Animate in new fields based on newly selected "Search For" value
+		inboundFields
+			.show()
+			.slideDown( 'slow' );
+	});
+
+	// Custom "Advanced Search" submit handling via AJAX
+	submitBtn.bind( 'click', function() {
+		// Temporarily do nothing until queries are worked out.
+		return false;
+	});
+});

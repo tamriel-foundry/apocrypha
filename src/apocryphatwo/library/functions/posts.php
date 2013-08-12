@@ -125,9 +125,12 @@ function entry_header_description() {
 		// Keep it simple on the homepage 
 		if ( is_home() ) :
 			$description = 'By ' . $author . ' on ' . $published . $edit_link;
+		
+		// Otherwise show avatar and category
 		else : 
+			$avatar = apoc_fetch_avatar_link( $author_ID , $type = 'thumb' , $size = 50 );
 			$category = get_the_term_list( $post_ID, 'category', ' in ' , ', ', '' );
-			$description = 'By ' . $author . ' on ' . $published . $category . $edit_link;
+			$description = $avatar . 'By ' . $author . ' on ' . $published . $category . $edit_link;
 		endif;
 			
 	// Pages 

@@ -1,9 +1,57 @@
 /*! Submit Topic */
+<<<<<<< HEAD
 $( ".#bbp_topic_submit" ).click( function( event ) {
 
 	// Give a tooltip
 	$(this).html( '<i class="icon-pencil"></i>Submitting ...' );
 }
+=======
+$( "form#new-post" ).submit( function( event ) {
+
+	// Get the form
+	var error = '';
+	var form 		= $(this);
+	var button		= $( '#bbp_topic_submit' 	, form );
+	var textarea	= $( '#bbp_topic_content' 	, form );
+	var title		= $( '#bbp_topic_title' 	, form );
+	
+	// Prevent double posting
+	button.attr( 'disabled' , "disabled" );
+	
+	// Create a feedback notice if one doesn't already exist
+	if ( $( '#topic-notice' ).length == 0 ) {
+		form.prepend('<div id="topic-notice"></div>');
+		$( '#topic-notice' ).hide();
+	}
+
+	// Give a tooltip
+	button.html( '<i class="icon-pencil"></i>Submitting ...' );
+	
+	// Save content from TinyMCE into the hidden form textarea
+	tinyMCE.triggerSave();
+	
+	// Make sure the form isn't empty
+	if ( '' == title.val() ) {
+		error = "Your topic must have a title!";
+	} else if ( '' == textarea.val() ) {
+		error = "You didn't write anything!";			
+	}
+	
+	// If something went wrong, stop from submitting the POST
+	if ( error ) {
+		event.preventDefault();
+		
+		// Display the error
+		$( '#topic-notice' ).addClass('error').text(error).fadeIn('slow');
+		button.removeAttr( 'disabled' );
+		
+		// Re-enable the form
+		button.removeAttr( 'disabled' );
+		button.html( '<i class="icon-pencil"></i>Post New Topic' );
+	}
+});
+
+>>>>>>> origin/andrew-dev
 
 /*! Submit Reply */
 $( ".topic form#new-post" ).submit( function( event ) {

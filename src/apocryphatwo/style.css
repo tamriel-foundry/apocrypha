@@ -1153,7 +1153,6 @@ header.entry-header {
 	height: 100px;
 	margin: 0 0 1em 0;
 	position: relative;
-	overflow: hidden;
 	clear: both;
 	background-image: url(images/headers/headers.jpg);
 	border: 1px solid #000;
@@ -1219,6 +1218,13 @@ p.entry-byline {
 	border-top: 1px solid #000;
 	border-bottom: 1px solid #000;
 	}
+p.entry-byline a.member-avatar img.avatar { float: left; }
+p.entry-byline img.avatar {
+	margin: -13px 5px 0;
+	padding: 0;
+	box-shadow: 0 0 5px #000;
+	}
+p.entry-byline img.avatar:hover { box-shadow: 0 0 5px #f90; }
 	
 /* Post Edit Link */
 a.post-edit-link {
@@ -2108,6 +2114,11 @@ div.freshest-meta span.freshest-time {
 li.topic div.freshest-meta span.freshest-time {	float: left; }
 
 
+/*---------------------------------------------
+	8.2 - Single Topics
+----------------------------------------------*/
+
+	
 /*---------------------------------------------
 	8.3 - New Topic and Reply Forms
 ----------------------------------------------*/

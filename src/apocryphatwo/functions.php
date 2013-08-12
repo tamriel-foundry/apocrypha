@@ -122,20 +122,24 @@ function apoc_enqueue_styles() {
 add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_scripts' );
 function apoc_enqueue_scripts() {
 
-	/* Register first */
-	wp_register_script( 'foundry' 		, APOC_JS . '/foundry.js' 			,'jquery' , $ver='0.1' 	);
-	wp_register_script( 'flexslider' 	, APOC_JS . '/flexslider.min.js' 	,'jquery' , $ver='0.1' 	);	
-	//wp_register_script( 'buddypress'	, APOC_JS . '/buddypress.js' 		,'jquery' , $ver='0.1' 	);	
+	// Register first
+	wp_register_script( 'foundry' 		, APOC_JS . '/foundry.js' 			, 'jquery' , $ver='0.1' , true	);
+	wp_register_script( 'flexslider' 	, APOC_JS . '/flexslider.min.js' 	, 'jquery' , $ver='0.1' , true  );
+	//wp_register_script( 'buddypress'	, APOC_JS . '/buddypress.js' 		, 'jquery' , $ver='0.1' , true 	);	
 	
-	/* Then enqueue */
+	// Deregister WordPress default jQuery and get from Google
+	wp_deregister_script( 'jquery' );
+	wp_register_script( 'jquery' 		, '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' ,'jquery' , $ver ='1.10.2' , true );
+	
+	// Then enqueue
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'buddypress' );
 	
-	/* Some scripts are only needed on specific pages */
+	// Some scripts are only needed on specific pages
 	if ( is_home() || is_page_template( 'guild/guild-home.php' ) ) 
 		wp_enqueue_script( 'flexslider' );
 	
-	/* My JS file comes last */
+	// My JS file comes last
 	wp_enqueue_script( 'foundry' );
 }
 /* 
@@ -143,11 +147,8 @@ function apoc_enqueue_scripts() {
  * @since 1.0
  */
 function google_analytics_js() {
-	
 	echo '<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-33555290-2"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})();</script>' . "\n";
 }
-
-
 
 
 /*---------------------------------------------

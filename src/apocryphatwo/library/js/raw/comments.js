@@ -73,9 +73,11 @@ $( "form#commentform" ).submit( function( event ) {
 	// Prevent double posting
 	button.attr( 'disabled' , "disabled" );
 	
-	// Create a feedback notice
-	button.parent().prepend('<div id="comment-notice"></div>');
-	$( '#comment-notice' ).hide();
+	// Create a feedback notice if one doesn't already exist
+	if ( $( '#comment-notice' ).length == 0 ) {
+		button.parent().prepend('<div id="comment-notice"></div>');
+		$( '#comment-notice' ).hide();
+	}
 	
 	// Save content from TinyMCE into the hidden form textarea
 	tinyMCE.triggerSave();
@@ -89,7 +91,7 @@ $( "form#commentform" ).submit( function( event ) {
 	if( !error ) {
 	
 		// Give a tooltip
-		button.attr( 'value' , "Submitting..." );
+		button.html( '<i class="icon-pencil"></i>Submitting...' );
 		
 		// Submit the comment form to the wordpress handler
 		$.ajax({
@@ -110,7 +112,7 @@ $( "form#commentform" ).submit( function( event ) {
 					
 					// Re-enable the form
 					button.removeAttr( 'disabled' );
-					button.attr( 'value' , "Post Comment" );
+					button.html( '<i class="icon-pencil"></i>Post Comment' );
 				});					
 			},
 			error 	: function( jqXHR , textStatus , errorThrown ) {
@@ -121,12 +123,12 @@ $( "form#commentform" ).submit( function( event ) {
 	
 	// If there was an error at any point, display it
 	if ( error ) {
-		$( '#comment-notice' ).addClass('error').text(error).fadeToggle('slow');
+		$( '#comment-notice' ).addClass('error').text(error).fadeIn('slow');
 		button.removeAttr( 'disabled' );
 		
 		// Re-enable the form
 		button.removeAttr( 'disabled' );
-		button.attr( 'value' , "Post Comment" );
+		button.html( '<i class="icon-pencil"></i>Post Comment' );
 	}
 	
 });

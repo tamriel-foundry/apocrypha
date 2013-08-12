@@ -38,7 +38,7 @@ if ( bbp_current_user_can_access_create_topic_form() ) : ?>
 
 		<ol class="respond-form-fields">
 			<li class="text">
-				<label for="bbp_topic_title">Topic Title:</label>
+				<label for="bbp_topic_title"><i class="icon-bookmark"></i>Topic Title:</label>
 				<input type="text" id="bbp_topic_title" value="<?php bbp_form_topic_title(); ?>" tabindex="<?php bbp_tab_index(); ?>" size="100" name="bbp_topic_title" maxlength="<?php bbp_title_max_length(); ?>" />
 			</li>
 			
@@ -55,14 +55,14 @@ if ( bbp_current_user_can_access_create_topic_form() ) : ?>
 			
 			<?php if ( current_user_can( 'moderate' ) ) : ?>
 			<li class="select form-left">
-				<label for="bbp_stick_topic"><?php _e( 'Topic Type: ' , 'bbpress' ); ?></label>
+				<label for="bbp_stick_topic"><i class="icon-pushpin"></i><?php _e( 'Topic Type: ' , 'bbpress' ); ?></label>
 				<?php bbp_topic_type_select(); ?>
 			</li>
 			<?php endif; ?>
 			
 			<?php if ( !bbp_is_single_forum() ) : ?>
 			<li class="select form-right">
-				<label for="bbp_forum_id">Post in Forum:</label>
+				<label for="bbp_forum_id"><i class="icon-folder-closed"></i>Post in Forum:</label>
 				<?php bbp_dropdown( array( 'selected' => bbp_get_form_topic_forum() ) ); ?>
 			</li>
 			<?php endif; ?>
@@ -80,7 +80,7 @@ if ( bbp_current_user_can_access_create_topic_form() ) : ?>
 			
 			<?php if ( current_user_can( 'moderate' ) ) : ?>
 			<li class="text form-left">
-				<label for="bbp_topic_tags">Topic Tags:</label>
+				<label for="bbp_topic_tags"><i class="icon-tags"></i>Topic Tags:</label>
 				<input type="text" value="<?php bbp_form_topic_tags(); ?>" tabindex="<?php bbp_tab_index(); ?>" size="40" name="bbp_topic_tags" id="bbp_topic_tags" <?php disabled( bbp_is_topic_spam() ); ?> />
 			</li>
 			<?php endif; ?>
@@ -96,7 +96,7 @@ if ( bbp_current_user_can_access_create_topic_form() ) : ?>
 			<?php endif; ?>
 					
 			<li class="submit form-right">
-				<input type="submit" tabindex="<?php bbp_tab_index(); ?>" id="bbp_topic_submit" name="bbp_topic_submit" value="Submit New Topic" />
+				<button type="submit" id="bbp_topic_submit" name="bbp_topic_submit"><i class="icon-pencil"></i>Post New Topic</button>
 			</li>
 		
 			<li class="hidden">

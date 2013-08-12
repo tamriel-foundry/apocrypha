@@ -23,6 +23,7 @@
 	
 	<footer class="entry-footer">
 		<div class="entry-meta">
+			<i class="icon-tags"></i>
 			<?php echo get_the_term_list( $post->ID, 'category', 'Posted In: ', ', ', '' ); ?> 
 		</div>
 		<?php apoc_comments_link(); ?>

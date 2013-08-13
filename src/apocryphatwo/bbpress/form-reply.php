@@ -50,6 +50,7 @@ elseif ( bbp_current_user_can_access_create_reply_form() ) : ?>
 						'context' 		=> 'reply',
 						'media_buttons' => false,
 						'wpautop'		=> true,
+						'tinymce'		=> true,
 						'quicktags'		=> true,
 						'teeny'			=> false,
 					) ); ?>
@@ -84,7 +85,7 @@ elseif ( bbp_current_user_can_access_create_reply_form() ) : ?>
 				<?php endif; ?>
 				
 				<?php // Submit button ?>
-				<li class="submit form-right">
+				<li class="submit">
 					<button type="submit" id="bbp_reply_submit" name="bbp_reply_submit" tabindex="<?php bbp_tab_index(); ?>"><i class="icon-pencil"></i>Post New Topic</button>
 				</li>
 
@@ -100,7 +101,7 @@ elseif ( bbp_current_user_can_access_create_reply_form() ) : ?>
 <?php // The topic itself is closed
 elseif ( bbp_is_topic_closed() ) : ?>
 	<header id="respond-subheader" class="reply-header" >	
-		<?php printf( 'The topic &ldquo;%s&rdquo; is closed to new replies.' ), bbp_get_topic_title() ); ?>
+		<?php printf( 'The topic &ldquo;%s&rdquo; is closed to new replies.' , bbp_get_topic_title() ); ?>
 	</header>
 
 <?php // The parent forum for this topic is closed

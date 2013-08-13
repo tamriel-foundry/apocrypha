@@ -408,7 +408,7 @@ form li.submit button {
 	padding: 8px 16px;
 	}
 form ol li label { display: inline-block }
-form li.wp-editor { margin: -1em 0 0; }
+form li.wp-editor { margin: 0; }
 form li.hidden { margin: 0; }
 form li.submit { 
 	float: right;
@@ -2154,6 +2154,7 @@ div#subscription-controls a {
 	8.3 - New Topic and Reply Forms
 ----------------------------------------------*/
 form#new-post { margin: 0 0 1em; }
+form li#new-topic-title + li.wp-editor { margin: -1em 0 0; }
 
 /*--------------------------------------------------------------
 X.X - WHERE DO I PUT THIS STUFF?

@@ -194,29 +194,36 @@ function apoc_reply_admin_links() {
 	global $id;
 	$links = array();
 	
+	// NOTE: Icons and labels that are commented out are because bbPress runs annoying esc_html() on the input arguments.
+	// I submitted a ticket to the bbPress trac, but in the meantime I'll have to either core hack it, or wait for patch.
+	
 	// Topic admin links
 	if( bbp_is_topic( $id ) ) :
-		$links['edit'] 		= bbp_get_topic_edit_link  ( $r = array( 'edit_text' => '<i class="icon-edit"></i>Edit' ) );
-		$links['close']		= bbp_get_topic_close_link ( $r = array( 'close_text'=> '<i class="icon-lock"></i>Close') );
-		$links['stick']		= bbp_get_topic_stick_link ( $r = array(
-								'stick_text' 	=> '<i class="icon-pin"></i>Stick',
+		$links['edit'] 		= bbp_get_topic_edit_link  ( array( 'edit_text' => '<i class="icon-edit"></i>Edit' ) );
+		$links['close']		= bbp_get_topic_close_link ( array( 'close_text'=> '<i class="icon-lock"></i>Close') );
+		$links['stick']		= bbp_get_topic_stick_link ( array(
+								'stick_text' 	=> '<i class="icon-pushpin"></i>Stick',
 								'unstick_text' 	=> '<i class="icon-level-down"></i>Unstick',
 								'super_text' 	=> '<i class="icon-paper-clip"></i>Notice', ) );
-		$links['merge']		= bbp_get_topic_merge_link ( $r = array( 'merge_text'=> '<i class="icon-code-fork"></i>Merge') );
-		$links['trash']		= bbp_get_topic_trash_link ( $r = array(
-								'trash_text' 	=> '<i class="icon-trash"></i>Trash',
-								'restore_text' 	=> '<i class="icon-undo"></i>Restore',
-								'delete_text' 	=> '<i class="icon-remove"></i>Delete' ) );
+		$links['merge']		= bbp_get_topic_merge_link ( array( 'merge_text'=> '<i class="icon-code-fork"></i>Merge') );
+		$links['trash']		= bbp_get_topic_trash_link ( array(
+								//'trash_text' 	=> '<i class="icon-trash"></i>Trash',
+								//'restore_text' 	=> '<i class="icon-undo"></i>Restore',
+								//'delete_text' 	=> '<i class="icon-remove"></i>Delete' 
+								) );
 									
 	// Reply admin links
 	else :
-		$links['edit'] 		= bbp_get_reply_edit_link (	$r = array( 'edit_text'  => '<i class="icon-edit"></i>Edit' ) );
-		$links['move'] 		= bbp_get_reply_move_link (	$r = array( 'split_text' => '<i class="icon-move"></i>Move' ) );		
-		$links['split'] 	= bbp_get_topic_split_link( $r = array( 'split_text' => '<i class="icon-code-fork"></i>Split' ) );
-		$links['trash'] 	= bbp_get_reply_trash_link( $r = array( 
-								'trash_text' 	=> '<i class="icon-trash"></i>Trash',
-								'restore_text' 	=> '<i class="icon-undo"></i>Restore',
-								'delete_text' 	=> '<i class="icon-remove"></i>Delete' ) );
+		$links['edit'] 		= bbp_get_reply_edit_link (	array( 'edit_text'  => '<i class="icon-edit"></i>Edit' ) );
+		$links['move'] 		= bbp_get_reply_move_link (	array( ) );	
+								//'split_text' => '<i class="icon-move"></i>Move' 	
+		$links['split'] 	= bbp_get_topic_split_link( array( ) );
+								//'split_text' => '<i class="icon-code-fork"></i>Split' 
+		$links['trash'] 	= bbp_get_reply_trash_link( array( 
+								//'trash_text' 	=> '<i class="icon-trash"></i>Trash',
+								//'restore_text' 	=> '<i class="icon-undo"></i>Restore',
+								//'delete_text' 	=> '<i class="icon-remove"></i>Delete' 
+								) );
 	endif;
 	
 	// Add common quote and reply links
@@ -236,8 +243,8 @@ function apoc_reply_admin_links() {
  * Count the total number of times a topic has been favorited
  * @since 1.0
  */
-add_action( 'bbp_add_user_favorite' 	, 'apoc_favorite_count_plus' )
-add_action( 'bbp_remove_user_favorite' 	, 'apoc_favorite_count_minus' )
+add_action( 'bbp_add_user_favorite' 	, 'apoc_favorite_count_plus' );
+add_action( 'bbp_remove_user_favorite' 	, 'apoc_favorite_count_minus' );
 function apoc_favorite_count_plus( $user_id , $topic_id ) {
 	
 	// Get the favorite count, converting missing to zero
@@ -279,7 +286,7 @@ function has_bestof_topics() {
 	// Filter for just the past 7 days
 	function filter_bestof_topics( $where = '' ) {
 		$where .= " AND post_date > '" . date( 'Y-m-d' , strtotime( '-7 days' )) . "'";
-		return $where
+		return $where;
 	}	
 	
 	// Apply the filter, pass our arguments, and get topics

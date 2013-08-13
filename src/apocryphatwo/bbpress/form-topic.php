@@ -45,7 +45,7 @@ elseif ( bbp_current_user_can_access_create_topic_form() ) : ?>
 			<ol class="topic-form-fields">
 			
 				<?php // Topic title ?>
-				<li class="text">
+				<li class="text" id="new-topic-title">
 					<label for="bbp_topic_title"><i class="icon-bookmark"></i>Topic Title:</label>
 					<input type="text" id="bbp_topic_title" value="<?php bbp_form_topic_title(); ?>" tabindex="<?php bbp_tab_index(); ?>" size="100" name="bbp_topic_title" maxlength="<?php bbp_title_max_length(); ?>" />
 				</li>
@@ -56,6 +56,7 @@ elseif ( bbp_current_user_can_access_create_topic_form() ) : ?>
 						'context' 		=> 'topic',
 						'media_buttons' => false,
 						'wpautop' 		=> true,
+						'tinymce'		=> true,
 						'quicktags'		=> true,
 						'teeny'			=> false,
 					) ); ?>

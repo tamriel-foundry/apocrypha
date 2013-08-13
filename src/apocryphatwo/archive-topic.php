@@ -19,7 +19,6 @@
 		<div id="forums">
 
 			<?php do_action( 'bbp_template_notices' ); ?>
-			<?php do_action( 'template_notices' ); ?>
 			
 			<?php if ( bbp_has_topics() ) : ?>
 			

@@ -102,7 +102,7 @@ $( ".topic form#new-post" ).submit( function( event ) {
 				// Display the new comment with sexy jQuery
 				$( '#respond' ).slideUp('slow' , function() {
 					$( 'ol#topic-' + topic_id ).append( data );
-					//$( 'ol#topic-' + topic_id + ' li.reply:last-child' ).hide().slideDown('slow');
+					$( 'ol#topic-' + topic_id + ' li.reply:last-child' ).hide().slideDown('slow');
 	
 					// Clear the editor
 					tinyMCE.activeEditor.setContent('');

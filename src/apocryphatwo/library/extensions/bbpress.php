@@ -115,6 +115,19 @@ function apoc_subforum_freshness( $subforum_id = '' ) {
 /*---------------------------------------------
 2.0 - SINGLE TOPICS
 ----------------------------------------------*/
+function apoc_topic_header_class( $topic_id = 0 ) {
+	$topic_id = bbp_get_topic_id( $topic_id );
+	
+	// Generate some classes
+	$classes = array();
+	$classes[] = 'page-header-' . rand(1,6);
+	$classes[] = bbp_is_topic_sticky( $topic_id, false ) ? 'sticky'       : '';
+	$classes[] = bbp_is_topic_super_sticky( $topic_id  ) ? 'super-sticky' : '';
+	$classes[] = 'status-' . get_post_status( $ID );
+	
+	// Output it
+	echo join( ' ', $classes );
+}
 
 /* 
  * Display a custom freshness block for subforums
@@ -204,7 +217,10 @@ function apoc_reply_admin_links() {
 	// Topic admin links
 	if( bbp_is_topic( $id ) ) :
 		$links['edit'] 		= bbp_get_topic_edit_link  ( array( 'edit_text' => '<i class="icon-edit"></i>Edit' ) );
-		$links['close']		= bbp_get_topic_close_link ( array( 'close_text'=> '<i class="icon-lock"></i>Close') );
+		$links['close']		= bbp_get_topic_close_link ( array( 
+								'close_text'	=> '<i class="icon-lock"></i>Close',
+								'open_text'		=> '<i class="icon-unlock"></i>Open',		
+								) );
 		$links['stick']		= bbp_get_topic_stick_link ( array(
 								'stick_text' 	=> '<i class="icon-pushpin"></i>Stick',
 								'unstick_text' 	=> '<i class="icon-level-down"></i>Unstick',
@@ -213,7 +229,8 @@ function apoc_reply_admin_links() {
 		$links['trash']		= bbp_get_topic_trash_link ( array(
 								'trash_text' 	=> '<i class="icon-trash"></i>Trash',
 								'restore_text' 	=> '<i class="icon-undo"></i>Restore',
-								'delete_text' 	=> '<i class="icon-remove"></i>Delete' 
+								'delete_text' 	=> '<i class="icon-remove"></i>Delete',
+								'sep'			=> '',
 								) );
 									
 	// Reply admin links
@@ -237,6 +254,19 @@ function apoc_reply_admin_links() {
 		'sep'		=> '',
 		'links'		=> $links,
 	));
+}
+
+
+/**
+ * Prepend an icon to the revision log
+ * @since 1.0
+ */
+add_filter( 'bbp_get_reply_revision_log', 'apoc_custom_revision_log' );
+add_filter( 'bbp_get_topic_revision_log', 'apoc_custom_revision_log' );
+function apoc_custom_revision_log( $revision ) {
+	$revision = str_replace( 'revision-log">' , 'revision-log icons-ul double-border top">' , $revision );
+	$revision = str_replace( 'revision-log-item">' , 'revision-log-item"><i class="icon-li icon-edit"></i>' , $revision );
+	return $revision;
 }
 
 /**

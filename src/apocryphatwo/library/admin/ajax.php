@@ -219,23 +219,22 @@ function apoc_delete_comment() {
 add_action( 'wp_ajax_apoc_bbp_reply' , 'apoc_bbp_reply' );
 function apoc_bbp_reply() {
 
-	// Force the bbp_new_reply_handler to end prematurely before it redirects
-	add_action( 'bbp_new_reply' , 'apoc_bbp_reply_content' , 99 , 5 );
+	// Intercept the bbp_new_reply_handler just before redirection
+	add_action( 'bbp_new_reply_post_extras' , 'apoc_bbp_reply_content' , 1 , 1 );
 	
 	// Return the formatted reply
-	function apoc_bbp_reply_content( $reply_id, $topic_id, $forum_id, $anonymous_data, $reply_author  ) {
+	function apoc_bbp_reply_content( $reply_id ) {
 	
 		// Get the reply, which is now in the database
-		global $id;
-		$id = $reply_id;
-		$ajax_query = new WP_Query( array(
+		$bbp = bbpress();
+		$bbp->reply_query = new WP_Query( array(
 			'p'			=> $reply_id, 
 			'post_type' => 'reply',
 			));
 		
 		// Start an output buffer to capture the formatted reply
 		ob_start();
-		while(  $ajax_query->have_posts() ) : $ajax_query->the_post();
+		while(  $bbp->reply_query->have_posts() ) : $bbp->reply_query->the_post();
 			include( THEME_DIR . '/bbpress/loop-single-reply.php');
 		endwhile;
 		

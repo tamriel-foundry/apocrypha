@@ -18,7 +18,7 @@ if ( bbp_is_single_forum() ) : ?>
 	<header class="discussion-header">
 		<h2 id="respond-title">	<?php printf( 'Create New Topic in &ldquo;%s&rdquo;', bbp_get_forum_title() ); ?>
 		</h2>
-		<a class="backtotop button" href="#top" title="Back to top!">Back to top</a>
+		<a class="backtotop button" href="#top" title="Back to top!"><i class="icon-level-up"></i>Back to top</a>
 	</header>
 <?php endif; ?>
 
@@ -30,9 +30,12 @@ if ( 0 == $user_id ) : ?>
 
 <?php // Display the form to logged in users
 elseif ( bbp_current_user_can_access_create_topic_form() ) : ?>
+
+	<?php if ( !bbp_is_topic_edit() ) : ?>
 	<header id="respond-subheader" class="reply-header" >	
 			You are currently logged in as <?php echo $name; ?>.
 	</header>
+	<?php endif; ?>
 	
 	<form id="new-post" name="new-post" method="post" action="<?php the_permalink(); ?>">
 		<fieldset class="topic-form">
@@ -73,7 +76,7 @@ elseif ( bbp_current_user_can_access_create_topic_form() ) : ?>
 				<?php // Move topic to a different forum ?>
 				<?php if ( !bbp_is_single_forum() ) : ?>
 				<li class="select form-right">
-					<label for="bbp_forum_id"><i class="icon-folder-closed"></i>Post in Forum:</label>
+					<label for="bbp_forum_id"><i class="icon-folder-close"></i>In Forum:</label>
 					<?php bbp_dropdown( array( 'selected' => bbp_get_form_topic_forum() ) ); ?>
 				</li>
 				<?php endif; ?>
@@ -98,17 +101,19 @@ elseif ( bbp_current_user_can_access_create_topic_form() ) : ?>
 						
 				<?php // Save revision history on edits
 				if ( bbp_allow_revisions() && bbp_is_topic_edit() ) : ?>
-				<li class="checkbox form-right">
-					<input name="bbp_log_topic_edit" id="bbp_log_topic_edit" type="checkbox" value="1" <?php bbp_form_topic_log_edit(); ?> tabindex="<?php bbp_tab_index(); ?>" />
-					<label for="bbp_log_topic_edit"><?php _e( 'Display edit history', 'bbpress' ); ?></label>
-					<label for="bbp_topic_edit_reason"><?php printf( __( 'Reason for editing:', 'bbpress' ), bbp_get_current_user_name() ); ?></label>
+				<li class="checkbox form-left">
+					<label for="bbp_topic_edit_reason"><i class="icon-eraser"></i>Edit Reason?</label>
 					<input type="text" value="<?php bbp_form_topic_edit_reason(); ?>" tabindex="<?php bbp_tab_index(); ?>" size="40" name="bbp_topic_edit_reason" id="bbp_topic_edit_reason" />
+					<br><input name="bbp_log_topic_edit" id="bbp_log_topic_edit" type="checkbox" value="1" <?php bbp_form_topic_log_edit(); ?> tabindex="<?php bbp_tab_index(); ?>" />
+					<label for="bbp_log_topic_edit">Display Reason?</label>
 				</li>
 				<?php endif; ?>
 			
 				<?php // Submit button ?>			
 				<li class="submit form-right">
-					<button type="submit" id="bbp_topic_submit" name="bbp_topic_submit"><i class="icon-pencil"></i>Post New Topic</button>
+					<button type="submit" id="bbp_topic_submit" name="bbp_topic_submit"><i class="icon-pencil"></i>
+						<?php echo ( bbp_is_topic_edit() ? 'Edit Topic' : 'Post New Topic' ); ?>
+					</button>
 				</li>
 			
 				<?php // Hidden fields required by topic handler ?>	

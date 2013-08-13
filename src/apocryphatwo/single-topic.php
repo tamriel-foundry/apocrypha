@@ -7,7 +7,7 @@
  */
 ?>
 
-<?php get_header(); // Load the header ?>
+<?php get_header(); ?>
 
 	<div id="content" class="no-sidebar" role="main">
 		<?php apoc_breadcrumbs(); ?>
@@ -15,7 +15,7 @@
 		<?php if ( bbp_user_can_view_forum( array( 'forum_id' => bbp_get_topic_forum_id() ) ) ) : ?>
 		
 			<?php while ( have_posts() ) : the_post(); ?>
-			<header id="forum-header" class="entry-header <?php page_header_class(); ?>">
+			<header id="forum-header" class="entry-header <?php apoc_topic_header_class(); ?>">
 				<h1 class="entry-title"><?php bbp_topic_title(); ?></h1>
 				<?php apoc_topic_description(); ?>
 			</header>		

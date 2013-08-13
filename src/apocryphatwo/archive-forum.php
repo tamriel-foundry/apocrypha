@@ -17,9 +17,7 @@
 		</header>		
 		
 		<div id="forums">
-
 			<?php do_action( 'bbp_template_notices' ); ?>
-			<?php do_action( 'template_notices' ); ?>
 			
 			<?php if ( bbp_has_forums() ) : while ( bbp_forums() ) : bbp_the_forum(); ?>
 				<?php bbp_get_template_part( 'loop', 'single-forum' ); ?>

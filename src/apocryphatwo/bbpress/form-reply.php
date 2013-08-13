@@ -18,7 +18,7 @@ if ( bbp_is_single_topic() ) : ?>
 	<header class="discussion-header">
 		<h2 id="respond-title">	<?php printf( 'Reply to &ldquo;%s&rdquo;', bbp_get_topic_title() ); ?>
 		</h2>
-		<a class="backtotop button" href="#top" title="Back to top!">Back to top</a>
+		<a class="backtotop button" href="#top" title="Back to top!"><i class="icon-level-up"></i>Back to top</a>
 	</header>
 <?php endif; ?>
 

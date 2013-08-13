@@ -231,7 +231,65 @@ function apoc_reply_admin_links() {
 		'links'		=> $links,
 	));
 }
+
+/**
+ * Count the total number of times a topic has been favorited
+ * @since 1.0
+ */
+add_action( 'bbp_add_user_favorite' 	, 'apoc_favorite_count_plus' )
+add_action( 'bbp_remove_user_favorite' 	, 'apoc_favorite_count_minus' )
+function apoc_favorite_count_plus( $user_id , $topic_id ) {
+	
+	// Get the favorite count, converting missing to zero
+	$count = (int) get_post_meta( $topic_id , 'topic_fav_count' , true );
+	
+	// Save the incremented value
+	update_post_meta( $topic_id , 'topic_fav_count' , ++$count );
+}
+function apoc_favorite_count_minus( $user_id , $topic_id ) {
+	
+	// Get the favorite count, converting missing to zero
+	$count = (int) get_post_meta( $topic_id , 'topic_fav_count' , true );
+	
+	// Don't let the count go below zero
+	$count = max( $count , 1 );
+	
+	// Save the decremented value
+	update_post_meta( $topic_id , 'topic_fav_count' , --$count );
+}
  
+ 
+/**
+ * Get the most favorited topics in the last 7 days
+ * @since 1.0
+ */
+function has_bestof_topics() {
+
+	// Setup query arguments
+	$args = array(
+		'post_type'			=> 'topic',
+		'post_parent'		=> 'any',
+		'meta_key'			=> 'topic_fav_count',
+		'orderby'			=> 'meta_value',
+		'order'				=> 'DESC',
+		'posts_per_page'	=> 10,
+		'show_stickies'		=> false,
+	);
+	
+	// Filter for just the past 7 days
+	function filter_bestof_topics( $where = '' ) {
+		$where .= " AND post_date > '" . date( 'Y-m-d' , strtotime( '-7 days' )) . "'";
+		return $where
+	}	
+	
+	// Apply the filter, pass our arguments, and get topics
+	add_filter( 'posts_where' , 'filter_bestof_topics' );
+	bbp_has_topics( $args );
+	remove_filter( 'posts_where' , 'filter_bestof_topics' );
+}
+ 
+ 
+
 /*---------------------------------------------
 X.X - NEW POSTS
 ----------------------------------------------*/ 

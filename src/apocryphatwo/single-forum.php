@@ -27,13 +27,12 @@
 				<p class="notice warning">You do not have access to view this forum.</p>
 			<?php endif; ?>
 		
-		</div><!-- #forums -->	
-
-		<?php if ( !bbp_is_forum_category() ) : ?>
-		<div id="respond" class="create-topic">
-			<?php bbp_get_template_part( 'form', 'topic' ); ?>
-		</div><!-- #respond -->
-		<?php endif; ?>	
-		
+		</div><!-- #forums -->			
 	</div><!-- #content -->
+	
+	<?php if ( !bbp_is_forum_category() ) : ?>
+	<div id="respond" class="create-topic">
+		<?php bbp_get_template_part( 'form', 'topic' ); ?>
+	</div><!-- #respond -->
+	<?php endif; ?>	
 <?php get_footer(); ?>

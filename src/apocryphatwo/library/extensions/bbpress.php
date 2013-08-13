@@ -194,6 +194,10 @@ function apoc_reply_admin_links() {
 	global $id;
 	$links = array();
 	
+	// Add common quote and reply links
+	$links['quote'] 		= apoc_quote_button( 'reply' );
+	$links['reply']			= '<a class="reply-link button button-dark" href="#new-post" title="Quick Reply"><i class="icon-reply"></i>Reply</a>';
+	
 	// NOTE: Icons and labels that are commented out are because bbPress runs annoying esc_html() on the input arguments.
 	// I submitted a ticket to the bbPress trac, but in the meantime I'll have to either core hack it, or wait for patch.
 	
@@ -207,28 +211,22 @@ function apoc_reply_admin_links() {
 								'super_text' 	=> '<i class="icon-paper-clip"></i>Notice', ) );
 		$links['merge']		= bbp_get_topic_merge_link ( array( 'merge_text'=> '<i class="icon-code-fork"></i>Merge') );
 		$links['trash']		= bbp_get_topic_trash_link ( array(
-								//'trash_text' 	=> '<i class="icon-trash"></i>Trash',
-								//'restore_text' 	=> '<i class="icon-undo"></i>Restore',
-								//'delete_text' 	=> '<i class="icon-remove"></i>Delete' 
+								'trash_text' 	=> '<i class="icon-trash"></i>Trash',
+								'restore_text' 	=> '<i class="icon-undo"></i>Restore',
+								'delete_text' 	=> '<i class="icon-remove"></i>Delete' 
 								) );
 									
 	// Reply admin links
 	else :
 		$links['edit'] 		= bbp_get_reply_edit_link (	array( 'edit_text'  => '<i class="icon-edit"></i>Edit' ) );
-		$links['move'] 		= bbp_get_reply_move_link (	array( ) );	
-								//'split_text' => '<i class="icon-move"></i>Move' 	
-		$links['split'] 	= bbp_get_topic_split_link( array( ) );
-								//'split_text' => '<i class="icon-code-fork"></i>Split' 
+		$links['move'] 		= bbp_get_reply_move_link (	array( 'split_text' => '<i class="icon-move"></i>Move' ) );
+		$links['split'] 	= bbp_get_topic_split_link( array( 'split_text' => '<i class="icon-code-fork"></i>Split' ) );
 		$links['trash'] 	= bbp_get_reply_trash_link( array( 
-								//'trash_text' 	=> '<i class="icon-trash"></i>Trash',
-								//'restore_text' 	=> '<i class="icon-undo"></i>Restore',
-								//'delete_text' 	=> '<i class="icon-remove"></i>Delete' 
+								'trash_text' 	=> '<i class="icon-trash"></i>Trash',
+								'restore_text' 	=> '<i class="icon-undo"></i>Restore',
+								'delete_text' 	=> '<i class="icon-remove"></i>Delete' 
 								) );
 	endif;
-	
-	// Add common quote and reply links
-	$links['quote'] 		= apoc_quote_button( 'reply' );
-	$links['reply']			= '<a class="reply-link button button-dark" href="#new-post" title="Quick Reply"><i class="icon-reply"></i>Reply</a>';
 	
 	// Get the admin links!
 	bbp_reply_admin_links( $args = array(
@@ -243,8 +241,8 @@ function apoc_reply_admin_links() {
  * Count the total number of times a topic has been favorited
  * @since 1.0
  */
-add_action( 'bbp_add_user_favorite' 	, 'apoc_favorite_count_plus' );
-add_action( 'bbp_remove_user_favorite' 	, 'apoc_favorite_count_minus' );
+add_action( 'bbp_add_user_favorite' 	, 'apoc_favorite_count_plus' 	, 10 , 2 );
+add_action( 'bbp_remove_user_favorite' 	, 'apoc_favorite_count_minus' 	, 10 , 2 );
 function apoc_favorite_count_plus( $user_id , $topic_id ) {
 	
 	// Get the favorite count, converting missing to zero
@@ -261,8 +259,13 @@ function apoc_favorite_count_minus( $user_id , $topic_id ) {
 	// Don't let the count go below zero
 	$count = max( $count , 1 );
 	
-	// Save the decremented value
-	update_post_meta( $topic_id , 'topic_fav_count' , --$count );
+		// Save the decremented value
+	if ( $count > 1 )
+		update_post_meta( $topic_id , 'topic_fav_count' , --$count );
+		
+	// If the count would be going to zero, just delete the postmeta entirely
+	else
+		delete_post_meta( $topic_id , 'topic_fav_count' );
 }
  
  
@@ -277,7 +280,9 @@ function has_bestof_topics() {
 		'post_type'			=> 'topic',
 		'post_parent'		=> 'any',
 		'meta_key'			=> 'topic_fav_count',
-		'orderby'			=> 'meta_value',
+		'meta_value_num'	=> '0',
+		'meta_compare'		=> '>',		
+		'orderby' 			=> 'meta_value_num',
 		'order'				=> 'DESC',
 		'posts_per_page'	=> 10,
 		'show_stickies'		=> false,
@@ -290,9 +295,11 @@ function has_bestof_topics() {
 	}	
 	
 	// Apply the filter, pass our arguments, and get topics
-	add_filter( 'posts_where' , 'filter_bestof_topics' );
-	bbp_has_topics( $args );
-	remove_filter( 'posts_where' , 'filter_bestof_topics' );
+	//add_filter( 'posts_where' , 'filter_bestof_topics' );
+	$topics = bbp_has_topics();
+	//remove_filter( 'posts_where' , 'filter_bestof_topics' );
+	
+	return $topics;
 }
  
  

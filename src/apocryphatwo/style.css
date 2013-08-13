@@ -1261,18 +1261,28 @@ div#comments {
 	}
 header.discussion-header,
 header.reply-header {
-	width: 98%;
+	width: 100%;
 	height: 24px;
 	position: relative;
-	padding: 0.5em 1%;
+	padding: 0.5em 0%;
 	background-image: url(images/backgrounds/dark-denim.jpg);
 	border: 1px solid #000;
 	border-radius: 3px 3px 0 0;
 	box-shadow: 0 0 2px #444 inset;
 	}
+header.discussion-header > div {
+	font-family: 'Cinzel' , sans-serif;
+	font-size: 1.25em;
+	}
 header.discussion-header > h2 { 
-	margin: 0; 
+	font-family: 'Cinzel' , sans-serif;
+	margin: 0 0.6em; 
+	float: left;
 	font-weight: normal;
+	}
+header.discussion-header > a.backtotop { 
+	float: right; 
+	margin: 0 1em;
 	}
 header.discussion-header.noreplies { border-radius: 5px; }
 ol#comment-list {
@@ -1288,6 +1298,8 @@ li.reply {
 	
 /* Comment Header */
 header.reply-header {
+	width: 98%;
+	padding: 0.5em 1%;
 	background: rgba(51,51,51,0.25);
 	border-top: none;
 	border-radius: 0 0 3px 3px;
@@ -1307,6 +1319,7 @@ time.reply-time {
 /* Admin Links */
 div.reply-admin-links {
 	float: right;
+	color: transparent;
 	}
 div.reply-admin-links a {
 	margin: 0 0 0 5px;
@@ -1420,15 +1433,6 @@ div.signature-content img {
 div#respond {
 	width: 100%;
 	float: left;
-	margin: 0 0 1em;
-	}
-h2#respond-title {
-	float: left;
-	margin: 0;
-	}
-header.discussion-header > a.backtotop { 
-	float: right; 
-	margin: 0;
 	}
 header#respond-subheader {
 	width: 98%;
@@ -2119,15 +2123,6 @@ a.topic-location:hover { color: #ffb14c; }
 /*---------------------------------------------
 	8.2 - Single Topics
 ----------------------------------------------*/
-.topic  header.discussion-header {
-	width: 100%;
-	position: relative;
-	padding: 0.5em 0;
-	}
-.topic header.discussion-header > div {
-	font-family: 'Cinzel' , sans-serif;
-	font-size: 1.25em;
-	}
 div#subscription-controls {
 	position: absolute;
 	top: 7px;
@@ -2148,6 +2143,25 @@ div#subscription-controls a {
 	line-height: 16px;
 	color: #111;
 	cursor: pointer;
+	}
+div.reply-admin-links > a:not( .reply-permalink ) {
+	background: rgba(34,34,34,0.9);
+	background: -ms-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
+    background: -moz-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
+	background: -o-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
+	background: -webkit-linear-gradient(top, rgba(51,51,51,0.9), rgba(17,17,17,0.9));
+	border: 1px solid #000;
+	border-radius: 3px;
+	box-shadow: 0 0 2px #999 inset;
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 12px;
+	line-height: 16px;
+	color: #CCC;
+	}
+div.reply-admin-links > a:not( .reply-permalink ):hover {
+	color: #EEE;
+	border: 1px solid #000;
+	box-shadow: 0 0 5px #c60;
 	}
 	
 /*---------------------------------------------

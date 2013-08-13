@@ -25,13 +25,14 @@
 			</div><!-- #forums -->
 			<?php endwhile; ?>
 			
-			<div id="respond" class="create-reply">
-				<?php bbp_get_template_part( 'form', 'reply' ); ?>
-			</div><!-- #respond -->
-
 		<?php elseif ( bbp_is_forum_private( bbp_get_topic_forum_id(), false ) ) : ?>
 			<p class="error">You do not have permission to view topics in this forum.</p>
 		<?php endif; ?>
-		
+			
 	</div><!-- #content -->
+			
+	<div id="respond" class="create-reply">
+		<?php bbp_get_template_part( 'form', 'reply' ); ?>
+	</div><!-- #respond -->		
+
 <?php get_footer(); ?>

@@ -1,0 +1,15 @@
+# (Unfortunately) Required Core Hacks
+
+bbPress
+-----------------------
+
+bbpress/includes/topics/template-tags.php 
+
+	- remove esc_html() around admin link text
+	- remove mandatory parenthesis () surrounding super-sticky link
+	
+bbpress/includes/topics/template-tags.php 
+
+	- remove esc_html() around admin link text
+
+-----------------------

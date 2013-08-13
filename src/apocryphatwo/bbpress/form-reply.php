@@ -67,7 +67,7 @@ elseif ( bbp_current_user_can_access_create_reply_form() ) : ?>
 				<?php // Alter subscription preferences ?>
 				<li class="checkbox form-right">
 					<input name="bbp_topic_subscription" id="bbp_topic_subscription" type="checkbox" value="bbp_subscribe"<?php bbp_form_topic_subscribed(); ?> tabindex="<?php bbp_tab_index(); ?>" />
-					<label for="bbp_topic_subscription"><i class="icon-bookmark"></i>
+					<label for="bbp_topic_subscription">
 						<?php if ( bbp_is_reply_edit() && ( get_the_author_meta( 'ID' ) != bbp_get_current_user_id() ) ) echo 'Notify the author of follow-up replies';
 						else echo 'Notify me of follow-up replies'; ?>
 					</label>
@@ -86,7 +86,7 @@ elseif ( bbp_current_user_can_access_create_reply_form() ) : ?>
 				
 				<?php // Submit button ?>
 				<li class="submit">
-					<button type="submit" id="bbp_reply_submit" name="bbp_reply_submit" tabindex="<?php bbp_tab_index(); ?>"><i class="icon-pencil"></i>Post New Topic</button>
+					<button type="submit" id="bbp_reply_submit" name="bbp_reply_submit" tabindex="<?php bbp_tab_index(); ?>"><i class="icon-pencil"></i>Post Reply</button>
 				</li>
 
 				<?php // Hidden fields required by reply handler ?>				
@@ -113,6 +113,6 @@ elseif ( bbp_is_forum_closed( bbp_get_topic_forum_id() ) ) : ?>
 <?php // Something else happened?
 else : ?>
 	<header id="respond-subheader" class="reply-header" >	
-		Sorry, you cannot currently post in this topic.
+		Sorry, you cannot post in this topic.
 	</header>
 <?php endif; ?>

@@ -208,5 +208,47 @@ function apoc_delete_comment() {
 	die();
 }
 
+/*---------------------------------------------
+5.0 - BBPRESS
+----------------------------------------------*/
+
+/**
+ * Submit bbPress Replies with AJAX
+ * @since 1.0
+ */
+add_action( 'wp_ajax_apoc_bbp_reply' , 'apoc_bbp_reply' );
+function apoc_bbp_reply() {
+
+	// Force the bbp_new_reply_handler to end prematurely before it redirects
+	add_action( 'bbp_new_reply' , 'apoc_bbp_reply_content' , 99 , 5 );
+	
+	// Return the formatted reply
+	function apoc_bbp_reply_content( $reply_id, $topic_id, $forum_id, $anonymous_data, $reply_author  ) {
+	
+		// Get the reply, which is now in the database
+		global $id;
+		$id = $reply_id;
+		$ajax_query = new WP_Query( array(
+			'p'			=> $reply_id, 
+			'post_type' => 'reply',
+			));
+		
+		// Start an output buffer to capture the formatted reply
+		ob_start();
+		while(  $ajax_query->have_posts() ) : $ajax_query->the_post();
+			include( THEME_DIR . '/bbpress/loop-single-reply.php');
+		endwhile;
+		
+		// Retrieve everything from the output buffer
+		$content = ob_get_contents();
+		ob_end_clean();	
+		
+		// Send the response back to jQuery
+		die( $content );
+	}
+
+	// Process the new reply
+	bbp_new_reply_handler( 'bbp-new-reply' );
+}
 
 ?>

@@ -91,6 +91,7 @@ elseif ( bbp_current_user_can_access_create_reply_form() ) : ?>
 
 				<?php // Hidden fields required by reply handler ?>				
 				<li class="hidden">
+					<input type="hidden" name="apoc_ajax" id="apoc_ajax_action" value="apoc_post_reply">
 					<?php bbp_reply_form_fields(); ?>
 				</li>	
 		

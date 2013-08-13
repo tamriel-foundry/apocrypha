@@ -17,26 +17,15 @@ if ( post_password_required() ) : ?>
 elseif ( bbp_has_replies() ) : ?>
 
 	<?php // bbp_topic_tag_list(); ?>
-	
-	<?php if ( bbp_get_topic_pagination_links() ) : ?>
-	<nav class="pagination forum-pagination">
-		<div class="forum-pagination-count">
-			<?php bbp_topic_pagination_count(); ?>
-		</div>
-		<div class="forum-pagination-links">
-			<?php bbp_topic_pagination_links(); ?>
-		</div>
-	</nav>
-	<?php endif; ?>
-	
+		
 	<?php bbp_get_template_part( 'loop', 'replies' ); ?>
 	
 	<?php if ( bbp_get_topic_pagination_links() ) : ?>
 	<nav class="pagination forum-pagination">
-		<div class="forum-pagination-count">
+		<div class="pagination-count">
 			<?php bbp_topic_pagination_count(); ?>
 		</div>
-		<div class="forum-pagination-links">
+		<div class="pagination-links">
 			<?php bbp_topic_pagination_links(); ?>
 		</div>
 	</nav>

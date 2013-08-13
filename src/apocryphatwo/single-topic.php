@@ -21,6 +21,7 @@
 			</header>		
 
 			<div id="forums">
+				<?php do_action( 'bbp_template_notices' ); ?>	
 				<?php bbp_get_template_part( 'content', 'single-topic' ); ?>
 			</div><!-- #forums -->
 			<?php endwhile; ?>

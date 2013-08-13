@@ -41,10 +41,115 @@ var $			= jQuery;
 ;$("ol#comment-list").on("click","a.delete-comment-link",function(a){a.preventDefault();confirmation=confirm("Permanently delete this comment?");if(confirmation){button=$(this);button.text("Deleting...");commentid=$(this).data("id");nonce=$(this).data("nonce");$.post(ajaxurl,{action:"apoc_delete_comment",_wpnonce:nonce,commentid:commentid},function(b){if(b){$("li#comment-"+commentid+" div.reply-body").slideUp("slow",function(){$("li#comment-"+commentid).remove()})}})}});
 
 /*! Submit Topic */
-;$("form#new-post").submit(function(e){var b="";var d=$(this);var c=$("#bbp_topic_submit",d);var a=$("#bbp_topic_content",d);var f=$("#bbp_topic_title",d);c.attr("disabled","disabled");if($("#topic-notice").length==0){d.prepend('<div id="topic-notice"></div>');$("#topic-notice").hide()}c.html('<i class="icon-pencil"></i>Submitting ...');tinyMCE.triggerSave();if(""==f.val()){b="Your topic must have a title!"}else{if(""==a.val()){b="You didn't write anything!"}}if(b){e.preventDefault();$("#topic-notice").addClass("error").text(b).fadeIn("slow");c.removeAttr("disabled");c.removeAttr("disabled");c.html('<i class="icon-pencil"></i>Post New Topic')}});
+;$(".forum form#new-post").submit(function(e){var b="";var d=$(this);var c=$("#bbp_topic_submit",d);var a=$("#bbp_topic_content",d);var f=$("#bbp_topic_title",d);c.attr("disabled","disabled");if($("#topic-notice").length==0){d.prepend('<div id="topic-notice"></div>');$("#topic-notice").hide()}c.html('<i class="icon-pencil"></i>Submitting ...');tinyMCE.triggerSave();if(""==f.val()){b="Your topic must have a title!"}else{if(""==a.val()){b="You didn't write anything!"}}if(b){e.preventDefault();$("#topic-notice").addClass("error").text(b).fadeIn("slow");c.removeAttr("disabled");c.removeAttr("disabled");c.html('<i class="icon-pencil"></i>Post New Topic')}});
 
 /*! Tab Into TinyMCE From Topic Title */
 ;$("#bbp_topic_title").bind("keydown.editor-focus",function(b){if(b.which!==9){return}if(!b.ctrlKey&&!b.altKey&&!b.shiftKey){if(typeof(tinymce)!=="undefined"){if(!tinymce.activeEditor.isHidden()){var a=tinymce.activeEditor.editorContainer;$("#"+a+" td.mceToolbar > a").focus()}else{$("textarea.bbp-the-content").focus()}}else{$("textarea.bbp-the-content").focus()}b.preventDefault()}});
+
+
+
+
+
+/*! Submit Reply */
+$( ".topic form#new-post" ).submit( function( event ) {
+
+	// Get the form
+	var error = data =  '';
+	var form 		= $(this);
+	var button		= $( '#bbp_reply_submit' 	, form );
+	var textarea	= $( '#bbp_reply_content' 	, form );
+	var topic_id	= $( '#bbp_topic_id'		, form ).val();
+	
+	// Prevent the default action
+	event.preventDefault();
+	
+	// Prevent double posting
+	button.attr( 'disabled' , "disabled" );
+	
+	// Create a feedback notice if one doesn't already exist
+	if ( $( '#topic-notice' ).length == 0 ) {
+		form.prepend('<div id="topic-notice"></div>');
+		$( '#topic-notice' ).hide();
+	}
+	
+	// Save content from TinyMCE into the hidden form textarea
+	tinyMCE.triggerSave();
+	
+	// Make sure the form isn't empty
+	if ( '' == textarea.val() ) {
+		error = "You didn't write anything!";			
+	}
+		
+	// If there's been no error so far, go ahead and submit the AJAX
+	if( !error ) {
+	
+		// Change the hidden "action" input to point to our AJAX handler
+		$( 'input#bbp_post_action' ).attr( 'value' , "apoc_bbp_reply" );
+
+		// Serialize the data
+		data = form.serialize();
+	
+		// Give a tooltip
+		button.html( '<i class="icon-pencil"></i>Submitting ...' );
+		
+		// Submit the comment form to the wordpress handler
+		$.ajax({
+			url 	: ajaxurl,
+			type	: 'post',
+			data	: form.serialize(),
+			success	: function( data ) {
+				
+				// Display the new comment with sexy jQuery
+				$( '#respond' ).slideUp('slow' , function() {
+					$( 'ol#topic-' + topic_id ).append( data );
+					//$( 'ol#topic-' + topic_id + ' li.reply:last-child' ).hide().slideDown('slow');
+	
+					// Clear the editor
+					tinyMCE.activeEditor.setContent('');
+					tinyMCE.triggerSave();
+					
+					// Re-enable the form
+					button.removeAttr( 'disabled' );
+					button.html( '<i class="icon-pencil"></i>Post Reply' );
+					
+				});			
+			},
+			error 	: function( jqXHR , textStatus , errorThrown ) {
+					error = "An error occurred during posting.";
+			},
+		});
+		
+	}
+	
+	// If there was an error at any point, display it
+	if ( error ) {
+		$( '#topic-notice' ).addClass('error').text(error).fadeIn('slow');
+		button.removeAttr( 'disabled' );
+		
+		// Re-enable the form
+		button.removeAttr( 'disabled' );
+		button.html( '<i class="icon-pencil"></i>Post Reply' );
+	}
+	
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*! End Document Ready */
 ;});

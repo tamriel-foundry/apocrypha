@@ -224,12 +224,14 @@ function apoc_reply_admin_links() {
 		$links['trash'] 	= bbp_get_reply_trash_link( array( 
 								'trash_text' 	=> '<i class="icon-trash"></i>Trash',
 								'restore_text' 	=> '<i class="icon-undo"></i>Restore',
-								'delete_text' 	=> '<i class="icon-remove"></i>Delete' 
+								'delete_text' 	=> '<i class="icon-remove"></i>Delete',
+								'sep'			=> '',
 								) );
 	endif;
 	
 	// Get the admin links!
 	bbp_reply_admin_links( $args = array(
+		'id'		=> $id,
 		'before'	=> '',
 		'after'		=> '',
 		'sep'		=> '',

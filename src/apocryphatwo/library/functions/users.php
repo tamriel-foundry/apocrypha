@@ -228,9 +228,7 @@ function new_bbpress_topic_count( $topic_id, $forum_id, $anonymous_data, $topic_
 }
 add_action( 'bbp_new_reply' , 'new_bbpress_reply_count' , 10 , 5);
 function new_bbpress_reply_count( $reply_id, $topic_id, $forum_id, $anonymous_data, $reply_author ) {
-	$post 		= get_post( $post_id );
-	$user_id 	= $post->post_author;
-	update_user_post_count( $user_id );
+	update_user_post_count( $reply_author );
 }
 
 /** 

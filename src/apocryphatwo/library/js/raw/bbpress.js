@@ -1,5 +1,5 @@
 /*! Submit Topic */
-$( "form#new-post" ).submit( function( event ) {
+$( ".forum form#new-post" ).submit( function( event ) {
 
 	// Get the form
 	var error = '';
@@ -48,12 +48,13 @@ $( "form#new-post" ).submit( function( event ) {
 /*! Submit Reply */
 $( ".topic form#new-post" ).submit( function( event ) {
 
+	alert( 'listener');
+
 	// Get the form
 	var error = data =  '';
 	var form 		= $(this);
 	var button		= $( '#bbp_topic_submit' 	, form );
 	var textarea	= $( '#bbp_topic_content' 	, form );
-	var title		= $( '#bbp_topic_title' 	, form );
 	
 	// Prevent the default action
 	event.preventDefault();
@@ -71,19 +72,18 @@ $( ".topic form#new-post" ).submit( function( event ) {
 	tinyMCE.triggerSave();
 	
 	// Make sure the form isn't empty
-	if ( '' == title.val() ) {
-		error = "Your topic must have a title!";
-	} else if ( '' == textarea.val() ) {
+	if ( '' == textarea.val() ) {
 		error = "You didn't write anything!";			
 	}
-			
+		
+	
 	// If there's been no error so far, go ahead and submit the AJAX
 	if( !error ) {
 	
 		data = form.serialize();
 	
 		alert( "no error, trying AJAX" );
-		alert( "Thread data: " + data );
+		alert( "Reply data: " + data );
 	
 		// Give a tooltip
 		button.html( '<i class="icon-pencil"></i>Submitting ...' );

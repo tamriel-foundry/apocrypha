@@ -650,6 +650,12 @@ div.error {
 	border: 1px solid #900;
 	color: #DDD;
 	}
+div.warning >p,
+div.error > p,
+div.updated > p,
+div.success > p {
+	margin: 0;
+	}
 
 /*--------------------------------------------------------------
 4.0 - NAVIGATION
@@ -1262,6 +1268,7 @@ div#comments {
 header.discussion-header,
 header.reply-header {
 	width: 100%;
+	float: left;
 	height: 24px;
 	position: relative;
 	padding: 0.5em 0%;

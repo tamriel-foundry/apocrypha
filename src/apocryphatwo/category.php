@@ -23,15 +23,17 @@ $category_id = get_query_var( 'cat' );
 			<?php endif; ?>		
 		</header>
 		
-		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-		<?php apoc_display_post(); ?>
-		<?php endwhile; else : ?>
-		<div class="warning">Sorry, no posts were found for this category.</div>
-		<?php endif; ?>
-	
-		<nav class="pagination ajaxed" data-type="category" data-id="<?php echo $category_id; ?>">
-			<?php loop_pagination(); ?>
-		</nav>
+		<div id="posts">
+			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+			<?php apoc_display_post(); ?>
+			<?php endwhile; else : ?>
+			<div class="warning">Sorry, no posts were found for this category.</div>
+			<?php endif; ?>
+		
+			<nav class="pagination ajaxed" data-type="category" data-id="<?php echo $category_id; ?>">
+				<?php loop_pagination(); ?>
+			</nav>
+		</div>
 		
 	</div><!-- #content -->
 	

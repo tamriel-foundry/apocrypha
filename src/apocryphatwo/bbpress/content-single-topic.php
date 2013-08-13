@@ -21,7 +21,7 @@ elseif ( bbp_has_replies() ) : ?>
 	<?php bbp_get_template_part( 'loop', 'replies' ); ?>
 	
 	<?php if ( bbp_get_topic_pagination_links() ) : ?>
-	<nav class="pagination forum-pagination">
+	<nav class="pagination forum-pagination ajaxed" data-type="replies" data-id="<?php bbp_topic_id(); ?>">
 		<div class="pagination-count">
 			<?php bbp_topic_pagination_count(); ?>
 		</div>

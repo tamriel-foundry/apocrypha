@@ -149,14 +149,14 @@ function apoc_quote_button( $context = 'comment' ) {
 		// Article comments
 		case 'comment' :
 			global $comment;
-			$comment_id  	= $comment->comment_ID;
+			$id  			= $comment->comment_ID;
 			$author_name 	= $comment->comment_author;
 			$post_date 		= get_comment_date( 'F j, Y' , $comment_id );
 			break;
 		
 		// Forum replies
 		case 'reply' :
-			$reply_id  		= bbp_get_reply_id( $reply_id );
+			$id  			= bbp_get_reply_id( $reply_id );
 			$author_name 	= bbp_get_reply_author( $reply_id );
 			$post_date 		= get_the_date();	
 			break;
@@ -164,7 +164,7 @@ function apoc_quote_button( $context = 'comment' ) {
 
     /* Create quote link using data attributes to pass parameters */
 	$quoteButton = '<a class="quote-link button button-dark" href="#respond" title="Click here to quote selected text" ';
-	$quoteButton .= 'data-id="'.$comment_id.'" data-author="'.$author_name.'" data-date="'.$post_date.'">';
+	$quoteButton .= 'data-context="' . $context . '" data-id="'.$id.'" data-author="'.$author_name.'" data-date="'.$post_date.'">';
 	$quoteButton .= '<i class="icon-comment"></i>Quote</a>';
     
 	return $quoteButton;

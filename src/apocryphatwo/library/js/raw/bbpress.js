@@ -1,4 +1,69 @@
-/*! Submit Topic */
+/*! Load bbPress Replies */
+$( '#forums' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
+	
+	// Declare some stuff
+	var curPage = newPage = postid = tooltip = dir = '';
+	var button	= $(this);
+			
+	// Prevent default pageload
+	event.preventDefault();
+	
+	// Get the pagination context
+	id 			= $( 'nav.pagination' ).data('id');
+	baseURL		= window.location.href.replace( window.location.hash , '' );
+	
+	// Get the current page number
+	curPage = parseInt( $( ".page-numbers.current" ).text() );
+	
+	// Get the requested page number
+	newPage	= parseInt( button.text() );
+	if ( button.hasClass( 'next' ) ) {
+		newPage = curPage+1;
+	} else if ( button.hasClass( 'prev' ) ) {
+		newPage = curPage-1;
+	}
+	
+	// Display a loading tooltip
+	dir = ( newPage > curPage ) ? ".next" : ".prev";
+	tooltip = ( newPage > curPage ) ? "Loading &raquo;" : "&laquo; Loading";
+	$( 'a.page-numbers' + dir ).html(tooltip);
+
+	// Send an AJAX request for more comments
+	$.post( ajaxurl , {
+			'action'	: 'apoc_load_replies',
+			'id'		: id,
+			'paged'		: newPage,
+			'baseurl'	: baseURL,
+		},
+		function( response ) {
+		
+			// If we successfully retrieved comments
+			if( response != '0' ) {
+			
+				// Do some beautiful jQuery
+				$('.reply').fadeOut('slow').promise().done(function() {
+					$('nav.pagination').remove();
+					$('ol#topic-' + id ).empty().append(response);
+					$('ol#topic-' + id ).after( $( 'nav.pagination' ) );
+					$('html, body').animate({ scrollTop: $( "#forums" ).offset().top }, 600 );
+					$('ol#topic-' + id ).hide().fadeIn('slow');
+					$( '#respond' ).show();
+				});
+				
+				// Change the URL in the browser
+				if ( 1 == curPage )
+					newURL = baseURL + 'page/' + newPage + '/';
+				else if ( 1 == newPage )
+					newURL = baseURL.replace( "/page/" + curPage , "" );
+				else
+					newURL = baseURL.replace( "page/" + curPage, "page/" + newPage );
+				window.history.pushState( { 'id' : id , 'paged' : curPage } , document.title , newURL );
+			}
+		}
+	);	
+});
+
+/*! Submit New bbPress Topic */
 $( ".forum form#new-post" ).submit( function( event ) {
 
 	// Get the form
@@ -45,16 +110,15 @@ $( ".forum form#new-post" ).submit( function( event ) {
 });
 
 
-/*! Submit Reply */
+/*! Submit New bbPress Reply */
 $( ".topic form#new-post" ).submit( function( event ) {
-
-	alert( 'listener');
 
 	// Get the form
 	var error = data =  '';
 	var form 		= $(this);
-	var button		= $( '#bbp_topic_submit' 	, form );
-	var textarea	= $( '#bbp_topic_content' 	, form );
+	var button		= $( '#bbp_reply_submit' 	, form );
+	var textarea	= $( '#bbp_reply_content' 	, form );
+	var topic_id	= $( '#bbp_topic_id'		, form ).val();
 	
 	// Prevent the default action
 	event.preventDefault();
@@ -76,31 +140,29 @@ $( ".topic form#new-post" ).submit( function( event ) {
 		error = "You didn't write anything!";			
 	}
 		
-	
 	// If there's been no error so far, go ahead and submit the AJAX
 	if( !error ) {
 	
+		// Change the hidden "action" input to point to our AJAX handler
+		$( 'input#bbp_post_action' ).attr( 'value' , "apoc_bbp_reply" );
+
+		// Serialize the data
 		data = form.serialize();
-	
-		alert( "no error, trying AJAX" );
-		alert( "Reply data: " + data );
 	
 		// Give a tooltip
 		button.html( '<i class="icon-pencil"></i>Submitting ...' );
 		
-		/*
 		// Submit the comment form to the wordpress handler
 		$.ajax({
-			url 	: submitURL,
+			url 	: ajaxurl,
 			type	: 'post',
 			data	: form.serialize(),
 			success	: function( data ) {
-						
+				
 				// Display the new comment with sexy jQuery
 				$( '#respond' ).slideUp('slow' , function() {
-					$( 'ol#comment-list' ).append( data );
-					$( '#comments .discussion-header' ).removeClass( 'noreplies' );
-					$( 'ol#comment-list li.reply:last-child' ).hide().slideDown('slow');
+					$( 'ol#topic-' + topic_id ).append( data );
+					$( 'ol#topic-' + topic_id + ' li.reply:last-child' ).hide().slideDown('slow');
 	
 					// Clear the editor
 					tinyMCE.activeEditor.setContent('');
@@ -108,14 +170,14 @@ $( ".topic form#new-post" ).submit( function( event ) {
 					
 					// Re-enable the form
 					button.removeAttr( 'disabled' );
-					button.html( '<i class="icon-pencil"></i>Post Comment' );
-				});					
+					button.html( '<i class="icon-pencil"></i>Post Reply' );
+					
+				});			
 			},
 			error 	: function( jqXHR , textStatus , errorThrown ) {
 					error = "An error occurred during posting.";
 			},
-		}); */
-		
+		});	
 	}
 	
 	// If there was an error at any point, display it
@@ -125,11 +187,9 @@ $( ".topic form#new-post" ).submit( function( event ) {
 		
 		// Re-enable the form
 		button.removeAttr( 'disabled' );
-		button.html( '<i class="icon-pencil"></i>Post New Topic' );
-	}
-	
+		button.html( '<i class="icon-pencil"></i>Post Reply' );
+	}	
 });
-
 
 
 /*! Tab Into TinyMCE From Topic Title */

@@ -1,5 +1,5 @@
 /*! AJAX Posts Loop */
-$( '#content' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
+$( '#posts' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	
 	// Declare some stuff
 	var curPage = newPage = type = id = tooltip = dir = '';
@@ -11,7 +11,7 @@ $( '#content' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	// Get the pagination context
 	type 	= $( 'nav.pagination' ).data('type');
 	id 		= $( 'nav.pagination' ).data('id');
-	baseURL	= window.location.href;
+	baseURL	= window.location.href.replace( window.location.hash , '' );
 	
 	// Get the current page number
 	curPage = parseInt( $( ".page-numbers.current" ).text() );
@@ -44,13 +44,21 @@ $( '#content' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 			
 				// Do some beautiful jQuery
 				$('.post').fadeOut('slow').promise().done(function() {
-					$('.post').remove();
 					$('nav.pagination').remove();
-					$('#content').append(response);
-					$('html, body').animate({ scrollTop: $( "#content" ).offset().top - 15 }, 600 );
-					$('.post').hide().fadeIn('slow');				
+					$('#posts').empty().append(response);
+					$('html, body').animate({ scrollTop: $( "#content" ).offset().top }, 600 );
+					$('#posts').hide().fadeIn('slow');				
 				});			
 			}
+			
+				// Change the URL in the browser
+				if ( 1 == curPage )
+					newURL = baseURL + 'page/' + newPage + '/';
+				else if ( 1 == newPage )
+					newURL = baseURL.replace( "/page/" + curPage, "" );
+				else
+					newURL = baseURL.replace( "/page/" + curPage, "/page/" + newPage );
+				window.history.replaceState( { 'id' : id , 'paged' : curPage } , document.title , newURL );			
 		}
 	);	
 });

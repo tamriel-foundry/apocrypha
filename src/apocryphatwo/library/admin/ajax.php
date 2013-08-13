@@ -96,6 +96,7 @@ function apoc_load_posts() {
 
 	// Get the post data
 	$type 	= $_POST['type'];
+	$id		= $_POST['id'];
 	$paged	= $_POST['paged'];
 	$url	= $_POST['baseurl'];
 	
@@ -106,12 +107,12 @@ function apoc_load_posts() {
 	// Add additional query variables depending on context
 	switch ( $type ) {
 		case 'author' :
-			$args['author'] = $_POST['id'];
+			$args['author'] = $id;
 			break;
 		
 		case 'category' :
-			$args['cat']	= $_POST['id'];
-			break;	
+			$args['cat']	= $id;
+			break;			
 	}
 		
 	// Issue the posts query
@@ -129,8 +130,8 @@ function apoc_load_posts() {
 		endwhile;
 		
 		// Next we need to build some new pagination
-		echo '<nav class="pagination ajaxed" data-type="' . $type . '">';
-			ajax_pagination( $args = array() , $url  );
+		echo '<nav class="pagination ajaxed" data-type="' . $type . '" data-id="' . $id .'">';
+			ajax_pagination( $ajax_query , $args = array() , $url  );
 		echo '</nav>';
 				
 	endif;
@@ -211,6 +212,92 @@ function apoc_delete_comment() {
 /*---------------------------------------------
 5.0 - BBPRESS
 ----------------------------------------------*/
+add_action( 'wp_ajax_nopriv_apoc_load_replies' 	, 'apoc_load_replies' );
+add_action( 'wp_ajax_apoc_load_replies' 		, 'apoc_load_replies' );
+function apoc_load_replies() {
+
+	// Get the post data
+	$type 		= $_POST['type'];
+	$topic_id	= $_POST['id'];
+	$paged		= $_POST['paged'];
+	$url		= $_POST['baseurl'];
+	
+	// Setup post query variables
+	$args = array();
+	$args['post_type']		= array( 'topic' , 'reply' );
+	$args['post_parent']    = $topic_id;
+	$args['posts_per_page'] = bbp_get_replies_per_page();
+	$args['paged'] 			= $paged;
+	$args['order']			= 'ASC';
+	
+	// Parse the URL to see if it is a view all
+	$view_all = ( strpos( $url , 'view=all' ) > 0 ) ? true : false;
+	if ( $view_all && current_user_can( 'moderate' ) ) {
+
+		// Default view = all statuses
+		$post_statuses = array(
+			bbp_get_public_status_id(),
+			bbp_get_closed_status_id(),
+			bbp_get_spam_status_id(),
+			bbp_get_trash_status_id(),
+			bbp_get_private_status_id(),
+		);
+
+		// Join post statuses together
+		$args['post_status'] = join( ',', $post_statuses );
+
+	// Lean on the 'perm' query var value of 'readable' to provide statuses
+	} else $args['perm'] = 'readable';
+
+	// Get bbPress
+	$bbp = bbpress();
+
+	// Call the query
+	$bbp->reply_query = new WP_Query( $args );
+
+	// Add pagination values to query object
+	$bbp->reply_query->posts_per_page = $r['posts_per_page'];
+	$bbp->reply_query->paged          = $r['paged'];
+
+	// Never home, regardless of what parse_query says
+	$bbp->reply_query->is_home        = false;
+
+	// We are always on a single topic
+	$bbp->reply_query->is_single = true;
+	set_query_var( '_bbp_query_name' , 'bbp_single_topic' );
+	
+	// Store everything into an output buffer
+	ob_start();
+
+	// Check if we found anything
+	if ( $bbp->reply_query->have_posts() ) :
+
+		// If we have posts, build the HTML for the set
+		while ( $bbp->reply_query->have_posts() ) :
+			$bbp->reply_query->the_post();
+			include( THEME_DIR . '/bbpress/loop-single-reply.php');
+		endwhile;
+		
+		$pagination_args = array(
+			'prev_text' => '&larr;',
+			'next_text' => '&rarr;',
+			'add_args'  => ( bbp_get_view_all() ) ? array( 'view' => 'all' ) : false
+		);
+		
+		// Worry about pagination later
+		echo '<nav class="pagination ajaxed" data-type="' . $type . '" data-id="' . $topic_id .'">';
+			ajax_pagination( $bbp->reply_query , $pagination_args , $url  );
+		echo '</nav>';
+				
+	endif;
+	
+	// Get everything from the output buffer
+	$content = ob_get_contents();
+	ob_end_clean();
+	
+	// Send a response and return the HTML
+	die( $content );
+}
 
 /**
  * Submit bbPress Replies with AJAX

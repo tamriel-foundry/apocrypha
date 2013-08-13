@@ -28,15 +28,17 @@ $username 	= bp_core_get_user_displayname( $user_id );
 			</div>
 		</header>
 		
-		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-		<?php apoc_display_post(); ?>
-		<?php endwhile; else : ?>
-		<div class="warning">Sorry, no posts were found for this author.</div>
-		<?php endif; ?>
-	
-		<nav class="pagination ajaxed" data-type="author" data-id="<?php echo $user_id; ?>">
-			<?php loop_pagination(); ?>
-		</nav>
+		<div id="posts">		
+			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+			<?php apoc_display_post(); ?>
+			<?php endwhile; else : ?>
+			<div class="warning">Sorry, no posts were found for this author.</div>
+			<?php endif; ?>
+		
+			<nav class="pagination ajaxed" data-type="author" data-id="<?php echo $user_id; ?>">
+				<?php loop_pagination(); ?>
+			</nav>
+		</div>
 		
 	</div><!-- #content -->
 	

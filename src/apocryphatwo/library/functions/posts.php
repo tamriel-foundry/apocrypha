@@ -122,15 +122,16 @@ function entry_header_description() {
 		if ( current_user_can( 'edit_post' , $post_ID ) )
 			$edit_link = '<a class="post-edit-link" href="' . get_edit_post_link( $post_ID ) . '" title="Edit this post" target="_blank">Edit</a>';
 		
-		// Keep it simple on the homepage 
-		if ( is_home() ) :
-			$description = 'By ' . $author . ' on ' . $published . $edit_link;
-		
-		// Otherwise show avatar and category
-		else : 
+		// Show a bunch of stuff for single views
+		if ( is_single() ) :
 			$avatar = apoc_fetch_avatar_link( $author_ID , $type = 'thumb' , $size = 50 );
 			$category = get_the_term_list( $post_ID, 'category', ' in ' , ', ', '' );
-			$description = $avatar . 'By ' . $author . ' on ' . $published . $category . $edit_link;
+			$description = $avatar . 'By ' . $author . ' on ' . $published . $category . $edit_link;			
+		
+		// Otherwise keep it simple
+		else : 
+			$description = 'By ' . $author . ' on ' . $published . $edit_link;
+
 		endif;
 			
 	// Pages 

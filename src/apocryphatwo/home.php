@@ -21,20 +21,21 @@
 	</div><!-- #showcase-container -->
 	
 	<div id="content" role="main">
-		<div id="home-posts-block">
-			<header id="home-posts-header">
-				<h1 id="home-posts-title">Featured Articles</h1>
-			</header>
-		</div>
-		
-		<?php homepage_have_posts(); ?>
-		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-		<?php apoc_display_post(); ?>
-		<?php endwhile; endif; ?>
 	
-		<nav class="pagination ajaxed" data-type="home">
-			<?php loop_pagination(); ?>
-		</nav>
+		<header id="home-posts-header" class="double-border top">
+			<h1 id="home-posts-title">Featured Articles</h1>
+		</header>
+		
+		<div id="posts">		
+			<?php homepage_have_posts(); ?>
+			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+			<?php apoc_display_post(); ?>
+			<?php endwhile; endif; ?>
+		
+			<nav class="pagination ajaxed" data-type="home">
+				<?php loop_pagination(); ?>
+			</nav>
+		</div>
 		
 	</div><!-- #content -->
 	

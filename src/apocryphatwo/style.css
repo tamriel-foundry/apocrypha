@@ -1506,13 +1506,18 @@ div#showcase-sidebar {
 /*---------------------------------------------
 	6.1 - Posts Loop
 ----------------------------------------------*/
-div#home-posts-block {
-	border-top: 1px solid #000;
-	margin: 0.5em 0;
+div#posts {
+	width: 100%;
+	float: left;
 	}
-header#home-posts-header { border-top: 1px solid #444; }
+header#home-posts-header { 
+	margin: 0.5em 0;
+	border-top: 1px solid #000;
+	}
 h1#home-posts-title {
 	width: 300px;
+	position: relative;
+	z-index: 99;
 	line-height: 36px;
 	margin: -19px auto 0;
 	font-size: 1.25em;

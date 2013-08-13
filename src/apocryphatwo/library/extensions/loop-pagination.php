@@ -83,30 +83,26 @@ function loop_pagination( $args = array() ) {
  * Handles the re-creation of pagination links when posts are loaded with AJAX
  * @since 1.0
  */
-function ajax_pagination( $args = array() , $url = '' ) {
+function ajax_pagination( $ajax_query , $args = array() , $url = '' ) {
 	
-	global $wp_rewrite, $ajax_query;
+	global $wp_rewrite;
 	
 	// Get the max number of pages.
 	$max_pages = intval( $ajax_query->max_num_pages );
-	
-	// If there's not more than one page, return nothing.
-	if ( 1 >= $max_pages )
-		return;
 	
 	// Get the current page.
 	$current = ( isset( $ajax_query->query_vars['paged'] ) ) ? absint( $ajax_query->query_vars['paged']  ) : 1 ;
 	
 	// Get the cleaned base url
 	$pagination_base 	= $wp_rewrite->pagination_base;
-	$remove 			= '/' . $pagination_base . '\/(.*)/';
+	$remove 			= '/\/' . $pagination_base . '\/(.*)/';
 	$baseurl 			= preg_replace( $remove , "" , $url );
 	$format				= $pagination_base . '/%#%/';
 	
 	// Set up some default arguments for the paginate_links() function.
 	$defaults = array(
-		'base'         => $baseurl,
-		'format'       => $format,
+		'base'         => trailingslashit( $baseurl ) . $format,
+		'format'       => '',
 		'total'        => $max_pages,
 		'current'      => $current,
 		'prev_next'    => true,
@@ -128,8 +124,8 @@ function ajax_pagination( $args = array() , $url = '' ) {
 	$page_links = paginate_links( $args );
 	
 	// Remove 'page/1' from the entire output since it's not needed.
-	$page_links = str_replace( array( "?paged=1'", "&#038;paged=1'", "/{$pagination_base}/1'", "/{$pagination_base}/1/'" ), '\'', $page_links );
-	$page_links = str_replace( array( '?paged=1"', '&#038;paged=1"', "/{$pagination_base}/1\"", "/{$pagination_base}/1/\"" ), '\"', $page_links );
+	$page_links = str_replace( array( "/{$pagination_base}/1'"	, "/{$pagination_base}/1/'" )	, '\''	, $page_links );
+	$page_links = str_replace( array( "/{$pagination_base}/1\""	, "/{$pagination_base}/1/\"" )	, '\"'	, $page_links );
 
 	// Wrap the paginated links with the $before and $after elements.
 	$page_links = $args['before'] . $page_links . $args['after'];
@@ -148,21 +144,22 @@ function ajax_pagination( $args = array() , $url = '' ) {
 function ajax_comment_pagination( $args = array() , $url = '' , $paged , $max_pages = 2 ) {
 	
 	global $wp_rewrite, $wp_query;
-	
-	// If there's not more than one page, return nothing.
-	//if ( 1 >= $max_pages )
-		//return;
+
+	// Get the cleaned base url
+	$remove 			= '/\/' . $pagination_base . '\/(.*)/';
+	$baseurl 			= preg_replace( $remove , "" , $url );
+	$format				= $pagination_base . '/%#%/';
 	
 	// Get the cleaned base url
 	$pagination_base 	= 'comment-page-';
-	$remove 			= '/' . $pagination_base . '(.*)/';
+	$remove 			= '/' . $pagination_base . '[0-9]*\/(.*)/';
 	$baseurl 			= preg_replace( $remove , "" , $url );
 	$format				= $pagination_base . '%#%/';
 	
 	// Set up some default arguments for the paginate_links() function.
 	$defaults = array(
-		'base'         => $baseurl,
-		'format'       => $format,
+		'base'         => trailingslashit( $baseurl ) . $format,
+		'format'       => '',
 		'total'        => $max_pages,
 		'current'      => $paged,
 		'prev_next'    => true,
@@ -184,7 +181,7 @@ function ajax_comment_pagination( $args = array() , $url = '' , $paged , $max_pa
 	$page_links = paginate_links( $args );
 	
 	// Remove 'comment-page-1' from the entire output since it's not needed.
-	$page_links = str_replace( "comment-page-1'" , '\'', $page_links );
+	$page_links	= str_replace( "comment-page-1/" , "" , $page_links );
 
 	// Wrap the paginated links with the $before and $after elements.
 	$page_links = $args['before'] . $page_links . $args['after'];

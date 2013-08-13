@@ -10,7 +10,7 @@ $( '#comments' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	
 	// Get the pagination context
 	postid 		= $( 'nav.pagination' ).data('postid');
-	baseURL		= window.location.href;
+	baseURL		= window.location.href.replace( window.location.hash , '' );
 	
 	// Get the current page number
 	curPage = parseInt( $( ".page-numbers.current" ).text() );
@@ -42,16 +42,24 @@ $( '#comments' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 			
 				// Do some beautiful jQuery
 				$('.reply').fadeOut('slow').promise().done(function() {
-					$('.reply').remove();
 					$('nav.pagination').remove();
-					$('ol#comment-list').append(response);
+					$('ol#comment-list').empty().append(response);
 					$( 'ol#comment-list' ).after( $( 'nav.pagination' ) );
 					$('html, body').animate({ 
 						scrollTop: $( "#comments" ).offset().top 
 					}, 600 );
-					$('.reply').hide().fadeIn('slow');
+					$('ol#comment-list').hide().fadeIn('slow');
 					$( '#respond' ).show();
-				});			
+				});	
+
+				// Change the URL in the browser
+				if ( 1 == curPage )
+					newURL = baseURL + 'comment-page-' + newPage;
+				else if ( 1 == newPage )
+					newURL = baseURL.replace( "/comment-page-" + curPage , "" );
+				else
+					newURL = baseURL.replace( "/comment-page-" + curPage , "/comment-page-" + newPage );
+				window.history.replaceState( { 'type' : 'comments' , 'id' : postid , 'paged' : curPage } , document.title , newURL );				
 			}
 		}
 	);	

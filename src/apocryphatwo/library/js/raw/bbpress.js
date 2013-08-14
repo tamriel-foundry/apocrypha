@@ -1,15 +1,20 @@
-/*! Load bbPress Replies */
+/*! Load bbPress Topics and Replies */
 $( '#forums' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	
 	// Declare some stuff
 	var curPage = newPage = postid = tooltip = dir = '';
 	var button	= $(this);
+	var nav		= button.parent().parent();
 			
 	// Prevent default pageload
 	event.preventDefault();
 	
+	// Prevent further clicks
+	nav.css( "pointer-events" , "none" );
+	
 	// Get the pagination context
-	id 			= $( 'nav.pagination' ).data('id');
+	type		= nav.data('type');
+	id 			= nav.data('id');
 	baseURL		= window.location.href.replace( window.location.hash , '' );
 	
 	// Get the current page number
@@ -24,43 +29,84 @@ $( '#forums' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	}
 	
 	// Display a loading tooltip
-	dir = ( newPage > curPage ) ? ".next" : ".prev";
-	tooltip = ( newPage > curPage ) ? "Loading &raquo;" : "&laquo; Loading";
-	$( 'a.page-numbers' + dir ).html(tooltip);
+	button.html('<i class="icon-spinner icon-spin"></i>');
+	
+	// Load new replies
+	if ( 'replies' == type ) {
 
-	// Send an AJAX request for more comments
-	$.post( ajaxurl , {
-			'action'	: 'apoc_load_replies',
-			'id'		: id,
-			'paged'		: newPage,
-			'baseurl'	: baseURL,
-		},
-		function( response ) {
-		
-			// If we successfully retrieved comments
-			if( response != '0' ) {
+		// Send an AJAX request for more replies
+		$.post( ajaxurl , {
+				'action'	: 'apoc_load_replies',
+				'type'		: type,
+				'id'		: id,
+				'paged'		: newPage,
+				'baseurl'	: baseURL,
+			},
+			function( response ) {
 			
-				// Do some beautiful jQuery
-				$('.reply').fadeOut('slow').promise().done(function() {
-					$('nav.pagination').remove();
-					$('ol#topic-' + id ).empty().append(response);
-					$('ol#topic-' + id ).after( $( 'nav.pagination' ) );
-					$('html, body').animate({ scrollTop: $( "#forums" ).offset().top }, 600 );
-					$('ol#topic-' + id ).hide().fadeIn('slow');
-					$( '#respond' ).show();
-				});
+				// If we successfully retrieved comments
+				if( response != '0' ) {
 				
-				// Change the URL in the browser
-				if ( 1 == curPage )
-					newURL = baseURL + 'page/' + newPage + '/';
-				else if ( 1 == newPage )
-					newURL = baseURL.replace( "/page/" + curPage , "" );
-				else
-					newURL = baseURL.replace( "page/" + curPage, "page/" + newPage );
-				window.history.pushState( { 'id' : id , 'paged' : curPage } , document.title , newURL );
+					// Do some beautiful jQuery
+					$('ol#topic-' + id ).fadeOut('slow').promise().done(function() {
+						nav.remove();
+						$('ol#topic-' + id ).empty().append(response);
+						$('ol#topic-' + id ).after( $( 'nav.forum-pagination' ) );
+						$('html, body').animate({ scrollTop: $( "#forums" ).offset().top }, 600 );
+						$('ol#topic-' + id ).hide().fadeIn('slow');
+						$( '#respond' ).show();
+					});
+					
+					// Change the URL in the browser
+					if ( 1 == curPage )
+						newURL = baseURL + 'page/' + newPage + '/';
+					else if ( 1 == newPage )
+						newURL = baseURL.replace( "/page/" + curPage , "" );
+					else
+						newURL = baseURL.replace( "page/" + curPage, "page/" + newPage );
+					window.history.replaceState( { 'id' : id , 'paged' : curPage } , document.title , newURL );
+				}
 			}
-		}
-	);	
+		);
+		
+	} // Load new topics
+	else if ( 'topics' == type ) {
+
+		// Send an AJAX request for more topics
+		$.post( ajaxurl , {
+				'action'	: 'apoc_load_topics',
+				'type'		: type,
+				'id'		: id,
+				'paged'		: newPage,
+				'baseurl'	: baseURL,
+			},
+			function( response ) {
+			
+				// If we successfully retrieved topics
+				if( response != '0' ) {
+				
+					// Do some beautiful jQuery
+					$('ol#forum-' + id ).fadeOut('slow').promise().done(function() {
+						nav.remove();
+						$('ol#forum-' + id ).empty().append(response);
+						$('ol#forum-' + id ).after( $( 'nav.forum-pagination' ) );
+						$('html, body').animate({ scrollTop: $( "#forums" ).offset().top }, 600 );
+						$('ol#forum-' + id ).hide().fadeIn('slow');
+						$( '#respond' ).show();
+					});
+					
+					// Change the URL in the browser
+					if ( 1 == curPage )
+						newURL = baseURL + 'page/' + newPage + '/';
+					else if ( 1 == newPage )
+						newURL = baseURL.replace( "/page/" + curPage , "" );
+					else
+						newURL = baseURL.replace( "page/" + curPage, "page/" + newPage );
+					window.history.replaceState( { 'id' : id , 'paged' : curPage } , document.title , newURL );				
+				}
+			}
+		);	
+	}
 });
 
 /*! Submit New bbPress Topic */
@@ -83,7 +129,7 @@ $( ".forum form#new-post" ).submit( function( event ) {
 	}
 
 	// Give a tooltip
-	button.html( '<i class="icon-pencil"></i>Submitting ...' );
+	button.html( '<i class="icon-spinner icon-spin"></i>Submitting ...' );
 	
 	// Save content from TinyMCE into the hidden form textarea
 	tinyMCE.triggerSave();
@@ -150,7 +196,7 @@ $( ".topic form#new-post" ).submit( function( event ) {
 		data = form.serialize();
 	
 		// Give a tooltip
-		button.html( '<i class="icon-pencil"></i>Submitting ...' );
+		button.html( '<i class="icon-spinner icon-spin"></i>Submitting ...' );
 		
 		// Submit the comment form to the wordpress handler
 		$.ajax({

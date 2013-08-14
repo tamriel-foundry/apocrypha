@@ -212,6 +212,11 @@ function apoc_delete_comment() {
 /*---------------------------------------------
 5.0 - BBPRESS
 ----------------------------------------------*/
+
+/**
+ * Get new replies using AJAX
+ * @since 1.0
+ */
 add_action( 'wp_ajax_nopriv_apoc_load_replies' 	, 'apoc_load_replies' );
 add_action( 'wp_ajax_apoc_load_replies' 		, 'apoc_load_replies' );
 function apoc_load_replies() {
@@ -223,75 +228,74 @@ function apoc_load_replies() {
 	$url		= $_POST['baseurl'];
 	
 	// Setup post query variables
-	$args = array();
-	$args['post_type']		= array( 'topic' , 'reply' );
-	$args['post_parent']    = $topic_id;
-	$args['posts_per_page'] = bbp_get_replies_per_page();
-	$args['paged'] 			= $paged;
-	$args['order']			= 'ASC';
+	$reply_args = array(
+		'post_type'			=> array( 'topic' , 'reply' ),
+		'post_parent'    	=> $topic_id,
+		'posts_per_page' 	=> bbp_get_replies_per_page(),
+		'paged' 			=> $paged,
+		'order'				=> 'ASC',
+		's'					=> false,
+	);
 	
-	// Parse the URL to see if it is a view all
-	$view_all = ( strpos( $url , 'view=all' ) > 0 ) ? true : false;
-	if ( $view_all && current_user_can( 'moderate' ) ) {
-
-		// Default view = all statuses
-		$post_statuses = array(
-			bbp_get_public_status_id(),
-			bbp_get_closed_status_id(),
-			bbp_get_spam_status_id(),
-			bbp_get_trash_status_id(),
-			bbp_get_private_status_id(),
-		);
-
-		// Join post statuses together
-		$args['post_status'] = join( ',', $post_statuses );
-
-	// Lean on the 'perm' query var value of 'readable' to provide statuses
-	} else $args['perm'] = 'readable';
-
-	// Get bbPress
-	$bbp = bbpress();
-
-	// Call the query
-	$bbp->reply_query = new WP_Query( $args );
-
-	// Add pagination values to query object
-	$bbp->reply_query->posts_per_page = $r['posts_per_page'];
-	$bbp->reply_query->paged          = $r['paged'];
-
-	// Never home, regardless of what parse_query says
-	$bbp->reply_query->is_home        = false;
-
-	// We are always on a single topic
-	$bbp->reply_query->is_single = true;
-	set_query_var( '_bbp_query_name' , 'bbp_single_topic' );
+	// Allow bbPress to detect if this request is a ?view=all
+	add_filter( 'bbp_get_view_all' , 'apoc_spoof_view_get' );
+	function apoc_spoof_view_get( $retval ) {
+		$view_all 	= ( strpos( $_POST['baseurl'] , 'view=all' ) > 0 ) 	? true : false;
+		$retval 	= ( $view_all && current_user_can( 'moderate' ) ) 	? true : false;
+		return $retval;
+	}
 	
-	// Store everything into an output buffer
-	ob_start();
-
-	// Check if we found anything
-	if ( $bbp->reply_query->have_posts() ) :
-
-		// If we have posts, build the HTML for the set
-		while ( $bbp->reply_query->have_posts() ) :
-			$bbp->reply_query->the_post();
-			include( THEME_DIR . '/bbpress/loop-single-reply.php');
-		endwhile;
+	// Customize the pagination arguments depending on our AJAX parameters
+	add_filter( 'bbp_replies_pagination' , 'apoc_ajax_reply_pagination' );
+	function apoc_ajax_reply_pagination( $args ) {
+	
+		// Clean the URL
+		global $wp_rewrite;
+		$base 		= $wp_rewrite->pagination_base;
+		$remove 	= '/\/' . $base . '\/(.*)/';
+		$baseurl 	= preg_replace( $remove , "" , $_POST['baseurl'] );
+		$format		= $base . '/%#%/';
 		
+		// Get the query
+		$bbp = bbpress();
+
+		// Define the args
 		$pagination_args = array(
+			'base'      => trailingslashit( $baseurl ) . $format,
+			'format'    => '',
+			'total'     => $bbp->reply_query->max_num_pages,
+			'current'   => $_POST['paged'],
 			'prev_text' => '&larr;',
 			'next_text' => '&rarr;',
-			'add_args'  => ( bbp_get_view_all() ) ? array( 'view' => 'all' ) : false
+			'mid_size'  => 1
 		);
-		
-		// Worry about pagination later
-		echo '<nav class="pagination ajaxed" data-type="' . $type . '" data-id="' . $topic_id .'">';
-			ajax_pagination( $bbp->reply_query , $pagination_args , $url  );
-		echo '</nav>';
-				
-	endif;
+		return $pagination_args;
+	}
+
+	// Get the replies
+	bbp_has_replies( $reply_args );
 	
-	// Get everything from the output buffer
+	// Bluff AJAX into recognizing this as a single topic
+	bbpress()->reply_query->is_single = true;
+	set_query_var( '_bbp_query_name' , 'bbp_single_topic' );
+	
+	// Start an output buffer and capture the formatted replies
+	ob_start();
+	while ( bbp_replies() ) : bbp_the_reply();
+		include( THEME_DIR . '/bbpress/loop-single-reply.php');
+	endwhile;
+	
+	// Refresh the pagination ?>
+	<nav class="pagination forum-pagination ajaxed" data-type="<?php echo $type; ?>" data-id="<?php echo $topic_id; ?>">
+		<div class="pagination-count">
+			<?php bbp_topic_pagination_count(); ?>
+		</div>
+		<div class="pagination-links">
+			<?php bbp_topic_pagination_links(); ?>
+		</div>
+	</nav>		
+
+	<?php // Get everything from the output buffer
 	$content = ob_get_contents();
 	ob_end_clean();
 	
@@ -335,6 +339,104 @@ function apoc_bbp_reply() {
 
 	// Process the new reply
 	bbp_new_reply_handler( 'bbp-new-reply' );
+}
+
+
+/**
+ * Get new topics from AJAX
+ * @since 1.0
+ */
+add_action( 'wp_ajax_nopriv_apoc_load_topics' 	, 'apoc_load_topics' );
+add_action( 'wp_ajax_apoc_load_topics' 			, 'apoc_load_topics' );
+function apoc_load_topics() {
+
+	// Get the post data
+	$type 		= $_POST['type'];
+	$forum_id	= $_POST['id'];
+	$paged		= $_POST['paged'];
+	$url		= $_POST['baseurl'];
+	
+	// Setup post query variables
+	$topic_args = array(
+		'post_type'			=> bbp_get_topic_post_type(),
+		'post_parent'		=> ( 0 < $forum_id ) ? $forum_id : 'any',
+		'meta_key'       	=> '_bbp_last_active_time', 
+		'orderby'       	=> 'meta_value',
+		'order'				=> 'DESC',
+		'posts_per_page'	=> bbp_get_topics_per_page(),
+		'paged' 			=> $paged,
+		's'					=> false,
+		'show_stickies'		=> true,
+		'max_num_pages'		=> false,
+	);
+	
+	// Allow bbPress to detect if this request is a ?view=all
+	add_filter( 'bbp_get_view_all' , 'apoc_spoof_view_get' );
+	function apoc_spoof_view_get( $retval ) {
+		$view_all 	= ( strpos( $_POST['baseurl'] , 'view=all' ) > 0 ) 	? true : false;
+		$retval 	= ( $view_all && current_user_can( 'moderate' ) ) 	? true : false;
+		return $retval;
+	}
+	
+	// Make sure what is returned has the 'topic' class (for some reason it is omitted)
+	add_filter( 'bbp_get_topic_class' , 'apoc_force_topic_class' );
+	function apoc_force_topic_class( $classes ) {
+		array_unshift( $classes, "topic" );
+		return array_unique( $classes );
+	}
+	
+	// Customize the pagination arguments depending on our AJAX parameters
+	add_filter( 'bbp_topic_pagination' , 'apoc_ajax_topic_pagination' );
+	function apoc_ajax_topic_pagination( $args ) {
+	
+		// Clean the URL
+		global $wp_rewrite;
+		$base 		= $wp_rewrite->pagination_base;
+		$remove 	= '/\/' . $base . '\/(.*)/';
+		$baseurl 	= preg_replace( $remove , "" , $_POST['baseurl'] );
+		$format		= $base . '/%#%/';
+		
+		// Get the query
+		$bbp = bbpress();
+
+		// Define the args
+		$pagination_args = array(
+			'base'      => trailingslashit( $baseurl ) . $format,
+			'format'    => '',
+			'total'     => $bbp->topic_query->max_num_pages,
+			'current'   => $_POST['paged'],
+			'prev_text' => '&larr;',
+			'next_text' => '&rarr;',
+			'mid_size'  => 1
+		);
+		return $pagination_args;
+	}
+		
+	// Get the topics
+	bbp_has_topics( $topic_args );
+	
+	// Start an output buffer and capture the formatted topics
+	ob_start();	
+	while ( bbp_topics() ) : bbp_the_topic();
+		include( THEME_DIR . '/bbpress/loop-single-topic.php');
+	endwhile;
+	
+	// Refresh the pagination ?>
+	<nav class="pagination forum-pagination ajaxed" data-type="<?php echo $type; ?>" data-id="<?php echo $forum_id; ?>">
+		<div class="pagination-count">
+			<?php bbp_forum_pagination_count(); ?>
+		</div>
+		<div class="pagination-links">
+			<?php bbp_forum_pagination_links(); ?>
+		</div>
+	</nav>	
+	
+	<?php // Retrieve everything from the output buffer
+	$content = ob_get_contents();
+	ob_end_clean();	
+	
+	// Send the response back to jQuery
+	die( $content );
 }
 
 ?>

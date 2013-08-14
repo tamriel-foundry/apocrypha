@@ -198,13 +198,12 @@ function apoc_reply_class( $classes ) {
  * Output custom bbPress admin links
  * @since 1.0
  */
-function apoc_reply_admin_links() {
+function apoc_reply_admin_links( $id ) {
 	
 	// Make sure it's a logged-in user
 	if ( !is_user_logged_in() ) return false;
 		
 	// Get post id and setup desired links
-	global $id;
 	$links = array();
 	
 	// Add common quote and reply links

@@ -119,9 +119,9 @@ class Apocrypha {
 		
 		// Comment functions
 		require_once( trailingslashit( APOC_FUNCTIONS ) . 'comments.php' );
-				
-		// Shortcodes
-		//require_once( trailingslashit( APOC_FUNCTIONS ) . 'shortcodes.php' );
+	
+		// Loop Pagination
+		require_once( trailingslashit( APOC_FUNCTIONS ) . 'loop-pagination.php' );
 	 }
 	
 	/**
@@ -132,21 +132,24 @@ class Apocrypha {
 	
 		// Breadcrumb Trail
 		require_once( trailingslashit( APOC_EXTENSIONS ) . 'breadcrumbs.php' );
+		
+		
+		
 	
 		// Content Slider
 		require_once( trailingslashit( APOC_EXTENSIONS ) . 'slides.php' );
 		
-		// Calendar Events
-		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'events.php' );
-		
 		// Widgets
 		require_once( trailingslashit( APOC_EXTENSIONS ) . 'widgets.php' );
 		
+		// Calendar Events
+		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'events.php' );
+		
 		// Justin Tadlock's Get The Image
 		require_once( trailingslashit( APOC_EXTENSIONS ) . 'get-the-image.php' );
-
-		// Justin Tadlock's Loop Pagination
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'loop-pagination.php' );
+		
+		// Shortcodes
+		require_once( trailingslashit( APOC_EXTENSIONS ) . 'shortcodes.php' );
 		
 		// BuddyPress Functions
 		if ( function_exists( 'bp_version' ) )

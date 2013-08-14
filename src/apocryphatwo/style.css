@@ -196,6 +196,7 @@ p {
 
 /* Links */
 a {
+	position: relative;
 	color: #c5772b;
 	text-decoration: none;
 	-webkit-transition: color 0.2s;
@@ -337,6 +338,33 @@ blockquote:after {
 blockquote > p { margin: 0.5em 0; }
 blockquote + * { clear: left; }
 
+div.quote,
+div.spoiler{
+	width: 98%;
+	margin: 0 auto 1em;
+	padding: 0.5em 1%;
+	position: relative;
+	overflow: hidden;
+	background: rgba(17,17,17,0.25);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #666 inset;
+	color: #AAA;
+	}
+div.quote > *,
+div.spoiler > * {
+	clear: both;
+	margin: 0.5em 0;
+	}
+p.quote-author,
+p.spoiler-title {
+	float: left;
+	padding: 0 1em 0.5em;
+	color: #BBB;
+	text-shadow: 1px 1px #000;
+	}
+
+
 /* Font-Awesome Icons */
 i[class^="icon-"],
 i[class*=" icon-"] {
@@ -357,7 +385,7 @@ i[class*=" icon-"] {
 	}
 .double-border.top { border-top: 1px solid #000; }	
 .double-border.top:before {	border-top: 1px solid #333; }
-.double-border.bottom { border-bottom: 1px solid #444;  }	
+.double-border.bottom { border-bottom: 1px solid #333;  }	
 .double-border.bottom:before { border-bottom: 1px solid #000; }
 	
 /* Alliances */
@@ -1041,8 +1069,10 @@ nav.pagination {
 	z-index: 999;
 	}
 div.pagination-links {
+	width: 50%;
 	float: right;
 	margin-right: 10px;
+	text-align: right;
 	}
 div.pagination-count {
 	float: left;
@@ -1102,6 +1132,7 @@ a.footer-nav-item:hover > img {
 	box-shadow: none;
 	background: none;
 	}
+a.footer-nav-item h3.double-border.top:before { border-top: 1px solid #555; }
 div#footer-anvil {
 	height: 50px;
 	width: 135px;
@@ -2038,9 +2069,10 @@ ol.topics,
 ol.topic {
 	width: 100%;
 	float: left;
-	margin: 0;
+	margin: 0 0 1em;
 	padding: 0;
 	list-style: none;
+	border-bottom: 1px solid #333;
 	}
 header.forum-header {
 	width: 100%;
@@ -2062,6 +2094,11 @@ header.forum-header h2 {
 /*---------------------------------------------
 	8.1 - Forums and Topics Loops
 ----------------------------------------------*/
+ol.forum.category { 
+	margin: 0;
+	border-bottom: none;
+	}
+ol.topic { border-bottom: none; }
 li.sub-forum,
 li.topic {
 	width: 100%;
@@ -2072,8 +2109,7 @@ li.topic {
 	}
 li + li.sub-forum,
 li + li.topic { border-top: 1px solid #333; }
-li.sub-forum:last-child,
-li.topic:last-child {	border-bottom: none; }
+li.sub-forum:last-child {	border-bottom: none; }
 div.forum-content  {
 	width: 50%;
 	height: 100%;
@@ -2114,7 +2150,6 @@ li.sub-forum:hover div.forum-count,
 li.topic:hover div.forum-count { border-right: 1px solid #c5772b; }
 li.sub-forum:hover div.forum-content,
 li.topic:hover div.forum-content { border-right: 1px solid #c5772b; }
-	
 div.forum-freshness {
 	width: 40%;
 	height: 100%;

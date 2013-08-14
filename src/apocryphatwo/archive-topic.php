@@ -20,15 +20,15 @@
 
 			<?php do_action( 'bbp_template_notices' ); ?>
 			
-			<?php if ( bbp_has_topics() ) : ?>
+			<?php if ( bbp_has_topics( ) ) : ?>
 			
 				<?php bbp_get_template_part( 'loop',       'topics'    ); ?>
 				
-				<nav class="forum-pagination pagination">
-					<div class="forum-pagination-count">
+				<nav class="pagination forum-pagination ajaxed" data-type="topics" data-id="0">
+					<div class="pagination-count">
 						<?php bbp_forum_pagination_count(); ?>
 					</div>
-					<div class="forum-pagination-links">
+					<div class="pagination-links">
 						<?php bbp_forum_pagination_links(); ?>
 					</div>
 				</nav>	

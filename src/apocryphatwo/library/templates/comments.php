@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Article Comments Template
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-6-2013
  */
 

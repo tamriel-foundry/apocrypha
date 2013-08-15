@@ -2,7 +2,7 @@
 /**
  * Apocrypha Content Slider
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-3-2013
  */
  
@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  
 /**
 * Set slideshow slide dimensions
-* @since 1.0
+* @version 1.0.0
 */
 function slideshow_slide_dimensions() {
 	$dimensions = array(
@@ -23,7 +23,7 @@ function slideshow_slide_dimensions() {
 
 /**
  * Register a custom post type for Slides
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'init', 'register_content_slides' );
 function register_content_slides() {

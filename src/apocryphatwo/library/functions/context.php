@@ -2,137 +2,132 @@
 /**
  * Apocrypha Theme Context Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-1-2013
  */
  
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
  
-/** 
- * Populates the apocrypha global with some useful context
- * @since 1.0
- */
-add_action( 'template_redirect' , 'populate_apocrypha_global' );
-function populate_apocrypha_global() {
-	global $apocrypha;
-	
-	// Site name
-	$apocrypha->site = SITENAME;
-	
-	// Page context
-	get_page_context();
-	
-	// Current template
-	global $pagenow;
-	$apocrypha->template = $pagenow;
-	
-	// Mobile Devices
-	$apocrypha->is_mobile = wp_is_mobile();
-	
-	// Information on the current user
-	$apocrypha->user = wp_get_current_user();
-}
-	
-
 /**
- * Runs through a series of conditional checks to figure out the page context
- * Stores the results in the framework global
- * @since 1.0
+ * Apoc_Context class gives the context of the current page that is being requested.
+ * It runs on the 'template_redirect' hook.
+ *
+ * @author Andrew Clayton
+ * @version 1.0.0
+ * 8-14-2013
  */
-function get_page_context() {
+class Apoc_Context {
+
+	function __construct() {
 	
-	// Get the theme global
-	global $apocrypha;
+		// Get the current object
+		$this->queried_object		= get_queried_object();
+		$this->queried_object_id	= get_queried_object_id();
 	
-	// If the context has already been set, don't repeat the process
-	if ( isset ( $apocrypha->context ) )
-		return $apocrypha->context;
+		// Get the page context
+		$this->context				= get_page_context();
 		
-	// Set up some intial variables
-	$apocrypha->context = array();
-	$object 			= get_queried_object();
-	$object_id 			= get_queried_object_id();
-	
-	// Home page
-	if ( is_home() ) {
-		$apocrypha->context[] = 'home';
-		$apocrypha->context[] = 'archive';
-	}
-		
-	// BuddyPress
-	elseif ( function_exists( 'is_bbpress' ) && is_bbpress() )
-		$apocrypha->context[] = 'bbpress';
-		
-	// BuddyPress
-	elseif ( function_exists( 'is_buddypress' ) && is_buddypress() )
-		$apocrypha->context[] = 'buddypress';
-		
-	// Singular view
-	elseif ( is_singular() ) {
-		$apocrypha->context[] = 'singular';
-		$apocrypha->context[] = "singular-{$object->post_type}";
-		$apocrypha->context[] = "singular-{$object->post_type}-{$object_id}";		
+		// Generate an appropriate <body> class
+		$this->body_class			= get_body_class();
 	}
 	
-	// Archive view
-	elseif ( is_archive() ) {
-		$apocrypha->context[] = 'archive';
+	
+	/**
+	 * Runs through a series of conditional checks to figure out the page context
+	 * Stores the results in the framework global
+	 * @version 1.0.0
+	 */
+	public function get_page_context() {
+	
+		// Only do this once
+		if ( isset( $this->context ) )
+			return;
+					
+		// Set up some intial variables
+		$context 	= array();
+		$object 	= $this->queried_object;
+		$object_id 	= $this->queried_object_id;
 		
-		// Taxonomy archive
-		if ( is_tax() || is_category() || is_tag() ) {
-			$slug = ( ( 'post_format' == $object->taxonomy ) ? str_replace( 'post-format-', '', $object->slug ) : $object->slug );
+		// Home page
+		if ( is_home() ) {
+			$context[] = 'home';
+			$context[] = 'archive';
+		}
 			
-			$apocrypha->context[] = 'taxonomy';
-			$apocrypha->context[] = "taxonomy-{$object->taxonomy}";
-			$apocrypha->context[] = "taxonomy-{$object->taxonomy}-" . sanitize_html_class( $slug, $object->term_id );
+		// BuddyPress
+		elseif ( class_exists( 'bbPress' ) && is_bbpress() )
+			$context[] = 'forums';
+			
+		// BuddyPress
+		elseif ( class_exists( 'BuddyPress' ) && is_buddypress() )
+			$context[] = 'community';
+			
+		// Singular view
+		elseif ( is_singular() ) {
+			$context[] = 'singular';
+			$context[] = "singular-{$object->post_type}";
+			$context[] = "singular-{$object->post_type}-{$object_id}";		
 		}
 		
-		// Author archive
-		if ( is_author() ) {
-			$author_id = get_query_var( 'author' );
-			$apocrypha->context[] = 'author';
-			$apocrypha->context[] = 'author-' . sanitize_html_class( get_the_author_meta( 'user_nicename', $author_id ), $author_id );
+		// Archive view
+		elseif ( is_archive() ) {
+			$context[] = 'archive';
+			
+			// Taxonomy archive
+			if ( is_tax() || is_category() || is_tag() ) {
+				$slug = ( ( 'post_format' == $object->taxonomy ) ? str_replace( 'post-format-', '', $object->slug ) : $object->slug );
+				
+				$context[] = 'taxonomy';
+				$context[] = "taxonomy-{$object->taxonomy}";
+				$context[] = "taxonomy-{$object->taxonomy}-" . sanitize_html_class( $slug, $object->term_id );
+			}
+			
+			// Author archive
+			if ( is_author() ) {
+				$author_id = get_query_var( 'author' );
+				$context[] = 'author';
+				$context[] = 'author-' . sanitize_html_class( get_the_author_meta( 'user_nicename', $author_id ), $author_id );
+			}
+		
+			// Date archive
+			if ( is_date() ) {
+				$context[] = 'date';
+
+				if ( is_year() )
+					$context[] = 'year';
+
+				if ( is_month() )
+					$context[] = 'month';
+
+				if ( is_day() )
+					$context[] = 'day';
+			}
 		}
-	
-		// Date archive
-		if ( is_date() ) {
-			$apocrypha->context[] = 'date';
-
-			if ( is_year() )
-				$apocrypha->context[] = 'year';
-
-			if ( is_month() )
-				$apocrypha->context[] = 'month';
-
-			if ( is_day() )
-				$apocrypha->context[] = 'day';
-		}
+		
+		// Search results
+		elseif ( is_search() )
+			$context[] = 'search';
+			
+		// Error 404
+		elseif ( is_404() )
+			$context[] = 'error-404';
+			
+		return array_map( 'esc_attr', $context );
 	}
-	
-	// Search results
-	elseif ( is_search() )
-		$apocrypha->context[] = 'search';
-		
-	// Error 404
-	elseif ( is_404() )
-		$hybrid->context[] = 'error-404';
-		
-	return array_map( 'esc_attr', apply_filters( 'apocrypha_context', $apocrypha->context ) );
-}
 
 /**
  * Returns a set of classes to apply to the main body element
- * @since 1.0
+ * @version 1.0.0
  */
-function display_body_class( $class = '' ) {
+function get_body_class( $class = '' ) {
 	
 	// Load some info
 	$classes = array();
-	global $wp_query, $apocrypha;
+	global $wp_query, $apoc;
 	
 	// Is the current user logged in
-	$classes[] = ( $apocrypha->user->data->ID > 0 ) ? 'logged-in' : 'logged-out';
+	$classes[] = ( $apoc->user->data->ID > 0 ) ? 'logged-in' : 'logged-out';
 	
 	// Bring in the page context
 	$classes = array_merge( $classes, get_page_context() );
@@ -188,7 +183,7 @@ function display_body_class( $class = '' ) {
 
 /**
  * Returns a set of classes to apply to individual posts
- * @since 1.0
+ * @version 1.0.0
  */
 function display_entry_class( $class = '', $post_id = null ) {
 	static $post_alt;
@@ -246,7 +241,7 @@ function display_entry_class( $class = '', $post_id = null ) {
 
 /**
  * Returns a set of classes to apply to post comments
- * @since 1.0
+ * @version 1.0.0
  */
 function display_comment_class( $class = '' ) {
 	global $comment;

@@ -2,13 +2,13 @@
 /**
  * Apocrypha Theme bbPress Reply Form
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-12-2013
  */
  
 // Get some info
-global $apocrypha;
-$user		= $apocrypha->user->data;
+global $apoc;
+$user		= $apoc->user->data;
 $user_id	= $user->ID;
 $name		= $user->display_name;
 ?>

@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme AJAX Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-6-2013
 
 ----------------------------------------------------------------
@@ -66,7 +66,7 @@ function top_login_ajax() {
 ----------------------------------------------*/
 /**
  * Remove frontend BuddyPress notifications with AJAX
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'wp_ajax_apoc_clear_notification' , 'apoc_clear_notification' );
 function apoc_clear_notification() {
@@ -191,7 +191,7 @@ function apoc_load_comments() {
 
 /**
  * Delete article comments with AJAX
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'wp_ajax_apoc_delete_comment' , 'apoc_delete_comment' );
 function apoc_delete_comment() {
@@ -215,7 +215,7 @@ function apoc_delete_comment() {
 
 /**
  * Get new replies using AJAX
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'wp_ajax_nopriv_apoc_load_replies' 	, 'apoc_load_replies' );
 add_action( 'wp_ajax_apoc_load_replies' 		, 'apoc_load_replies' );
@@ -305,7 +305,7 @@ function apoc_load_replies() {
 
 /**
  * Submit bbPress Replies with AJAX
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'wp_ajax_apoc_bbp_reply' , 'apoc_bbp_reply' );
 function apoc_bbp_reply() {
@@ -344,7 +344,7 @@ function apoc_bbp_reply() {
 
 /**
  * Get new topics from AJAX
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'wp_ajax_nopriv_apoc_load_topics' 	, 'apoc_load_topics' );
 add_action( 'wp_ajax_apoc_load_topics' 			, 'apoc_load_topics' );

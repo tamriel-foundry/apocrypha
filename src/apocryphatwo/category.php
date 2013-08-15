@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Category Archive Template
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-8-2013
  */
  

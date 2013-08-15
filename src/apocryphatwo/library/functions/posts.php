@@ -2,7 +2,7 @@
 /**
  * Apocrypha Posts Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-3-2013
  */
  
@@ -15,7 +15,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  
 /**
  * Add extra support for post types within the Apocrypha theme.
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'init', 'apoc_post_type_support' );
 function apoc_post_type_support() {
@@ -26,7 +26,7 @@ function apoc_post_type_support() {
 
 /**
  * Registers custom metadata keys that are used for SEO
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'init', 'apoc_register_postmeta' );
 function apoc_register_postmeta() {
@@ -58,23 +58,23 @@ function apoc_sanitize_meta( $meta_value , $meta_key , $meta_type ) {
 
 /**
  * Generates a class for the homepage headers
- * @since 1.0
+ * @version 1.0.0
  */
 function home_header_class() {
-	global $apocrypha;
-	if( !isset( $apocrypha->home_headers ) ) {
+	global $apoc;
+	if( !isset( $apoc->home_headers ) ) {
 		$headers = range( 1 , 6 );
 		shuffle( $headers );
-		$apocrypha->home_headers = $headers;
+		$apoc->home_headers = $headers;
 	}
 
-	$header = array_shift( $apocrypha->home_headers );
+	$header = array_shift( $apoc->home_headers );
 	echo 'home-header-' . $header;
 }
 
 /**
  * Generates a class for a single post
- * @since 1.0
+ * @version 1.0.0
  */
 function post_header_class() {
 	$header = rand( 1 , 6 );
@@ -83,7 +83,7 @@ function post_header_class() {
 
 /**
  * Generates a class for a single post
- * @since 1.0
+ * @version 1.0.0
  */
 function page_header_class() {
 	$header = rand( 1 , 6 );
@@ -92,7 +92,7 @@ function page_header_class() {
 
 /**
  * Display the post title, either as a link or plain text
- * @since 1.0
+ * @version 1.0.0
  */
 function entry_header_title( $link = true ) {
 
@@ -104,7 +104,7 @@ function entry_header_title( $link = true ) {
  
 /**
  * Describes a post within the loop
- * @since 1.0
+ * @version 1.0.0
  */
 function entry_header_description() {
 	global $post;
@@ -172,7 +172,7 @@ function custom_excerpt_length( $length ) {
 
 /**
  * Generate post report buttons
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_report_post_button( $type ) {
 	

@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-1-2013
  
 ----------------------------------------------------------------
@@ -33,8 +33,12 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 /**
  * This function initializes the Apocrypha theme framework.
- * It runs immediately after WordPress loads the theme files.
- * @since 1.0
+ * It runs immediately after WordPress loads core libraries.
+ * Some other "run once per pageload" things are done here also.
+ *
+ * @see Apocrypha
+ * @global $apoc contains useful info about the current user and page
+ * @version 1.0.0
  */
 add_action( 'after_setup_theme' , 'apocrypha_theme_setup' , 1 );
 function apocrypha_theme_setup() {
@@ -43,8 +47,8 @@ function apocrypha_theme_setup() {
 	require_once( trailingslashit( TEMPLATEPATH ) . 'library/apocrypha.php' );
 
 	// Set it up
-	global $apocrypha;
-	$apocrypha = new Apocrypha();
+	global $apoc;
+	$apoc = new Apocrypha();
 	
 	// Disable WordPress admin bar
 	if( function_exists( 'show_admin_bar' ) )
@@ -58,7 +62,7 @@ function apocrypha_theme_setup() {
 
 /**
  * Remove default WordPress head entries
- * @since 1.0
+ * @version 1.0.0
  */
 remove_action( 'wp_head' 	, 	'wp_generator' 								);
 remove_action( 'wp_head' 	, 	'feed_links'						, 2		); 
@@ -71,7 +75,7 @@ remove_action( 'wp_head' 	, 	'adjacent_posts_rel_link_wp_head'	, 10, 0 );
 
 /**
  * Remove default BuddyPress head entries
- * @since 1.0
+ * @version 1.0.0
  */
 remove_action( 'wp_head'	, 	'bp_core_add_ajax_url_js' 					);
 remove_action( 'wp_head'	, 	'bp_core_confirmation_js'			, 100 	);
@@ -80,7 +84,7 @@ remove_action( 'wp_head'	, 	'messages_add_autocomplete_css' 			);
 
 /**
  * Remove default bbPress head entries
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'bbp_theme_compat_actions' , 'remove_bbpress_head' );
 function remove_bbpress_head( $admin ) {
@@ -95,7 +99,7 @@ function remove_bbpress_head( $admin ) {
 
 /**
  * Load stylesheets based on context
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_styles' );
 function apoc_enqueue_styles() {
@@ -117,7 +121,7 @@ function apoc_enqueue_styles() {
 
 /**
  * Include the primary theme JavaScript
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_scripts' );
 function apoc_enqueue_scripts() {
@@ -144,7 +148,7 @@ function apoc_enqueue_scripts() {
 }
 /* 
  * Display the google analytics tracking code for Tamriel Foundry
- * @since 1.0
+ * @version 1.0.0
  */
 function google_analytics_js() {
 	echo '<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-33555290-2"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})();</script>' . "\n";
@@ -157,7 +161,7 @@ function google_analytics_js() {
 
 /**
  * Set some TinyMCE options
- * @since 1.0
+ * @version 1.0.0
  */
 add_filter( 'tiny_mce_before_init' , 'apoc_mce_options' );
 function apoc_mce_options( $init ) {
@@ -177,7 +181,7 @@ function apoc_mce_options( $init ) {
 
 /**
  * Set a tinymce editor stylesheet version number to defeat caching
- * @since 1.0
+ * @version 1.0.0
  */
 function tinymce_editor_style_version() {
 	$version = "?ver=1.0.0";
@@ -188,7 +192,7 @@ function tinymce_editor_style_version() {
 
 /**
  * Used for troubleshooting and development to output a global object
- * @since 1.0
+ * @version 1.0.0
  */
 function dump_global( $global = 'apocrypha' , $component = '' ) {
 	global ${$global};

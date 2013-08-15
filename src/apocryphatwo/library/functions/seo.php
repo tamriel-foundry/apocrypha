@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme SEO Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-1-2013
  */
  
@@ -12,13 +12,13 @@ if ( !defined( 'ABSPATH' ) ) exit;
 /**
  * Sets a logical browser title for SEO. 
  * Adapts to handle WordPress/bbPress/BuddyPress pages
- * @since 1.0
+ * @version 1.0.0
  */
 remove_action( 'wp_title' , 'bbp_title' );
 function display_document_title() {
 	
 	// Start with some default variables
-	global $wp_query, $apocrypha;
+	global $wp_query, $apoc;
 	$doctitle = '';
 	$separator = ' &bull; ';
 	$sitename = SITENAME;
@@ -94,7 +94,7 @@ function display_document_title() {
  
  /**
  * Sets a SEO friendly meta description tag
- * @since 1.0
+ * @version 1.0.0
  */
 function display_meta_description() {
 	$description = '';

@@ -2,7 +2,7 @@
 /**
  * Apocrypha Content Slider Admin Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-3-2013
  */
  
@@ -77,7 +77,7 @@ function slideshow_settings_box( $object , $box ) {
 
 /**
  * Save the slide settings as postmeta.
- * @since 1.0
+ * @version 1.0.0
  */
 // Save the post SEO meta box data on the 'save_post' hook 
 add_action( 'save_post', 'slideshow_settings_save_meta', 10, 2 );

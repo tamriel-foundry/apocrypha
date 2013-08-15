@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Single Forum Template
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-10-2013
  */
 ?>

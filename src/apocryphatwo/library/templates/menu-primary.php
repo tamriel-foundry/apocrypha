@@ -2,13 +2,13 @@
 /** 
  * Apocrypha Primary Navigation Menu
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-2-2012
  */
 
 // Get some info on the current user
-global $apocrypha;
-$user_id 	= $apocrypha->user->data->ID;
+global $apoc;
+$user_id 	= $apoc->user->data->ID;
 $loggedin	= ( $user_id > 0 ) ? true : false;
 ?>
 

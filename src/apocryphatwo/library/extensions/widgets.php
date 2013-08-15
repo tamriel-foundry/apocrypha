@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Custom Widgets
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-3-2013
  */
  
@@ -170,7 +170,7 @@ function recent_forums_widget( $args = '' ) {
 
 /** 
  * Display current online members in the community sidebar
- * @since 1.0
+ * @version 1.0.0
  */
 function community_online_widget() { 
 
@@ -238,7 +238,7 @@ function community_online_widget() {
 
 /** 
  * Display current Tamriel Foundry faction statistics
- * @since 1.0
+ * @version 1.0.0
  */
 function community_stat_counter() {
 	

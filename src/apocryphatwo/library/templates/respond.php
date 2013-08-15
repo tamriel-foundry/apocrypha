@@ -2,14 +2,14 @@
 /**
  * Apocrypha Theme Comment Form Template
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-12-2013
  */
 
 // Get some info about the post and current user
-global $post, $apocrypha;
+global $post, $apoc;
 $post_id 	= $post->ID;
-$user		= $apocrypha->user->data;
+$user		= $apoc->user->data;
 $user_id	= $user->ID;
 $name		= $user->display_name;
 ?>

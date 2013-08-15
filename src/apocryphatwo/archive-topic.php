@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Topics Archive
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-12-2013
  */
 ?>

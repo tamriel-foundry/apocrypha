@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme BuddyPress Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-2-2013
  
 ----------------------------------------------------------------
@@ -67,7 +67,7 @@ function apoc_profile_forums_screen( $template ) {
 
 /** 
  * Display the frontend notifications menu
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_notifications_menu() {
 	
@@ -76,8 +76,8 @@ function apoc_notifications_menu() {
 		return false;
 	
 	// Grab the current user
-	global $apocrypha;
-	$user 		= $apocrypha->user->data;
+	global $apoc;
+	$user 		= $apoc->user->data;
 	$user_id	= $user->ID;
 	$name		= $user->user_nicename;
 	
@@ -186,7 +186,7 @@ function apoc_notifications_menu() {
 
 /** 
  * Get user notifications without default formatting
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_get_notifications( $user_id ) {
 	

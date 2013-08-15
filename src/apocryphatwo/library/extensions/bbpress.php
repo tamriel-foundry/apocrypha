@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme bbPress Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-10-2013
  */
 
@@ -13,7 +13,7 @@
 /**
  * Display forums hierarchically instead of the bbPress default
  * Parent categories are seperated with child subforums
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_list_subforums( $args = array() ) {
 
@@ -185,7 +185,7 @@ function apoc_topic_description( $args = '' ) {
  
 /**
  * Filter the element class list for topics to only say replies
- * @since 1.0
+ * @version 1.0.0
  */
 add_filter( 'bbp_get_reply_class', 'apoc_reply_class' );
 function apoc_reply_class( $classes ) {
@@ -196,7 +196,7 @@ function apoc_reply_class( $classes ) {
 
 /**
  * Output custom bbPress admin links
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_reply_admin_links( $id ) {
 	
@@ -258,7 +258,7 @@ function apoc_reply_admin_links( $id ) {
 
 /**
  * Prepend an icon to the revision log
- * @since 1.0
+ * @version 1.0.0
  */
 add_filter( 'bbp_get_reply_revision_log', 'apoc_custom_revision_log' );
 add_filter( 'bbp_get_topic_revision_log', 'apoc_custom_revision_log' );
@@ -270,7 +270,7 @@ function apoc_custom_revision_log( $revision ) {
 
 /**
  * Count the total number of times a topic has been favorited
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'bbp_add_user_favorite' 	, 'apoc_favorite_count_plus' 	, 10 , 2 );
 add_action( 'bbp_remove_user_favorite' 	, 'apoc_favorite_count_minus' 	, 10 , 2 );
@@ -302,7 +302,7 @@ function apoc_favorite_count_minus( $user_id , $topic_id ) {
  
 /**
  * Get the most favorited topics in the last 7 days
- * @since 1.0
+ * @version 1.0.0
  */
 function has_bestof_topics() {
 
@@ -341,7 +341,7 @@ X.X - NEW POSTS
  
 /**
  * Special bbPress allowed KSES
- * @since 1.0
+ * @version 1.0.0
  */
 add_filter( 'bbp_kses_allowed_tags', 'apoc_bbp_allowed_kses' );
 function apoc_bbp_allowed_kses( $allowed ) {
@@ -361,7 +361,7 @@ function apoc_bbp_allowed_kses( $allowed ) {
 
 /** 
  * Prevent bbpress from escaping topic and reply content in the editor.
- * @since 1.0
+ * @version 1.0.0
  */
 remove_filter( 'bbp_get_form_forum_content', 'esc_textarea' );
 remove_filter( 'bbp_get_form_topic_content', 'esc_textarea' );
@@ -374,7 +374,7 @@ X.X - BUDDYPRESS INTEGRATION
 /** 
  * Modify reply content when it is passed to the activity stream
  * Includes quote mentions before stripping quotes
- * @since 1.0
+ * @version 1.0.0
  */
 add_filter( 'bbp_activity_reply_create_excerpt' , 'apoc_activity_replace_quote' );
 function apoc_activity_replace_quote( $reply_content ) {

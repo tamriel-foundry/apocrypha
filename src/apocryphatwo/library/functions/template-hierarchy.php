@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Core Template Hierarchy
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-1-2013
  */
  
@@ -13,7 +13,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 /**
  * Controls template selection for author archive pages
  * The hierarchy is: author-{nicename}.php, author.php, archive.php
- * @since 1.0
+ * @version 1.0.0
  */
 add_filter( 'author_template', 'apoc_author_template' );
 function apoc_author_template( $template ) {
@@ -38,7 +38,7 @@ function apoc_author_template( $template ) {
 /**
  * Controls template selection for category, tag, and taxonomy pages
  * The hierarchy is: taxonomy-{taxonomy}.php, taxonomy.php, archive.php
- * @since 1.0
+ * @version 1.0.0
  */
 add_filter( 'tag_template'		, 'apoc_taxonomy_template' );
 add_filter( 'category_template'	, 'apoc_taxonomy_template' );
@@ -55,7 +55,7 @@ function apoc_taxonomy_template( $template ) {
 /**
  * Controls template selection for posts and custom post types
  * The hierarchy is: {custom-post-template}.php, singular-{post_type}.php, singular.php
- * @since 1.0
+ * @version 1.0.0
  */
 add_filter( 'single_template' , 'apoc_singular_template' );
 function apoc_singular_template( $template ) {
@@ -65,8 +65,8 @@ function apoc_singular_template( $template ) {
 	$post 		= get_queried_object();
 	
 	// Save the post type to the theme global
-	global $apocrypha;
-	$apocrypha->post_type = $post->post_type;
+	global $apoc;
+	$apoc->post_type = $post->post_type;
 	
 	// Check for a custom post template using the custom meta field key '_wp_post_template'.
 	$custom = get_post_meta( get_queried_object_id(), "_wp_{$post->post_type}_template", true );

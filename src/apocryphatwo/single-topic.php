@@ -2,7 +2,7 @@
 /**
  * Apocrypha Single Topic Template
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-11-2013
  */
 ?>

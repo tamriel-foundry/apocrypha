@@ -1,9 +1,10 @@
 <?php
 /**
  * Apocrypha - Library of hidden things, and functional framework for the Tamriel Foundry WordPress theme.
- * Andrew Clayton
- * Version 1.0
- * 8-1-2013
+ *
+ * @author Andrew Clayton
+ * @version 1.0.0
+ * 8-14-2013
  */
  
 // Exit if accessed directly
@@ -13,72 +14,81 @@ class Apocrypha {
 	
 	/**
 	 * Constructor for the Apocrypha functions library
-	 * @since 1.0
+	 * @version 1.0.0
 	 */
 	function __construct() {
 	
 		// Define theme constants
-		add_action( 'after_setup_theme'	, array( &$this, 'constants' )	, 10 );
+		$this->constants();
 	
-		// Add theme supports
-		add_action( 'after_setup_theme'	, array( &$this, 'supports' )	, 20 );	
+		// Register theme supports
+		$this->supports();
+	
+		// Includes necessary libraries
+		$this->includes();
 		
-		// Load framework core functions
-		add_action( 'after_setup_theme'	, array( &$this, 'core' )		, 30 );	
-		
-		// Load framework extensions
-		add_action( 'after_setup_theme' , array( &$this, 'extensions' )	, 40 );
-		
-		// Load admin functions and files
-		add_action( 'wp_loaded' 		, array( &$this, 'admin' ) 		, 10 );
+		// Setup globals
+		add_action( 'template_redirect', array( $this, 'setup_globals' ) );
 	}
 	
+	/**
+	 * This method does most of the interesting work populating the Apocrypha Theme object
+	 * @version 1.0.0
+	 */	 
+	public function setup_globals() {
+		
+		// Site info
+		$this->site 	= SITENAME;
+		
+		// Current page
+		$this->page 	= new Apoc_Context();
+
+		
+		// Current template
+		global $pagenow;
+		$apoc->template = $pagenow;
+		
+		// Mobile Devices
+		$apoc->is_mobile = wp_is_mobile();
+		
+		// Information on the current user
+		$apoc->user = wp_get_current_user();	
+
+	}
+
 	
 	/**
 	 * Define constant paths for use within theme functions
-	 * @since 1.0
+	 * @version 1.0.0
 	 */
-	function constants() {
+	private function constants() {
 	
-		// Site URL
+		// Site Information
 		define( 'SITENAME' 			, get_bloginfo( 'name' ) );
-		
-		// Site URL
 		define( 'SITEURL' 			, get_home_url() );
 		
-		// Theme directory
+		// Directories
 		define( 'THEME_DIR' 		, get_template_directory() );
+		define( 'APOC_DIR' 			, trailingslashit( THEME_DIR ) . 'library/' );	
+		define( 'APOC_FUNCTIONS' 	, trailingslashit( APOC_DIR ) . 'functions/' );		
+		define( 'APOC_EXTENSIONS' 	, trailingslashit( APOC_DIR ) . 'extensions/' );
+		define( 'APOC_ADMIN'		, trailingslashit( APOC_DIR ) . 'admin/' );
 		
-		// Theme URI
+		// Locations
 		define( 'THEME_URI' 		, get_template_directory_uri() );
-		
-		// Framework directory
-		define( 'APOC_DIR' 			, trailingslashit( THEME_DIR ) . 'library' );
-		
-		// Framework directory
-		define( 'APOC_URI' 			, trailingslashit( THEME_URI ) . 'library' );
-		
-		// CSS Styles
-		define( 'APOC_CSS' 			, trailingslashit( APOC_URI ) . 'css' );
-		
-		// Javascript
-		define( 'APOC_JS' 			, trailingslashit( APOC_URI ) . 'js' );
-		
-		// Framework functions
-		define( 'APOC_FUNCTIONS' 	, trailingslashit( APOC_DIR ) . 'functions' );
-		
-		// Framework extensions
-		define( 'APOC_EXTENSIONS' 	, trailingslashit( APOC_DIR ) . 'extensions' );
-		
-		// Admin functions
-		define( 'APOC_ADMIN'		, trailingslashit( APOC_DIR ) . 'admin' );
+		define( 'APOC_URI' 			, trailingslashit( THEME_URI ) . 'library/' );		
+		define( 'APOC_CSS' 			, trailingslashit( APOC_URI ) . 'css/' );
+		define( 'APOC_JS' 			, trailingslashit( APOC_URI ) . 'js/' );
 	}
 	
 	/**
 	 * Add WordPress recognized theme supports
-	 * @since 0.2
+	 * @version 1.0.0
 	 */
-	function supports() {
+	private function supports() {
+	
+		// This is an HTML5 theme
+		add_theme_support( 'html5' );
 			
 		// Add support for bbPress.
 		add_theme_support( 'bbpress' );
@@ -92,89 +102,40 @@ class Apocrypha {
 	
 	/**
 	 * Load primary function libraries
-	 * @since 1.0
+	 * @version 1.0.0
 	 */
-	 function core() {
+	 private function includes() {
 	 
-		// Core functions
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'core.php' );
-		
-		// Context functions
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'context.php' );
-		
-		// Template hierarchy
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'template-hierarchy.php' );
-		
-		// Page title and meta description
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'seo.php' );
-		
-		// Login functions
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'login.php' );
-		
-		// User functions
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'users.php' );
-		
-		// Post functions
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'posts.php' );
-		
-		// Comment functions
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'comments.php' );
+		/** Core Functions ******************************************************/
+		require( APOC_FUNCTIONS . 'core.php' );
+		require( APOC_FUNCTIONS . 'context.php' );
+		require( APOC_FUNCTIONS . 'template-hierarchy.php' );
+		require( APOC_FUNCTIONS . 'seo.php' );
+		require( APOC_FUNCTIONS . 'login.php' );
+		require( APOC_FUNCTIONS . 'users.php' );
+		require( APOC_FUNCTIONS . 'posts.php' );
+		require( APOC_FUNCTIONS . 'comments.php' );
+		require( APOC_FUNCTIONS . 'pagination.php' );
 	
-		// Loop Pagination
-		require_once( trailingslashit( APOC_FUNCTIONS ) . 'loop-pagination.php' );
-	 }
-	
-	/**
-	 * Load theme extensions
-	 * @since 1.0
-	 */
-	function extensions() {
-	
-		// Breadcrumb Trail
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'breadcrumbs.php' );
-		
-		
-		
-	
-		// Content Slider
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'slides.php' );
-		
-		// Widgets
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'widgets.php' );
-		
-		// Calendar Events
-		//require_once( trailingslashit( APOC_EXTENSIONS ) . 'events.php' );
-		
-		// Justin Tadlock's Get The Image
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'get-the-image.php' );
-		
-		// Shortcodes
-		require_once( trailingslashit( APOC_EXTENSIONS ) . 'shortcodes.php' );
-		
-		// BuddyPress Functions
-		if ( function_exists( 'bp_version' ) )
-			require_once( trailingslashit( APOC_EXTENSIONS ) . 'buddypress.php' );
-			
-		// bbPress Functions
-		if ( function_exists( 'bbp_version' ) )
-			require_once( trailingslashit( APOC_EXTENSIONS ) . 'bbpress.php' );
-	 }
-	 
-	 
-	/**
-	 * Load admin functions if we are in the wp-admin backend
-	 * @since 0.1
-	 */	 
-	function admin() {
+		/** Extensions *********************************************************/
+		require( APOC_EXTENSIONS . 'breadcrumbs.php' );
+		require( APOC_EXTENSIONS . 'slides.php' );
+		require( APOC_EXTENSIONS . 'widgets.php' );
+		//require( APOC_EXTENSIONS . 'events.php' );
+		require( APOC_EXTENSIONS . 'get-the-image.php' );
+		require( APOC_EXTENSIONS . 'shortcodes.php' );
 
-		// Backend administrative functions
-		if ( is_admin() && ( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) )
-			require_once( trailingslashit( APOC_ADMIN ) . 'admin.php' );
-		
-		// AJAX functions and hooks
-		elseif ( defined( 'DOING_AJAX' ) && DOING_AJAX )
-			require_once( trailingslashit( APOC_ADMIN ) . 'ajax.php' );
+		/** Integrated Plugins *************************************************/		
+		if ( class_exists( 'BuddyPress' ) )
+			require( APOC_EXTENSIONS . 'buddypress.php' );
+		if ( class_exists( 'bbPress' ) )
+			require( APOC_EXTENSIONS . 'bbpress.php' );
 
+		/** Admin-Only Functions ***********************************************/
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+			require( APOC_ADMIN . 'ajax.php' );		
+		elseif ( is_admin() )
+			require( APOC_ADMIN . 'admin.php' );
 	}
 }
 ?>

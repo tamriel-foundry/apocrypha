@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Core Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-1-2013
  */
  
@@ -30,8 +30,8 @@ function apoc_comment_form() {
  
 // Search Form
 function apoc_get_search_form( $search_type = '' ) {
-	global $apocrypha;
-	$apocrypha->search = $search_type;
+	global $apoc;
+	$apoc->search = $search_type;
 	locate_template( array( 'library/templates/searchform.php' ), true );
 }
 
@@ -41,7 +41,7 @@ function apoc_get_search_form( $search_type = '' ) {
 ----------------------------------------------*/
 /**
  * Tamriel Foundry homepage have_posts query
- * @since 1.0
+ * @version 1.0.0
  */
 function homepage_have_posts() {
 	$posts_per_page = get_option( 'posts_per_page' );

@@ -2,7 +2,7 @@
 /**
  * Apocrypha Comments Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-3-2013
 
 ----------------------------------------------------------------
@@ -21,7 +21,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 ----------------------------------------------*/
 /**
  * Generate a number sensitive link to article comments
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_comments_link() {
 	$comments_link = '';
@@ -38,7 +38,7 @@ function apoc_comments_link() {
 
 /**
  * Set up arguments for wp_list_comments() used in the comments template
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_comments_args() {
 
@@ -57,18 +57,18 @@ function apoc_comments_args() {
 
 /**
  * Callback function for choosing the comment template
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_comments_template( $comment , $args , $depth ) {
 	
 	// Determine the post type for this comment
-	global $apocrypha;
-	$post_type 		= isset( $apocrypha->post_type ) ? 	$apocrypha->post_type : 'post';
+	global $apoc;
+	$post_type 		= isset( $apoc->post_type ) ? 	$apoc->post_type : 'post';
 	$comment_type 	= get_comment_type( $comment->comment_ID );
 	
 	// Create an empty array to store the proper comment template
-	if ( !isset( $apocrypha->comment_template ) || !is_array( $apocrypha->comment_template ) )
-		$apocrypha->comment_template = array();
+	if ( !isset( $apoc->comment_template ) || !is_array( $apoc->comment_template ) )
+		$apoc->comment_template = array();
 		
 	// Only determine the proper template if it's not already set
 	if ( !isset( $apocrpyha->comment_template[$comment_type] ) ) {	
@@ -87,12 +87,12 @@ function apoc_comments_template( $comment , $args , $depth ) {
 		$template = locate_template( $templates );
 		
 		// Set the template in the comment template array
-		$apocrypha->comment_template[ $comment_type ] = $template;
+		$apoc->comment_template[ $comment_type ] = $template;
 	}
 	
 	// Count comments
-	if ( isset ( $apocrypha->comment_count ) )
-		$count = $apocrypha->comment_count + 1;
+	if ( isset ( $apoc->comment_count ) )
+		$count = $apoc->comment_count + 1;
 		
 	else {
 		if ( '' === $args['per_page'] )
@@ -104,16 +104,16 @@ function apoc_comments_template( $comment , $args , $depth ) {
 	}
 		
 	// Update the global
-	$apocrypha->comment_count = $count;
+	$apoc->comment_count = $count;
 
 	// If a template was found, load the template
-	if ( !empty( $apocrypha->comment_template[ $comment_type ] ) )
-		require( $apocrypha->comment_template[ $comment_type ] );
+	if ( !empty( $apoc->comment_template[ $comment_type ] ) )
+		require( $apoc->comment_template[ $comment_type ] );
 }
 
 /**
  * Close the callback loop
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_comments_end_callback() {
 	return;
@@ -121,7 +121,7 @@ function apoc_comments_end_callback() {
 
 /**
  * Output the comment admin links
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_comment_admin_links() {
 	
@@ -139,7 +139,7 @@ function apoc_comment_admin_links() {
 
 /**
  * Quote button for comments
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_quote_button( $context = 'comment' ) {
 
@@ -214,7 +214,7 @@ function apoc_comment_delete_button() {
 
 /**
  * Frontend Article Comment Editing Class
- * @since 1.0
+ * @version 1.0.0
  */
 class Frontend_Comment_Edit {
 
@@ -262,7 +262,7 @@ $edit = new Frontend_Comment_Edit();
 
 /**
  * Determines if the current user can edit a comment;
- * @since 1.0
+ * @version 1.0.0
  */
 function user_can_edit_comment() {
 
@@ -278,7 +278,7 @@ function user_can_edit_comment() {
 
 /**
  * Context function for detecting whether we are editing an article comment
- * @since 1.0
+ * @version 1.0.0
  */
 function is_comment_edit() {
 	global $wp_query;
@@ -289,7 +289,7 @@ function is_comment_edit() {
 
 /**
  * Header description for the comment edit page
- * @since 1.0
+ * @version 1.0.0
  */
 function comment_edit_header_description() {
 	global $comment;
@@ -307,7 +307,7 @@ function comment_edit_header_description() {
 ----------------------------------------------*/
 /**
  * Handles comment submission with AJAX
- * @Since 1.0
+ * @version 1.0.0
  */
 add_action(	'comment_post' , 'apoc_ajax_comment' , 20 , 2 );
 function apoc_ajax_comment( $comment_ID , $comment_status ) {
@@ -325,18 +325,18 @@ function apoc_ajax_comment( $comment_ID , $comment_status ) {
 
 /**
  * Gets comment HTML from the comment template to insert with AJAX
- * @Since 1.0
+ * @version 1.0.0
  */
 function apoc_display_comment( $comment_ID , $count ) {
 
 	// Get the current comment
-	global $comment , $post , $apocrypha;
+	global $comment , $post , $apoc;
 	
 	// If the ID which was passed belongs to a different comment, get that one instead
 	$comment = get_comment( $comment_ID );
 		
 	// Tell it which comment number to use
-	$apocrypha->comment_count = $post->comment_count + 1;
+	$apoc->comment_count = $post->comment_count + 1;
 		
 	// Get the comment HTML
 	include( APOC_DIR . '/templates/comment.php' );

@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme User Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-1-2013
  */
  
@@ -14,7 +14,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 --------------------------------------------------------------*/
 /** 
  * Assign default ranks based on total post count
- * @since 1.0
+ * @version 1.0.0
  */
 function get_user_rank( $user_id , $totalposts=0 ) {
 	if ( $user_id == '0' ) return;
@@ -75,7 +75,7 @@ function get_user_rank( $user_id , $totalposts=0 ) {
 --------------------------------------------------------------*/
 /** 
  * Get a user's avatar link
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_fetch_avatar_link( $user_id , $type='thumb' , $size=100 ) {
 	
@@ -97,7 +97,7 @@ function apoc_fetch_avatar_link( $user_id , $type='thumb' , $size=100 ) {
 
 /** 
  * Get a user's avatar without using gravatar, uses custom defaults
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_fetch_avatar( $user_id , $type='thumb' , $size=100 ) {
 	
@@ -118,7 +118,7 @@ function apoc_fetch_avatar( $user_id , $type='thumb' , $size=100 ) {
 
 /**
  * Randomly selects and returns a guest avatar from the available choices
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_guest_avatar( $type ='thumb' , $size = 100 ) {
 	$avsize = ( 'full' == $type ) ? '-large' : '' ;
@@ -131,7 +131,7 @@ function apoc_guest_avatar( $type ='thumb' , $size = 100 ) {
 
 /** 
  * Display member info block
- * @since 1.0
+ * @version 1.0.0
  */
 function apoc_member_block( $user_id , $context = 'reply' , $avatar = 'thumb' ) {
 
@@ -195,7 +195,7 @@ function get_user_post_count( $user_id ) {
 
 /** 
  * Update a user's total post count
- * @since 1.0
+ * @version 1.0.0
  */
 function update_user_post_count( $user_id ) {
 
@@ -220,7 +220,7 @@ function update_user_post_count( $user_id ) {
 
 /** 
  * Update the user's post count after they submit a new topic or reply
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'bbp_new_topic' , 'new_bbpress_topic_count' , 10 , 4 );
 function new_bbpress_topic_count( $topic_id, $forum_id, $anonymous_data, $topic_author ) {
@@ -233,7 +233,7 @@ function new_bbpress_reply_count( $reply_id, $topic_id, $forum_id, $anonymous_da
 
 /** 
  * Update the user's post count after a topic or reply is trashed or untrashed
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'bbp_new_topic' 	, 'update_bbpress_post_count' );
 add_action( 'bbp_new_reply' 	, 'update_bbpress_post_count' );
@@ -249,7 +249,7 @@ function update_bbpress_post_count( $post_id ) {
 
 /** 
  * Update the user's post count after they submit a new comment
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'comment_post' 		, 'new_comment_post_count' );
 function new_comment_post_count( $comment_ID ) {
@@ -260,7 +260,7 @@ function new_comment_post_count( $comment_ID ) {
 
 /** 
  * Update the user's post count after a comment is trashed or untrashed
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'trashed_comment' 		, 'trash_comment_post_count' );
 add_action( 'untrashed_comment' 	, 'trash_comment_post_count' );
@@ -328,7 +328,7 @@ function get_user_title( $user_id , $role_name ) {
 
 /**
  * Display user post experience bar
- * @since 1.0
+ * @version 1.0.0
  */
 function get_user_expbar( $totalposts , $current_rank , $next_rank ) {
 	$percentexp = ( $totalposts - $current_rank ) / ( $next_rank - $current_rank );
@@ -391,7 +391,7 @@ function get_user_raceclass( $user_id ) {
 
 /* 
  * Display the user signature
- * @since 1.0
+ * @version 1.0.0
  */
 function user_signature( $user_id ) {
 	if ( $user_id == '0' ) return;

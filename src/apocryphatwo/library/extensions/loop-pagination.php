@@ -81,7 +81,7 @@ function loop_pagination( $args = array() ) {
 
 /**
  * Handles the re-creation of pagination links when posts are loaded with AJAX
- * @since 1.0
+ * @version 1.0.0
  */
 function ajax_pagination( $ajax_query , $args = array() , $url = '' ) {
 	
@@ -139,7 +139,7 @@ function ajax_pagination( $ajax_query , $args = array() , $url = '' ) {
 
 /**
  * Handles the re-creation of comment pagination when new comments are loaded with AJAX
- * @since 1.0
+ * @version 1.0.0
  */
 function ajax_comment_pagination( $args = array() , $url = '' , $paged , $max_pages = 2 ) {
 	

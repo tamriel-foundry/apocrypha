@@ -2,13 +2,13 @@
 /**
  * Apocrypha Theme Single Comment Template
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 1-19-2013
  */
 
 // Get some information
-global $comment, $apocrypha;
-$count = $apocrypha->comment_count
+global $comment, $apoc;
+$count = $apoc->comment_count
 
 // Display the comment ?>
 <li id="comment-<?php echo $comment->comment_ID; ?>" class="<?php display_comment_class(); ?>">

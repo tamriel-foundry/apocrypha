@@ -2,7 +2,7 @@
 /**
  * Apocrypha Theme Login Functions
  * Andrew Clayton
- * Version 1.0
+ * Version 1.0.0
  * 8-2-2013
  */
  
@@ -11,7 +11,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  
 /**
  * Overrides elements of wp-login.php
- * @since 1.0
+ * @version 1.0.0
  */
 add_action( 'login_enqueue_scripts', 'apoc_login_styles' );
 function apoc_login_styles() {
@@ -38,8 +38,8 @@ function apoc_header_login() {
 	
 	echo '<div id="admin-bar-login">';
 	
-	global $apocrypha;
-	$user 		= $apocrypha->user->data;
+	global $apoc;
+	$user 		= $apoc->user->data;
 	$user_id	= $user->ID;
 	
 	// If it's a recognized user

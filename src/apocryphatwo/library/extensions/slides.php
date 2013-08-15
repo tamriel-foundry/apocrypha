@@ -136,6 +136,6 @@ add_image_size( 'featured-slide' , $slide_dimensions['width'] , $slide_dimension
  * @since 0.1
  */
 function get_slideshow( $slideshow = '' , $number = 5 ) {	
-	include( APOC_DIR . '/templates/slideshow.php' );	
+	include( THEME_DIR . '/library/templates/slideshow.php' );	
 } 
 ?>

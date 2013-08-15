@@ -62,53 +62,29 @@ function apoc_comments_args() {
 function apoc_comments_template( $comment , $args , $depth ) {
 	
 	// Determine the post type for this comment
-	global $apoc;
-	$post_type 		= isset( $apoc->post_type ) ? 	$apoc->post_type : 'post';
+	$apoc = apocrypha();
+	$post_type 		= isset( $apoc->post_type ) ? $apoc->post_type : 'post';
 	$comment_type 	= get_comment_type( $comment->comment_ID );
-	
-	// Create an empty array to store the proper comment template
-	if ( !isset( $apoc->comment_template ) || !is_array( $apoc->comment_template ) )
-		$apoc->comment_template = array();
-		
-	// Only determine the proper template if it's not already set
-	if ( !isset( $apocrpyha->comment_template[$comment_type] ) ) {	
-	
-		// Comment templates by post type
-		$templates[] = "library/templates/comment-{$post_type}.php";	
-		
-		// Pingbacks or trackbacks
-		if ( 'pingback' == $comment_type || 'trackback' == $comment_type )
-			$templates[] = 'library/templates/comment-ping.php';
-
-		// Add the default comment template
-		$templates[] = 'library/templates/comment.php';
-	
-		// Locate the template
-		$template = locate_template( $templates );
-		
-		// Set the template in the comment template array
-		$apoc->comment_template[ $comment_type ] = $template;
-	}
 	
 	// Count comments
 	if ( isset ( $apoc->comment_count ) )
-		$count = $apoc->comment_count + 1;
+		$count = ++$apoc->comment_count;
 		
 	else {
 		if ( '' === $args['per_page'] )
 			$args['per_page'] = get_option('comments_per_page');
 		if ( '' == $args['page'] )
 			$args['page'] = get_query_var('cpage');
+		
 		$adj = ( $args['page'] - 1 ) * $args['per_page'];
 		$count = $adj + 1;
-	}
 		
-	// Update the global
-	$apoc->comment_count = $count;
-
-	// If a template was found, load the template
-	if ( !empty( $apoc->comment_template[ $comment_type ] ) )
-		require( $apoc->comment_template[ $comment_type ] );
+		// Update the object
+		$apoc->comment_count = $count;
+	}
+	
+	// Load the comment template
+	include( THEME_DIR . '/library/templates/comment.php' );
 }
 
 /**
@@ -251,7 +227,7 @@ class Frontend_Comment_Edit {
 			$comment = get_comment( $comment_id  );
 			
 			if ( user_can_edit_comment() ) 
-				include ( APOC_DIR . '/templates/comment-edit.php' );
+				include ( THEME_DIR . '/library/templates/comment-edit.php' );
 			else
 				include ( THEME_DIR . '/404.php' );
 			exit();
@@ -339,7 +315,7 @@ function apoc_display_comment( $comment_ID , $count ) {
 	$apoc->comment_count = $post->comment_count + 1;
 		
 	// Get the comment HTML
-	include( APOC_DIR . '/templates/comment.php' );
+	include( THEME_DIR . '/library/templates/comment.php' );
 }
 
 

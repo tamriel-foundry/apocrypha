@@ -7,11 +7,10 @@
  */
 
 // Get some information
-global $comment, $apoc;
-$count = $apoc->comment_count
+$count = apocrypha()->comment_count
 
 // Display the comment ?>
-<li id="comment-<?php echo $comment->comment_ID; ?>" class="<?php display_comment_class(); ?>">
+<li id="comment-<?php echo $comment->comment_ID; ?>" class="<?php apoc_comment_class(); ?>">
 	<header class="reply-header">
 		<time class="reply-time" datetime="<?php echo date( 'Y-m-d\TH:i' , strtotime($comment->comment_date) ); ?>"><?php echo bp_core_time_since( $comment->comment_date_gmt , current_time( 'timestamp' , true ) )?></time>
 		<?php apoc_report_post_button( 'comment' ); ?>

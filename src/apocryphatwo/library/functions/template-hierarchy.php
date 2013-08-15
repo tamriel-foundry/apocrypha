@@ -9,32 +9,6 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-
-/**
- * Controls template selection for author archive pages
- * The hierarchy is: author-{nicename}.php, author.php, archive.php
- * @version 1.0.0
- */
-add_filter( 'author_template', 'apoc_author_template' );
-function apoc_author_template( $template ) {
-	
-	// Get the author's name
-	$name = get_the_author_meta( 'user_nicename', get_query_var( 'author' ) );
-
-	// Add the user nicename template
-	$templates = array();
-	$templates[] = "author-{$name}.php";
-
-	// Add a basic author template
-	$templates[] = 'author.php';
-
-	// Fall back to the basic archive template
-	$templates[] = 'archive.php';
-
-	// Return the found template.
-	return locate_template( $templates );
-}
-
 /**
  * Controls template selection for category, tag, and taxonomy pages
  * The hierarchy is: taxonomy-{taxonomy}.php, taxonomy.php, archive.php
@@ -46,10 +20,10 @@ add_filter( 'taxonomy_template'	, 'apoc_taxonomy_template' );
 function apoc_taxonomy_template( $template ) {
 
 	// Get the queried term object.
-	$term = get_queried_object();
+	$term = apocrypha()->queried_object;
 
 	// Return the available templates.
-	return locate_template( array( "{$term->taxonomy}.php", 'taxonomy.php', 'archive.php' ) );
+	return locate_template( array( "{$term->taxonomy}.php" , "taxonomy-{$term->taxonomy}.php" , 'taxonomy.php', 'archive.php' ) );
 }
 
 /**
@@ -61,25 +35,12 @@ add_filter( 'single_template' , 'apoc_singular_template' );
 function apoc_singular_template( $template ) {
 	
 	// Get the queried post
-	$templates 	= array();
-	$post 		= get_queried_object();
-	
-	// Save the post type to the theme global
-	global $apoc;
-	$apoc->post_type = $post->post_type;
-	
+	$post = apocrypha()->queried_object;
+		
 	// Check for a custom post template using the custom meta field key '_wp_post_template'.
 	$custom = get_post_meta( get_queried_object_id(), "_wp_{$post->post_type}_template", true );
-	if ( $custom )
-		$templates[] = $custom;
-
-	// Add a template based off the post type
-	$templates[] = "singular-{$post->post_type}.php";
-	
-	// Add a general template of singular.php.
-	$templates[] = "singular.php";
 	
 	// Return the found template.
-	return locate_template( $templates );
+	return locate_template( array( $custom , "singular-{$post->post_type}.php" , "singular.php" )  );
 }
 ?>

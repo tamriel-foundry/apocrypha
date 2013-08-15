@@ -18,7 +18,7 @@
 		
 		<div id="posts">		
 			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-			<div id="post-<?php the_ID(); ?>" class="<?php display_entry_class(); ?>">
+			<div id="post-<?php the_ID(); ?>" class="<?php apoc_entry_class(); ?>">
 				
 				<header class="entry-header <?php home_header_class(); ?>">
 					<h2 class="entry-title"><?php entry_header_title(); ?></h2>

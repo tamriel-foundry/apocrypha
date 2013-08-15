@@ -1493,6 +1493,7 @@ div.signature-content img {
 div#respond {
 	width: 100%;
 	float: left;
+	margin: 0 0 1em;
 	}
 header#respond-subheader {
 	width: 98%;

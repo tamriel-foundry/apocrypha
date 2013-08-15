@@ -3,33 +3,72 @@
  * Apocrypha Theme Context Functions
  * Andrew Clayton
  * Version 1.0.0
- * 8-1-2013
+ * 8-15-2013
  */
  
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
- 
+
+/*---------------------------------------------
+1.0 - APOC_CONTEXT CLASS
+----------------------------------------------*/
+
 /**
  * Apoc_Context class gives the context of the current page that is being requested.
  * It runs on the 'template_redirect' hook.
  *
  * @author Andrew Clayton
  * @version 1.0.0
- * 8-14-2013
  */
 class Apoc_Context {
 
 	function __construct() {
 	
+		// Get the user agent
+		$this->device 				= $this->get_user_agent();
+		
+		// Get the currently logged-in user
+		$this->user					= &wp_get_current_user();
+		
 		// Get the current object
 		$this->queried_object		= get_queried_object();
-		$this->queried_object_id	= get_queried_object_id();
+		$this->queried_object_id	= $this->queried_object->ID;
 	
 		// Get the page context
-		$this->context				= get_page_context();
+		$this->page					= $this->get_page_context();
+		$this->paged				= (get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+	}
+	
+	/**
+	 * Populates the globals that were registered earlier after WordPress loads the query
+	 * @version 1.0.0
+	 */
+	function get_user_agent() {
 		
-		// Generate an appropriate <body> class
-		$this->body_class			= get_body_class();
+		// Is it a mobile device?
+		$agent = new stdClass();
+		$agent->mobile = wp_is_mobile();
+		
+		// What browser is being used?
+		global $is_chrome , $is_gecko, $is_IE, $is_opera, $is_NS4, $is_safari, $is_chrome ,$is_lynx;
+		$browsers = array( 
+			'chrome' 	=> $is_chrome, 
+			'gecko' 	=> $is_gecko, 
+			'msie' 		=> $is_IE,
+			'safari' 	=> $is_safari, 
+			'opera' 	=> $is_opera, 
+			'lynx' 		=> $is_lynx, 
+			'ns4' 		=> $is_NS4, 
+		);
+		foreach ( $browsers as $key => $value ) {
+			if ( $value ) {
+				$agent->browser = $key;
+				break; 
+			}
+		}
+		
+		// Return the user agent
+		return $agent;
 	}
 	
 	
@@ -39,11 +78,7 @@ class Apoc_Context {
 	 * @version 1.0.0
 	 */
 	public function get_page_context() {
-	
-		// Only do this once
-		if ( isset( $this->context ) )
-			return;
-					
+		
 		// Set up some intial variables
 		$context 	= array();
 		$object 	= $this->queried_object;
@@ -68,6 +103,13 @@ class Apoc_Context {
 			$context[] = 'singular';
 			$context[] = "singular-{$object->post_type}";
 			$context[] = "singular-{$object->post_type}-{$object_id}";		
+			
+			// Checks for custom template
+			$template = get_post_meta( $object_id , "_wp_{$post->post_type}_template", true );
+			if ( '' != $template ) {
+				$template = str_replace( array ( "{$post->post_type}-template-", "{$post->post_type}-" ), '', basename( $template , '.php' ) );
+				$context[] = "{$post->post_type}-template";
+			}	
 		}
 		
 		// Archive view
@@ -115,77 +157,47 @@ class Apoc_Context {
 			
 		return array_map( 'esc_attr', $context );
 	}
+		
+}	// end Apoc_Context class
+
+
+/*---------------------------------------------
+2.0 - STANDALONE FUNCTIONS
+----------------------------------------------*/
 
 /**
- * Returns a set of classes to apply to the main body element
+ * Displays the page body class stored in the theme object
+ * Allows this to be hijacked by plugins using the 'body_class' filter
+ *
  * @version 1.0.0
  */
-function get_body_class( $class = '' ) {
-	
-	// Load some info
-	$classes = array();
-	global $wp_query, $apoc;
-	
-	// Is the current user logged in
-	$classes[] = ( $apoc->user->data->ID > 0 ) ? 'logged-in' : 'logged-out';
-	
-	// Bring in the page context
-	$classes = array_merge( $classes, get_page_context() );
-	
-	// Singular post classes
-	if ( is_singular() ) {
+function apoc_body_class( $classes = array() ) {
 
-		// Get the queried post object
-		$post = get_queried_object();
-
-		// Checks for custom template
-		$template = str_replace( array ( "{$post->post_type}-template-", "{$post->post_type}-" ), '', basename( get_post_meta( get_queried_object_id(), "_wp_{$post->post_type}_template", true ), '.php' ) );
-		if ( !empty( $template ) )
-			$classes[] = "{$post->post_type}-template-{$template}";
-	}
+	// Bring in page context
+	$apoc 		= apocrypha();
+	$classes 	= array_merge( $classes, $apoc->context );
+		
+	// Bring in user agent
+	$classes[] 	=  $apoc->device->browser;
 	
-	// Paged views
-	if ( ( ( $page = $wp_query->get( 'paged' ) ) || ( $page = $wp_query->get( 'page' ) ) ) && $page > 1 )
-		$classes[] = 'paged page-' . intval( $page );
-	
-	// Bring in any user input classes
-	if ( !empty( $class ) ) {
-		if ( !is_array( $class ) )
-			$class = preg_split( '#\s+#', $class );
-		$classes = array_merge( $classes, $class );
-	}
-	
-	// Browser detection
-	global $wp_query, $is_lynx, $is_gecko, $is_IE, $is_opera, $is_NS4, $is_safari, $is_chrome;
-	$browsers = array( 
-		'gecko' 	=> $is_gecko, 
-		'opera' 	=> $is_opera, 
-		'lynx' 		=> $is_lynx, 
-		'ns4' 		=> $is_NS4, 
-		'safari' 	=> $is_safari, 
-		'chrome' 	=> $is_chrome, 
-		'msie' 		=> $is_IE 
-	);
-	foreach ( $browsers as $key => $value ) {
-		if ( $value ) {
-			$classes[] = $key;
-			break; 
-		}
-	}
+	// Is user logged in?
+	$classes[]	= ( 0 < $apoc->user->ID ) ? 'logged-in' : 'logged-out';
 	
 	// Apply the filters for WordPress 'body_class'
-	$classes = apply_filters( 'body_class', $classes, $class );
+	$classes = apply_filters( 'body_class' , $classes );
 
 	// Construct the classes into a string and return it
-	$class = join( ' ', $classes );
+	$class = join( ' ' , $classes );
 	echo $class;
 }
-
+	
 /**
  * Returns a set of classes to apply to individual posts
  * @version 1.0.0
  */
-function display_entry_class( $class = '', $post_id = null ) {
+function apoc_entry_class( $class = '', $post_id = null ) {
+	
+	// Some starter variables
 	static $post_alt;
 	$post = get_post( $post_id );
 	
@@ -227,9 +239,7 @@ function display_entry_class( $class = '', $post_id = null ) {
 	} 
 	
 	// Otherwise, it's not a post
-	else {
-		$classes = array( 'hentry', 'error' );
-	}
+	else $classes = array( 'error' );
 	
 	// Apply the filters for WordPress 'post_class'
 	$classes = apply_filters( 'post_class', $classes, $class, $post_id );
@@ -243,7 +253,9 @@ function display_entry_class( $class = '', $post_id = null ) {
  * Returns a set of classes to apply to post comments
  * @version 1.0.0
  */
-function display_comment_class( $class = '' ) {
+function apoc_comment_class( $class = '' ) {
+	
+	// Setup the comment
 	global $comment;
 	$classes = array();
 	

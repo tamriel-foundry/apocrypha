@@ -15,24 +15,27 @@ if ( !defined( 'ABSPATH' ) ) exit;
 
 // Navigation
 function apoc_primary_menu() {
-	locate_template( array( 'library/templates/menu-primary.php' ), true );
+	include( THEME_DIR . '/library/templates/menu-primary.php' );
 }
 
 // Sidebar
 function apoc_primary_sidebar() {
-	locate_template( array( 'library/templates/sidebar-primary.php' ), true );
+	include( THEME_DIR . '/library/templates/sidebar-primary.php' );
 }
 
 // Comment Respond Form
 function apoc_comment_form() {
-	locate_template( array( 'library/templates/respond.php' ), true );
+	include( THEME_DIR . '/library/templates/respond.php' );
 }
  
 // Search Form
 function apoc_get_search_form( $search_type = '' ) {
-	global $apoc;
-	$apoc->search = $search_type;
-	locate_template( array( 'library/templates/searchform.php' ), true );
+	include( THEME_DIR . '/library/templates/searchform.php' );
+}
+
+// Posts Loop
+function apoc_display_post() {
+	include( THEME_DIR . '/library/templates/loop-single-post.php' );
 }
 
 
@@ -44,8 +47,11 @@ function apoc_get_search_form( $search_type = '' ) {
  * @version 1.0.0
  */
 function homepage_have_posts() {
-	$posts_per_page = get_option( 'posts_per_page' );
-	$paged 			= ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
+	$apoc = apocrypha();
+	
+	$posts_per_page = $apoc->posts_per_page;
+	$paged 			= $apoc->paged;
 	$offset 		= ( $posts_per_page * $paged ) - $posts_per_page;
 	$guild_cats 	= '-'.get_cat_ID( 'entropy rising' ) . ',-' . get_cat_ID( 'guild news' );
 	
@@ -58,10 +64,5 @@ function homepage_have_posts() {
 		
 	query_posts( $args );
 }
-
-function apoc_display_post() {
-	include( APOC_DIR . '/templates/loop-single-post.php' );
-}
-
 
 ?>

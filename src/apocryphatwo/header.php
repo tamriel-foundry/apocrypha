@@ -11,15 +11,15 @@
 <html dir="ltr" lang="en-US">
 <head>
 	<meta charset="UTF-8">
-	<title><?php display_document_title(); ?></title>
-	<meta name="description" content="<?php display_meta_description(); ?>" />
+	<title><?php apoc_document_title(); ?></title>
+	<meta name="description" content="<?php apoc_meta_description(); ?>" />
 	<link rel="SHORTCUT ICON" href="<?php echo THEME_URI . '/images/icons/favicon.ico'; ?>">
 	<link rel="alternate" type="application/rss+xml" title="Tamriel Foundry RSS Feed" href="<?php echo SITEURL; ?>/feed">
 	<?php wp_head(); ?>
 	<?php google_analytics_js(); ?>
 </head>
 
-<body class="<?php display_body_class(); ?>">	
+<body class="<?php apoc_body_class(); ?>">	
 	
 	<div id="header-container">	
 		<header id="site-header" role="banner">
@@ -45,3 +45,6 @@
 	</nav><!-- #primary-menu -->
 	
 	<div id="main-container">
+	<pre>
+	<?php print_r( apocrypha() ); ?>
+	</pre>

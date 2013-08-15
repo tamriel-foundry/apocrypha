@@ -37,7 +37,6 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Some other "run once per pageload" things are done here also.
  *
  * @see Apocrypha
- * @global $apoc contains useful info about the current user and page
  * @version 1.0.0
  */
 add_action( 'after_setup_theme' , 'apocrypha_theme_setup' , 1 );
@@ -47,14 +46,8 @@ function apocrypha_theme_setup() {
 	require_once( trailingslashit( TEMPLATEPATH ) . 'library/apocrypha.php' );
 
 	// Set it up
-	global $apoc;
-	$apoc = new Apocrypha();
-	
-	// Disable WordPress admin bar
-	if( function_exists( 'show_admin_bar' ) )
-		show_admin_bar(false);
+	apocrypha();
 }
-
 
 /*--------------------------------------------------------------
 2.0 - HEAD FUNCTIONS
@@ -64,23 +57,23 @@ function apocrypha_theme_setup() {
  * Remove default WordPress head entries
  * @version 1.0.0
  */
-remove_action( 'wp_head' 	, 	'wp_generator' 								);
-remove_action( 'wp_head' 	, 	'feed_links'						, 2		); 
-remove_action( 'wp_head' 	, 	'feed_links_extra'					, 3 	); 
-remove_action( 'wp_head' 	, 	'rsd_link' 									);
-remove_action( 'wp_head' 	, 	'wlwmanifest_link' 							);
-remove_action( 'wp_head' 	, 	'rel_canonical'								);
-remove_action( 'wp_head' 	, 	'wp_shortlink_wp_head'						);
-remove_action( 'wp_head' 	, 	'adjacent_posts_rel_link_wp_head'	, 10, 0 );
+remove_action( 'wp_head'	,	'wp_generator'								);
+remove_action( 'wp_head'	,	'feed_links'						, 2		); 
+remove_action( 'wp_head'	,	'feed_links_extra'					, 3		); 
+remove_action( 'wp_head'	,	'rsd_link'									);
+remove_action( 'wp_head'	,	'wlwmanifest_link'							);
+remove_action( 'wp_head'	,	'rel_canonical'								);
+remove_action( 'wp_head'	,	'wp_shortlink_wp_head'						);
+remove_action( 'wp_head'	,	'adjacent_posts_rel_link_wp_head'	, 10, 0 );
 
 /**
  * Remove default BuddyPress head entries
  * @version 1.0.0
  */
-remove_action( 'wp_head'	, 	'bp_core_add_ajax_url_js' 					);
-remove_action( 'wp_head'	, 	'bp_core_confirmation_js'			, 100 	);
-remove_action( 'bp_actions'	, 	'messages_add_autocomplete_js' 				);
-remove_action( 'wp_head'	, 	'messages_add_autocomplete_css' 			);
+remove_action( 'wp_head'	, 	'bp_core_add_ajax_url_js'					);
+remove_action( 'wp_head'	,	'bp_core_confirmation_js'			, 100	);
+remove_action( 'bp_actions'	,	'messages_add_autocomplete_js'				);
+remove_action( 'wp_head'	,	'messages_add_autocomplete_css'				);
 
 /**
  * Remove default bbPress head entries
@@ -127,9 +120,9 @@ add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_scripts' );
 function apoc_enqueue_scripts() {
 
 	// Register first
-	wp_register_script( 'foundry' 		, APOC_JS . '/foundry.js' 			, 'jquery' , $ver='0.1' , true	);
-	wp_register_script( 'flexslider' 	, APOC_JS . '/flexslider.min.js' 	, 'jquery' , $ver='0.1' , true  );
-	//wp_register_script( 'buddypress'	, APOC_JS . '/buddypress.js' 		, 'jquery' , $ver='0.1' , true 	);	
+	wp_register_script( 'foundry' 		, THEME_URI . '/library/js/foundry.js' 			, 'jquery' , $ver='0.1' , true	);
+	wp_register_script( 'flexslider' 	, THEME_URI . '/library/js/flexslider.min.js' 	, 'jquery' , $ver='0.1' , true  );
+	//wp_register_script( 'buddypress'	, THEME_URI . '/library/js/buddypress.js' 		, 'jquery' , $ver='0.1' , true 	);	
 	
 	// Deregister WordPress default jQuery and get from Google
 	wp_deregister_script( 'jquery' );
@@ -167,7 +160,7 @@ add_filter( 'tiny_mce_before_init' , 'apoc_mce_options' );
 function apoc_mce_options( $init ) {
     
 	// Get the proper URL format
-	$stylesheet = substr( APOC_CSS , strpos( APOC_CSS , '/' , 7 ) );
+	$stylesheet = substr( THEME_URI . '/library/css/' , strpos( THEME_URI . '/library/css/' , '/' , 7 ) );
 	
 	// TinyMce initialization options
 	$init['wordpress_adv_hidden'] 				= false;
@@ -179,16 +172,9 @@ function apoc_mce_options( $init ) {
 }
 
 
-/**
- * Set a tinymce editor stylesheet version number to defeat caching
- * @version 1.0.0
- */
-function tinymce_editor_style_version() {
-	$version = "?ver=1.0.0";
-	return $version;
-}
-
-
+/*---------------------------------------------
+	Debugging Functions
+----------------------------------------------*/
 
 /**
  * Used for troubleshooting and development to output a global object

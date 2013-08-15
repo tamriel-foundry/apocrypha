@@ -18,14 +18,16 @@ add_action( 'admin_menu', 'setup_apocrypha_admin' );
  */
 function setup_apocrypha_admin() {
 
+	$apoc = apocrypha();
+
 	// Load the SEO post meta box
-	require_once( trailingslashit( APOC_ADMIN ) . 'post-meta-boxes.php' );
+	require_once( trailingslashit( $apoc->admin_dir ) . 'post-meta-boxes.php' );
 
 	// Load the post template meta box.
-	require_once( trailingslashit( APOC_ADMIN ) . 'post-meta-template.php' );
+	require_once( trailingslashit( $apoc->admin_dir ) . 'post-meta-template.php' );
 	
 	// Load slideshow administration functions
-	require_once( trailingslashit( APOC_ADMIN ) . 'slides-admin.php' );
+	require_once( trailingslashit( $apoc->admin_dir ) . 'slides-admin.php' );
 }
 
 /**

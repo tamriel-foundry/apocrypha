@@ -6,12 +6,14 @@
  * 8-12-2013
  */
 
-// Get some info about the post and current user
-global $post, $apoc;
-$post_id 	= $post->ID;
+// Get some info about the current user and post
+$apoc		= apocrypha();
 $user		= $apoc->user->data;
 $user_id	= $user->ID;
 $name		= $user->display_name;
+$post		= $apoc->queried_object;
+$post_id 	= $apoc->queried_id;
+$status		= $post->comment_status;
 ?>
  
 <div id="respond">
@@ -28,7 +30,7 @@ $name		= $user->display_name;
 	</header>
 	
 	<?php // Comments are allowed
-	elseif ( comments_open( $post_id ) ) : ?>
+	elseif ( 'open' == $status ) : ?>
 	<header id="respond-subheader" class="reply-header" >	
 		You are currently logged in as <?php echo $name; ?>.	
 	</header>

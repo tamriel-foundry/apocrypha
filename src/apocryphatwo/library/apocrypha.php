@@ -96,13 +96,11 @@ class Apocrypha {
 		$this->context 					= '';
 		$this->queried_id				= '';
 		$this->queried_object			= '';
-		$this->paged					= 0;
 		$this->post_type				= '';
-		$this->comment_count			= NULL;
+		$this->search					= new stdClass();
 		
-		// Options
-		$this->posts_per_page			= 6;
-		$this->search_type				= 'posts';
+		// Counts
+		$this->counts					= new stdClass();
 		
 		// Directory paths
 		$this->lib_dir					= trailingslashit( THEME_DIR ) . 'library/';
@@ -131,6 +129,9 @@ class Apocrypha {
 		
 		// Theme does not support
 		show_admin_bar( false );
+		
+		// Add supported post types
+		$apoc_posts = new Apoc_Posts();
 	}
 	
 	/**
@@ -142,7 +143,6 @@ class Apocrypha {
 		// Core Functions
 		require( $this->functions_dir 	. 'context.php' );
 		require( $this->functions_dir 	. 'core.php' );
-		require( $this->functions_dir 	. 'template-hierarchy.php' );
 		require( $this->functions_dir 	. 'seo.php' );
 		require( $this->functions_dir 	. 'login.php' );
 		require( $this->functions_dir 	. 'users.php' );
@@ -196,12 +196,21 @@ class Apocrypha {
 		$this->context			= $context->page;
 		$this->queried_id		= $context->queried_object_id;
 		$this->queried_object	= $context->queried_object;
-		$this->paged			= $context->paged;
 		$this->post_type		= $context->queried_object->post_type;
+		
+		// Search
+		$this->search->type		= 'posts';
+		$this->search->query	= $context->search_query;
 		
 		// Initialize the Apoc_SEO class
 		$this->seo				= new Apoc_SEO();
-
+		
+		// Counts
+		$this->counts->ppp		= 6;
+		$this->counts->paged	= $context->paged;
+		$this->counts->cpp		= 10;
+		$this->counts->cpage	= NULL;
+		$this->counts->comment	= NULL;
 	}			
 }
 

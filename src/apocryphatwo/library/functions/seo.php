@@ -89,7 +89,7 @@ class Apoc_SEO {
 
 			// Directories
 			if ( bp_is_directory() ) 
-				$description 	= get_post_meta( get_queried_object_id() , 'Description' , true );
+				$description 	= get_post_meta( $id , 'Description' , true );
 				
 			elseif ( bp_is_user() )
 				$description 	= $sitename . ' user profile for ' . bp_get_displayed_user_fullname();
@@ -136,8 +136,8 @@ class Apoc_SEO {
 		
 		// Search Results
 		elseif ( is_search() ) {
-			$doctitle 			= sprintf( 'Search results for &quot;%1$s&quot;' , esc_attr( get_search_query() ) );
-			$description		= "Browse search results";
+			$doctitle 			= sprintf( 'Search results for &quot;%1$s&quot;' , esc_attr( $apoc->search->query ) );
+			$description		= "Browsing search results.";
 		}
 		
 		// Error 404
@@ -156,7 +156,7 @@ class Apoc_SEO {
 }
 
 /*---------------------------------------------
-2.0 - PUBLIC FUNCTIONS
+2.0 - STANDALONE FUNCTIONS
 ----------------------------------------------*/
 function apoc_document_title() {
 	echo apocrypha()->seo->title;
@@ -164,7 +164,5 @@ function apoc_document_title() {
 function apoc_meta_description() {
 	echo apocrypha()->seo->description;
 	}
-
-
 
 ?>

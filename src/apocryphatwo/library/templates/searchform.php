@@ -11,8 +11,7 @@ if ( is_search() )
 	$search_text = get_search_query(); 
 	
 // Check the type of search we are doing
-global $apoc;
-$search_type = $apoc->search;
+$search_type = apocrypha()->search_type;
 
 // Get the search form depending on the type
 if ( 'topic' == $search_type ) :

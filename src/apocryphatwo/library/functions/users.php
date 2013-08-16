@@ -12,6 +12,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 /*--------------------------------------------------------------
 1.0 - PERMISSIONS AND RANKS
 --------------------------------------------------------------*/
+
 /** 
  * Assign default ranks based on total post count
  * @version 1.0.0

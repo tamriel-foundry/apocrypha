@@ -889,9 +889,7 @@ label#remember-label {
 	}
 label#remember-label:hover { background-position: 6px -15px; }
 input#remember:checked + label#remember-label {	background-position: 6px 14px; }
-div#top-login-error {
-	display: none;
-	}
+div#top-login-error { display: none; }
 
 /* Front-end Notifications */
 ul#notifications-menu {

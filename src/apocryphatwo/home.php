@@ -33,7 +33,7 @@
 			<?php endwhile; endif; ?>
 		
 			<nav class="pagination ajaxed" data-type="home">
-				<?php loop_pagination(); ?>
+				<?php apoc_pagination(); ?>
 			</nav>
 		</div>
 		

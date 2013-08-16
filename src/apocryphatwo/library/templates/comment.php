@@ -7,7 +7,7 @@
  */
 
 // Get some information
-$count = apocrypha()->comment_count
+$count = apocrypha()->counts->comment;
 
 // Display the comment ?>
 <li id="comment-<?php echo $comment->comment_ID; ?>" class="<?php apoc_comment_class(); ?>">

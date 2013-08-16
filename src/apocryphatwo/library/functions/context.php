@@ -36,7 +36,11 @@ class Apoc_Context {
 	
 		// Get the page context
 		$this->page					= $this->get_page_context();
-		$this->paged				= (get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+		$this->paged				= ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+
+		// Get the search term		
+		if( is_search() )
+			$this->search_query		= get_search_query();
 	}
 	
 	/**
@@ -149,11 +153,11 @@ class Apoc_Context {
 		
 		// Search results
 		elseif ( is_search() )
-			$context[] = 'search';
+			$context[] 	= 'search';
 			
 		// Error 404
 		elseif ( is_404() )
-			$context[] = 'error-404';
+			$context[] 	= 'error-404';
 			
 		return array_map( 'esc_attr', $context );
 	}

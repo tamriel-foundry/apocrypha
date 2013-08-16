@@ -8,60 +8,102 @@
  
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
- 
-/*---------------------------------------------
-1.0 - SUPPORTS
-----------------------------------------------*/ 
- 
-/**
- * Add extra support for post types within the Apocrypha theme.
- * @version 1.0.0
- */
-add_action( 'init', 'apoc_post_type_support' );
-function apoc_post_type_support() {
-
-	// Add support for excerpts to pages
-	add_post_type_support( 'page', array( 'excerpt' ) );
-}
-
-/**
- * Registers custom metadata keys that are used for SEO
- * @version 1.0.0
- */
-add_action( 'init', 'apoc_register_postmeta' );
-function apoc_register_postmeta() {
-	
-	// Register 'Title' and 'Description' meta for posts 
-	register_meta( 'post' , 'Title'			, 'apoc_sanitize_meta' );
-	register_meta( 'post' , 'Description' 	, 'apoc_sanitize_meta' );
-	
-	// Register custom post templates 
-	$post_types = get_post_types( array( 'public' => true ) );
-	foreach ( $post_types as $post_type ) {
-		if ( 'page' !== $post_type )
-			register_meta( 'post' , "_wp_{$post_type}_template" , 'apoc_santize_meta' );
-		}
-}
-
-/**
- * Sanitizes meta data that is passed to custom post meta fields
- * @since 0.1
- */
-function apoc_sanitize_meta( $meta_value , $meta_key , $meta_type ) {
-	return strip_tags( $meta_value );
-}
-
 
 /*---------------------------------------------
-2.0 - DISPLAYED ELEMENTS
+1.0 - APOC_POSTS CLASS
 ----------------------------------------------*/
 
 /**
- * Generates a class for the homepage headers
+ * Registers support for custom post types.
+ * Registers postmeta fields.
+ * Filters default WordPress post behaviors
+ *
+ * @author Andrew Clayton
+ * @version 1.0.0
+ */
+class Apoc_Posts {
+ 
+ 	/**
+	 * Construct the class
+	 * @version 1.0.0
+	 */
+	function __construct() {
+		
+		// Regster post actions
+		add_action( 'init', array( $this , 'post_supports'	) );
+		add_action( 'init', array( $this , 'post_meta'		) );
+		
+		// Register post filters
+		add_filter( 'excerpt_more'		, array( $this , 'remove_excerpt_more' 	)		);
+		add_filter( 'get_the_excerpt'	, array( $this , 'add_excerpt_more'		)		);
+		add_filter( 'excerpt_length'	, array( $this , 'custom_excerpt_length') , 999 );		
+	}
+	
+	/**
+	 * Add additional supports for default post types.
+	 * @version 1.0.0
+	 */
+	function post_supports() {
+
+		// Page custom excerpts
+		add_post_type_support( 'page', array( 'excerpt' ) );
+	}
+	
+	/**
+	 * Registers custom metadata callbacks for post types
+	 * @version 1.0.0
+	 */
+	function post_meta() {
+	
+		// Register the 'Description' meta for posts 
+		register_meta( 'post' , 'Description' 		, array( $this , 'sanitize_meta' ) );
+		
+		// Register custom templates for single posts
+		register_meta( 'post' , "_wp_post_template" , array( $this , 'santize_meta' ) );
+	}
+
+	/**
+	 * Callback function that sanitizes meta data passed through custom post fields
+	 * @since 0.1
+	 */
+	function sanitize_meta( $meta_value , $meta_key , $meta_type ) {
+		return strip_tags( $meta_value );
+	}
+	
+	/**
+	 * Add a continue reading link to custom excerpts
+	 * First remove the default [...] text, then add a link
+	 * Next, make default excerpts a bit shorter for the home page
+	 * @since 0.1
+	 */
+	function remove_excerpt_more( $more ) {
+		return '';
+	}
+	function add_excerpt_more( $excerpt ) {
+		$more = '<a class="excerpt-more" href="'. get_permalink() . '" title="Continue Reading">[...]</a>';
+		return $excerpt . ' ' . $more;
+	}
+	function custom_excerpt_length( $length ) {
+		$length = is_home() ? 45 : $length;
+		return $length;
+	}
+}
+
+
+/*---------------------------------------------
+2.0 - STANDALONE FUNCTIONS
+----------------------------------------------*/
+
+/**
+ * Generates a class for the homepage headers.
+ * Randomizes between the six artistic header images.
+ * Ensures that each of the headers are only displayed once
+ *
  * @version 1.0.0
  */
 function home_header_class() {
-	global $apoc;
+	
+	$apoc = apocrypha();
 	if( !isset( $apoc->home_headers ) ) {
 		$headers = range( 1 , 6 );
 		shuffle( $headers );
@@ -146,29 +188,6 @@ function entry_header_description() {
 	echo $description;
 }
 
-/**
- * Add a continue reading link to custom excerpts
- * First remove the default [...] text, then add a link
- * Next, make default excerpts a bit shorter for the home page
- * @since 0.1
- */
-add_filter( 'excerpt_more', 'remove_excerpt_more' );
-add_filter( 'get_the_excerpt', 'add_excerpt_more');
-add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
-function remove_excerpt_more( $more ) {
-	return '';
-}
-function add_excerpt_more( $excerpt ) {
-	$more = '<a class="excerpt-more" href="'. get_permalink() . '" title="Continue Reading">[...]</a>';
-	return $excerpt . ' ' . $more;
-}
-function custom_excerpt_length( $length ) {
-	if ( is_home() )
-		return 45;
-	else
-		return $length;
-}
-
 
 /**
  * Generate post report buttons
@@ -179,7 +198,7 @@ function apoc_report_post_button( $type ) {
 	// Only let members report stuff
 	if ( !is_user_logged_in() ) return false;
 	
-	// Otherwise get the data
+	// Get the data by context
 	switch( $type ) {
 		case 'reply' :
 			$post_id		= bbp_get_reply_id();
@@ -195,8 +214,8 @@ function apoc_report_post_button( $type ) {
 			break;
 	}
 	
+	// Echo the button
 	$button = '<a class="report-post" title="Report This Post" data-id="' . $post_id . '" data-number="' . $post_number . '" data-user="' . $reported_user . '" data-type="' . $type . '"><i class="icon-warning-sign"></i></a>';
-	
 	echo $button;
 }
 

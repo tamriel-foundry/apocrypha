@@ -25,14 +25,7 @@
 		<header id="site-header" role="banner">
 		
 			<nav id="admin-bar" role="navigation">
-				<div id="header-search">
-					<div id="search-dropdown" class="admin-bar-dropdown">
-						<?php apoc_get_search_form( 'posts' ); ?>
-					</div>
-				</div>
-				
-				<?php apoc_header_login(); ?>
-				<?php apoc_notifications_menu(); ?>
+				<?php apoc_admin_bar(); ?>
 			</nav><!-- #admin-bar -->	
 			
 			<a id="main-banner" href="<?php echo SITEURL; ?>"></a>	
@@ -45,6 +38,3 @@
 	</nav><!-- #primary-menu -->
 	
 	<div id="main-container">
-	<pre>
-	<?php print_r( apocrypha() ); ?>
-	</pre>

@@ -10,12 +10,12 @@
 if ( !defined( 'ABSPATH' ) ) exit;
  
 /**
- * Overrides elements of wp-login.php
+ * Overrides the display of wp-login.php
  * @version 1.0.0
  */
 add_action( 'login_enqueue_scripts', 'apoc_login_styles' );
 function apoc_login_styles() {
-	echo '<link rel="stylesheet" href="' . APOC_CSS . '/login-style.css" type="text/css" media="all" />';
+	echo '<link rel="stylesheet" href="' . THEME_URI . '/library/css/login-style.css" type="text/css" media="all" />';
 }
 add_filter( 'login_headerurl', 'apoc_login_url' );
 function apoc_login_url() {
@@ -33,63 +33,10 @@ function apoc_login_title() {
 function apoc_header_login() {
 	
 	// Requires BuddyPress, bail if it's missing
-	if ( !function_exists( 'bp_version' ) )
+	if ( !class_exists( 'BuddyPress' ) )
 		return false;
 	
-	echo '<div id="admin-bar-login">';
-	
-	global $apoc;
-	$user 		= $apoc->user->data;
-	$user_id	= $user->ID;
-	
-	// If it's a recognized user
-	if ( 0 < $user_id ) :
-
-		// Grab some information
-		$name 		= $user->display_name;
-		$avatar		= apoc_fetch_avatar( $user_id , 'thumb' , 25 );
-		$link		= bp_core_get_user_domain( $user_id );
-
-		// Construct a logout link
-		$redirect 	= wp_logout_url( get_current_url() ); ?>	
-		
-		<a href="<?php echo $link; ?>" title="Visit your user profile"><?php echo $avatar; ?></a>
-		<span id="logged-in-welcome">Welcome back, <?php echo $name; ?></span>
-		<a id="top-login-logout" class="admin-bar-login-link button" href="<?php echo $redirect; ?>" title="Log out of this account."><i class="icon-lock"></i>Logout</a>
-		
-	<?php // Otherwise we need to display the login form
-	else :?>
-		
-	<form name="top-login-form" id="top-login-form" action="<?php echo SITEURL . '/wp-login.php'; ?>" method="post">
-		<fieldset class="login-form">
-	
-			<input type="text" name="username" id="username" class="input" value="" placeholder="Username" size="20" tabindex="1">
-			
-			<input type="password" name="password" id="password" class="input" value="" placeholder="Password" size="20" tabindex="1">
-			
-			<input type="checkbox" name="remember" id="remember" value="forever" tabindex="1">
-			<label id="remember-label" for="remember">Save</label>
-			
-			<input type="hidden" name="redirect" value="<?php echo get_current_url(); ?>">
-			<input type="hidden" name="action" value="toplogin">
-			
-			<button type="submit" name="login-submit" id="login-submit" class="admin-bar-login-link" tabindex="1"><i class="icon-lock"></i>Log In</button>
-			
-			<?php if ( get_option( 'users_can_register' ) ) : ?>
-				<a class="admin-bar-login-link button" href="<?php echo trailingslashit(SITEURL) . BP_REGISTER_SLUG; ?>" title="Register a new user account!"><i class="icon-user"></i>Register</a>
-			<?php endif; ?>
-			
-			<a class="admin-bar-login-link button" href="<?php echo wp_lostpassword_url(); ?>" title="Lost your password?"><i class="icon-question"></i>Lost Password</a>
-			
-			<?php wp_nonce_field( 'ajax-login-nonce', 'top-login' ); ?>
-		
-		</fieldset>
-	</form>		
-		
-	<?php endif;
-	echo '</div>';
-	
-	if ($user_id == '') echo '<div id="top-login-error" class="error"></div>';
+	echo 'true';
 }
 
 /** 

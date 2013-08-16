@@ -13,6 +13,11 @@ if ( !defined( 'ABSPATH' ) ) exit;
 1.0 - INCLUDE TEMPLATE ELEMENTS
 ----------------------------------------------*/
 
+// Admin Bar
+function apoc_admin_bar() {
+	include( THEME_DIR . '/library/templates/admin-bar.php' );
+}
+
 // Navigation
 function apoc_primary_menu() {
 	include( THEME_DIR . '/library/templates/menu-primary.php' );
@@ -30,6 +35,8 @@ function apoc_comment_form() {
  
 // Search Form
 function apoc_get_search_form( $search_type = '' ) {
+	if ( '' != $search_type )
+		apocrypha()->search->type = $search_type;
 	include( THEME_DIR . '/library/templates/searchform.php' );
 }
 
@@ -38,9 +45,48 @@ function apoc_display_post() {
 	include( THEME_DIR . '/library/templates/loop-single-post.php' );
 }
 
+/*---------------------------------------------
+2.0 - FILTER TEMPLATE HIERARCHY
+----------------------------------------------*/
+
+/**
+ * Controls template selection for category, tag, and taxonomy pages
+ * The hierarchy is: taxonomy-{taxonomy}.php, taxonomy.php, archive.php
+ * @version 1.0.0
+ */
+add_filter( 'tag_template'		, 'apoc_taxonomy_template' );
+add_filter( 'category_template'	, 'apoc_taxonomy_template' );
+add_filter( 'taxonomy_template'	, 'apoc_taxonomy_template' );
+function apoc_taxonomy_template( $template ) {
+
+	// Get the queried term object.
+	$term = apocrypha()->queried_object;
+
+	// Return the available templates.
+	return locate_template( array( "{$term->taxonomy}.php" , "taxonomy-{$term->taxonomy}.php" , 'taxonomy.php', 'archive.php' ) );
+}
+
+/**
+ * Controls template selection for posts and custom post types
+ * The hierarchy is: {custom-post-template}.php, singular-{post_type}.php, singular.php
+ * @version 1.0.0
+ */
+add_filter( 'single_template' , 'apoc_singular_template' );
+function apoc_singular_template( $template ) {
+	
+	// Get the queried post
+	$post = apocrypha()->queried_object;
+		
+	// Check for a custom post template using the custom meta field key '_wp_post_template'.
+	$custom = get_post_meta( get_queried_object_id(), "_wp_{$post->post_type}_template", true );
+	
+	// Return the found template.
+	return locate_template( array( $custom , "singular-{$post->post_type}.php" , "singular.php" )  );
+}
+
 
 /*---------------------------------------------
-2.0 - QUERY POSTS
+3.0 - QUERY POSTS
 ----------------------------------------------*/
 /**
  * Tamriel Foundry homepage have_posts query
@@ -48,16 +94,15 @@ function apoc_display_post() {
  */
 function homepage_have_posts() {
 
-	$apoc = apocrypha();
-	
-	$posts_per_page = $apoc->posts_per_page;
-	$paged 			= $apoc->paged;
-	$offset 		= ( $posts_per_page * $paged ) - $posts_per_page;
+	$apoc 			= apocrypha();
+	$ppp 			= $apoc->counts->ppp;
+	$paged 			= $apoc->counts->paged;
+	$offset 		= ( $ppp * $paged ) - $ppp;
 	$guild_cats 	= '-'.get_cat_ID( 'entropy rising' ) . ',-' . get_cat_ID( 'guild news' );
 	
 	$args = array( 
 		'paged'=> $paged, 
-		'posts_per_page'=> $posts_per_page,
+		'posts_per_page'=> $ppp,
 		'offset' => $offset,
 		'cat' => $guild_cats,
 		);

@@ -66,21 +66,22 @@ function apoc_comments_template( $comment , $args , $depth ) {
 	$post_type 		= isset( $apoc->post_type ) ? $apoc->post_type : 'post';
 	$comment_type 	= get_comment_type( $comment->comment_ID );
 	
-	// Count comments
-	if ( isset ( $apoc->comment_count ) )
-		$count = ++$apoc->comment_count;
+	// Is the comment count already set?
+	if ( isset( $apoc->counts->comment ) )
+		$count = ++$apoc->counts->comment;
 		
+	// If not, compute the correct count
 	else {
-		if ( '' === $args['per_page'] )
-			$args['per_page'] = get_option('comments_per_page');
-		if ( '' == $args['page'] )
-			$args['page'] = get_query_var('cpage');
-		
-		$adj = ( $args['page'] - 1 ) * $args['per_page'];
+	
+		// Get comment page
+		$apoc->counts->cpage = ( '' == $args['page'] ) ? get_query_var('cpage') : $args['page'];
+
+		// Adjust the count
+		$adj = ( $apoc->counts->cpage - 1 ) * $args['per_page'];
 		$count = $adj + 1;
 		
 		// Update the object
-		$apoc->comment_count = $count;
+		$apoc->counts->comment = $count;
 	}
 	
 	// Load the comment template
@@ -114,7 +115,7 @@ function apoc_comment_admin_links() {
 }
 
 /**
- * Quote button for comments
+ * Quote button for comments and replies
  * @version 1.0.0
  */
 function apoc_quote_button( $context = 'comment' ) {
@@ -138,7 +139,7 @@ function apoc_quote_button( $context = 'comment' ) {
 			break;
 	}
 
-    /* Create quote link using data attributes to pass parameters */
+    // Create quote link using data attributes to pass parameters
 	$quoteButton = '<a class="quote-link button button-dark" href="#respond" title="Click here to quote selected text" ';
 	$quoteButton .= 'data-context="' . $context . '" data-id="'.$id.'" data-author="'.$author_name.'" data-date="'.$post_date.'">';
 	$quoteButton .= '<i class="icon-comment"></i>Quote</a>';
@@ -152,17 +153,14 @@ function apoc_quote_button( $context = 'comment' ) {
  */
 function apoc_comment_edit_button() {
 	
+	// Only show the button if the user can edit
 	if ( user_can_edit_comment() ) {
 	
+		/// Build the link
 		global $comment;
-
-		/* Build the link */
-		$parent_url = get_permalink( $comment->comment_post_ID );
-		$edit_url 	= $parent_url . 'comment-' . $comment->comment_ID . '/edit/';
-
-		/* Create quote link using data attributes to pass parameters */
-		$edit_button = '<a class="edit-comment-link button button-dark" href="' . $edit_url . '" title="Edit this comment" ><i class="icon-edit"></i>Edit</a>';
-		
+		$parent_url 	= get_permalink( $comment->comment_post_ID );
+		$edit_url 		= $parent_url . 'comment-' . $comment->comment_ID . '/edit/';
+		$edit_button 	= '<a class="edit-comment-link button button-dark" href="' . $edit_url . '" title="Edit this comment" ><i class="icon-edit"></i>Edit</a>';
 		return $edit_button;
 	}
 }
@@ -172,27 +170,26 @@ function apoc_comment_edit_button() {
  * @since 0.3
  */
 function apoc_comment_delete_button() {
-
+	
+	// Only allow moderators to delete
 	if ( current_user_can( 'moderate' ) || current_user_can( 'moderate_comments' ) ) {
 	
+		// Build the link
 		global $comment;
-
-		/* Build the link */
 		$delete_button = '<a class="delete-comment-link button button-dark" title="Delete this comment"  data-id="' . $comment->comment_ID . '" data-nonce="' . wp_create_nonce( 'delete-comment-nonce' ) . '"><i class="icon-trash"></i>Trash</a>';
-		
 		return $delete_button;
 	}
 }
 
 /*---------------------------------------------
-	2.0 - COMMENT EDITING
+	2.0 - COMMENT EDIT CLASS
 ----------------------------------------------*/
 
 /**
  * Frontend Article Comment Editing Class
  * @version 1.0.0
  */
-class Frontend_Comment_Edit {
+class Apoc_Comment_Edit {
 
 	// Construct the class
 	function __construct() {
@@ -234,7 +231,7 @@ class Frontend_Comment_Edit {
 		}
 	}
 }
-$edit = new Frontend_Comment_Edit();
+$comment_edit = new Apoc_Comment_Edit();
 
 /**
  * Determines if the current user can edit a comment;
@@ -244,8 +241,8 @@ function user_can_edit_comment() {
 
 	/* Check to see who can edit */
 	global $comment;
-	$user_id = get_current_user_id();
-	$author_id = $comment->user_id;
+	$user_id 	= apocrypha()->user->ID;
+	$author_id 	= $comment->user_id;
 
 	/* Comment authors and moderators are allowed */
 	if ( $user_id == $author_id || current_user_can( 'moderate_comments' ) || current_user_can( 'moderate' ) ) 
@@ -317,6 +314,4 @@ function apoc_display_comment( $comment_ID , $count ) {
 	// Get the comment HTML
 	include( THEME_DIR . '/library/templates/comment.php' );
 }
-
-
 ?>

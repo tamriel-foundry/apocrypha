@@ -25,9 +25,6 @@ function setup_apocrypha_admin() {
 
 	// Load the post template meta box.
 	require_once( trailingslashit( $apoc->admin_dir ) . 'post-meta-template.php' );
-	
-	// Load slideshow administration functions
-	require_once( trailingslashit( $apoc->admin_dir ) . 'slides-admin.php' );
 }
 
 /**

@@ -15,7 +15,7 @@
 	</header>
 	
 	<div class="entry-content">
-		<?php get_the_image( array( 'meta_key' => 'Thumbnail', 'size' => 'thumbnail' ) );?>
+		<?php apoc_thumbnail(); ?>
 		<div class="entry-excerpt">
 			<?php the_excerpt(); ?>
 		</div>

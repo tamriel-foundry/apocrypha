@@ -1767,35 +1767,22 @@ li.whos-online-member.even {
 	}
 	
 /* Featured Guild Box */
-a#featured-guild-avatar img.avatar{
-	margin: 0;
-	}
+div#featured-guild { margin: 0.5em 0.5em 0 }
+a#featured-guild-avatar img.avatar{ margin: 0; }
 div#featured-guild-meta {
-	height: 94px;
-	margin: 5px 0 0 115px;
-	padding: 5px 8px;
-	background: rgba( 17,17,17,0.25 );
-	border: 1px solid #000;
-	border-radius: 5px;
-	box-shadow: 0 0 3px #666 inset;
+	height: 100px;
+	margin: 0 0 0 100px;
 	text-align: center;
 	}
 h4#featured-guild-name {
 	text-transform: none;
-	border-bottom: 1px solid #000;
-	padding: 0 0 3px;
+	padding: 0.5em 0;
 	}
 div#featured-guild-meta > p {
 	margin: 0;
-	padding: 0 0 3px 0;
 	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.75em;
 	line-height: 1.5em;
-	}
-div#featured-guild-meta > p#featured-guild-type {
-	padding-top: 3px;
-	border-top: 1px solid #444;
-	font-style: italic;
 	}
 	
 /* Foundry Stats Counter */

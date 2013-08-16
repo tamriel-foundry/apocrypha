@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme Breadcrumb Trail.
  * Andrew Clayton
- * @ver 2.0
- * 8-3-2013
+ * Version 1.0.0
+ * 8-16-2013
  */
  
 // Exit if accessed directly
@@ -368,7 +368,7 @@ class Apoc_Breadcrumbs {
 
 
 /*---------------------------------------------
-XXX TODO XXX
+TO DO 
 ----------------------------------------------*/
 
 /* Get BuddyPress breadcrumb items

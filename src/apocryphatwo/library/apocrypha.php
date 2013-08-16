@@ -131,7 +131,8 @@ class Apocrypha {
 		show_admin_bar( false );
 		
 		// Add supported post types
-		$apoc_posts = new Apoc_Posts();
+		$apoc_posts 	= new Apoc_Posts();
+		$apoc_slides 	= new Apoc_Slides();
 	}
 	
 	/**
@@ -155,7 +156,7 @@ class Apocrypha {
 		require( $this->extensions_dir 	. 'slides.php' );
 		require( $this->extensions_dir 	. 'widgets.php' );
 		require( $this->extensions_dir 	. 'events.php' );
-		require( $this->extensions_dir 	. 'get-the-image.php' );
+		require( $this->extensions_dir 	. 'thumbnail.php' );
 		require( $this->extensions_dir 	. 'shortcodes.php' );
 
 		// Integrated Plugins

@@ -4,9 +4,13 @@ $( '#comments' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	// Declare some stuff
 	var curPage = newPage = postid = tooltip = dir = '';
 	var button	= $(this);
+	var nav		= button.parent().parent();
 			
 	// Prevent default pageload
 	event.preventDefault();
+	
+	// Prevent further clicks
+	nav.css( "pointer-events" , "none" );
 	
 	// Get the pagination context
 	postid 		= $( 'nav.pagination' ).data('postid');
@@ -24,9 +28,7 @@ $( '#comments' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	}
 	
 	// Display a loading tooltip
-	dir = ( newPage > curPage ) ? ".next" : ".prev";
-	tooltip = ( newPage > curPage ) ? "Loading &raquo;" : "&laquo; Loading";
-	$( 'a.page-numbers' + dir ).html(tooltip);
+	button.html('<i class="icon-spinner icon-spin"></i>');
 		
 	// Send an AJAX request for more comments
 	$.post( ajaxurl , {
@@ -83,7 +85,7 @@ $( "form#commentform" ).submit( function( event ) {
 	
 	// Create a feedback notice if one doesn't already exist
 	if ( $( '#comment-notice' ).length == 0 ) {
-		button.parent().prepend('<div id="comment-notice"></div>');
+		$(this).prepend('<div id="comment-notice"></div>');
 		$( '#comment-notice' ).hide();
 	}
 	
@@ -99,7 +101,7 @@ $( "form#commentform" ).submit( function( event ) {
 	if( !error ) {
 	
 		// Give a tooltip
-		button.html( '<i class="icon-pencil"></i>Submitting...' );
+		button.html( '<i class="icon-spinner icon-spin"></i>Submitting...' );
 		
 		// Submit the comment form to the wordpress handler
 		$.ajax({

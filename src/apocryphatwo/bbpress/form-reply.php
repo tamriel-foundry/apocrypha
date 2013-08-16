@@ -7,7 +7,7 @@
  */
  
 // Get some info
-global $apoc;
+$apoc		= apocrypha();
 $user		= $apoc->user->data;
 $user_id	= $user->ID;
 $name		= $user->display_name;

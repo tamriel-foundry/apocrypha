@@ -4,9 +4,13 @@ $( '#posts' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	// Declare some stuff
 	var curPage = newPage = type = id = tooltip = dir = '';
 	var button	= $(this);
+	var nav		= button.parent().parent();
 	
 	// Prevent default pageload
 	event.preventDefault();
+	
+	// Prevent further clicks
+	nav.css( "pointer-events" , "none" );
 	
 	// Get the pagination context
 	type 	= $( 'nav.pagination' ).data('type');
@@ -25,9 +29,7 @@ $( '#posts' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	}
 	
 	// Display a loading tooltip
-	dir = ( newPage > curPage ) ? ".next" : ".prev";
-	tooltip = ( newPage > curPage ) ? "Loading &raquo;" : "&laquo; Loading";
-	$( 'a.page-numbers' + dir ).html(tooltip);
+	button.html('<i class="icon-spinner icon-spin"></i>');
 		
 	// Send an AJAX request for more posts
 	$.post( ajaxurl , {
@@ -44,7 +46,7 @@ $( '#posts' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 			
 				// Do some beautiful jQuery
 				$('.post').fadeOut('slow').promise().done(function() {
-					$('nav.pagination').remove();
+					nav.remove();
 					$('#posts').empty().append(response);
 					$('html, body').animate({ scrollTop: $( "#content" ).offset().top }, 600 );
 					$('#posts').hide().fadeIn('slow');				

@@ -48,9 +48,3 @@
 </html>
 <!-- <?php echo get_num_queries(); ?> queries in <?php timer_stop(1); ?> seconds. -->
 <!-- <?php echo round ( memory_get_peak_usage() / 1048576 , 2 ) . 'megabytes used.'; ?> -->
-
-<pre style="clear:both; font-size: 16px;">
-<?php global $wp_query; ?>
-<?php print_r( $wp_query->max_num_comment_pages ); ?>
-<?php print_r( $wp_query->query_vars['cpage'] ); ?>
-</pre>

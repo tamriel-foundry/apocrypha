@@ -131,7 +131,7 @@ function apoc_load_posts() {
 		
 		// Next we need to build some new pagination
 		echo '<nav class="pagination ajaxed" data-type="' . $type . '" data-id="' . $id .'">';
-			ajax_pagination( $ajax_query , $args = array() , $url  );
+			apoc_pagination( $args = array() , $url , 'ajax_query' );
 		echo '</nav>';
 				
 	endif;
@@ -178,7 +178,7 @@ function apoc_load_comments() {
 
 	// Next we need to build some new pagination
 	echo '<nav class="pagination ajaxed" data-postid="' . $postid . '">';
-		ajax_comment_pagination( $args = array() , $url , $paged  );
+		apoc_pagination( $args = array( 'context' => 'comment' , 'current' => $paged , 'total' => $max_pages ) , $url );
 	echo '</nav>';
 	
 	// Get everything from the output buffer

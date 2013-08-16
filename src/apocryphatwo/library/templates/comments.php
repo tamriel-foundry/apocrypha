@@ -22,7 +22,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 	</ol>
 
 	<nav class="comment-navigation pagination ajaxed" data-postid="<?php the_ID(); ?>">
-		<div class="pagination-links"><?php paginate_comments_links(); ?></div>
+		<div class="pagination-links"><?php apoc_pagination( array( 'context' => 'comment' ) ); ?></div>
 	</nav>
 
 </div><!-- #comments -->

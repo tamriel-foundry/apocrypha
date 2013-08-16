@@ -9,245 +9,367 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
  
-// Display the breadcrumb trail 
- function apoc_breadcrumbs( $args = array() ) {
-	$breadcrumb = '';
+/*---------------------------------------------
+1.0 - APOC_BREADCRUMBS CLASS
+----------------------------------------------*/
 
-	// Default breadcrumb arguments 
-	$defaults = array(
-		'container' => 		'nav',
-		'separator' => 		'&raquo;',
-		'before' => 		'Viewing:',
-		'show_home' => 		'Home',
-		'echo' => 			true,
-	);	
-	
-	$args = wp_parse_args( $args, $defaults );
-	
-	// Get the items based on page context 
-	$trail = apoc_get_breadcrumbs( $args );
-	
-	// If items are found, build the trail 
-	if ( !empty( $trail ) && is_array( $trail ) ) {
-	
-		$breadcrumb = '<'.$args['container']. ' class="breadcrumb-trail breadcrumbs">';
-		$breadcrumb .= ( !empty( $args['before'] ) ? '<span class="trail-before">' . $args['before'] . '</span> ' : '' );
-		
-		// Adds the 'trail-end' class around last item 
-		array_push( $trail, '<span class="trail-end">' . array_pop( $trail ) . '</span>' );
-		
-		// Format the separator 
-		$separator = ( !empty( $args['separator'] ) ? $args['separator'] : '' );
+/**
+ * Generates breadcrumb links for Tamriel Foundry pages.
+ * Gives users a handy reference for where they are within the site.
+ *
+ * @author Andrew Clayton
+ * @version 1.0.0
+ */
+class Apoc_Breadcrumbs {
 
-		// Join the individual trail items into a single string 
-		$breadcrumb .= join( " {$separator} ", $trail );
-
-		// Close the breadcrumb trail containers 
-		$breadcrumb .= '</' . tag_escape( $args['container'] ) . '>';
+	// The breadcrumb arguments
+	public 	$args;
+	
+	// The resulting links
+	public	$crumbs;
+	
+	/**
+	 * The breadcrumb constructor function.
+	 * Args provides formatting preferences.
+	 */
+	function __construct( $args = array() ) {
+	
+		// Setup default arguments
+		$defaults 				= $this->default_args();
+		$this->args				= wp_parse_args( $args , $defaults );
+				
+		// Generate the links
+		$this->crumbs			= $this->create_crumbs();
 	}
 	
-	// Output the breadcrumb 
-	if ( $args['echo'] ) echo $breadcrumb;
-	else return $breadcrumb;
-}
+	
+	/**
+	 * Set up the default arguments for the pagination links
+	 */
+	private function default_args() {
+	
+		$defaults = array(
+			'container' 	=> 'nav',
+			'separator' 	=> '&raquo;',
+			'before' 		=> 'Viewing:',
+			'home' 			=> 'Home',
+		);
+		return $defaults;
+	}
+	
+	/**
+	 * Create the breadcrumb links
+	 */	
+	function create_crumbs() {
+	
+		$breadcrumb = '';
+		$args = $this->args;
 
-/* Get WordPress breadcrumb items 
------------------------------------------------------*/
-function apoc_get_breadcrumbs( $args = array() ) {
-	$trail = array();
-	
-	// Start with a link to the home page 
-	$trail[] = '<a href="' . SITEURL . '" title="' . SITENAME . '" rel="home" class="trail-home">' . $args['show_home'] . '</a>';	
-	
-	// If bbPress is installed and we're on a bbPress page (but not a user profile or forum search). 
-	if ( function_exists( 'is_bbpress' ) && is_bbpress() && !is_search() && !bbp_is_single_user() ) :
-		$trail = array_merge( $trail, apoc_get_bbpress_breadcrumbs() );
-	
-	// If BuddyPress is installed and we're on a BuddyPress page 
-	elseif ( function_exists( 'is_buddypress' ) && is_buddypress() ) :
-		$trail = array_merge( $trail, apoc_get_buddypress_breadcrumbs() );
-	
-	// Now for standard WordPress pages, starting with singular 
-	elseif ( is_singular() ) :
-		
-		// Get singular post variables needed. 
-		$post = get_queried_object();
-		$post_id = absint( get_queried_object_id() );
-		$post_type = $post->post_type;
-		$parent = absint( $post->post_parent );
+		// Get the items based on page context 
+		$trail = $this->get_trail();
 
-		// Get the post type object. 
-		$post_type_object = get_post_type_object( $post_type );
-		
-		// Single Posts 
-		if ( 'post' == $post_type ) :
+		// If items are found, build the trail 
+		if ( !empty( $trail ) && is_array( $trail ) ) {
+
+			// Wrap the trail and add the 'Before' element
+			$breadcrumb = '<'.$args['container']. ' class="breadcrumb-trail breadcrumbs">';
+			$breadcrumb .= ( !empty( $args['before'] ) ? '<span class="trail-before">' . $args['before'] . '</span> ' : '' );
 			
-			// Get the post categories. 
-			$categories = get_the_category( $post_id );
+			// Adds the 'trail-end' class around last item 
+			array_push( $trail, '<span class="trail-end">' . array_pop( $trail ) . '</span>' );
+			
+			// Format the separator 
+			$separator = ( !empty( $args['separator'] ) ? $args['separator'] : '' );
 
-			// Check if categories were returned. 
-			if ( $categories ) :
-				$term = $categories[0];
+			// Join the individual trail items into a single string 
+			$breadcrumb .= join( " {$separator} ", $trail );
+
+			// Close the breadcrumb trail containers 
+			$breadcrumb .= '</' .  $args['container'] . '>';
+		}
+
+		// Return the formatted breadcrumbs
+		return $breadcrumb;
+	}
+	
+	/**
+	 * Combine the breadcrumb items
+	 */		
+	function get_trail() {
 		
+		// Setup empty trail
+		$trail = array();
+		
+		// Start with a link to the home page 
+		$trail[] = '<a href="' . SITEURL . '" title="' . SITENAME . '" rel="home" class="trail-home">' . $this->args['home'] . '</a>';	
+		
+		// If bbPress is installed and we're on a bbPress page (but not a user profile or forum search). 
+		if ( class_exists( 'bbPress' ) && is_bbpress() ) :
+			$trail = array_merge( $trail , $this->bbpress_crumbs() );
+		
+		// If BuddyPress is installed and we're on a BuddyPress page 
+		elseif ( class_exists( 'BuddyPress' ) && is_buddypress() ) :
+			$trail = array_merge( $trail , $this->buddypress_crumbs() );
+		
+		// Otherwise, it's a basic WordPress component
+		else :
+			$trail = array_merge( $trail , $this->wordpress_crumbs() );
+		endif;
+		
+		// Return the trail for use
+		return $trail;
+	}
+		
+	/**
+	 * Get WordPress breadcrumb items
+	 */		
+	function wordpress_crumbs() {
+		
+		// Setup empty trail
+		$trail 	= array();
+		
+		// Get some info
+		$apoc 		= apocrypha();
+		$post		= $apoc->queried_object;
+		$post_id	= $apoc->queried_object_id;
+		$post_type 	= $post->post_type;
+		$parent 	= absint( $post->post_parent );
+
+		// Singular Views
+		if ( is_singular() ) :
+			switch( $post_type ) {
+			
+				// Single Posts 
+				case 'post' :
+				
+					// Is the post in a category?
+					$categories = get_the_category( $post_id );
+					if ( $categories ) :
+					
+						// Just do the first category
+						$term = $categories[0];
+				
+						// If the category has a parent, add it to the trail. 
+						if ( 0 != $term->parent ) 
+							$trail = array_merge( $trail, $this->trail_parents( $term->parent, 'category' ) );
+
+						// Add the category archive link to the trail. 
+						$trail[] = '<a href="' . get_term_link( $term ) . '" title="' . esc_attr( $term->name ) . '">' . $term->name . '</a>';
+					endif;
+					
+					// Does the post have an ancestor?
+					if ( 0 != $parent  ) 
+						$trail = array_merge( $trail, $this->trail_parents( $parent ) );
+					
+					// Editing a comment on this post
+					if ( is_comment_edit() ) :
+						$trail[] = '<a href="' . get_permalink() . '" title="Return to article">' . $post->post_title . '</a>';
+						$trail[] = 'Edit Comment';
+					
+					// Reading the post
+					else :
+						$trail[] = $post->post_title;
+					endif; 
+				break;
+								
+				// Single Pages 
+				case 'page' :
+					
+					// If the page has ancestor pages
+					if ( 0 != $parent  ) 
+						$trail = array_merge( $trail, $this->trail_parents( $parent ) );
+					
+					// Otherwise, viewing the page
+					$trail[] = $post->post_title;
+				break;
+				
+				// Single Calendar Event 
+				case 'event' :
+					
+					// I need to rewrite this
+					global $allowed_calendar;
+					if ( is_group_calendar( $allowed_calendar->term_id ) ) :
+						$group_url = ( 'entropy-rising' == $allowed_calendar->slug ) ? SITEURL . '/entropy-rising/' : SITEURL . '/groups/' . trailingslashit( $slug );
+						$trail[] = '<a href="'. $group_url .'" title="'. $allowed_calendar->name . ' Guild Page">'. $allowed_calendar->name .'</a>';
+					endif;
+									
+					$trail[] = '<a href="'. SITEURL . '/calendar/' . $allowed_calendar->slug . '/" title="'. $allowed_calendar->name . ' Calendar">Calendar</a>';
+					$trail[] = $post->post_title;
+				break;
+			}
+			
+		// Archive Pages
+		elseif ( is_archive() ) :
+		
+			// Category Archives
+			if ( is_category() ) :
+				$trail[] = 'Categories';
+
 				// If the category has a parent, add it to the trail. 
-				if ( $term->parent != 0 ) $trail = array_merge( $trail, apoc_breadcrumb_get_term_parents( $term->parent, 'category' ) );
+				if ( $post->parent != 0 ) 
+					$trail = array_merge( $trail, $this->trail_parents( $post->parent ) );
+				
+				// Finish up with the term name
+				$trail[] = $post->name;
+			
+			// Author Archive 
+			elseif ( is_author() ) :
+				$trail[] = 'Authors';
+				$trail[] = get_the_author_meta( 'display_name', get_query_var( 'author' ) );
+			
+			
+			// Calendar Archive 
+			elseif ( is_calendar() ) :
+			
+				// Is it a group calendar? 
+				$term_id 	= $post->term_id;
+				if( is_group_calendar( $term_id ) ) :
 
-				// Add the category archive link to the trail. 
-				$trail[] = '<a href="' . get_term_link( $term ) . '" title="' . esc_attr( $term->name ) . '">' . $term->name . '</a>';
-			endif;
-			
-			// Post parents and title 
-			if ( 0 != $parent  ) $trail = array_merge( $trail, apoc_breadcrumb_get_parents( $parent ) );
-			
-			// Comment edit 
-			if ( is_comment_edit() ) :
-				$trail[] = '<a href="' . get_permalink() . '" title="Return to article">' . $post->post_title . '</a>';
-				$trail[] = 'Edit Comment';
-			
-			else :
-				$trail[] = $post->post_title;
-			endif;
-		
-		// Single Pages 
-		elseif ( 'page' == $post_type ) :
-			if ( 0 != $parent  ) $trail = array_merge( $trail, apoc_breadcrumb_get_parents( $parent ) );
-			$trail[] = $post->post_title;	
-		
-		// Single Calendar Event 
-		elseif ( 'event' == $post_type ) :
-			global $allowed_calendar;
-			if ( is_group_calendar( $allowed_calendar->term_id ) ) :
-				$group_url = ( 'entropy-rising' == $allowed_calendar->slug ) ? SITEURL . '/entropy-rising/' : SITEURL . '/groups/' . trailingslashit( $slug );
-				$trail[] = '<a href="'. $group_url .'" title="'. $allowed_calendar->name . ' Guild Page">'. $allowed_calendar->name .'</a>';
-			endif;
-							
-			$trail[] = '<a href="'. SITEURL . '/calendar/' . $allowed_calendar->slug . '/" title="'. $allowed_calendar->name . ' Calendar">Calendar</a>';
-			$trail[] = $post->post_title;
-		endif;
-		
-	// Viewing Search Results 
-	elseif ( is_search() ) :
-		if ( is_bbpress() ) {
-			$trail[] = '<a href="'. get_home_url() .'/forums/" title="' . get_bloginfo('name') . ' Forums">Forums</a>';
-			$trail[] = sprintf( 'Forum topics containing &quot;%1$s&quot;', esc_attr( get_search_query() ) );
-		} else $trail[] = sprintf( 'Pages and articles containing &quot;%1$s&quot;', esc_attr( get_search_query() ) );
-	
-	// Archive Loops 
-	elseif ( is_archive() ) :
-	
-		// Category Archive 
-		if ( is_category() ) :
-			$trail[] = 'Category';
-			
-			// Get some taxonomy and term variables. 
-			$term = get_queried_object();
-			$taxonomy = get_taxonomy( $term->taxonomy );
-			
-			// If the category has a parent, add it to the trail. 
-			if ( $term->parent != 0 ) $trail = array_merge( $trail, apoc_breadcrumb_get_term_parents( $term->parent, 'category' ) );
-			
-			$trail[] = $term->name;
-		
-		// Author Archive 
-		elseif ( is_author() ) :
-			$trail[] = 'Authors';
-			$trail[] = get_the_author_meta( 'display_name', get_query_var( 'author' ) );
-		
-		
-		// Calendar Archive 
-		elseif ( is_calendar() ) :
-		
-			// Is it a group calendar? 
-			global $wp_query;
-			$term_id = $wp_query->queried_object->term_id;
-			if( is_group_calendar( $term_id ) ) :
-				$slug 		= $wp_query->queried_object->slug;
-				$group_id	= groups_get_id( $slug );
-				if ( 'entropy-rising' == $slug ) :
-					$trail[] = '<a href="'. home_url() . '/entropy-rising/">Entropy Rising</a>';
-				else :
-					$group = groups_get_group( array( 'group_id' => $group_id ) );
-					$trail[] = '<a href="'. bp_get_groups_directory_permalink() .'">Guilds</a>';
-					$trail[] = '<a href="'. bp_get_groups_directory_permalink() . $slug .'" title="'. $group->name . '">'. $group->name . '</a>';
+					// Get the group
+					$slug		= $post->slug;
+					$group_id	= groups_get_id( $slug );		
+					if ( 'entropy-rising' == $slug ) :
+						$trail[] = '<a href="'. home_url() . '/entropy-rising/">Entropy Rising</a>';
+					else :
+						$group = groups_get_group( array( 'group_id' => $group_id ) );
+						$trail[] = '<a href="'. bp_get_groups_directory_permalink() .'">Guilds</a>';
+						$trail[] = '<a href="'. bp_get_groups_directory_permalink() . $slug .'" title="'. $group->name . '">'. $group->name . '</a>';
+					endif;
 				endif;
+				
+				// Otherwise just a standalone calendar
+				$trail[] = 'Calendar';
 			endif;
-			$trail[] = 'Calendar';
+		
+		// Search Results
+		elseif ( is_search() ) :
+			$trail[] = sprintf( 'Pages and articles containing &quot;%1$s&quot;', esc_attr( get_search_query() ) );
+			
+		// Page Not Found
+		elseif ( is_404() ) : 
+			$trail[] = '404 Page Not Found';		
+		endif;
+					
+		// Return the trail
+		return $trail;		
+	}
+	
+	/**
+	 * Get bbPress breadcrumb items
+	 */		
+	function bbpress_crumbs() {
+		
+		// Setup the trail
+		$bbp_trail = array();
+		
+		// If it is the forum root, just display "Forums"
+		if ( bbp_is_forum_archive() ) {
+			$bbp_trail[] = 'Forums';
+			return $bbp_trail;
+		}
+					
+		// Otherwise link to the root forums
+		$bbp_trail[] = '<a href="' . get_post_type_archive_link( 'forum' ) . '">Forums</a>';
+		
+		// Recent topics page 
+		if ( bbp_is_topic_archive() ) :
+			$bbp_trail[] = 'Recent Topics';
+		
+		// Topic tag archives 
+		elseif ( bbp_is_topic_tag() ) :
+			$bbp_trail[] = bbp_get_topic_tag_name();
+		
+		// Editing a topic tag
+		elseif ( bbp_is_topic_tag_edit() ) :
+			$bbp_trail[] = '<a href="' . bbp_get_topic_tag_link() . '">' . bbp_get_topic_tag_name() . '</a>';
+			$bbp_trail[] = 'Edit';
+		
+		// Single topic 
+		elseif ( bbp_is_single_topic() ) :	
+			$topic_id = get_queried_object_id();
+			$bbp_trail = array_merge( $bbp_trail, $this->trail_parents( bbp_get_topic_forum_id( $topic_id ) ) );
+			$bbp_trail[] = bbp_get_topic_title( $topic_id );
+				
+		// If it's a split, merge, or edit, link back to the topic 
+		elseif ( bbp_is_topic_split() || bbp_is_topic_merge() || bbp_is_topic_edit() ) :
+			$topic_id = get_queried_object_id();
+			$bbp_trail = array_merge( $bbp_trail, $this->trail_parents( $topic_id ) );
+		
+			if ( bbp_is_topic_split() ) 		: $bbp_trail[] = 'Split Topic';
+			elseif ( bbp_is_topic_merge() ) 	: $bbp_trail[] = 'Merge Topic';
+			elseif ( bbp_is_topic_edit() ) 		: $bbp_trail[] = 'Edit Topic';
+			endif;
+			
+		// Single reply 
+		elseif ( bbp_is_single_reply() ) :
+			$reply_id = get_queried_object_id();
+			$bbp_trail = array_merge( $bbp_trail, $this->trail_parents( bbp_get_reply_topic_id( $reply_id ) ) );
+			$bbp_trail[] = bbp_get_reply_title( $reply_id );
+		
+		// Single reply edit 
+		elseif ( bbp_is_reply_edit() ) :
+			$reply_id = get_queried_object_id();
+			$bbp_trail = array_merge( $bbp_trail, $this->trail_parents( bbp_get_reply_topic_id( $reply_id ) ) );
+			$bbp_trail[] = 'Edit Reply';
+			
+		// Single forum 
+		elseif ( bbp_is_single_forum() ) :
+		
+			// Get the queried forum ID and its parent forum ID. 
+			$forum_id 			= get_queried_object_id();
+			$forum_parent_id 	= bbp_get_forum_parent_id( $forum_id );
+			
+			// Get the forum parents
+			if ( 0 != $forum_parent_id) 
+				$bbp_trail = array_merge( $bbp_trail, $this->trail_parents( $forum_parent_id ) );
+				
+			// Give the forum title
+			$bbp_trail[] = bbp_get_forum_title( $forum_id );
+		
 		endif;
 		
-	elseif ( is_404() ) : 
-		$trail[] = '404 Page Not Found';		
-	endif;
+		// Return the bbPress trail 
+		return $bbp_trail;
+	}
+
+	function buddypress_crumbs() {
+		
+		return array( 'THIS...IS...BUDDYPRESS' );
+	}
 	
-	return $trail;	
+	function trail_parents( $post_id ) {
+	
+		// Setup the parent trail
+		$parent_trail = array();
+		$parents = array();
+
+		// Verify we have something to work with 
+		if ( empty( $post_id ) ) return $parent_trail;
+		
+		// Loop through post IDs until we run out of parents 
+		while ( $post_id ) {
+			$page 		= get_page( $post_id );
+			$parents[]  = '<a href="' . get_permalink( $post_id ) . '" title="' . esc_attr( get_the_title( $post_id ) ) . '">' . get_the_title( $post_id ) . '</a>';
+			
+			// Load the grandparent page if there is one 
+			$post_id	 = $page->post_parent;
+		}
+	
+		// If parents were found, reverse their order
+		if ( !empty( $parents ) ) 
+			$parent_trail = array_reverse( $parents );
+			
+		// Return the trail
+		return $parent_trail;
+	}
+	
 }
 
-/* Get bbPress breadcrumb items
------------------------------------------------------*/
-function apoc_get_bbpress_breadcrumbs( $args = array() ) {
-	$bbp_trail = array();
-	
-	// If it's not the main forum archive, link to it 
-	if ( !bbp_is_forum_archive() ) 
-		$bbp_trail[] = '<a href="' . get_post_type_archive_link( 'forum' ) . '">Forums</a>';
-	
-	// Otherwise, display the forum root 
-	if ( bbp_is_forum_archive() ) :
-		$bbp_trail[] = 'Forums';
-	
-	// Recent topics page 
-	elseif ( bbp_is_topic_archive() ) :
-		$bbp_trail[] = 'Recent Topics';
-	
-	// Topic tag archives 
-	elseif ( bbp_is_topic_tag() ) :
-		$bbp_trail[] = bbp_get_topic_tag_name();
-	
-	// If viewing a topic tag edit page. 
-	elseif ( bbp_is_topic_tag_edit() ) :
-		$bbp_trail[] = '<a href="' . bbp_get_topic_tag_link() . '">' . bbp_get_topic_tag_name() . '</a>';
-		$bbp_trail[] = 'Edit';
-	
-	// Single topic 
-	elseif ( bbp_is_single_topic() ) :	
-		$topic_id = get_queried_object_id();
-		$bbp_trail = array_merge( $bbp_trail, apoc_breadcrumb_get_parents( bbp_get_topic_forum_id( $topic_id ) ) );
-		$bbp_trail[] = bbp_get_topic_title( $topic_id );
-			
-	// If it's a split, merge, or edit, link back to the topic 
-	elseif ( bbp_is_topic_split() || bbp_is_topic_merge() || bbp_is_topic_edit() ) :
-		$topic_id = get_queried_object_id();
-		$bbp_trail = array_merge( $bbp_trail, apoc_breadcrumb_get_parents( $topic_id ) );
-	
-		if ( bbp_is_topic_split() ) : $bbp_trail[] = 'Split Topic';
-		elseif ( bbp_is_topic_merge() ) : $bbp_trail[] = 'Merge Topic';
-		elseif ( bbp_is_topic_edit() ) : $bbp_trail[] = 'Edit Topic';
-		endif;
-		
-	// Single reply 
-	elseif ( bbp_is_single_reply() ) :
-		$reply_id = get_queried_object_id();
-		$bbp_trail = array_merge( $bbp_trail, apoc_breadcrumb_get_parents( bbp_get_reply_topic_id( $reply_id ) ) );
-		$bbp_trail[] = bbp_get_reply_title( $reply_id );
-	
-	// Single reply edit 
-	elseif ( bbp_is_reply_edit() ) :
-		$reply_id = get_queried_object_id();
-		$bbp_trail = array_merge( $bbp_trail, apoc_breadcrumb_get_parents( bbp_get_reply_topic_id( $reply_id ) ) );
-		$bbp_trail[] = 'Edit Reply';
-		
-	// Single forum 
-	elseif ( bbp_is_single_forum() ) :
-		// Get the queried forum ID and its parent forum ID. 
-		$forum_id = get_queried_object_id();
-		$forum_parent_id = bbp_get_forum_parent_id( $forum_id );
-		if ( 0 != $forum_parent_id) $bbp_trail = array_merge( $bbp_trail, apoc_breadcrumb_get_parents( $forum_parent_id ) );
-		$bbp_trail[] = bbp_get_forum_title( $forum_id );
-	
-	endif;
-	
-	// Return the bbPress trail 
-	return $bbp_trail;
-}
+
+
+/*---------------------------------------------
+XXX TODO XXX
+----------------------------------------------*/
 
 /* Get BuddyPress breadcrumb items
 -----------------------------------------------------*/
@@ -389,50 +511,16 @@ function apoc_get_group_reply_info() {
 	return( $topic );
 }
 
-	
 
-/* Get parent page breadcrumbs
------------------------------------------------------*/
-function apoc_breadcrumb_get_parents( $post_id = '', $path = '' ) {
-	$parent_trail = array();
-	$parents = array();
+/*---------------------------------------------
+2.0 - STANDALONE FUNCTIONS
+----------------------------------------------*/
 
-	// Verify we have something to work with 
-	if ( empty( $post_id ) ) return $parent_trail;
-	
-	// Loop through post IDs until we run out of parents 
-	while ( $post_id ) {
-		$page = get_page( $post_id );
-		$parents[]  = '<a href="' . get_permalink( $post_id ) . '" title="' . esc_attr( get_the_title( $post_id ) ) . '">' . get_the_title( $post_id ) . '</a>';
-		
-		// Load the grandparent page if there is one 
-		$post_id = $page->post_parent;
-	}
-	
-	if ( !empty( $parents ) ) $parent_trail = array_reverse( $parents );
-	return $parent_trail;
-}
-
-/* Get parent category breadcrumbs
------------------------------------------------------*/
-function apoc_breadcrumb_get_term_parents( $parent_id = '', $taxonomy = '' ) {
-	$category_trail = array();
-	$parents = array();
-	
-	// Verify we have something to work with 
-	if ( empty( $parent_id ) || empty( $taxonomy ) ) return $trail;
-	
-	// Loop through category IDs until we run out of parents 
-	while ( $parent_id ) {
-		$parent = get_term( $parent_id, $taxonomy );
-
-		// Add the formatted term link to the array of parent terms. 
-		$parents[] = '<a href="' . get_term_link( $parent, $taxonomy ) . '" title="' . esc_attr( $parent->name ) . '">' . $parent->name . '</a>';
-
-		// Load the grandparent category if there is one 
-		$parent_id = $parent->parent;
-	}
-	
-	if ( !empty( $parents ) ) $category_trail = array_reverse( $parents );
-	return $category_trail;
+/**
+ * Helper function that displays the breadcrumbs in templates
+ * @version 1.0.0
+ */
+function apoc_breadcrumbs( $args = array() ) {
+	$crumbs = new Apoc_Breadcrumbs( $args );
+	echo $crumbs->crumbs;
 }

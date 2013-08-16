@@ -303,13 +303,13 @@ function apoc_ajax_comment( $comment_ID , $comment_status ) {
 function apoc_display_comment( $comment_ID , $count ) {
 
 	// Get the current comment
-	global $comment , $post , $apoc;
+	global $comment , $post;
 	
 	// If the ID which was passed belongs to a different comment, get that one instead
 	$comment = get_comment( $comment_ID );
 		
 	// Tell it which comment number to use
-	$apoc->comment_count = $post->comment_count + 1;
+	apocrypha()->counts->comment = $post->comment_count + 1;
 		
 	// Get the comment HTML
 	include( THEME_DIR . '/library/templates/comment.php' );

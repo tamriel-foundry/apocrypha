@@ -14,6 +14,7 @@ $username 	= bp_core_get_user_displayname( $user_id );
 <?php get_header(); ?>
 
 	<div id="content" role="main">
+		<?php apoc_breadcrumbs(); ?>
 			
 		<header id="archive-header">
 			<h1 id="archive-title" class="double-border bottom"><?php printf( 'Articles By %s' , $username ); ?></h1>
@@ -36,7 +37,7 @@ $username 	= bp_core_get_user_displayname( $user_id );
 			<?php endif; ?>
 		
 			<nav class="pagination ajaxed" data-type="author" data-id="<?php echo $user_id; ?>">
-				<?php loop_pagination(); ?>
+				<?php apoc_pagination(); ?>
 			</nav>
 		</div>
 		

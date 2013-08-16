@@ -10,6 +10,7 @@
 <?php get_header(); ?>
 
 	<div id="content" role="main">
+		<?php apoc_breadcrumbs(); ?>
 			
 		<header id="archive-header">
 			<h1 id="archive-title">Archives</h1>
@@ -42,7 +43,7 @@
 			</div><!-- #post-<?php the_ID(); ?> -->
 			<?php endwhile; endif; ?>
 		
-			<?php loop_pagination(); ?>
+			<?php apoc_pagination(); ?>
 		</div>
 		
 	</div><!-- #content -->

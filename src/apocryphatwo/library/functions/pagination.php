@@ -69,8 +69,8 @@ class Apoc_Pagination {
 			'end_size'		=> 1,
 			'mid_size'		=> 1,
 			'prev_next'		=> true,
-			'prev_text'		=> '&laquo; Previous',
-			'next_text'		=> 'Next &raquo;',
+			'prev_text'		=> '&larr;',
+			'next_text'		=> '&rarr;',
 			'add_fragment'	=> '',
 			'type'			=> 'plain',
 			'add_args'		=> false,		
@@ -95,7 +95,7 @@ class Apoc_Pagination {
 			global ${$query};
 			$pagevar = ( 'comment' == $this->args['context'] ) ? 'cpage' : 'paged';
 			$paged = isset( ${$query}->query_vars[$pagevar] ) ? absint( ${$query}->query_vars[$pagevar]  ) : 1 ;
-			return $paged;
+			return max( $paged , 1 );
 		}		
 	}
 	
@@ -187,124 +187,20 @@ class Apoc_Pagination {
 		// Echo or return the links
 		return $page_links;
 	}
-
-	/**
-	 * Handles the re-creation of pagination links when posts are loaded with AJAX
-	 * @version 1.0.0
-	 */
-	function ajax_pagination( $ajax_query , $args = array() , $url = '' ) {
-		
-		global $wp_rewrite;
-		
-		// Get the max number of pages.
-		$max_pages = intval( $ajax_query->max_num_pages );
-		
-		// Get the current page.
-		$current = ( isset( $ajax_query->query_vars['paged'] ) ) ? absint( $ajax_query->query_vars['paged']  ) : 1 ;
-		
-		// Get the cleaned base url
-		$pagination_base 	= $wp_rewrite->pagination_base;
-		$remove 			= '/\/' . $pagination_base . '\/(.*)/';
-		$baseurl 			= preg_replace( $remove , "" , $url );
-		$format				= $pagination_base . '/%#%/';
-		
-		// Set up some default arguments for the paginate_links() function.
-		$defaults = array(
-			'base'         => trailingslashit( $baseurl ) . $format,
-			'format'       => '',
-			'total'        => $max_pages,
-			'current'      => $current,
-			'prev_next'    => true,
-			'show_all'     => false,
-			'end_size'     => 1,
-			'mid_size'     => 1,
-			'add_fragment' => '',
-			'type'         => 'plain',
-
-			// Extra ajax_pagination() arguments.
-			'before'       => '<div class="pagination-links">',
-			'after'        => '</div>',
-		);
-		
-		// Merge the arguments input with the defaults.
-		$args = wp_parse_args( $args, $defaults );
-
-		// Get the paginated links.
-		$page_links = paginate_links( $args );
-		
-		// Remove 'page/1' from the entire output since it's not needed.
-		$page_links = str_replace( array( "/{$pagination_base}/1'"	, "/{$pagination_base}/1/'" )	, '\''	, $page_links );
-		$page_links = str_replace( array( "/{$pagination_base}/1\""	, "/{$pagination_base}/1/\"" )	, '\"'	, $page_links );
-		
-		// Wrap the paginated links with the $before and $after elements.
-		$page_links = $args['before'] . $page_links . $args['after'];
-
-		// Allow devs to completely overwrite the output.
-		$page_links = apply_filters( 'loop_pagination', $page_links );
-
-		// Return the paginated links to the AJAX handler
-		echo $page_links;
-	}
-
-	/**
-	 * Handles the re-creation of comment pagination when new comments are loaded with AJAX
-	 * @version 1.0.0
-	 */
-	function ajax_comment_pagination( $args = array() , $url = '' , $paged , $max_pages = 2 ) {
-	
-		global $wp_rewrite, $wp_query;
-		
-		// Get the cleaned base url
-		$pagination_base 	= 'comment-page-';
-		$remove 			= '/' . $pagination_base . '[0-9]*\/(.*)/';
-		$baseurl 			= preg_replace( $remove , "" , $url );
-		$format				= $pagination_base . '%#%/';
-		
-		// Set up some default arguments for the paginate_links() function.
-		$defaults = array(
-			'base'         => trailingslashit( $baseurl ) . $format,
-			'format'       => '',
-			'total'        => $max_pages,
-			'current'      => $paged,
-			'prev_next'    => true,
-			'show_all'     => false,
-			'end_size'     => 1,
-			'mid_size'     => 1,
-			'add_fragment' => '',
-			'type'         => 'plain',
-
-			// Extra ajax_pagination() arguments.
-			'before'       => '<div class="pagination-links">',
-			'after'        => '</div>',
-		);
-		
-		// Merge the arguments input with the defaults.
-		$args = wp_parse_args( $args, $defaults );
-
-		// Get the paginated links.
-		$page_links = paginate_links( $args );
-		
-		// Remove 'comment-page-1' from the entire output since it's not needed.
-		$page_links	= str_replace( "comment-page-1/" , "" , $page_links );
-
-		// Wrap the paginated links with the $before and $after elements.
-		$page_links = $args['before'] . $page_links . $args['after'];
-
-		// Allow devs to completely overwrite the output.
-		$page_links = apply_filters( 'loop_pagination', $page_links );
-
-		// Return the paginated links to the AJAX handler
-		echo $page_links;
-	}
 }
 
+
+/*---------------------------------------------
+2.0 - STANDALONE FUNCTIONS
+----------------------------------------------*/
 
 /**
  * Helper function that displays the pagination in templates.
  * @version 1.0.0
  */
 function apoc_pagination( $args = array() , $baseurl = '' , $query = 'wp_query' ) {
-	$nav = new Apoc_Pagination();
+	$nav = new Apoc_Pagination( $args , $baseurl , $query );
+	echo $nav->links;
 }
 
 ?>

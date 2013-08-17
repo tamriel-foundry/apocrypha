@@ -133,6 +133,9 @@ class Apocrypha {
 		// Add supported post types
 		$apoc_posts 	= new Apoc_Posts();
 		$apoc_slides 	= new Apoc_Slides();
+		
+		// Add supported shortcodes
+		$shortcodes		= new Apoc_Shortcodes();
 	}
 	
 	/**
@@ -166,10 +169,11 @@ class Apocrypha {
 			require( $this->extensions_dir . 'bbpress.php' );
 
 		// Admin-Only Functions
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			require( $this->admin_dir . 'ajax.php' );		
-		elseif ( is_admin() )
-			require( $this->admin_dir . 'admin.php' );
+		} elseif ( is_admin() ) {
+			require( $this->admin_dir . 'postmeta.php' );
+		}
 	}
 	
 	/**

@@ -173,7 +173,7 @@ class Apoc_Slides {
 	function slide_image_box() {	
 		$slide_image_title = 'Set featured slide image (' . $this->width . 'x' . $this->height . ')';
 		remove_meta_box( 'postimagediv', 'slide', 'side' );
-		add_meta_box( 'postimagediv', $slide_image_title, 'post_thumbnail_meta_box', 'slide', 'normal', 'high' );
+		add_meta_box( 'postimagediv', $slide_image_title, 'post_thumbnail_meta_box' , 'slide', 'normal', 'high' );
 	}
 	
 	/**
@@ -182,14 +182,14 @@ class Apoc_Slides {
 	 */
 	function change_slide_link() {
 		remove_meta_box( 'slugdiv', 'slide', 'core' );
-		add_meta_box( 'slide-settings', 'Slide Settings', 'slide_settings_box', 'slide', 'normal', 'high' );
+		add_meta_box( 'slide-settings', 'Slide Settings', array( $this , 'settings_box' ) , 'slide', 'normal', 'high' );
 	}
 	
 	/**
 	 * Display inputs for our custom slide meta fields
 	 * @since 0.1
 	 */
-	function slide_settings_box( $object , $box ) {
+	function settings_box( $object , $box ) {
 		wp_nonce_field( basename( __FILE__ ), 'slideshow-settings-box' ); ?>
 		<p>
 			<label for="slide-tabtitle">Slide Tab Text</label>

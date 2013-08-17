@@ -423,10 +423,12 @@ form li.form-right,
 form li.form-left { 
 	width: 45%; 
 	float: left;
+	clear: left;
 	text-align: left;
 	}
 form li.form-right { 
 	float: right; 
+	clear: right;
 	text-align: right;
 	}
 form li.submit input[type="submit"],
@@ -684,6 +686,17 @@ div.updated > p,
 div.success > p {
 	margin: 0;
 	}
+div.instructions {
+	width: 96%;
+	float: left;
+	padding: 1em 2%;
+	margin: 0 0 0.5em;
+	background-image: url(images/dark-denim.jpg);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 3px #666 inset;
+	}
+div.instructions > * { margin: 0; }
 
 /*--------------------------------------------------------------
 4.0 - NAVIGATION
@@ -1513,6 +1526,13 @@ header#respond-subheader {
 #respond form label { width: 125px; }
 #respond form i[class^="icon-"] {	margin: 0 6px 0 0; }
 #respond input#bbp_topic_subscription + label { width: auto; }
+
+/* Merge */
+#respond #merge-options label { width: 200px; }
+
+/* Split */
+#respond #split-method label { width: 250px; }
+#respond #split-options label { width: 200px; }
 	
 /*--------------------------------------------------------------
 6.0 - HOME PAGE

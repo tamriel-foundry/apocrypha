@@ -20,7 +20,7 @@
 
 			<?php do_action( 'bbp_template_notices' ); ?>
 			
-			<?php if ( bbp_has_topics( ) ) : ?>
+			<?php if ( bbp_has_topics( array( 'show_stickies' => false ) ) ) : ?>
 			
 				<?php bbp_get_template_part( 'loop',       'topics'    ); ?>
 				

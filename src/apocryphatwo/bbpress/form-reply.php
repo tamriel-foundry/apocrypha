@@ -30,10 +30,14 @@ if ( 0 == $user_id ) : ?>
 
 <?php // Display the reply form to logged in users
 elseif ( bbp_current_user_can_access_create_reply_form() ) : ?>
+	
+	
+	<?php if ( !bbp_is_reply_edit() ) : ?>
 	<header id="respond-subheader" class="reply-header" >	
 		You are currently logged in as <?php echo $name; ?>.
 	</header>
-
+	<?php endif; ?>
+	
 	<form id="new-post" name="new-post" method="post" action="<?php the_permalink(); ?>">
 		<fieldset class="reply-form">
 			
@@ -76,16 +80,15 @@ elseif ( bbp_current_user_can_access_create_reply_form() ) : ?>
 				<?php // Save revision history on edits
 				if ( bbp_allow_revisions() && bbp_is_reply_edit() ) : ?>
 				<li class="checkbox text form-left">
-					<input name="bbp_log_reply_edit" id="bbp_log_reply_edit" type="checkbox" value="1" <?php bbp_form_reply_log_edit(); ?> tabindex="<?php bbp_tab_index(); ?>" />
-					<label for="bbp_log_reply_edit"><i class="icon-edit"></i>Display edit reason:</label>
-
-					<label for="bbp_reply_edit_reason"><i class="icon-info"></i>Reason for edit:</label>
+					<label for="bbp_reply_edit_reason"><i class="icon-eraser"></i>Edit Reason?</label>
 					<input type="text" value="<?php bbp_form_reply_edit_reason(); ?>" tabindex="<?php bbp_tab_index(); ?>" size="40" name="bbp_reply_edit_reason" id="bbp_reply_edit_reason" />
+					<br><input name="bbp_log_reply_edit" id="bbp_log_reply_edit" type="checkbox" value="1" <?php bbp_form_reply_log_edit(); ?> tabindex="<?php bbp_tab_index(); ?>" />
+					<label for="bbp_log_reply_edit">Display Reason?</label>
 				</li>
 				<?php endif; ?>
 				
 				<?php // Submit button ?>
-				<li class="submit">
+				<li class="submit form-right">
 					<button type="submit" id="bbp_reply_submit" name="bbp_reply_submit" tabindex="<?php bbp_tab_index(); ?>"><i class="icon-pencil"></i>Post Reply</button>
 				</li>
 

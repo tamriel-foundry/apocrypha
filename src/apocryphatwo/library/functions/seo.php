@@ -79,6 +79,16 @@ class Apoc_SEO {
 			elseif ( bbp_is_single_topic() ) :
 				$doctitle 		= $post->post_title;
 				$description	= bbp_get_topic_excerpt( $id );				
+				
+			// Edit Topic
+			elseif ( bbp_is_topic_edit() ) :
+				$doctitle 		= 'Edit Topic' . $separator . $post->post_title;
+				$description	= bbp_get_topic_excerpt( $id );				
+			
+			// Edit Reply
+			elseif ( bbp_is_reply_edit() ) :
+				$doctitle 		= str_replace( 'To: ' , $separator , 'Edit ' . $post->post_title );
+				$description	= bbp_get_reply_excerpt( $id );				
 			endif;
 		}
 		

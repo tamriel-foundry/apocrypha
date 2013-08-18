@@ -370,6 +370,12 @@ function apoc_load_topics() {
 		'max_num_pages'		=> false,
 	);
 	
+	// If it's the recent topics page, stick to just topics within the past month
+	if ( $forum_id == 0 ) {
+		$topic_args['meta_value'] 	= date( 'Y-m-d' , strtotime( '-30 days' ));
+		$topic_args['meta_compare']	= '>=';
+	}
+	
 	// Allow bbPress to detect if this request is a ?view=all
 	add_filter( 'bbp_get_view_all' , 'apoc_spoof_view_get' );
 	function apoc_spoof_view_get( $retval ) {

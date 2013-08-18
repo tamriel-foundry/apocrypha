@@ -13,14 +13,17 @@
 		
 		<header id="forum-header" class="entry-header <?php page_header_class(); ?>">
 			<h1 class="entry-title">Recent Topics</h1>
-			<p class="entry-byline">Browse a chronological list of the most recently updated forum topics on Tamriel Foundry.</p>
+			<p class="entry-byline">Browse a list of the most recently updated forum topics on Tamriel Foundry within the past month.</p>
 		</header>	
 	
 		<div id="forums">
-
 			<?php do_action( 'bbp_template_notices' ); ?>
 			
-			<?php if ( bbp_has_topics( array( 'show_stickies' => false ) ) ) : ?>
+			<?php if ( bbp_has_topics( array( 
+				'meta_value'		=> date( 'Y-m-d' , strtotime( '-30 days' )),
+				'meta_compare'		=> '>=',
+				'show_stickies' 	=> false,
+			) ) ) : ?>
 			
 				<?php bbp_get_template_part( 'loop',       'topics'    ); ?>
 				

@@ -18,8 +18,8 @@ class Apocrypha {
 	 * A dummy constructor to prevent multiple instantiation.
 	 * @version 1.0.0
 	 */	
-	private function __construct() {}
-	private function __clone() {}	
+	private function __construct() 	{}
+	private function __clone() 		{}	
 	
 	/**
 	 * @var Apocrypha The Apocrypha Theme instance
@@ -30,8 +30,7 @@ class Apocrypha {
 	 * The one true Apocrypha instance
 	 *
 	 * This method checks whether the theme class has already been initialized.
-	 * This allows us to avoid having to call a theme global everywhere in order to 
-	 * access class properties and methods.
+	 * This allows us to avoid having to call a theme global everywhere.
 	 *
 	 * @return The Apocrypha Theme instance
 	 * @version 1.0.0

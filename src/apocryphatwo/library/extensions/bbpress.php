@@ -155,8 +155,8 @@ function apoc_topic_description( $args = '' ) {
 	$author			= bbp_get_author_link( array( 'post_id' => $topic_id , 'size' => $args['size'] ) );
 
 	// Singular/Plural
-	$reply_count = sprintf( _n( '%d posts' , '%d posts', $reply_count ) , $reply_count );
-	$voice_count = sprintf( _n( '%s member', '%s members', $voice_count	) , $voice_count );
+	$reply_count = sprintf( _n( '%d posts' , '%d posts', $reply_count ) 	, $reply_count );
+	$voice_count = sprintf( _n( '%s member', '%s members', $voice_count	) 	, $voice_count );
 
 	// Topic has replies
 	$last_reply = bbp_get_topic_last_active_id( $topic_id );
@@ -313,11 +313,17 @@ function apoc_total_favs( $topic_id = 0 , $echo = true ) {
 	// Get the number of favorites
 	$favs = get_post_meta( $topic_id , 'topic_fav_count' , true );
 	
-	// Display it, if positive
-	if ( 0 < $favs && $echo )
-		echo '<span class="total-fav-count"><i class="icon-trophy"></i>' . $favs . '</span>';
-	else
+	// Maybe we are just returning the raw number
+	if ( !$echo ) 
 		return $favs;
+		
+	// Otherwise, determine whether the topic gets an award
+	if ( $favs >= 250 )		$class = 'legendary';
+	elseif ( $favs >= 50 ) 	$class = 'epic';
+	elseif ( $favs >= 1 ) 	$class = 'heroic';
+	
+	// Echo the icon
+	if ( $class ) echo '<span class="total-fav-count ' . $class . '" title="' . $favs . ' votes"></span>';
 }
 	
 /**

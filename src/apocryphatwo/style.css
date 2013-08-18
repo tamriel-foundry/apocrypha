@@ -48,6 +48,10 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	7.2 - Search
 	7.3 - 404
 8.0 - bbPress
+	8.1 - Forums and Topics Loops
+	8.2 - Single Topics
+	8.3 - New Topic and Reply Forms
+	
 	
 	
 X.X - WHERE DO I PUT THIS STUFF?
@@ -1221,25 +1225,28 @@ header.entry-header {
 	margin: 0 0 1em 0;
 	position: relative;
 	clear: both;
-	background-image: url(images/headers/headers.jpg);
+	background-image: url(images/headers/post-headers.jpg); 
 	border: 1px solid #000;
 	border-radius: 3px;
 	box-shadow: 0 0 20px #000;
 	}
-.post-header-1 { background-position: -440px 0; }
-.post-header-2 { background-position: -440px -100px; }
-.post-header-3 { background-position: -440px -200px; }
-.post-header-4 { background-position: -440px -300px; }
-.post-header-5 { background-position: -440px -400px; }
-.post-header-6 { background-position: -440px -500px; }
-.archive .post .entry-header {
+
+/* Sidebar Width Headers */
+.post-header-1 { background-position: 0 0; }
+.post-header-2 { background-position: 0 -100px; }
+.post-header-3 { background-position: 0 -200px; }
+.post-header-4 { background-position: 0 -300px; }
+.post-header-5 { background-position: 0 -400px; }
+.post-header-6 { background-position: 0 -500px; }
+	
+/* Home and Archive Headers */
+.archive .post .entry-header { 
 	height: 75px;
 	margin: 0 0 0.5em 0;
 	box-shadow: 0 0 8px #111;
+	background-image: url(images/headers/home-headers.jpg); 
 	}
-.archive .post .entry-header:hover {
-	box-shadow: 0 0 5px #c60;
-	}
+.archive .post .entry-header:hover {	box-shadow: 0 0 5px #c60; }
 .home-header-1 { background-position: 0 0; }
 .home-header-2 { background-position: 0 -75px; }
 .home-header-3 { background-position: 0 -150px; }
@@ -1247,12 +1254,20 @@ header.entry-header {
 .home-header-5 { background-position: 0 -300px; }
 .home-header-6 { background-position: 0 -375px; }
 
-.page-header-1 { background-position: 0 -600px; }
-.page-header-2 { background-position: 0 -700px; }
-.page-header-3 { background-position: 0 -700px; }
-.page-header-4 { background-position: 0 -800px; }
-.page-header-5 { background-position: 0 -900px; }
-.page-header-6 { background-position: 0 -1000px; }
+/* Full Width Headers */
+.no-sidebar .entry-header { background-image: url(images/headers/page-headers.jpg); }
+.archive .post .entry-header { 
+	height: 75px;
+	margin: 0 0 0.5em 0;
+	box-shadow: 0 0 8px #111;
+	background-image: url(images/headers/home-headers.jpg); 
+	}
+.page-header-1 { background-position: 0 0; }
+.page-header-2 { background-position: 0 -100px; }
+.page-header-3 { background-position: 0 -200px; }
+.page-header-4 { background-position: 0 -300px; }
+.page-header-5 { background-position: 0 -400px; }
+.page-header-6 { background-position: 0 -500px; }
 	
 /* Entry Title */
 .entry-title {
@@ -1552,14 +1567,6 @@ header#respond-subheader {
 	}
 #respond form label { width: 125px; }
 #respond form i[class^="icon-"] {	margin: 0 6px 0 0; }
-#respond input#bbp_topic_subscription + label { width: auto; }
-
-/* Merge */
-#respond #merge-options label { width: 200px; }
-
-/* Split */
-#respond #split-method label { width: 240px; }
-#respond #split-options label { width: 200px; }
 	
 /*--------------------------------------------------------------
 6.0 - HOME PAGE
@@ -2227,7 +2234,7 @@ div.freshest-meta span.freshest-time {
 li.topic div.freshest-meta span.freshest-time {	float: left; }
 a.topic-location { color: #bbb; }
 a.topic-location:hover { color: #ffb14c; }
-span.total-fav-count { margin: 0 5px; }
+
 
 /* Special Topic Types */
 li.sticky, li.super-sticky { background: rgba(13,13,13,0.4); }
@@ -2255,6 +2262,16 @@ li.status-closed .forum-title:after,
 	margin-left: 5px;
 	font-weight: normal;
 	}
+	
+/* Total Favorites Markers */
+span.total-fav-count { 
+	font-family: FontAwesome;
+	margin: 0 5px; 
+	color: #999;
+}
+.total-fav-count.heroic:before {	content: "\F091"; }
+.total-fav-count.epic:before {	content: "\F091  \F091"; }
+.total-fav-count.legendary:before {	content: "\F091  \F091  \F091"; }
 
 
 /*---------------------------------------------
@@ -2302,10 +2319,18 @@ div.reply-admin-links > a:not( .reply-permalink ):hover {
 	}
 	
 /*---------------------------------------------
-	8.3 - New Topic and Reply Forms
+	8.3 - bbPress Forms
 ----------------------------------------------*/
 form#new-post { margin: 0 0 1em; }
 form li#new-topic-title + li.wp-editor { margin: -1em 0 0; }
+#respond input#bbp_topic_subscription + label { width: auto; }
+
+/* Merge */
+#respond #merge-options label { width: 200px; }
+
+/* Split */
+#respond #split-method label { width: 240px; }
+#respond #split-options label { width: 200px; }
 
 /*--------------------------------------------------------------
 X.X - WHERE DO I PUT THIS STUFF?

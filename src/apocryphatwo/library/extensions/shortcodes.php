@@ -143,7 +143,6 @@ class Apoc_Shortcodes {
 		
 		// Return the quote
 		return $thequote; 
-	
 	}
 }
 ?>

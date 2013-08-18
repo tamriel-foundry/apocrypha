@@ -99,7 +99,7 @@ elseif ( bbp_current_user_can_access_create_reply_form() ) : ?>
 				</li>	
 		
 			</ol>	
-		<fieldset>
+		</fieldset>
 	</form>
 	
 <?php // The topic itself is closed

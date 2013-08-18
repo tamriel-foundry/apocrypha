@@ -7,8 +7,7 @@
  */
 
 // Get some info on the current user
-global $apoc;
-$user_id 	= $apoc->user->data->ID;
+$user_id 	= apocrypha()->user->ID;
 $loggedin	= ( $user_id > 0 ) ? true : false;
 ?>
 
@@ -103,9 +102,9 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 					<ul class="submenu noheader">
 						<li><a href="<?php echo SITEURL . '/forums/' ?>">Forums Home</a></li>
 						<li><a href="<?php echo SITEURL . '/topics/' ?>">Recent Topics</a></li>
+						<li><a href="<?php echo SITEURL . '/best-of/' ?>">Best Weekly Topics</a></li>
 					<?php if ( $loggedin ) : ?>
-						<li><a href="<?php echo bp_loggedinuser_link() . '/forums/favorites/' ?>">Favorites</a></li>
-						<li><a href="<?php echo bp_loggedinuser_link() . '/forums/subscriptions/' ?>">Subscriptions</a></li>
+						<li><a href="<?php echo bp_loggedinuser_link() . 'forums/subscriptions/' ?>">Your Subscribed Topics</a></li>
 					<?php endif; ?>
 					</ul>
 				</div>	

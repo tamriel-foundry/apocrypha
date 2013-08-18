@@ -48,6 +48,9 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! Reply Button */
 ;$("#comments,#forums").on("click","a.reply-link",function(a){a.preventDefault();$("html, body").animate({scrollTop:$("#respond").offset().top},600)});
 
+/*! Show Author IP Address on Click */
+;$("p.author-ip").hide();$("a.author-ip-toggle").click(function(){var a=$(this).parent().parent();a.find("p.author-ip").slideToggle()});
+
 /*! --------------------------------------- 
 4.0 - BBPRESS
 ----------------------------------------- */
@@ -63,33 +66,6 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 
 /*! Tab Into TinyMCE From Topic Title */
 ;$("#bbp_topic_title").bind("keydown.editor-focus",function(b){if(b.which!==9){return}if(!b.ctrlKey&&!b.altKey&&!b.shiftKey){if(typeof(tinymce)!=="undefined"){if(!tinymce.activeEditor.isHidden()){var a=tinymce.activeEditor.editorContainer;$("#"+a+" td.mceToolbar > a").focus()}else{$("textarea.bbp-the-content").focus()}}else{$("textarea.bbp-the-content").focus()}b.preventDefault()}});
-
-
-
-
-/*! Collapsing Quotes */
-$('#forums,#comments').on( "load" , function(){
-	
-    // identify subquotes
-    $('div.quote').children('div.quote').addClass("subquote");
-	
-    // add the quote toggle button
-    $('div.subquote').children('p.quote-author').append('<button class="quote-toggle button-dark">Expand Quote</button>');
-	
-	// hide nested quote content
-    $('div.subquote').children().not('p.quote-author,div.subquote').hide();
-    
-    // perform the toggle
-    $('button.quote-toggle').click(function() {
-		var oldtext = newtext = '';
-        $(this).parent().parent().children().not('p.quote-author,div.subquote').slideToggle(500,"swing");
-        oldtext = $(this).text();
-        newtext = ( oldtext == "Expand Quote" ) ? "Collapse Quote" : "Expand Quote";
-        $(this).text(newtext);
-    });
-});
-
-
 
 /*! End Document Ready */
 ;});

@@ -62,7 +62,7 @@ if ( is_user_logged_in() && current_user_can( 'edit_topic', bbp_get_topic_id() )
 			
 			<?php // Submit the merge ?>			
 			<li class="submit form-right">
-				<input type="submit" tabindex="<?php bbp_tab_index(); ?>" id="bbp_merge_topic_submit" name="bbp_merge_topic_submit" value="Merge Topics" />
+				<button type="submit" tabindex="<?php bbp_tab_index(); ?>" id="bbp_merge_topic_submit" name="bbp_merge_topic_submit"><i class="icon-code-fork"></i>Merge Topics</button>
 			</li>
 
 			<?php // Hidden fields required by merge handler ?>

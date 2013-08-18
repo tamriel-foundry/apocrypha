@@ -29,20 +29,20 @@ if ( is_user_logged_in() && current_user_can( 'edit_topic', bbp_get_topic_id() )
 				<?php // Split to new topic ?>
 				<input name="bbp_topic_split_option" id="bbp_topic_split_option_reply" type="radio" checked="checked" value="reply" tabindex="<?php bbp_tab_index(); ?>" />
 				<label for="bbp_topic_split_option_reply">Create a new topic with the title:</label>
-				<input type="text" id="bbp_topic_split_destination_title" value="<?php printf( __( 'Split: %s', 'bbpress' ), bbp_get_topic_title() ); ?>" tabindex="<?php bbp_tab_index(); ?>" size="35" name="bbp_topic_split_destination_title" /><br><br>
+				<input type="text" id="bbp_topic_split_destination_title" value="<?php printf( __( 'Split: %s', 'bbpress' ), bbp_get_topic_title() ); ?>" tabindex="<?php bbp_tab_index(); ?>" size="40" name="bbp_topic_split_destination_title" /><br><br>
 				
 				<?php // Split to existing topic 			
 				if ( bbp_has_topics( array( 'show_stickies' => false, 'post_parent' => bbp_get_topic_forum_id( bbp_get_topic_id() ), 'post__not_in' => array( bbp_get_topic_id() ) ) ) ) : ?>
 					<input name="bbp_topic_split_option" id="bbp_topic_split_option_existing" type="radio" value="existing" tabindex="<?php bbp_tab_index(); ?>" />
 					<label for="bbp_topic_split_option_existing"><?php _e( 'Use an existing topic in this forum:', 'bbpress' ); ?></label>
 					<?php bbp_dropdown( array(
-							'post_type'   => bbp_get_topic_post_type(),
-							'post_parent' => bbp_get_topic_forum_id( bbp_get_topic_id() ),
-							'selected'    => -1,
-							'exclude'     => bbp_get_topic_id(),
-							'select_id'   => 'bbp_destination_topic',
-							'none_found'  => __( 'No other topics found!', 'bbpress' )
-						) ); ?>
+						'post_type'   => bbp_get_topic_post_type(),
+						'post_parent' => bbp_get_topic_forum_id( bbp_get_topic_id() ),
+						'selected'    => -1,
+						'exclude'     => bbp_get_topic_id(),
+						'select_id'   => 'bbp_destination_topic',
+						'none_found'  => __( 'No other topics found!', 'bbpress' )
+					) ); ?>
 				<?php endif;?>
 			</li>
 
@@ -62,12 +62,12 @@ if ( is_user_logged_in() && current_user_can( 'edit_topic', bbp_get_topic_id() )
 		
 			<?php // Show a warning ?>				
 			<li class="form-left">	
-				<div class="warning">This process cannot be undone.</p>
+				<div class="warning">This process cannot be undone.</div>
 			</li>
 			
 			<?php // Submit the split ?>			
 			<li class="submit form-right">
-				<input type="submit" tabindex="<?php bbp_tab_index(); ?>" id="bbp_merge_topic_submit" name="bbp_merge_topic_submit" value="Split Topic" />
+				<button type="submit" tabindex="<?php bbp_tab_index(); ?>" id="bbp_merge_topic_submit" name="bbp_merge_topic_submit"><i class="icon-code-fork "></i>Split Topic</button>
 			</li>
 
 			<?php // Hidden fields required by split handler ?>

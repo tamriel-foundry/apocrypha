@@ -44,7 +44,7 @@
 	</div><!-- #footer-container -->
 
 <?php wp_footer(); ?>
-</body>
-</html>
 <!-- <?php echo get_num_queries(); ?> queries in <?php timer_stop(1); ?> seconds. -->
 <!-- <?php echo round ( memory_get_peak_usage() / 1048576 , 2 ) . 'megabytes used.'; ?> -->
+</body>
+</html>

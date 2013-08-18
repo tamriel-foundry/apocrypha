@@ -18,11 +18,13 @@
 		
 		<p class="forum-description">Started by <?php bbp_topic_author_link( array( 'type' => 'name' ) ); ?>
 		<?php if ( !bbp_is_single_forum() || ( bbp_get_topic_forum_id() != bbp_get_forum_id() ) ) : ?>in <a class="topic-location" href="<?php bbp_forum_permalink( bbp_get_topic_forum_id() ); ?>" title="Browse this forum"><?php bbp_forum_title( bbp_get_topic_forum_id() ); ?></a><?php endif; ?>
+		<?php apoc_total_favs(); ?>
+		</p>
+	
 		<?php bbp_topic_pagination(	$args = array (
 			'before' => '<nav class="pagination topic-pagination">',
 			'after'  => '</nav>' 
-			) ); ?>
-		</p>
+		) ); ?>
 	</div>
 	
 	<div class="forum-count">

@@ -82,7 +82,6 @@ remove_action( 'wp_head'	,	'messages_add_autocomplete_css'				);
 add_action( 'bbp_theme_compat_actions' , 'remove_bbpress_head' );
 function remove_bbpress_head( $admin ) {
     remove_action( 'bbp_enqueue_scripts' 	, array( $admin, 'enqueue_styles'  	) );
-    remove_action( 'bbp_enqueue_scripts' 	, array( $admin, 'enqueue_scripts' 	) );
 	remove_action( 'bbp_head'				, array( $admin, 'head_scripts' 	) );
 }
 

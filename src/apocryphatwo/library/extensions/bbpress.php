@@ -298,24 +298,60 @@ function apoc_favorite_count_minus( $user_id , $topic_id ) {
 	else
 		delete_post_meta( $topic_id , 'topic_fav_count' );
 }
- 
+
+
+/**
+ * Display the total number of favorites a topic has recieved
+ * @version 1.0.0
+ */
+function apoc_total_favs( $topic_id = 0 , $echo = true ) {
+
+	// If a topic ID wasn't given, grab it from inside the loop
+	if( empty( $topic_id ) )
+		$topic_id = bbp_get_topic_id();
+		
+	// Get the number of favorites
+	$favs = get_post_meta( $topic_id , 'topic_fav_count' , true );
+	
+	// Display it, if positive
+	if ( 0 < $favs && $echo )
+		echo '<span class="total-fav-count"><i class="icon-trophy"></i>' . $favs . '</span>';
+	else
+		return $favs;
+}
+	
+/**
+ * Prevent users from favoriting their own posts
+ * @version 1.0.0
+ */
+add_filter( 'bbp_get_user_favorites_link' , 'apoc_disallow_author_favorite' , 10 , 4 );
+function apoc_disallow_author_favorite( $html, $r, $user_id, $topic_id ) {
+
+	// Prevent a topic author from favoriting him/herself
+	if ( $user_id == bbp_get_topic_author_id() )
+		return false;
+	
+	// Otherwise, allow the link
+	else return $html;
+}
  
 /**
  * Get the most favorited topics in the last 7 days
  * @version 1.0.0
  */
-function has_bestof_topics() {
+function bestof_has_topics() {
 
 	// Setup query arguments
 	$args = array(
 		'post_type'			=> 'topic',
 		'post_parent'		=> 'any',
+		'posts_per_page'	=> 10,
 		'meta_key'			=> 'topic_fav_count',
 		'meta_value_num'	=> '0',
 		'meta_compare'		=> '>',		
 		'orderby' 			=> 'meta_value_num',
 		'order'				=> 'DESC',
-		'posts_per_page'	=> 10,
+		'max_num_pages'		=> 1,
 		'show_stickies'		=> false,
 	);
 	
@@ -326,9 +362,9 @@ function has_bestof_topics() {
 	}	
 	
 	// Apply the filter, pass our arguments, and get topics
-	//add_filter( 'posts_where' , 'filter_bestof_topics' );
-	$topics = bbp_has_topics();
-	//remove_filter( 'posts_where' , 'filter_bestof_topics' );
+	add_filter( 'posts_where' , 'filter_bestof_topics' );
+	$topics = bbp_has_topics( $args );
+	remove_filter( 'posts_where' , 'filter_bestof_topics' );
 	
 	return $topics;
 }

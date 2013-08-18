@@ -103,9 +103,8 @@ $("#comments,#forums").on( "click" , "a.reply-link" , function( event ){
 });
 
 
-
 /*! Collapsing Quotes */
-$(document).ready(function(){
+$('#forums,#comments').on( "load" , function(){
 	
     // identify subquotes
     $('div.quote').children('div.quote').addClass("subquote");
@@ -142,4 +141,11 @@ $(document).ready(function(){
         newtext = ( oldtext == "Reveal Spoiler" ) ? "Conceal Spoiler" : "Reveal Spoiler";
         $(this).text(newtext);
     });
+});
+
+/*! Show Author IP Address on Click */
+$("p.author-ip").hide();
+$("a.author-ip-toggle").click( function() { 
+	var post = $(this).parent().parent();
+	post.find("p.author-ip").slideToggle();
 });

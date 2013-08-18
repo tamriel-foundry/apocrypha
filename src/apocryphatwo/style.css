@@ -252,7 +252,6 @@ h1 {
 	margin-bottom: 0.6em; 	
 	}
 h2 {
-	font-family: 'Palatino Linotype' , 'Book Antiqua' , serif;
 	font-size: 1.25em; 
 	margin-bottom: 0.8em; 
 	font-weight: bold; 
@@ -263,7 +262,6 @@ h3 {
 	margin-bottom: 0.75em;
 	}
 h4 {
-	font-family: 'Palatino Linotype' , 'Book Antiqua' , serif;
 	font-size: 1em;
 	text-transform: uppercase; 
 	margin-bottom: 0.5em;  
@@ -1982,25 +1980,28 @@ li.flex-active span.slideshow-tab-title {
 	padding-bottom: 5px;
 	font-size: 1.125em;
 	font-weight: normal;
-	border-bottom: 1px solid #000;
 	}
 .flex-caption p.slide-content {
 	max-height: 1px;
 	overflow: hidden;
+	visibility: hidden;
 	margin: 0;
+	padding: 5px 0 0;
 	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.75em;
-	border-top: 1px solid #444;
 	transition: max-height 1s ease;
     -webkit-transition: max-height 1s ease;
 	-moz-transition: max-height 1s ease;
 	}
+p.slide-content:before {	display: none; 	}
 .flexslider:hover .flex-caption p.slide-content { 
+	visibility: visible;
 	max-height: 300px; 
 	transition: max-height .5s ease;
     -webkit-transition: max-height .5s ease;
 	-moz-transition: max-height .5s ease;
 	}
+.flexslider:hover .flex-caption p.slide-content:before { display: block; }
 	
 /* Arrow Navigation */
 .flex-direction-nav {
@@ -2167,6 +2168,7 @@ p.forum-description {
 	font-size: 0.8em;
 	font-family: 'Open Sans' , sans-serif;
 	color: #bbb;
+	text-shadow: 1px 1px #000;
 	}
 div.forum-count {
 	width: 10%;

@@ -54,7 +54,7 @@ if ( $slide_loop->have_posts() ) :
 				<a href="<?php echo $slides[$i]['link']; ?>" title="<?php echo $slides[$i]['title']; ?>" target="_blank" ><?php echo $slides[$i]['image']; ?></a>
 				<div class="flex-caption">
 					<h2 class="slide-title"><?php echo $slides[$i]['title']; ?></h2>
-					<p class="slide-content">
+					<p class="slide-content double-border top">
 						<?php echo $slides[$i]['content']; ?>
 						<a href="<?php echo $slides[$i]['link']; ?>" title="<?php echo $slides[$i]['title']; ?>" target="_blank" >[...]</a>
 					</p>

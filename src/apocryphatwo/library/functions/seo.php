@@ -29,9 +29,6 @@ class Apoc_SEO {
 
 	// Construct it
 	function __construct() {
-	
-		// Setup filters
-		remove_filter( 'wp_title', 'bbp_title', 10 , 3 );
 		
 		// Populate the seo
 		$this->get_document_seo();
@@ -49,13 +46,32 @@ class Apoc_SEO {
 		$separator 	= ' &bull; ';
 		$sitename 	= SITENAME;
 		$id			= $apoc->queried_id;
-		$post		= $apoc->queried_object;
+		$object		= $apoc->queried_object;
 		
 		// Homepage
 		if ( is_home() ) {
 			$description		= get_bloginfo( 'description' );
 			$doctitle 			= $sitename . $separator . $description;
 		}
+		
+		// BuddyPress Pages
+		elseif ( class_exists( 'BuddyPress' ) && is_buddypress() ) {
+		
+			// Directories
+			if ( bp_is_directory() ) :
+				$description 	= get_post_meta( $id , 'Description' , true );
+		
+			elseif ( bp_is_user() ) :
+				$doctitle		= bp_get_displayed_user_fullname() . $separator . 'User Profile';
+				$description 	= $sitename . ' user profile for ' . bp_get_displayed_user_fullname();
+			
+			elseif ( bp_is_group() ) :
+				$description 	= $sitename . ' group profile for ' . bp_get_current_group_name();
+				
+			elseif ( bp_is_register_page() || bp_is_activation_page() ) :
+				$description 	= get_post_field( 'post_excerpt' , get_queried_object_id() );
+			endif;
+		}		
 		
 		// bbPress Forums
 		elseif ( class_exists( 'bbPress' ) && is_bbpress() ) {
@@ -72,48 +88,29 @@ class Apoc_SEO {
 				
 			// Single Forum
 			elseif ( bbp_is_single_forum() ) :
-				$doctitle 		= $post->post_title;
-				$description 	= $post->post_content;
+				$doctitle 		= $object->post_title;
+				$description 	= $object->post_content;
 				
 			// Single Topic
 			elseif ( bbp_is_single_topic() ) :
-				$doctitle 		= $post->post_title;
+				$doctitle 		= $object->post_title;
 				$description	= bbp_get_topic_excerpt( $id );				
 				
 			// Edit Topic
 			elseif ( bbp_is_topic_edit() ) :
-				$doctitle 		= 'Edit Topic' . $separator . $post->post_title;
+				$doctitle 		= 'Edit Topic' . $separator . $object->post_title;
 				$description	= bbp_get_topic_excerpt( $id );				
 			
 			// Edit Reply
 			elseif ( bbp_is_reply_edit() ) :
-				$doctitle 		= str_replace( 'To: ' , $separator , 'Edit ' . $post->post_title );
+				$doctitle 		= str_replace( 'To: ' , $separator , 'Edit ' . $object->post_title );
 				$description	= bbp_get_reply_excerpt( $id );				
 			endif;
 		}
 		
-		// BuddyPress Pages
-		elseif ( class_exists( 'BuddyPress' ) && is_buddypress() ) {
-		
-			$doctitle			= $post->post_title;
-
-			// Directories
-			if ( bp_is_directory() ) 
-				$description 	= get_post_meta( $id , 'Description' , true );
-				
-			elseif ( bp_is_user() )
-				$description 	= $sitename . ' user profile for ' . bp_get_displayed_user_fullname();
-			
-			elseif ( bp_is_group() )
-				$description 	= $sitename . ' group profile for ' . bp_get_current_group_name();
-				
-			elseif ( bp_is_register_page() || bp_is_activation_page() )
-				$description 	= get_post_field( 'post_excerpt' , get_queried_object_id() );
-		}		
-		
 		// Singular Post
 		elseif ( is_singular() ) {
-			$doctitle 			= $post->post_title;
+			$doctitle 			= $object->post_title;
 			$description 		= get_post_meta( $id , 'Description' , true );
 			
 			// If nothing is found, give a post excerpt
@@ -121,7 +118,7 @@ class Apoc_SEO {
 				$description 	= get_post_field( 'post_excerpt' , get_queried_object_id() );
 				
 			if ( empty ( $description ) )
-				$description 	= $post->post_title;
+				$description 	= $object->post_title;
 		}
 
 		// Archive view
@@ -129,13 +126,13 @@ class Apoc_SEO {
 			
 			// Taxonomy
 			if ( is_category() || is_tax() ) :
-				$doctitle 		= 'Category Archive' . $separator . $post->name;
-				$description	= $post->description;
+				$doctitle 		= 'Category Archive' . $separator . $object->name;
+				$description	= $object->description;
 			
 			// Author
 			elseif ( is_author() ) :
-				$doctitle 		= 'Author Archive' . $separator . $post->display_name;
-				$description 	= 'An archive listing of all articles written by '. $post->display_name;
+				$doctitle 		= 'Author Archive' . $separator . $object->display_name;
+				$description 	= 'An archive listing of all articles written by '. $object->display_name;
 			
 			// Anything Else
 			else :
@@ -155,10 +152,10 @@ class Apoc_SEO {
 			$doctitle 			= '404 Page Not Found';
 			$description		= "Sorry, but nothing exists here.";
 		}
-		
-		// Apply the wp_title filters to work with plugins
-		$doctitle 	= apply_filters( 'wp_title', $doctitle, $separator, '' );	
-		
+	
+		// If nothing else catches, apply the wp_title filter for plugins
+		else $doctitle 	= apply_filters( 'wp_title', $doctitle, $separator, '' );
+			
 		// Return the SEO fields
 		$this->title 		= html_entity_decode( $doctitle );
 		$this->description	= str_replace( array("\n", "\r"), ' ' , html_entity_decode( $description ) );

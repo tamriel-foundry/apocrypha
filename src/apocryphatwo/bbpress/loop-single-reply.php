@@ -5,6 +5,11 @@
  * Version 1.0.0
  * 8-11-2013
  */
+ 
+// Get the reply author block
+$author = new Apoc_User( bbp_get_reply_author_id() , 'reply' );
+$block	= $author->block;
+$sig	= $author->sig;
 ?>
 
 <li id="post-<?php bbp_reply_id(); ?>" <?php bbp_reply_class(); ?>>
@@ -20,13 +25,13 @@
 	
 	<div class="reply-body">
 		<div class="reply-author">
-			<?php apoc_member_block( bbp_get_reply_author_id() , $context = 'reply' , $avatar = 'thumb' ); ?>
+			<?php echo $block; ?>
 			<?php if ( current_user_can( 'moderate' ) ) : ?><p class="author-ip"><?php bbp_author_ip( array( 'post_id' => bbp_get_reply_id() , 'before' => '' , 'after' => '' ) ); ?></p><?php endif; ?>
 		</div>
 		
 		<div class="reply-content">
 			<?php bbp_reply_content(); ?>
 		</div>
-		<?php user_signature( bbp_get_reply_author_id() ); ?>
+		<?php echo $sig; ?>
 	</div>
 </li>

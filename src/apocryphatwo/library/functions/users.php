@@ -8,72 +8,302 @@
  
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
+
+
+class Apoc_User {
+
+	// The context in which this user is being displayed
+	public $context;
+
+	// The user
+	public $id;
+	public $fullname;
+	public $roles;
+	public $domain;
+	public $avatar;
+	public $bio;
+	public $status;
+	public $sig;
+	public $faction;
+	public $race;
+	public $class;
+	public $posts;
+	public $rank;
+	public $title;
+	
+	// The HTML member block
+	public $block;
+	
+	/**
+	 * Constructs relevant information regarding a TF user 
+	 * The scope of information that is added depends on the context supplied
+	 */	
+	function __construct( $user_id = 0 , $context = 'reply' ) {
+	
+		// Set the context
+		$this->context = $context;
+		
+		// Get data for the user
+		$this->get_data( $user_id );
+		
+		// Format data depending on the context
+		$this->format_data( $context );
+	}
+	
+	/**
+	 * Gets user data for a forum reply or article comment
+	 */	
+	function get_data( $user_id ) {
+	
+		// Get the user domain
+		$this->domain	= bp_core_get_user_domain( $user_id );
+		
+		// Get all meta entries for a user
+		$meta = array_map( function( $a ){ return $a[0]; }, get_user_meta( $user_id ) );
+		
+		// Add meta to the class
+		$this->id		= $user_id;
+		$this->fullname = $meta['nickname'];
+		$this->roles	= array_keys( maybe_unserialize( $meta['wp_capabilities'] ) );
+		$this->bio		= $meta['description'];
+		$this->status	= maybe_unserialize( $meta['bp_latest_update'] );
+		$this->faction	= $meta['faction'];
+		$this->race		= $meta['race'];
+		$this->class	= $meta['playerclass'];
+		$this->posts	= maybe_unserialize( $meta['post_count'] );
+		
+		// Format the signature
+		$signature 		= $meta['signature'];
+		if ( '' != $signature )
+			$this->sig	= '<div class="user-signature"><div class="signature-content">' . do_shortcode( $signature ) . '</div></div>';
+		
+		// If the post count is not yet in the database, build it
+		if ( $user_id > 0 && empty( $this->posts ) )
+			update_user_post_count( $user_id );
+		
+		// Get some derived data
+		$this->rank		= $this->user_rank( $this->posts );
+		$this->title	= $this->user_title( $user_id );
+		
+		// Get the byline on profile pages
+		if ( 'profile' == $this->context ) 
+			$this->user_byline();
+	}
+	
+	/** 
+	 * Assign default ranks based on total post count
+	 */
+	function user_rank( $posts ) {
+		
+		// Make sure it's a valid user
+		if ( 0 == $this->id ) return false;
+		
+		// Set up the array of ranks
+		$ranks = array(
+			0 => array(	'min_posts' => 0 	, 'next_rank' => 10 	, 'title' => 'Scamp' 		),
+			1 => array(	'min_posts' => 10 	, 'next_rank' => 25 	, 'title' => 'Novice' 		),
+			2 => array(	'min_posts' => 25	, 'next_rank' => 50 	, 'title' => 'Apprentice' 	),
+			3 => array(	'min_posts' => 50	, 'next_rank' => 100	, 'title' => 'Journeyman' 	),	
+			4 => array(	'min_posts' => 100	, 'next_rank' => 250	, 'title' => 'Adept' 		),
+			5 => array(	'min_posts' => 250	, 'next_rank' => 500	, 'title' => 'Expert'		),
+			6 => array( 'min_posts' => 500	, 'next_rank' => 1000	, 'title' => 'Master' 		),
+			7 => array( 'min_posts' => 1000	, 'next_rank' => 10000	, 'title' => 'Grandmaster' 	),
+		);
+		
+		// Iterate through the ranks, determining where the user's postcount falls
+		$rank = $ranks[$i=0];
+		while ( $posts['total'] >= $rank['next_rank'] ) { 
+			$i++; 
+			$rank = $ranks[$i];
+		}
+		$user_rank = array(
+			'current_rank' 	=> $rank['min_posts'],
+			'next_rank' 	=> $rank['next_rank'],
+			'rank_title'	=> $rank['title']
+		);
+		
+		// Return it
+		return $user_rank;
+	}
+	
+	/** 
+	 * Display user site title
+	 */
+	function user_title( $user_id ) {
+				
+		// If not a guest, get site title
+		if ( 0 < $user_id ) :
+		
+			// Get the user's site roles
+			$site_role 	= $this->roles[0];
+			$forum_role = $this->roles[1];
+			
+			// Assign special (non-changeable) titles
+			if ( 'administrator' == $site_role ) :
+				$title = 'Daedric Prince';
+			elseif ( 'bbp_moderator' == $forum_role || 'bbp_keymaster' == $forum_role ) :
+				$title = 'Moderator'; 
+			elseif ( 'guildmember' == $site_role ) :
+				$title = 'Entropy Rising';
+			elseif ( 'banned' == $site_role ) :
+				$title = 'Banned';
+			
+			// Otherwise, the user can set a custom title
+			else :
+				// Special prefixes
+				// $prefix = get_prefix();
+			endif;
+			
+			// Construct the full title
+			if ( isset( $prefix ) ) 
+				$display_title = $prefix . ', ' . $title;
+			else 
+				$display_title = $title;
+		
+		// Otherwise it must be a guest
+		else :
+			$title = 'Guest';
+		endif;
+		
+		// Display the title
+		$role_class = strtolower( str_replace( " " , "-" , $title ) );
+		return '<p class="user-title ' . $role_class . '">' . $display_title . '</p>';
+	}
+	
+	/* 
+	 * Get a user's declared race and class
+	 * @since 0.4
+	 */
+	function allegiance() {
+	
+		// Set it up
+		$separator	= '';
+		$faction	= $this->faction;
+		$race 		= $this->race;
+		$class 		= $this->class;
+	
+		// Make sure we have info to use
+		if ( '' == $race && '' == $class && '' == $faction )
+			return false;
+	
+		// Otherwise, display what we have		
+		if ( '' == $race ) $race = $faction;
+		if ( $race != '' ) $separator = ' ';
+		$allegiance = '<p class="user-allegiance ' . $faction . '">' . ucfirst( $race ) . $separator . ucfirst( $class ) . '</p>';
+		return $allegiance;
+	}
+	
+	/**
+	 * Display user post experience bar
+	 */
+	function expbar() {
+	
+		// Get the counts
+		$current	= $this->rank['current_rank'];
+		$next		= $this->rank['next_rank'];
+		$total		= $this->posts['total'];
+		
+		// Calculate the exp
+		$percent 	= ( $total - $current ) / ( $next - $current );
+		$percent 	= round( $percent , 2) * 100;
+		$to_ding 	= $next - $total;
+		$tip 		= $to_ding . ' more until next rank!';		
+
+		// Display the bar
+		$bar = '<div class="user-exp-container" title="' . $tip . '"><div class="user-exp-bar" style="width:' . $percent . '%;"></div></div>';
+		return $bar;
+	}
+	
+	
+	/* 
+	 * Generate a byline for the user profile with their allegiance information
+	 */
+	function user_byline() {
+	
+		// Get the data
+		$faction 	= $this->faction;
+		$race 		= $this->race;
+		$class		= ucfirst( $this->class );
+		$name		= $this->fullname;
+
+		// Obey proper grammar
+		if ( '' == $race ) 
+			$grammar 	= 'a sworn ';
+		elseif ( in_array( $race , array('altmer','orc','argonian' ) ) )
+			$grammar 	= 'an ' . ucfirst($race);
+		else $grammar 	= 'a ' 	. ucfirst($race);
+			
+		// Generate the byline
+		switch( $faction ) {
+			case 'aldmeri' :
+				if ( $class == '' ) $class = 'champion';
+				$byline = $name . ' is ' . $grammar . ' ' . $class . ' of the Aldmeri Dominion.';
+				break;
+			case 'daggerfall' :
+				if ( $class == '' ) $class = 'protector';
+				$byline = $name . ' is ' . $grammar . ' ' . $class . ' of the Daggerfall Covenant.';
+				break;
+			case 'ebonheart' :
+				if ( $class == '' ) $class = 'vanguard';
+				$byline = $name . ' is ' . $grammar . ' ' . $class . ' of the Ebonheart Pact.';
+				break;
+			default : 
+				$class = 'mercenary';
+				$byline = $name . ' is a ' . $class . ' with no political allegiance.';
+				break;
+		}
+		
+		// Return the byline
+		$this->byline = $byline;
+	}
+	
+	/**
+	 * Gets user data for a forum reply or article comment
+	 */	
+	function format_data( $context ) {
+	
+		// Setup the basic info block
+		$block		= '<a class="member-name" href="' . $this->domain . '" title="View ' . $this->fullname . '&apos;s Profile">' . $this->fullname . '</a>';
+		$block		.= $this->title;	
+		$block		.= $this->allegiance();
+		$block		.= '<p class="user-post-count">Total Posts: ' . $this->posts['total'] . '</p>';
+
+	
+		// Do some things differently depending on context
+		switch( $context ) {
+		
+			case 'directory' :
+				$avatar 		= apoc_fetch_avatar( $this->id );
+				$block 			= '<div class="member-meta">' . $block . '</div>';
+				break;
+		
+			case 'reply' :
+				$avatar 		= apoc_fetch_avatar( $this->id );
+				$block			.= $this->expbar();
+				break;
+					
+			case 'profile' :
+				$avatar 		= apoc_fetch_avatar( $this->id , 'full' , 200 );
+				$block			.= $this->expbar();
+				$regdate		= date("F j, Y", strtotime( get_userdata( $this->id )->user_registered ) );
+				$block			.= '<p class="user-join-date">Joined ' . $regdate . '</p>';
+				break;
+		}
+		
+		// Prepend the avatar
+		$avatar			= '<a class="member-avatar" href="' . $this->domain . '" title="View ' . $this->fullname . '&apos;s Profile">' . $avatar . '</a>';
+		$this->avatar 	= $avatar;
+		$block			= $avatar . $block;
+		
+		// Add the html to the object
+		$this->block 	= $block;
+	}
+}
  
 /*--------------------------------------------------------------
-1.0 - PERMISSIONS AND RANKS
+2.0 - STANDALONE FUNCTIONS
 --------------------------------------------------------------*/
 
-/** 
- * Assign default ranks based on total post count
- * @version 1.0.0
- */
-function get_user_rank( $user_id , $totalposts=0 ) {
-	if ( $user_id == '0' ) return;
-	
-	$ranks = array(
-		0 => array(
-			'min_posts' => 0,
-			'next_rank' => 10,
-			'title' 	=> 'Scamp' ),
-		1 => array(
-			'min_posts' => 10,
-			'next_rank' => 25,
-			'title' 	=> 'Novice' ),
-		2 => array(
-			'min_posts' => 25,
-			'next_rank' => 50,
-			'title' 	=> 'Apprentice' ),
-		3 => array(
-			'min_posts' => 50,
-			'next_rank' => 100,
-			'title' 	=> 'Journeyman' ),	
-		4 => array(
-			'min_posts' => 100,
-			'next_rank' => 250,
-			'title' 	=> 'Adept' ),
-		5 => array(
-			'min_posts' => 250,
-			'next_rank' => 500,
-			'title' 	=> 'Expert' ),
-		6 => array(
-			'min_posts' => 500,
-			'next_rank' => 1000,
-			'title' 	=> 'Master' ),			
-		7 => array(
-			'min_posts' => 1000,
-			'next_rank' => 10000,
-			'title' 	=> 'Grandmaster' ),
-		);
-	$i = 0;
-	$rank = $ranks[$i];
-	while ( $totalposts >= $rank['next_rank'] ) {
-		$i++;
-		$rank = $ranks[$i];
-	}
-	$user_rank = array(
-		'current_rank' 	=> $rank['min_posts'],
-		'next_rank' 	=> $rank['next_rank'],
-		'rank_title'	=> $rank['title']
-	);
-
-	// Return the rank information
-	return $user_rank;
-}
-
-
-/*--------------------------------------------------------------
-2.0 - PROFILE FUNCTIONS
---------------------------------------------------------------*/
 /** 
  * Get a user's avatar link
  * @version 1.0.0
@@ -94,7 +324,6 @@ function apoc_fetch_avatar_link( $user_id , $type='thumb' , $size=100 ) {
 	// Echo it
 	echo $link;		
 }
-
 
 /** 
  * Get a user's avatar without using gravatar, uses custom defaults
@@ -130,69 +359,7 @@ function apoc_guest_avatar( $type ='thumb' , $size = 100 ) {
     return $guest_avatar;
 }
 
-/** 
- * Display member info block
- * @version 1.0.0
- */
-function apoc_member_block( $user_id , $context = 'reply' , $avatar = 'thumb' ) {
 
-	// Determine avatar size
-	$size = ( 'full' == $avatar ) ? 200 : 100;
-
-	// Get some basic information
-	$username 		= bp_core_get_user_displayname( $user_id );
-	$link			= bp_core_get_user_domain( $user_id );
-	$avatar			= apoc_fetch_avatar( $user_id , $avatar , $size );	
-	$total_posts 	= get_user_post_count( $user_id );
-	$user_rank		= get_user_rank( $user_id , $total_posts['total'] );
-	$title			= get_user_title( $user_id , $user_rank['rank_title'] );
-	$allegiance 	= get_user_raceclass( $user_id );
-	
-	// Get more information for non-minimal blocks
-	if ( 'reply' == $context || 'profile' == $context )
-		$expbar		= get_user_expbar( $total_posts['total'] , $user_rank['current_rank'] , $user_rank['next_rank'] );
-	
-	// Get even more stuff for the full profile block
-	if ( 'profile' == $context )
-		$regdate	= get_user_registration_date( $user_id );
-	
-	// Display the avatar
-	$block		 = '<a class="member-avatar" href="' . $link . '" title="View ' . $username . '&apos;s Profile">' . $avatar . '</a>';
-	
-	// Member meta block
-	$block		.= ( 'directory' == $context ) ? '<div class="member-meta">' : '' ;
-	$block		.= '<a class="member-name" href="' . $link . '" title="View ' . $username . '&apos;s Profile">' . $username . '</a>';
-	$block		.= $title;	
-	$block		.= $allegiance;	
-	$block		.= '<p class="user-post-count">Total Posts: ' . $total_posts['total'] . '</p>';
-	$block		.= ( 'directory' == $context ) ? '</div>' : '' ;
-	
-	// Add extra elements
-	if ( 'reply' == $context || 'profile' == $context )
-		$block	.= $expbar;
-	if ( 'profile' == $context )
-		$block	.= '<p class="user-join-date">Joined ' . $regdate . '</p>';
-	
-	// Display it
-	echo $block;	
-}
-
-/** 
- * Retrieve a user's total post count
- * @since 0.1
- */
-function get_user_post_count( $user_id ) {
-
-	// Get the stored count from usermeta
-	$posts 	= get_user_meta( $user_id , 'post_count' , true );
-	
-	// If it's not in the database, build it
-	if ( empty( $count ) )
-		update_user_post_count( $user_id );
-	
-	// Return it
-	return $posts;
-}
 
 /** 
  * Update a user's total post count
@@ -279,135 +446,6 @@ function get_user_comment_count( $user_id ) {
 	global $wpdb;
     $count = $wpdb->get_var('SELECT COUNT(comment_ID) FROM ' . $wpdb->comments. ' WHERE user_id = ' . $user_id . ' AND comment_approved = 1' );
     return $count;
-}
-
-/** 
- * Display user site title
- * @since 0.5
- */
-function get_user_title( $user_id , $role_name ) {
-	
-	// If it's a guest, say so
-	if ( $user_id == '0' ) { 
-		$role_name = 'Guest'; 
-		$display_title = $role_name;
-	
-	// If not a guest, get site title
-	} else { 
-	
-		// Get the user's info
-		$user 		= get_userdata( $user_id );
-		$roles 		= $user->roles;
-		$site_role 	= $roles[0];
-		$forum_role = $roles[1];
-		
-		// Assign titles appropriately
-		if ( 'administrator' == $site_role ) :
-			$role_name = 'Daedric Prince';
-		elseif ( 'bbp_moderator' == $forum_role || 'bbp_keymaster' == $forum_role ) :
-			$role_name = 'Moderator'; 
-		elseif ( 'guildmember' == $site_role ) :
-			$role_name = 'Entropy Rising';
-		elseif ( 'banned' == $site_role ) :
-			$role_name = 'Banned';
-		else :
-			// Handle [refixes
-			$regdate = $user->data->user_registered;
-			$regdate = strtotime( $regdate );
-			if ( $regdate < 1352592000 ) $prefix = 'Founder';
-		endif;
-		
-		// Construct the full title
-		if ( isset( $prefix ) ) $display_title = $prefix . ', ' . $role_name;
-		else $display_title = $role_name;
-	}
-	
-	// Display the title
-	$role_class = strtolower( str_replace( " ", "-", $role_name) );
-	return '<p class="user-title ' . $role_class . '">' . $display_title . '</p>';
-}
-
-/**
- * Display user post experience bar
- * @version 1.0.0
- */
-function get_user_expbar( $totalposts , $current_rank , $next_rank ) {
-	$percentexp = ( $totalposts - $current_rank ) / ( $next_rank - $current_rank );
-	$percentexp = round( $percentexp, 2) * 100;
-	$posts_to_ding = $next_rank - $totalposts;
-	
-	// Check for proper grammar!
-		if( $posts_to_ding == 1 )
-			$exptip = $posts_to_ding . ' more post to next rank!';
-		else
-			$exptip = $posts_to_ding . ' more posts to next rank!';
-			
-	// Display the bar
-	$bar = '<div class="user-exp-container" title="' . $exptip . '"><div class="user-exp-bar" style="width:' . $percentexp . '%;"></div></div>';
-	return $bar;
-}
-
-/* 
- * Get a user's declared race and class
- * @since 0.4
- */
-function get_user_raceclass( $user_id ) {
-	
-	// Get race and class
-	$race 		= get_user_meta( $user_id , 'race' , true );
-	if ( 'norace' == $race ) 		$race = '';
-	
-	$class 		= get_user_meta( $user_id , 'playerclass' , true );
-	if ( 'undecided' == $class ) 	$class = '';
-	
-	// If race is set, we can figure out faction from that
-	if ( '' != $race ) :
-		$alliances = array(
-			'aldmeri' 		=> array( 'altmer' , 'bosmer' , 'khajiit' ),
-			'daggerfall' 	=> array( 'breton' , 'orc' , 'redguard' ),
-			'ebonheart'		=> array( 'argonian' , 'nord' , 'dunmer' ),
-		);
-		foreach ( $alliances as $alliance => $races ) {
-			if ( in_array( $race , $races ) )
-				$faction = $alliance;			
-		}
-
-	// Otherwise, grab the faction from database
-	else :
-		$faction = get_user_meta( $user_id , 'faction' , true );
-		if ( 'undecided' == $faction ) 	$faction = '';
-	endif;	
-	
-	// Nothing set
-	$separator	= '';
-	if ( '' == $race && '' == $class && '' == $faction )
-		return false;
-	
-	// Otherwise, display what we have		
-	if ( '' == $race ) $race = $faction;
-	if ( $race != '' ) $separator = ' ';
-	$raceclass = '<p class="user-allegiance ' . $faction . '">' . ucfirst( $race ) . $separator . ucfirst( $class ) . '</p>';
-	return $raceclass;
-}
-
-/* 
- * Display the user signature
- * @version 1.0.0
- */
-function user_signature( $user_id ) {
-	if ( $user_id == '0' ) return;
-	
-	// Get the signature
-	$signature = get_user_meta( $user_id , 'signature' , true );
-	
-	if ( $signature != '' ) {
-		
-		// Evaluate shortcodes
-		$signature = do_shortcode( $signature );
-	
-		// Display it
-		echo '<div class="user-signature"><div class="signature-content">' . $signature . '</div></div>' ;
-	}
 }
 
 

@@ -93,14 +93,14 @@ class Apoc_Context {
 			$context[] = 'home';
 			$context[] = 'archive';
 		}
-			
-		// BuddyPress
-		elseif ( class_exists( 'bbPress' ) && is_bbpress() )
-			$context[] = 'forums';
-			
+		
 		// BuddyPress
 		elseif ( class_exists( 'BuddyPress' ) && is_buddypress() )
 			$context[] = 'community';
+			
+		// bbPress
+		elseif ( class_exists( 'bbPress' ) && is_bbpress() )
+			$context[] = 'forums';
 			
 		// Singular view
 		elseif ( is_singular() ) {

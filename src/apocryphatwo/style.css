@@ -383,14 +383,13 @@ i[class*=" icon-"] {
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 100%;
+    height: 0;
     width: 100%;
     box-sizing: border-box;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #333;
 	}
-.double-border.top { border-top: 1px solid #000; }	
-.double-border.top:before {	border-top: 1px solid #333; }
-.double-border.bottom { border-bottom: 1px solid #333;  }	
-.double-border.bottom:before { border-bottom: 1px solid #000; }
+.double-border.top:before {	top: 0; }
 	
 /* Alliances */
 p.aldmeri { color: #C90; }
@@ -1167,7 +1166,7 @@ a.footer-nav-item:hover > img {
 	box-shadow: none;
 	background: none;
 	}
-a.footer-nav-item h3.double-border.top:before { border-top: 1px solid #555; }
+a.footer-nav-item h3.double-border.top:before { border-bottom: 1px solid #555; }
 div#footer-anvil {
 	height: 50px;
 	width: 135px;
@@ -1268,6 +1267,12 @@ header.entry-header {
 .page-header-4 { background-position: 0 -300px; }
 .page-header-5 { background-position: 0 -400px; }
 .page-header-6 { background-position: 0 -500px; }
+
+/* Alliance Specific Headers */
+.entry-header.aldmeri { background-position: 0 0; }
+.entry-header.ebonheart { background-position: 0 -100px; }
+.entry-header.daggerfall { background-position: 0 -200px; }
+
 	
 /* Entry Title */
 .entry-title {
@@ -1428,6 +1433,7 @@ a.author-ip-toggle {
 	}
 a.report-post:hover,
 a.author-ip-toggle:hover { color: #FC6; }
+p.author-ip { display: none; }
 
 /* Reply Author */
 div.reply-body {
@@ -1503,7 +1509,6 @@ ul.bbp-reply-revision-log {
 	padding: 3px 0.5em 3px 2em;
 	font-size: 12px;
 	color: #999;
-	border-top: 1px solid #000;
 }
 ul.bbp-topic-revision-log img.avatar,
 ul.bbp-reply-revision-log img.avatar {
@@ -1596,7 +1601,7 @@ div#posts {
 	}
 header#home-posts-header { 
 	margin: 0.5em 0;
-	border-top: 1px solid #000;
+	border-top: 1px solid transparent;
 	}
 h1#home-posts-title {
 	width: 300px;
@@ -1984,7 +1989,6 @@ li.flex-active span.slideshow-tab-title {
 	}
 .flex-caption h2 {
 	margin: 0;
-	padding-bottom: 5px;
 	font-size: 1.125em;
 	font-weight: normal;
 	}
@@ -1993,20 +1997,22 @@ li.flex-active span.slideshow-tab-title {
 	overflow: hidden;
 	visibility: hidden;
 	margin: 0;
-	padding: 5px 0 0;
+	padding: 0;
 	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.75em;
-	transition: max-height 1s ease;
-    -webkit-transition: max-height 1s ease;
-	-moz-transition: max-height 1s ease;
+	transition: all 1s ease;
+    -webkit-transition: all 1s ease;
+	-moz-transition: all 1s ease;
 	}
-p.slide-content:before {	display: none; 	}
+p.slide-content:before {	display: none; }
 .flexslider:hover .flex-caption p.slide-content { 
 	visibility: visible;
 	max-height: 300px; 
-	transition: max-height .5s ease;
-    -webkit-transition: max-height .5s ease;
-	-moz-transition: max-height .5s ease;
+	margin: 5px 0 0;
+	padding: 5px 0 0;
+	transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
 	}
 .flexslider:hover .flex-caption p.slide-content:before { display: block; }
 	

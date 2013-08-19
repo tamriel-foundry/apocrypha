@@ -7,7 +7,8 @@
  */
 
 // Get some information
-$count = apocrypha()->counts->comment;
+$count 	= apocrypha()->counts->comment;
+$author	= new Apoc_User( $comment->user_id , 'reply' );
 
 // Display the comment ?>
 <li id="comment-<?php echo $comment->comment_ID; ?>" class="<?php apoc_comment_class(); ?>">
@@ -23,7 +24,7 @@ $count = apocrypha()->counts->comment;
 	
 	<div class="reply-body">
 		<div class="reply-author">
-			<?php apoc_member_block( $comment->user_id , $context = 'reply' , $avatar = 'thumb' ); ?>
+			<?php echo $author->block; ?>
 			<?php if ( current_user_can( 'moderate' ) || current_user_can( 'moderate_comments' ) ) : ?><p class="author-ip"><?php echo $comment->comment_author_IP; ?></p><?php endif; ?>
 		</div>
 		
@@ -33,6 +34,6 @@ $count = apocrypha()->counts->comment;
 			<?php endif; ?>
 			<?php comment_text( $comment->comment_ID ); ?>
 		</div>
-		<?php user_signature( $comment->user_id ); ?>
+		<?php echo $author->sig; ?>
 	</div>
 </li>

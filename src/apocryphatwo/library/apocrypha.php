@@ -182,7 +182,7 @@ class Apocrypha {
 	private function actions() {
 	
 		// Populate apocrypha globals
-		add_action( 'template_redirect', array( $this , 'populate_globals' ) , 10 );	
+		add_action( 'template_redirect', array( $this , 'populate_globals' ) , 1 );	
 	}				
 		
 	/** Public Methods **********************************************************/		

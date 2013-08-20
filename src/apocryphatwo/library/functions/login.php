@@ -40,6 +40,32 @@ function apoc_header_login() {
 }
 
 /** 
+ * Prevent "Banned" users from logging in
+ * @since 1.0
+ */
+add_filter( 'wp_authenticate_user' , 'apoc_block_banned' , 10 );
+function apoc_block_banned( $object ) {
+
+	// If there hasn't already been an error, check to make sure the user is not banned
+	if ( !is_wp_error( $object ) && $object->has_cap( 'banned' ) )
+		return new WP_Error( 'forbidden' , "Your user account has been banned from Tamriel Foundry." );
+	else
+		return $object;
+}
+
+/** 
+ * Prevent "Banned" users automatically authenticating with a cookie
+ * @since 1.0
+ */
+add_action( 'auth_cookie_valid' , 'apoc_screen_cookie' , 10 , 2 );
+function apoc_screen_cookie( $cookie_elements , $user ) {
+	
+	// If the user is "Banned" delete their authentication cookie
+	if( $user->has_cap( 'banned' ) )
+		wp_clear_auth_cookie();
+}
+
+/** 
  * Get the current page URL for redirection.
  * @since 0.1
  */

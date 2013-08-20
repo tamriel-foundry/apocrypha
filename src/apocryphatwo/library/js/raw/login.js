@@ -18,7 +18,7 @@ $('#top-login-form').submit( function(){
 				$('#login-submit').removeAttr('disabled');
 				$('#login-submit').html('<i class="icon-lock"></i>Log In');
 				$('#top-login-error').html(result.error);
-				$('#top-login-error').fadeToggle('slow');
+				$('#top-login-error').hide().fadeToggle('slow');
 			}
 		}
 	});

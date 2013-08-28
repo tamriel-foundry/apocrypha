@@ -39,7 +39,3 @@
 		
 	</div><!-- #content -->
 <?php get_footer(); // Load the footer ?>
-
-<pre style="clear:both; font-size: 16px">
-<?php print_r( apocrypha() );?>
-</pre>

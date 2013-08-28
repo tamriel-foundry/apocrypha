@@ -24,7 +24,7 @@ $sig	= $author->sig;
 	</header>
 	
 	<div class="reply-body">
-		<div class="reply-author">
+		<div class="reply-author user-block">
 			<?php echo $block; ?>
 			<?php if ( current_user_can( 'moderate' ) ) : ?><p class="author-ip"><?php bbp_author_ip( array( 'post_id' => bbp_get_reply_id() , 'before' => '' , 'after' => '' ) ); ?></p><?php endif; ?>
 		</div>

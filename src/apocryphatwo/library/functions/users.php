@@ -452,6 +452,16 @@ function get_user_comment_count( $user_id ) {
 /*--------------------------------------------------------------
 3.0 - MISCELLANEOUS
 --------------------------------------------------------------*/
+/** 
+ * Get a user's current warning level
+ * @since 0.5
+ */
+function get_user_warning_level( $userid ) {
+	$level = intval( get_user_meta( $userid , 'warning_level' , true ) );
+	return $level;
+}
+
+
 
 /**
  * Count users by a specific meta key

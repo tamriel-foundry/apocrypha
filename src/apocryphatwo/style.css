@@ -51,6 +51,9 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	8.1 - Forums and Topics Loops
 	8.2 - Single Topics
 	8.3 - New Topic and Reply Forms
+9.0 - BuddyPress
+	9.1 - User Profiles
+10.0 - Responsive Width
 	
 	
 	
@@ -1455,11 +1458,11 @@ div.reply-author {
 	text-shadow: 1px 1px #000;
 	word-wrap: break-word;
 	}
-div.reply-author > p {
+div.user-block > p {
 	margin: 0;
 	font-size: 0.75em;
 	}
-div.reply-author > p.user-title {	
+div.user-block > p.user-title {	
 	font-size: 0.875em;
 	font-style: italic;
 	}
@@ -1838,6 +1841,7 @@ div#featured-guild-meta {
 h4#featured-guild-name {
 	text-transform: none;
 	padding: 0.5em 0;
+	margin: 0;
 	}
 div#featured-guild-meta > p {
 	margin: 0;
@@ -2338,17 +2342,142 @@ form li#new-topic-title + li.wp-editor { margin: -1em 0 0; }
 #respond #split-method label { width: 240px; }
 #respond #split-options label { width: 200px; }
 
+
 /*--------------------------------------------------------------
-X.X - WHERE DO I PUT THIS STUFF?
---------------------------------------------------------------*/		
-span.activity-count {
-	background: #2e424d;
-	color: #CCC;
+9.0 - BUDDYPRESS
+--------------------------------------------------------------*/
+
+
+/*---------------------------------------------
+	9.1 - User Profiles
+----------------------------------------------*/
+header#profile-header { margin: 0 0 0.5em; }
+header#profile-header h1#profile-title { padding: 0 0 0 230px; }
+header#profile-header p.entry-byline { padding: 0 0 0 230px; }
+header#profile-header div#profile-actions {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	}
+div#profile-sidebar {
+	width: 220px;
+	float: left;
+	margin: -100px 0 0;
+	text-align: center;
+	}
+div#profile-user a.member-avatar img {
+	padding: 2px;
+	background: #111;
+	border: 1px solid #000;
+	box-shadow: 0 0 20px #000;
+	}
+div#profile-user a.member-name {
+	font-size: 1.5em;
+	margin: 0.25em 0;
+	}
+div#profile-body{ margin: 1em 1em 1em 230px; }
+	
+/* Profile Menu */
+nav#profile-menu { 
+	height: 25px;
+	margin: 0 0 0 220px; 
+	}
+ul#profile-actions { 
+	width: 100%;
+	float: left;
+	margin: -12px 0 0;
+	padding: 0;
+	list-style: none; 
+	}
+ul#profile-actions > li {
+	float: left;
+	padding: 8px 0 4px;
+	margin: 0 0.5% 0 0;
+	background: rgba( 17,17,17,0.5);
+	border: 1px solid #000;
+	border-radius: 3px;
+	box-shadow: 0 0 2px #333 inset;
+	width: 11.5%;
+	text-align: center;
+	font-family: 'Open Sans';
+	font-size: 0.75em;
+	}
+ul#profile-actions > li:last-child { margin-right: 0; }
+ul#profile-actions > li a {	
+	display: block;
+	color: #999; 
+	}
+ul#profile-actions > li:hover {
+	background: rgba( 34,34,34,0.5 );
+	box-shadow: 0 0 3px #c60;
+	}
+ul#profile-actions > li:hover a { color: #BBB; }
+ul#profile-actions > li.current,
+ul#profile-actions > li.current:hover {
+	background: rgba( 51,51,51,0.5); 
+	box-shadow: none;
+	}
+ul#profile-actions > li.current a { 
+	color: #BBB;
+	text-shadow: 0 0 20px #c60; 
+	}
+ul#profile-actions > li a span {
+	position: absolute;
+	top: -12px;
+	right: -5px;
+	line-height: 16px;
+	background: #252E33;
+	color: #BBB;
 	padding: 0 4px;
 	margin: 0 2px;
 	border: 1px solid #000;
 	border-radius: 2px;
+	box-shadow: 0 0 3px #000;
 	}
+
+	
+
+
+
+
+/*--------------------------------------------------------------
+X.X - WHERE DO I PUT THIS STUFF?
+--------------------------------------------------------------*/		
+span.activity-count {
+	background: #252E33;
+	color: #BBB;
+	padding: 0 4px;
+	margin: 0 2px;
+	border: 1px solid #000;
+	border-radius: 2px;
+	box-shadow: 0 0 3px #000;
+	}
+	
+	
+/*--------------------------------------------------------------
+10.0 - RESPONSIVE WIDTH
+--------------------------------------------------------------*/
+@media only screen and (max-width: 1199px) {
+	div#main-container,
+	nav#primary-menu,
+	header#site-header {	width: 900px; }		
+	div#primary-sidebar { display: none;	}	
+
+	/* Homepage */
+	.home #content {	width: 600px; }
+	div#showcase-sidebar { display: none; }
+	.home div#primary-sidebar { display: block; }	
+	div#showcase { 
+		width: 720px; 
+		float: none;
+		margin: 0 auto;
+		}
+	.home-page div.post {
+		width: 100%;
+		float: none;
+		}
+}
+		
 	
 /*---------------------------------------------
 X.X - TINYMCE

@@ -10,17 +10,13 @@
 ----------------------------------------------------------------
 1.0 - Initialization
 2.0 - Notifications
-
+3.0 - User Profiles
 ______________________________
 
-3.0 - Directories
-4.0 - Activity
-5.0 - User Profiles
-	5.1 - Private Messages
+4.0 - Directories
+5.0 - Activity
 6.0 - Groups
-	6.1 - Group Profile
-	6.2 - Group Creation
-7.0 - User Registration
+7.0 - Registration
 --------------------------------------------------------------*/
 
 // Exit if accessed directly
@@ -36,20 +32,17 @@ require_once( BP_PLUGIN_DIR . '/bp-themes/bp-default/_inc/ajax.php' );
 // Register buttons for BuddyPress actions 	
 if ( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 
-	// Friends button
+	// User Profile
 	add_action( 'bp_member_header_actions'		,	'bp_add_friend_button',           5 	);
-
-	// Activity button
 	add_action( 'bp_member_header_actions'		,	'bp_send_public_message_button',  20 	);
-
-	// Messages button
 	add_action( 'bp_member_header_actions'		,	'bp_send_private_message_button', 20 	);
 
-	// Group buttons
+	// Group Profile
 	add_action( 'bp_group_header_actions'		,	'bp_group_join_button',           5 	);
 	add_action( 'bp_group_header_actions'		,	'bp_group_new_topic_button',      20 	);
 	add_action( 'bp_directory_groups_actions'	, 	'bp_group_join_button'					);
 }
+
 
 // Override bbPress Forum Tracker Templates 
 add_filter( 'bbp_member_forums_screen_topics' 		 , 'apoc_profile_forums_screen' );
@@ -216,6 +209,37 @@ function apoc_format_notification( $component , $action , $item_id , $secondary_
 		'link'	=> $link,
 	);
 	return $content;		
+}
+
+
+/*--------------------------------------------------------------
+3.0 - USER PROFILES
+--------------------------------------------------------------*/
+
+/**
+ * Override appearance of BuddyPress profile action buttons
+ * @version 1.0.0
+ */
+add_filter( 'bp_get_add_friend_button' 				, 'apoc_profile_friend_button' );
+add_filter( 'bp_get_send_public_message_button' 	, 'apoc_profile_mention_button' );
+add_filter( 'bp_get_send_message_button_args'		, 'apoc_profile_message_button' );
+function apoc_profile_friend_button( $button ) {
+	$button['wrapper'] 	= false;
+	$button['link_class'] 	.= ' button';
+	$button['link_text']	= '<i class="icon-male"></i>' . $button['link_text']; 
+	return $button;
+}
+function apoc_profile_mention_button( $button ) {
+	$button['wrapper']		= false;
+	$button['link_class'] 	.= ' button';
+	$button['link_text']	= '<i class="icon-comment"></i>' . $button['link_text']; 
+	return $button;
+}
+function apoc_profile_message_button( $button ) {
+	$button['wrapper'] 		= false;
+	$button['link_class'] 	.= ' button';
+	$button['link_text']	= '<i class="icon-envelope"></i>' . $button['link_text']; 
+	return $button;
 }
 
 

@@ -23,7 +23,7 @@ $author	= new Apoc_User( $comment->user_id , 'reply' );
 	</header>
 	
 	<div class="reply-body">
-		<div class="reply-author">
+		<div class="reply-author user-block">
 			<?php echo $author->block; ?>
 			<?php if ( current_user_can( 'moderate' ) || current_user_can( 'moderate_comments' ) ) : ?><p class="author-ip"><?php echo $comment->comment_author_IP; ?></p><?php endif; ?>
 		</div>

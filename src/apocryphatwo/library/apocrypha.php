@@ -135,6 +135,9 @@ class Apocrypha {
 		
 		// Add supported shortcodes
 		$shortcodes		= new Apoc_Shortcodes();
+		
+		// Support contact methods
+		add_filter( 'user_contactmethods' , array( $this , 'contact_methods' ) ) ;
 	}
 	
 	/**
@@ -215,7 +218,20 @@ class Apocrypha {
 		$this->counts->cpp		= 10;
 		$this->counts->cpage	= NULL;
 		$this->counts->comment	= NULL;
-	}			
+	}	
+
+	function contact_methods( $contactmethods ) {
+		unset($contactmethods['aim']);
+		unset($contactmethods['yim']);
+		unset($contactmethods['jabber']);
+		$contactmethods['twitter'] 		= 'twitter.com/';
+		$contactmethods['facebook'] 	= 'facebook.com/';
+		$contactmethods['steam'] 		= 'steamcommunity.com/id/';
+		$contactmethods['youtube'] 		= 'youtube.com/';
+		$contactmethods['twitch'] 		= 'twitch.tv/';
+		$contactmethods['bethforums'] 	= 'forums.bethsoft.com/user/';
+		return $contactmethods;
+	}
 }
 
 /**

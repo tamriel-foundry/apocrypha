@@ -15,7 +15,7 @@
 		<?php locate_template( array( 'members/single/member-header.php' ), true ); ?>		
 		
 		<div id="profile-body">
-		This is profile content		
+		This is full-width profile content that changes depending on the top-level component
 		
 		<?php /* This is user profile content
 		<?php if ( bp_is_user_profile() ) :

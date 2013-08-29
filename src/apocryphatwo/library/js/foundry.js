@@ -67,6 +67,9 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! Tab Into TinyMCE From Topic Title */
 ;$("#bbp_topic_title").bind("keydown.editor-focus",function(b){if(b.which!==9){return}if(!b.ctrlKey&&!b.altKey&&!b.shiftKey){if(typeof(tinymce)!=="undefined"){if(!tinymce.activeEditor.isHidden()){var a=tinymce.activeEditor.editorContainer;$("#"+a+" td.mceToolbar > a").focus()}else{$("textarea.bbp-the-content").focus()}}else{$("textarea.bbp-the-content").focus()}b.preventDefault()}});
 
+/*! bbPress Favorites / Subs */
+;function bbp_ajax_call(e,b,d,a){var c={action:e,id:b,nonce:d};$.post(bbpTopicJS.bbp_ajaxurl,c,function(f){if(f.success){var f=$($.parseHTML(f.content));var g=f.find("a");var h=g.text();if("#favorite-toggle"==a){if(h=="Favorited"){h='<i class="icon-thumbs-down"></i>This Got Ugly'}else{h='<i class="icon-thumbs-up"></i>This Thread Rocks'}}else{if("#subscription-toggle"==a){if(h=="Unsubscribe"){h='<i class="icon-remove"></i>'+h}else{h='<i class="icon-bookmark"></i>'+h}}}g.html(h);$(a).html(g)}else{if(!f.content){f.content=bbpTopicJS.generic_ajax_error}alert(f.content)}})}$("#favorite-toggle").on("click","span a.favorite-toggle",function(a){a.preventDefault();bbp_ajax_call("favorite",$(this).attr("data-topic"),bbpTopicJS.fav_nonce,"#favorite-toggle")});$("#subscription-toggle").on("click","span a.subscription-toggle",function(a){a.preventDefault();bbp_ajax_call("subscription",$(this).attr("data-topic"),bbpTopicJS.subs_nonce,"#subscription-toggle")});
+
 /*! End Document Ready */
 ;});
 

@@ -15,7 +15,7 @@ $user 	= new Apoc_User( bp_displayed_user_id() , 'profile' );
 	<p class="entry-byline <?php echo $user->faction; ?>"><?php echo $user->byline; ?></p>		
 	<div id="profile-actions">
 		<?php if ( bbp_is_user_home() ) : ?>
-		<a class="button" href="<?php echo $user->domain; ?>profile/edit" title="Edit your user profile">Edit Profile</a>
+		<a class="button" href="<?php echo $user->domain; ?>profile/edit" title="Edit your user profile"><i class="icon-edit"></i>Edit Profile</a>
 		<?php else : ?>
 		<?php do_action( 'bp_member_header_actions' ); ?>
 		<?php endif; ?>
@@ -28,8 +28,55 @@ $user 	= new Apoc_User( bp_displayed_user_id() , 'profile' );
 	</div>
 </div><!-- #profile-sidebar -->
 
-<nav id="profile-menu" class="no-ajax">
-	<ul id="profile-actions" role="navigation">
-		<?php bp_get_displayed_user_nav(); ?>
-	</ul>
-</nav><!-- #profile-menu -->
+<div id="profile-content">
+	<nav id="profile-menu" class="no-ajax">
+		<ul id="profile-actions" role="navigation">
+			<?php bp_get_displayed_user_nav(); ?>
+		</ul>
+	</nav>
+	
+	<blockquote id="user-status">
+		<p><?php echo '@' . $user->nicename . ' &rarr; ' . bp_get_activity_latest_update( $user->ID ); ?></p>
+		<?php if ( bp_is_my_profile() ) : ?>
+			<a class="update-status-button button"><i class="icon-pencil"></i>What's New?</a>
+		<?php else : ?>
+			<span class="activity"><?php bp_last_activity( $user->ID ); ?></span>
+		<?php endif; ?>
+	</blockquote>
+	
+	<div id="profile-widgets">		
+		<div id="detail-post-count" class="widget profile-widget">
+			<header class="widget-header">
+				<h3 class="widget-title">Post Details</h3>
+			</header>
+			<ul id="detail-post-count">
+				<?php $posts = $user->posts; 
+				if ( $posts['articles'] > 0 ) : ?>
+					<li><i class="icon-tag icon-fixed-width"></i>Articles <span class="activity-count"><?php echo $posts['articles']; ?></span></li>
+				<?php endif; ?>
+				<li><i class="icon-comment icon-fixed-width"></i>Comments <span class="activity-count"><?php echo $posts['comments']; ?></span></li>
+				<li><i class="icon-bookmark icon-fixed-width"></i>Topics <span class="activity-count"><?php echo $posts['topics']; ?></span></li>
+				<li><i class="icon-reply icon-fixed-width"></i>Replies <span class="activity-count"><?php echo $posts['replies']; ?></span></li>
+				<li class="post-count-total"><i class="icon-star icon-fixed-width"></i>Total <span class="activity-count"><?php echo $posts['total']; ?></span></li>
+			</ul>
+		</div>
+		
+		<div id="profile-badges" class="widget profile-widget">
+			<header class="widget-header">
+				<h3 class="widget-title">User Badges</h3>
+			</header>
+			<ul>
+				<li>No Badges Earned Yet!</li>
+			</ul>
+		</div>
+		
+		<div id="profile-contacts" class="widget profile-widget">
+			<header class="widget-header">
+				<h3 class="widget-title">Contact Info</h3>
+			</header>
+			<?php $user->contacts(); ?>
+		</div>
+	</div>
+	
+</div>
+

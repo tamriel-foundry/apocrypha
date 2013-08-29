@@ -85,9 +85,21 @@ class Apoc_User {
 		$this->rank		= $this->user_rank( $this->posts );
 		$this->title	= $this->user_title( $user_id );
 		
-		// Get the byline on profile pages
+		// Get additional data and the byline on profile pages
 		if ( 'profile' == $this->context ) 
-			$this->user_byline();
+			$user				= get_userdata( $this->id );
+			$this->nicename 	= $user->user_nicename;
+			$this->regdate 		= strtotime( $user->user_registered );
+			$this->byline		= $this->byline();
+			$this->contacts		= array(
+				'url' 			=> $user->user_url,
+				'twitter' 		=> $meta['twitter'],
+				'facebook' 		=> $meta['facebook'],
+				'steam' 		=> $meta['steam'],
+				'youtube' 		=> $meta['youtube'],
+				'twitch' 		=> $meta['twitch'],
+				'bethforums' 	=> $meta['bethforums'],
+			);
 	}
 	
 	/** 
@@ -218,7 +230,7 @@ class Apoc_User {
 	/* 
 	 * Generate a byline for the user profile with their allegiance information
 	 */
-	function user_byline() {
+	function byline() {
 	
 		// Get the data
 		$faction 	= $this->faction;
@@ -254,8 +266,44 @@ class Apoc_User {
 		}
 		
 		// Return the byline
-		$this->byline = $byline;
+		return $byline;
 	}
+	
+	/* 
+	 * Display the user's contact information
+	 * @since 0.1
+	 */
+	function contacts() {
+	
+		// Get the data
+		$contacts = array_filter( $this->contacts );
+
+		// Display the list
+		echo '<ul class="user-contact-list">' ;
+		if ( empty( $contacts ) ) {
+			echo '<li><i class="icon-eye-close icon-fixed-width"></i>No contact information shared</li>';
+			return;
+		}
+		if ( $contacts['url'] != '' )
+			echo '<li><i class="icon-globe icon-fixed-width"></i>Website: <a href="' . $contacts['url'] . '" target="_blank">' . $contacts['url'] . '</a></li>' ;
+		if ( $contacts['twitter'] != '' )
+			echo '<li><i class="icon-twitter icon-fixed-width"></i>Twitter: <a href="http://twitter.com/' . $contacts['twitter'] . '" target="_blank">' . $contacts['twitter'] . '</a></li>' ;
+		if ( $contacts['facebook'] != '' )
+			echo '<li><i class="icon-facebook icon-fixed-width"></i>Facebook: <a href="http://facebook.com/' . $contacts['facebook'] . '" target="_blank">' . $contacts['facebook'] . '</a></li>' ;
+		if ( $contacts['steam'] != '' )
+			echo '<li><i class="icon-wrench icon-fixed-width"></i>Steam ID: <a href="http://steamcommunity.com/id/' . $contacts['steam'] . '" target="_blank">' . $contacts['steam'] . '</a></li>' ;
+		if ( $contacts['youtube'] != '' )
+			echo '<li><i class="icon-youtube icon-fixed-width"></i>YouTube: <a href="http://www.youtube.com/user/' . $contacts['youtube'] . '" target="_blank">' . $contacts['youtube'] . '</a></li>' ;
+		if ( $contacts['twitch'] != '' )
+			echo '<li><i class="icon-desktop icon-fixed-width"></i>TwitchTV: <a href="http://www.twitch.tv/' . $contacts['twitch'] . '" target="_blank">' . $contacts['twitch'] . '</a></li>' ;
+		if ( $contacts['bethforums'] != '' ) {
+			$bethforums_name = preg_replace( '#(.*)[0-9]+(-{1})#' , '' , $contacts['bethforums'] );
+			$bethforums_name = preg_replace( '#-{1}|/{1}#' , ' ' , $bethforums_name );
+			echo '<li><i class="icon-sign-blank icon-fixed-width"></i>Bethesda Forums: <a href="http://forums.bethsoft.com/user/' . $contacts['bethforums'] . '" target="_blank">' . ucwords( $bethforums_name ) . '</a></li>' ;
+			}
+		echo '</ul>' ;
+	}
+
 	
 	/**
 	 * Gets user data for a forum reply or article comment
@@ -285,7 +333,7 @@ class Apoc_User {
 			case 'profile' :
 				$avatar 		= apoc_fetch_avatar( $this->id , 'full' , 200 );
 				$block			.= $this->expbar();
-				$regdate		= date("F j, Y", strtotime( get_userdata( $this->id )->user_registered ) );
+				$regdate		= date("F j, Y", $this->regdate );
 				$block			.= '<p class="user-join-date">Joined ' . $regdate . '</p>';
 				break;
 		}
@@ -365,40 +413,46 @@ function apoc_guest_avatar( $type ='thumb' , $size = 100 ) {
  * Update a user's total post count
  * @version 1.0.0
  */
-function update_user_post_count( $user_id ) {
+function update_user_post_count( $user_id , $type = 'all' ) {
 
 	// Only do this for registered users
-	if ( 0 >= $user_id ) return;
+	if ( 0 >= $user_id ) 
+		return;
+	
+	// Get existing post count
+	$posts = get_user_meta( $user_id , 'post_count' , true );
+	if ( empty( $posts ) ) 
+		$type == 'all';
 
-	// Get the counts
-	$topics = bbp_get_user_topic_count_raw( $user_id ) ;
-	$replies = bbp_get_user_reply_count_raw( $user_id ) ;
-	$comments = get_user_comment_count( $user_id );
-
-	$posts = array(
-		'topics' 	=> $topics,
-		'replies' 	=> $replies,
-		'comments' 	=> $comments,
-		'total'	 	=> $comments + $topics + $replies,
-	);
+	// Update the counts
+	if ( 'all' == $type || 'articles' == $type )
+		$posts['articles']	= get_user_article_count( $user_id );
+	
+	if ( 'all' == $type || 'forums' == $type ) {
+		$posts['topics'] 	= bbp_get_user_topic_count_raw( $user_id ) ;
+		$posts['replies'] 	= bbp_get_user_reply_count_raw( $user_id ) ;
+	}
+	
+	if ( 'all' == $type || 'comments' == $type ) 
+		$posts['comments'] 	= get_user_comment_count( $user_id );
+		
+	$posts['total'] = $posts['articles'] + $posts['topics'] + $posts['replies'] + $posts['comments'];
 	
 	// Save it
 	update_user_meta( $user_id , 'post_count' , $posts );
 }
 
 /** 
- * Update the user's post count after they submit a new topic or reply
+ * Update the user's post count when a front-page article is published
  * @version 1.0.0
  */
-add_action( 'bbp_new_topic' , 'new_bbpress_topic_count' , 10 , 4 );
-function new_bbpress_topic_count( $topic_id, $forum_id, $anonymous_data, $topic_author ) {
-	update_user_post_count( $topic_author );
+add_action( 'save_post'			, 'update_author_post_count' , 10 , 2 );
+function update_author_post_count( $post_ID , $post ) {
+	if ( 'post' != $post->post_type )
+		return;
+	update_user_meta( $post->post_author , $type = 'articles' );
 }
-add_action( 'bbp_new_reply' , 'new_bbpress_reply_count' , 10 , 5);
-function new_bbpress_reply_count( $reply_id, $topic_id, $forum_id, $anonymous_data, $reply_author ) {
-	update_user_post_count( $reply_author );
-}
-
+ 
 /** 
  * Update the user's post count after a topic or reply is trashed or untrashed
  * @version 1.0.0
@@ -412,7 +466,7 @@ add_action( 'bbp_untrash_topic' , 'update_bbpress_post_count' );
 function update_bbpress_post_count( $post_id ) {
 	$post 		= get_post( $post_id );
 	$user_id 	= $post->post_author;
-	update_user_post_count( $user_id );
+	update_user_post_count( $user_id , $type = 'forums' );
 }
 
 /** 
@@ -423,7 +477,7 @@ add_action( 'comment_post' 		, 'new_comment_post_count' );
 function new_comment_post_count( $comment_ID ) {
 	$comment	= get_comment( $comment_ID );
 	$user_id 	= $comment->user_id;
-	update_user_post_count( $user_id );
+	update_user_post_count( $user_id , $type = 'comments' );
 }
 
 /** 
@@ -444,7 +498,17 @@ function trash_comment_post_count( $comment_id ) {
  */
 function get_user_comment_count( $user_id ) {
 	global $wpdb;
-    $count = $wpdb->get_var('SELECT COUNT(comment_ID) FROM ' . $wpdb->comments. ' WHERE user_id = ' . $user_id . ' AND comment_approved = 1' );
+    $count = $wpdb->get_var('SELECT COUNT(comment_ID) FROM ' . $wpdb->comments . ' WHERE user_id = ' . $user_id . ' AND comment_approved = 1' );
+    return $count;
+}
+
+/** 
+ * Count a user's total articles
+ * @since 0.1
+ */
+function get_user_article_count( $user_id ) {
+	global $wpdb;
+    $count = $wpdb->get_var('SELECT COUNT(ID) FROM ' . $wpdb->posts . ' WHERE post_type = "post" AND post_author = ' . $user_id . ' AND post_status = "publish"' );
     return $count;
 }
 
@@ -460,8 +524,6 @@ function get_user_warning_level( $userid ) {
 	$level = intval( get_user_meta( $userid , 'warning_level' , true ) );
 	return $level;
 }
-
-
 
 /**
  * Count users by a specific meta key

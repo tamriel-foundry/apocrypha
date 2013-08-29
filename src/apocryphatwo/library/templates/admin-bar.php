@@ -48,7 +48,7 @@ else :
 	$avatar			= apoc_fetch_avatar( $user_id , 'thumb' , 25 );
 	$link			= trailingslashit( SITEURL ) . trailingslashit( BP_MEMBERS_SLUG ) . $user->user_nicename;
 	$redirect 		= wp_logout_url( get_current_url() );
-	$notifications 	= apoc_get_notifications( $user_id );
+	$notifications 	= apoc_user_notifications( $user_id );
 ?>
 
 <div id="admin-bar-login" class="logged-in">	

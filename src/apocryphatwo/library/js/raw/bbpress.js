@@ -259,7 +259,6 @@ $( '#bbp_topic_title' ).bind( 'keydown.editor-focus', function(e) {
 	}
 });
 
-
 /*! bbPress Favorites / Subs */
 function bbp_ajax_call( action, topic_id, nonce, update_selector ) {
 	var $data = {
@@ -270,7 +269,31 @@ function bbp_ajax_call( action, topic_id, nonce, update_selector ) {
 
 	$.post( bbpTopicJS.bbp_ajaxurl, $data, function ( response ) {
 		if ( response.success ) {
-			$( update_selector ).html( response.content );
+		
+			// Strip out everything except the button
+			var response = $($.parseHTML( response.content));
+			var button 	= response.find( 'a' );
+			var text	= button.text();
+			
+			// Change the words
+			if ( '#favorite-toggle' == update_selector ) {
+				if( text == "Favorited" ) {
+					text = '<i class="icon-thumbs-down"></i>This Got Ugly';
+				} else {
+					text = '<i class="icon-thumbs-up"></i>This Thread Rocks';
+				}
+			}
+			else if ( '#subscription-toggle' == update_selector ) {
+				if( text == "Unsubscribe" ) {
+					text = '<i class="icon-remove"></i>' + text;
+				} else {
+					text = '<i class="icon-bookmark"></i>' + text;
+				}
+			}
+			button.html( text );
+	
+			// Update the button
+			$( update_selector ).html( button );
 		} else {
 			if ( !response.content ) {
 				response.content = bbpTopicJS.generic_ajax_error;

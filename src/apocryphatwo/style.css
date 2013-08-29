@@ -315,32 +315,26 @@ blockquote {
 	position: relative;
 	float: left;
 	margin: 0 1em 1em;
-	padding: 0 2em;
-	quotes:"\201C""\201D""\2018""\2019";
+	padding: 0.5em 1em 0.5em 3em;
 	font-family: 'Palatino Linotype' , 'Book Antiqua' , serif;
 	font-size: 1em;
 	color: #bbb;
+	text-shadow: 1px 1px #111;
 	background: rgba(17,17,17,0.25);
-	border: 1px solid #111;
 	border-radius: 3px;
-	box-shadow: 0 0 2px #444 inset;
 	}
-blockquote:before,
-blockquote:after {
+blockquote:before {
 	position: absolute;
-	top: 20px;
-	left: 0;
-	color: #aaa;
-	content: open-quote;
-	font-size: 2em;
+	top: 1em;
+	left: 0.5em;
+	font-family: FontAwesome;
+	color: #222;
+	text-shadow: 1px 1px #000;
+	content: "\F10E";
+	font-size: 1.5em;
 	line-height: 0;
 	margin: 0 0.25em;
 	vertical-align: -0.25em;
-	}
-blockquote:after {
-	content: close-quote;
-	left: auto;
-	right: 0;
 	}
 blockquote > p { margin: 0.5em 0; }
 blockquote + * { clear: left; }
@@ -1688,7 +1682,7 @@ header.widget-header {
 	border-top: 1px solid #444;
 	}
 h3.widget-title {
-	width: 200px;
+	width: 60%;
 	margin: -17px auto 0;
 	padding: 3px 1em;
 	color: #BBB;
@@ -2351,7 +2345,7 @@ form li#new-topic-title + li.wp-editor { margin: -1em 0 0; }
 /*---------------------------------------------
 	9.1 - User Profiles
 ----------------------------------------------*/
-header#profile-header { margin: 0 0 0.5em; }
+header#profile-header { margin: 0; }
 header#profile-header h1#profile-title { padding: 0 0 0 230px; }
 header#profile-header p.entry-byline { padding: 0 0 0 230px; }
 header#profile-header div#profile-actions {
@@ -2362,7 +2356,7 @@ header#profile-header div#profile-actions {
 div#profile-sidebar {
 	width: 220px;
 	float: left;
-	margin: -100px 0 0;
+	margin: -96px 0 0;
 	text-align: center;
 	}
 div#profile-user a.member-avatar img {
@@ -2373,19 +2367,25 @@ div#profile-user a.member-avatar img {
 	}
 div#profile-user a.member-name {
 	font-size: 1.5em;
-	margin: 0.25em 0;
+	margin: 0.25em 0 0.5em;
 	}
-div#profile-body{ margin: 1em 1em 1em 230px; }
+div#profile-content{ margin: 0 0 1em 220px; }
+div#profile-body{ 
+	width: 100%;
+	float: left;
+	margin: 1em 0;
+	}
 	
 /* Profile Menu */
-nav#profile-menu { 
-	height: 25px;
-	margin: 0 0 0 220px; 
+nav#profile-menu {
+	width: 100%;
+	float: left;
+	margin: -4px 0 0;
 	}
 ul#profile-actions { 
 	width: 100%;
 	float: left;
-	margin: -12px 0 0;
+	margin: 0;
 	padding: 0;
 	list-style: none; 
 	}
@@ -2434,6 +2434,37 @@ ul#profile-actions > li a span {
 	border-radius: 2px;
 	box-shadow: 0 0 3px #000;
 	}
+	
+/* Profile Header */
+blockquote#user-status {
+	width: 90%;
+	margin: 1em 0 1em 0.5em;
+	padding-right: 0;
+	}
+blockquote#user-status span.activity,
+blockquote#user-status a.update-status-button {
+	position: absolute;
+	top: 1em;
+	right: 1em;
+	text-shadow: none;
+	}
+div#profile-widgets {
+	width: 100%;
+	float: left;
+	clear: right;
+	margin: 1em 0;
+	}
+div#profile-widgets div.widget {
+	width: 30%;
+	float: left;
+	margin: 0 3.3% 0 0;
+	}
+div#profile-widgets div.widget > ul {
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 0.8em;
+	text-shadow: 1px 1px #000;
+	}
+div#detail-post-count ul li span { float: right; }
 
 	
 
@@ -2443,14 +2474,24 @@ ul#profile-actions > li a span {
 /*--------------------------------------------------------------
 X.X - WHERE DO I PUT THIS STUFF?
 --------------------------------------------------------------*/		
+span.activity,
 span.activity-count {
-	background: #252E33;
-	color: #BBB;
 	padding: 0 4px;
 	margin: 0 2px;
+	background: #252E33;
 	border: 1px solid #000;
 	border-radius: 2px;
-	box-shadow: 0 0 3px #000;
+	box-shadow: 0 0 2px #111;
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 12px;
+	line-height: 16px;
+	color: #BBB;
+	}
+span.activity { 
+	padding: 1px 8px;
+	border-radius: 3px; 
+	line-height: inherit;
+	text-shadow: none;
 	}
 	
 	

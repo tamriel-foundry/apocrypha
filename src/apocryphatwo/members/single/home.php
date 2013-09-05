@@ -15,12 +15,9 @@
 		<?php locate_template( array( 'members/single/member-header.php' ), true ); ?>		
 		
 		<div id="profile-body">
-		This is full-width profile content that changes depending on the top-level component
-		
-		<?php /* This is user profile content
 		<?php if ( bp_is_user_profile() ) :
 			locate_template( array( 'members/single/profile.php'	), true );
-		elseif ( bp_is_user_activity() || !bp_current_component() ) :
+		elseif ( bp_is_user_activity() ) :
 			locate_template( array( 'members/single/activity.php'	), true ); 
 		elseif ( bp_is_user_forums() ) :
 			locate_template( array( 'members/single/forums.php'		), true );
@@ -34,7 +31,7 @@
 			locate_template( array( 'members/single/settings.php'	), true );
 		else :
 			locate_template( array( 'members/single/plugins.php'	), true );
-		endif;  */ ?>
+		endif; ?>
 		</div>		
 		
 	</div><!-- #content -->

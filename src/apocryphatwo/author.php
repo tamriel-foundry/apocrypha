@@ -8,7 +8,7 @@
 
 // Get the queried author
 $user_id	= get_query_var( 'author' );
-$username 	= bp_core_get_user_displayname( $user_id );
+$author		= new Apoc_User( $user_id );
 ?>
 
 <?php get_header(); ?>
@@ -17,14 +17,13 @@ $username 	= bp_core_get_user_displayname( $user_id );
 		<?php apoc_breadcrumbs(); ?>
 			
 		<header id="archive-header">
-			<h1 id="archive-title" class="double-border bottom"><?php printf( 'Articles By %s' , $username ); ?></h1>
+			<h1 id="archive-title" class="double-border bottom"><?php printf( 'Articles By %s' , $author->fullname ); ?></h1>
 			<div id="archive-author-info">
-				<div id="archive-author-block" class="reply-author">
-					<?php apoc_member_block( $user_id , $context = 'member' , $avatar = 'thumb' ); ?>
+				<div class="reply-author user-block">
+					<?php echo $author->block; ?>
 				</div>
 				<div id="archive-author-bio" class="reply-content">
-					<?php the_author_meta( 'description', $userid ); ?>
-					test
+					<?php echo $author->bio; ?>
 				</div>
 			</div>
 		</header>

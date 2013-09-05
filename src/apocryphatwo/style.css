@@ -34,6 +34,7 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	4.3 - Pagination
 	4.4 - Footer Navigation
 	4.5 - Forum Navigation
+	4.6 - Tabbed Containers
 5.0 - Posts and Pages	
 	5.1 - Headers
 	5.2 - Content
@@ -1141,7 +1142,7 @@ a.footer-nav-item {
 	background: -webkit-linear-gradient(top, #555, #222);
 	border: 1px solid #111;
 	border-radius: 5px;
-	box-shadow: 0 0 2px #999 inset;
+	box-shadow: 0 0 2px #666 inset;
 	}
 a.footer-nav-item + a.footer-nav-item { margin-left: 3.0%; }
 img.footer-nav-image {
@@ -1178,7 +1179,7 @@ a#anvil-link {
 a#anvil-link:hover { background-position: 0 0; }
 
 /*---------------------------------------------
-4.5 - Forum Navigation and Controls
+	4.5 - Forum Navigation and Controls
 ----------------------------------------------*/
 nav.topic-pagination {
 	width: auto;
@@ -1200,6 +1201,40 @@ a.last-reply-link:hover {
 	color: #C60;
 	text-shadow: 0 0 10px #c60;
 	}
+	
+/*---------------------------------------------
+	4.6 - Tabbed Containers
+----------------------------------------------*/
+ul.tabs {
+	width: 100%;
+	float: left;
+	margin: 0 0 1em;
+	padding: 0;
+	overflow: hidden;
+	list-style:none; 
+	background: rgba(17,17,17,0.5);
+	border: 1px solid #000;
+	box-shadow: 0 0 2px #444 inset;
+	border-radius: 3px;
+	}
+ul.tabs li {
+	float:left;
+	padding: 0.5em 2em;
+	border-right: 1px solid #000;
+	}
+ul.tabs li + li { border-left: 1px solid #222; }
+ul.tabs li:last-child { border-right: none; }
+
+ul.tabs li > a {
+	font-family: Cinzel , serif;
+	color: #BBB;
+	text-align: center;
+	text-shadow: 1px 1px #000;
+	}
+ul.tabs li:hover { background: rgba(51,51,51,0.2); }
+ul.tabs li:hover > a {  text-shadow: 0 0 20px #c60; }
+ul.tabs li.current { background: rgba( 51,51,51,0.3 ); }
+ul.tabs li.current > a { text-shadow: 0 0 20px #c60; }
 	
 	
 /*--------------------------------------------------------------
@@ -1618,7 +1653,7 @@ h1#home-posts-title {
 	background: -webkit-linear-gradient(top, rgb(51,51,51), rgb(17,17,17));
 	border: 1px solid #000;
 	border-radius: 5px;
-	box-shadow: 0 0 2px #999 inset;
+	box-shadow: 0 0 2px #666 inset;
 	}
 	
 /* Posts Inside Loop */
@@ -1695,7 +1730,7 @@ h3.widget-title {
 	background: -webkit-linear-gradient(top, rgb(51,51,51), rgb(17,17,17));
 	border: 1px solid #000;
 	border-radius: 5px;
-	box-shadow: 0 0 2px #999 inset;
+	box-shadow: 0 0 2px #666 inset;
 	}
 div.widget ul {
 	margin: 0;
@@ -2080,7 +2115,6 @@ div#archive-description {
 div#archive-author-info {
 	width: 100%;
 	float: left;
-	margin: 0 0 1em;
 	}
 	
 /*--------------------------------------------------------------
@@ -2360,14 +2394,13 @@ div#profile-sidebar {
 	text-align: center;
 	}
 div#profile-user a.member-avatar img {
-	padding: 2px;
-	background: #111;
+	padding: 0;
 	border: 1px solid #000;
 	box-shadow: 0 0 20px #000;
 	}
 div#profile-user a.member-name {
 	font-size: 1.5em;
-	margin: 0.25em 0 0.5em;
+	margin: 0.25em 0;
 	}
 div#profile-content{ margin: 0 0 1em 220px; }
 div#profile-body{ 
@@ -2375,6 +2408,7 @@ div#profile-body{
 	float: left;
 	margin: 1em 0;
 	}
+div#user-profile { margin: 0 0 1em; }
 	
 /* Profile Menu */
 nav#profile-menu {
@@ -2452,7 +2486,7 @@ div#profile-widgets {
 	width: 100%;
 	float: left;
 	clear: right;
-	margin: 1em 0;
+	margin: 1em 0 0;
 	}
 div#profile-widgets div.widget {
 	width: 30%;
@@ -2466,9 +2500,76 @@ div#profile-widgets div.widget > ul {
 	}
 div#detail-post-count ul li span { float: right; }
 
+/* User Badges */
+div#profile-badges ul.user-badges {
+	width: 100%;
+	float: left;
+	margin: 0.5em 0;
+	}
+ul.user-badges li.user-badge {
+	width: 50px;
+	height: 50px;
+	float: left;
+	margin: 0 5px 5px 0;
+	background-image: url(images/icons/badges.jpg);
+	border: 1px solid #111;
+	border-radius: 3px;
+	}
+li.user-badge.founder { background-position: 0 0; }
+li.user-badge.yearone { background-position: -50px 0; }
+
+/* Character Biography */
+div#user-biography {	margin: 0 320px 0 1em; }
+div#user-character {
+	width: 300px;
+	float: right;
+	margin: 1em 0;
+	}
+div#character-sheet {
+	width: 300px;
+	height: 169px;
+	margin: 0.5em 0;
+	background-image: url( "images/backgrounds/flags.jpg" );
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 3px #111 inset;
+	text-align: center;
+	text-shadow: 1px 1px #000;
+	}
+div#character-sheet.bosmer { background-position: 0 -169px; }
+div#character-sheet.khajiit { background-position: 300px 0; }
+div#character-sheet.breton { background-position: 300px 0; }
+div#character-sheet.daggerfall { background-position: 300px 0; }
+div#character-sheet.orc { background-position: 300px 0; }
+div#character-sheet.redguard { background-position: 0 -676px; }
+div#character-sheet.argonian { background-position: 300px 0; }
+div#character-sheet.dunmer { background-position: 0 -338px; }
+div#character-sheet.nord { background-position: 0 -507px; }
+div#character-sheet.ebonheart { background-position: 0 -507px; }
+div#character-sheet.default { background-position: 300px 0; }
+div#character-sheet > ul {
+	margin: 1.5em 2em;
+	background: rgba( 17,17,17,0.75 );
+	padding: 0.5em 1em;
+	text-align: left;
+	font-size: 0.8em;
+	}
+div#character-sheet > ul li span { 
+	display: inline-block;
+	width: 60px;
+	margin: 0 3px; 
+	}
+
+
+
 	
-
-
+/*---------------------------------------------
+	9.2 - Directories
+----------------------------------------------*/
+nav.directory-subheader {
+	width: 100%;
+	float: left;
+	}
 
 
 /*--------------------------------------------------------------

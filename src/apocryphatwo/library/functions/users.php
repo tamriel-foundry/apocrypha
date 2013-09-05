@@ -14,22 +14,6 @@ class Apoc_User {
 
 	// The context in which this user is being displayed
 	public $context;
-
-	// The user
-	public $id;
-	public $fullname;
-	public $roles;
-	public $domain;
-	public $avatar;
-	public $bio;
-	public $status;
-	public $sig;
-	public $faction;
-	public $race;
-	public $class;
-	public $posts;
-	public $rank;
-	public $title;
 	
 	// The HTML member block
 	public $block;
@@ -65,12 +49,12 @@ class Apoc_User {
 		$this->id		= $user_id;
 		$this->fullname = $meta['nickname'];
 		$this->roles	= array_keys( maybe_unserialize( $meta['wp_capabilities'] ) );
-		$this->bio		= $meta['description'];
 		$this->status	= maybe_unserialize( $meta['bp_latest_update'] );
 		$this->faction	= $meta['faction'];
 		$this->race		= $meta['race'];
 		$this->class	= $meta['playerclass'];
 		$this->posts	= maybe_unserialize( $meta['post_count'] );
+		$this->bio		= ( '' == $meta['description'] ) ? "This member has not written a biography." : do_shortcode( $meta['description'] );
 		
 		// Format the signature
 		$signature 		= $meta['signature'];
@@ -86,7 +70,7 @@ class Apoc_User {
 		$this->title	= $this->user_title( $user_id );
 		
 		// Get additional data and the byline on profile pages
-		if ( 'profile' == $this->context ) 
+		if ( 'profile' == $this->context ) {
 			$user				= get_userdata( $this->id );
 			$this->nicename 	= $user->user_nicename;
 			$this->regdate 		= strtotime( $user->user_registered );
@@ -100,6 +84,9 @@ class Apoc_User {
 				'twitch' 		=> $meta['twitch'],
 				'bethforums' 	=> $meta['bethforums'],
 			);
+			$this->badges		= $this->badges();
+			$this->charname		= implode( ' ' , array( $meta['first_name'] , $meta['last_name'] ) );
+		}
 	}
 	
 	/** 
@@ -162,6 +149,8 @@ class Apoc_User {
 			
 			// Otherwise, the user can set a custom title
 			else :
+				// Default title
+				$title = $this->rank['rank_title'];
 				// Special prefixes
 				// $prefix = get_prefix();
 			endif;
@@ -299,9 +288,33 @@ class Apoc_User {
 		if ( $contacts['bethforums'] != '' ) {
 			$bethforums_name = preg_replace( '#(.*)[0-9]+(-{1})#' , '' , $contacts['bethforums'] );
 			$bethforums_name = preg_replace( '#-{1}|/{1}#' , ' ' , $bethforums_name );
-			echo '<li><i class="icon-sign-blank icon-fixed-width"></i>Bethesda Forums: <a href="http://forums.bethsoft.com/user/' . $contacts['bethforums'] . '" target="_blank">' . ucwords( $bethforums_name ) . '</a></li>' ;
+			echo '<li><i class="icon-sign-blank icon-fixed-width"></i>Bethesda: <a href="http://forums.bethsoft.com/user/' . $contacts['bethforums'] . '" target="_blank">' . ucwords( $bethforums_name ) . '</a></li>' ;
 			}
 		echo '</ul>' ;
+	}
+	
+	/* 
+	 * Get a users earned forum badges
+	 * @since 0.1
+	 */
+	function badges() {
+	
+		// Setup array
+		$badges = array();
+		
+		// Veterancy Badges
+		if( $this->regdate <= strtotime( '11/12/2012' ) )
+			$badges['founder']	= 'Founder';
+		if( $this->regdate <= strtotime( '-1 year' ) )
+			$badges['yearone']	= 'One Year Veteran';
+		
+		// Posting Badges
+		
+		// Social Badges
+		
+		// In-Game Badges
+		
+		return $badges;
 	}
 
 	

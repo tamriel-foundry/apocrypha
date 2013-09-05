@@ -7,6 +7,7 @@
  */
 
 // Get the user info block
+global $user;
 $user 	= new Apoc_User( bp_displayed_user_id() , 'profile' );
 ?>	
 
@@ -65,8 +66,14 @@ $user 	= new Apoc_User( bp_displayed_user_id() , 'profile' );
 			<header class="widget-header">
 				<h3 class="widget-title">User Badges</h3>
 			</header>
-			<ul>
-				<li>No Badges Earned Yet!</li>
+			<ul class="user-badges">
+				<?php if ( !empty( $user->badges ) ) :
+				foreach ( $user->badges as $badge => $name ) : ?>
+					<li class="user-badge <?php echo $badge; ?>" title="<?php echo $name; ?>"></li>
+				<?php endforeach;
+				else : ?>
+					<li>No badges earned yet!</li>
+				<?php endif; ?>
 			</ul>
 		</div>
 		
@@ -79,4 +86,3 @@ $user 	= new Apoc_User( bp_displayed_user_id() , 'profile' );
 	</div>
 	
 </div>
-

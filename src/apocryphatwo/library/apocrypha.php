@@ -55,6 +55,9 @@ class Apocrypha {
 			
 			// Setup actions
 			self::$instance->actions();
+			
+			// Setup filters
+			self::$instance->filters();
 		}
 		
 		// Return the theme class!
@@ -186,7 +189,18 @@ class Apocrypha {
 	
 		// Populate apocrypha globals
 		add_action( 'template_redirect', array( $this , 'populate_globals' ) , 1 );	
-	}				
+	}
+
+	/**
+	 * Override core WordPress functions with filters
+	 * @version 1.0.0
+	 */
+	private function filters() {
+	
+		// Override WordPress default avatars
+		add_filter( 'get_avatar' , array( $this , 'filter_avatar' ) , 10 , 3 );
+		
+	}
 		
 	/** Public Methods **********************************************************/		
 	
@@ -232,6 +246,20 @@ class Apocrypha {
 		$contactmethods['bethforums'] 	= 'forums.bethsoft.com/user/';
 		return $contactmethods;
 	}
+	
+	/**
+	 * Filters the default WordPress avatar grabber to use the Apoc_Avatar class instead
+	 * @version 1.0.0
+	 */	
+	function filter_avatar( $avatar , $user_id , $size ) {
+
+		// Get the full avatar for large sizes
+		$type 		= ( $size > 100 ) ? 'full' : 'thumb';	
+		$avatar 	= new Apoc_Avatar( array( 'user_id' => $user_id , 'type' => $type , 'size' => $size ) );
+		
+		return $avatar->avatar;
+	}	
+
 }
 
 /**

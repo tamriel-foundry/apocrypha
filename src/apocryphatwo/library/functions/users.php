@@ -145,8 +145,6 @@ class Apoc_User {
 				$title = 'Daedric Prince';
 			elseif ( 'bbp_moderator' == $forum_role || 'bbp_keymaster' == $forum_role ) :
 				$title = 'Moderator'; 
-			elseif ( 'guildmember' == $site_role ) :
-				$title = 'Entropy Rising';
 			elseif ( 'banned' == $site_role ) :
 				$title = 'Banned';
 			
@@ -341,7 +339,7 @@ class Apoc_User {
 		$block		= '<a class="member-name" href="' . $this->domain . '" title="View ' . $this->fullname . '&apos;s Profile">' . $this->fullname . '</a>';
 		$block		.= $this->title;	
 		$block		.= $this->allegiance();
-		$block		.= ( '' != $this->guild ) ? '<p class="user-guild">' . $this->guild . '</p>' : '' ;
+		$block		.= ( '' != $this->guild ) ? '<p class="user-guild ' . strtolower( str_replace( ' ' , '-' , $this->guild ) ) . '">' . $this->guild . '</p>' : '' ;
 		$block		.= '<p class="user-post-count">Total Posts: ' . $this->posts['total'] . '</p>';
 
 	

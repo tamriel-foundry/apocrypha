@@ -1498,16 +1498,14 @@ div.user-block > p {
 	font-size: 0.75em;
 	}
 div.user-block > p.user-guild { font-style: italic; }
+p.user-guild.entropy-rising { text-shadow: 1px 0 10px #0F0; }
 div.user-block > p.user-title {	
 	font-size: 0.875em;
 	font-style: italic;
 	}
 p.user-title.daedric-prince,
 p.user-title.moderator {
-	text-shadow: 1px 0 5px #F30;
-	}
-p.user-title.entropy-rising {
-	text-shadow: 1px 0 5px #0F0;
+	text-shadow: 1px 0 10px #F30;
 	}
 div.user-exp-container {
 	width: 100px;

@@ -121,11 +121,11 @@ function apoc_enqueue_scripts() {
 	// Register first
 	wp_register_script( 'foundry' 		, THEME_URI . '/library/js/foundry.js' 			, 'jquery' , $ver='0.1' , true	);
 	wp_register_script( 'flexslider' 	, THEME_URI . '/library/js/flexslider.min.js' 	, 'jquery' , $ver='0.1' , true  );
-	//wp_register_script( 'buddypress'	, THEME_URI . '/library/js/buddypress.js' 		, 'jquery' , $ver='0.1' , true 	);	
+	wp_register_script( 'buddypress'	, THEME_URI . '/library/js/buddypress.js' 		, 'jquery' , $ver='0.1' , true 	);	
 	
 	// Deregister WordPress default jQuery and get from Google
 	wp_deregister_script( 'jquery' );
-	wp_register_script( 'jquery' 		, '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' ,'jquery' , $ver ='1.10.2' , true );
+	wp_register_script( 'jquery' 		, '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js' ,'jquery' , $ver ='1.8.3' , true );
 	
 	// Then enqueue
 	wp_enqueue_script( 'jquery' );

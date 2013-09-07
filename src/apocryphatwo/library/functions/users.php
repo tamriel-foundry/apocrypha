@@ -284,21 +284,21 @@ class Apoc_User {
 			return;
 		}
 		if ( $contacts['url'] != '' )
-			echo '<li><i class="icon-globe icon-fixed-width"></i>Website: <a href="' . $contacts['url'] . '" target="_blank">' . $contacts['url'] . '</a></li>' ;
+			echo '<li><i class="icon-globe icon-fixed-width"></i><span>Website:</span><a href="' . $contacts['url'] . '" target="_blank">' . $contacts['url'] . '</a></li>' ;
 		if ( $contacts['twitter'] != '' )
-			echo '<li><i class="icon-twitter icon-fixed-width"></i>Twitter: <a href="http://twitter.com/' . $contacts['twitter'] . '" target="_blank">' . $contacts['twitter'] . '</a></li>' ;
+			echo '<li><i class="icon-twitter icon-fixed-width"></i><span>Twitter:</span><a href="http://twitter.com/' . $contacts['twitter'] . '" target="_blank">' . $contacts['twitter'] . '</a></li>' ;
 		if ( $contacts['facebook'] != '' )
-			echo '<li><i class="icon-facebook icon-fixed-width"></i>Facebook: <a href="http://facebook.com/' . $contacts['facebook'] . '" target="_blank">' . $contacts['facebook'] . '</a></li>' ;
+			echo '<li><i class="icon-facebook icon-fixed-width"></i><span>Facebook:</span><a href="http://facebook.com/' . $contacts['facebook'] . '" target="_blank">' . $contacts['facebook'] . '</a></li>' ;
 		if ( $contacts['steam'] != '' )
-			echo '<li><i class="icon-wrench icon-fixed-width"></i>Steam ID: <a href="http://steamcommunity.com/id/' . $contacts['steam'] . '" target="_blank">' . $contacts['steam'] . '</a></li>' ;
+			echo '<li><i class="icon-wrench icon-fixed-width"></i><span>Steam ID:</span><a href="http://steamcommunity.com/id/' . $contacts['steam'] . '" target="_blank">' . $contacts['steam'] . '</a></li>' ;
 		if ( $contacts['youtube'] != '' )
-			echo '<li><i class="icon-youtube icon-fixed-width"></i>YouTube: <a href="http://www.youtube.com/user/' . $contacts['youtube'] . '" target="_blank">' . $contacts['youtube'] . '</a></li>' ;
+			echo '<li><i class="icon-youtube icon-fixed-width"></i><span>YouTube:</span><a href="http://www.youtube.com/user/' . $contacts['youtube'] . '" target="_blank">' . $contacts['youtube'] . '</a></li>' ;
 		if ( $contacts['twitch'] != '' )
-			echo '<li><i class="icon-desktop icon-fixed-width"></i>TwitchTV: <a href="http://www.twitch.tv/' . $contacts['twitch'] . '" target="_blank">' . $contacts['twitch'] . '</a></li>' ;
+			echo '<li><i class="icon-desktop icon-fixed-width"></i><span>TwitchTV:</span><a href="http://www.twitch.tv/' . $contacts['twitch'] . '" target="_blank">' . $contacts['twitch'] . '</a></li>' ;
 		if ( $contacts['bethforums'] != '' ) {
 			$bethforums_name = preg_replace( '#(.*)[0-9]+(-{1})#' , '' , $contacts['bethforums'] );
 			$bethforums_name = preg_replace( '#-{1}|/{1}#' , ' ' , $bethforums_name );
-			echo '<li><i class="icon-sign-blank icon-fixed-width"></i>Bethesda: <a href="http://forums.bethsoft.com/user/' . $contacts['bethforums'] . '" target="_blank">' . ucwords( $bethforums_name ) . '</a></li>' ;
+			echo '<li><i class="icon-sign-blank icon-fixed-width"></i><span>Bethesda:</span><a href="http://forums.bethsoft.com/user/' . $contacts['bethforums'] . '" target="_blank">' . ucwords( $bethforums_name ) . '</a></li>' ;
 			}
 		echo '</ul>' ;
 	}
@@ -319,9 +319,13 @@ class Apoc_User {
 			$badges['yearone']	= 'One Year Veteran';
 		
 		// Posting Badges
+		if( 'Scamp' != $this->rank['rank_title'] )
+			$badges[str_replace( ' ' , '-' , strtolower($this->rank['rank_title']) )] = $this->rank['rank_title'];
 		
 		// Social Badges
-		
+		if ( 1 <= bp_get_total_group_count_for_user( $this->id ) )
+			$badges['group']	= "It's Dangerous To Go Alone...";
+			
 		// In-Game Badges
 		
 		return $badges;
@@ -342,28 +346,29 @@ class Apoc_User {
 
 	
 		// Do some things differently depending on context
+		$avatar_args = array( 'user_id' => $this->id , 'alliance' => $this->faction , 'race' => $this->race );
 		switch( $context ) {
 		
 			case 'directory' :
-				$avatar 		= apoc_fetch_avatar( $this->id );
-				$block 			= '<div class="member-meta">' . $block . '</div>';
+				$block 					= '<div class="member-meta">' . $block . '</div>';
 				break;
 		
 			case 'reply' :
-				$avatar 		= apoc_fetch_avatar( $this->id );
-				$block			.= $this->expbar();
+				$block					.= $this->expbar();
 				break;
 					
 			case 'profile' :
-				$avatar 		= apoc_fetch_avatar( $this->id , 'full' , 200 );
-				$block			.= $this->expbar();
-				$regdate		= date("F j, Y", $this->regdate );
-				$block			.= '<p class="user-join-date">Joined ' . $regdate . '</p>';
+				$avatar_args['type'] 	= 'full';
+				$avatar_args['size']	= 200;
+				$block					.= $this->expbar();
+				$regdate				= date("F j, Y", $this->regdate );
+				$block					.= '<p class="user-join-date">Joined ' . $regdate . '</p>';
 				break;
 		}
 		
 		// Prepend the avatar
-		$avatar			= '<a class="member-avatar" href="' . $this->domain . '" title="View ' . $this->fullname . '&apos;s Profile">' . $avatar . '</a>';
+		$avatar			= new Apoc_Avatar( $avatar_args );
+		$avatar			= '<a class="member-avatar" href="' . $this->domain . '" title="View ' . $this->fullname . '&apos;s Profile">' . $avatar->avatar . '</a>';
 		$this->avatar 	= $avatar;
 		$block			= $avatar . $block;
 		
@@ -398,44 +403,69 @@ class Edit_Profile extends Apoc_User {
 		// Check the nonce
 		if ( !wp_verify_nonce( $_POST['edit_user_nonce'] , 'update-user' ) )
 			exit;
-
-		// Update character info
-		if ( !empty( $_POST['first-name'] ) )
-			update_user_meta( $user_id	, 'first_name'		, esc_attr( $_POST['first-name'] ) );
-		if ( !empty( $_POST['last-name'] ) )
-			update_user_meta( $user_id	, 'last_name'		, esc_attr( $_POST['last-name'] ) );
-		if ( !empty( $_POST['faction'] ) )
-			update_user_meta( $user_id	, 'faction'			, $_POST['faction'] );
-		if ( !empty( $_POST['race'] ) )
-			update_user_meta( $user_id	, 'race'			, $_POST['race'] );
-		if ( !empty( $_POST['playerclass'] ) )
-			update_user_meta( $user_id	, 'playerclass'		, $_POST['playerclass'] );
-		if ( !empty( $_POST['prefrole'] ) )
-			update_user_meta( $user_id	, 'prefrole'		, $_POST['prefrole'] );
-		if ( !empty( $_POST['guild'] ) )
-			update_user_meta( $user_id	, 'guild'			, $_POST['guild'] );
 			
-		// Update biography and signature
-		if ( !empty( $_POST['description'] ) )
-			update_user_meta( $user_id, 	'description'	, apoc_custom_kses( $_POST['description'] ) );	
-		if ( !empty( $_POST['signature'] ) )
-			update_user_meta( $user_id, 	'signature'		, apoc_custom_kses( $_POST['signature'] ) );
+		// Get the original values so we can tell whether they were updated
+		$originals 	= array(
+			'first-name'	=> $this->first_name,
+			'last-name'		=> $this->last_name,
+			'faction'		=> $this->faction,
+			'race'			=> $this->race,
+			'playerclass'	=> $this->class,
+			'prefrole'		=> $this->prefrole,
+			'guild'			=> $this->guild,
+			'description'	=> $this->bio,
+			'signature'		=> $this->sig,
+			'url'			=> $this->contacts['url'],
+			'twitter'		=> $this->contacts['twitter'],
+			'facebook'		=> $this->contacts['facebook'],
+			'youtube'		=> $this->contacts['facebook'],
+			'steam'			=> $this->contacts['steam'],
+			'twitch'		=> $this->contacts['twitch'],
+			'bethforums'	=> $this->contacts['bethforums']
+		);
+			
+		// Group meta fields by their sanitization treatment
+		$updates = array(
+			'escattr'	=> array( 'first-name' , 'last-name' , 'guild' , 'url' , 'facebook' , 'twitter' , 'youtube' , 'steam' , 'twitch' , 'bethforums' ),
+			'escurl'	=> array( 'url' ),
+			'kses'		=> array( 'description' , 'signature' ),
+			'noesc'		=> array( 'faction' , 'race' , 'playerclass', 'prefrole' )
+		);
 		
-		// Update contact methods
-		if ( !empty( $_POST['url'] ) )
-			update_user_meta( $user_id, 	'user_url'		, esc_url( $_POST['url'] ) );
-		if ( !empty( $_POST['facebook'] ) )
-			update_user_meta( $user_id, 	'facebook'		, esc_attr( trim( $_POST['facebook'] ) ) );
-		if ( !empty( $_POST['twitter'] ) )
-			update_user_meta( $user_id, 	'twitter'		, esc_attr( trim( $_POST['twitter'] ) ) );
-		if ( !empty( $_POST['youtube'] ) )
-			update_user_meta( $user_id, 	'youtube'		, esc_attr( trim( $_POST['youtube'] ) ) );
-		if ( !empty( $_POST['steam'] ) )
-			update_user_meta( $user_id, 	'steam'			, esc_attr( trim( $_POST['steam'] ) ) );
-		if ( !empty( $_POST['twitch'] ) )
-			update_user_meta( $user_id, 	'twitch'		, esc_attr( trim( $_POST['twitch'] ) ) );
-		if ( !empty( $_POST['bethforums'] ) )
-			update_user_meta( $user_id, 	'bethforums'	, esc_attr( trim( $_POST['bethforums'] ) ) );
+		foreach ( $updates as $treatment => $fields ) {
+				
+			// Configure the sanitization treatments
+			switch ( $treatment ) {
+				
+				case 'escattr' :
+					$treat = 'esc_attr';
+					break;
+				
+				case 'escurl' :
+					$treat = 'esc_url';
+					break;
+					
+				case 'kses' :
+					$treat	= 'apoc_custom_kses';
+					break;
+				
+				case 'noesc' :
+					$treat = 'trim';
+					break;
+			}
+			
+			// Loop through fields
+			foreach ( $fields as $field ) {
+					
+					// There is a new value to save
+					if ( !empty( $_POST[$field] ) && $_POST[$field] != $originals[$field] )
+						update_user_meta( $user_id	, $field , call_user_func( $treat , $_POST[$field] ) );
+						
+					// The value was removed
+					elseif ( empty( $_POST[$field] ) )
+						delete_user_meta( $user_id	, $field  )	;	
+			}			
+		}
 		
 		// Let plugins save their stuff
 		do_action('edit_user_profile_update', $user_id );
@@ -450,65 +480,120 @@ class Edit_Profile extends Apoc_User {
 }
  
 /*--------------------------------------------------------------
+3.0 - APOCRYPHA AVATAR CLASS
+--------------------------------------------------------------*/
+class Apoc_Avatar {
+
+	// Declare the avatar property
+	public $avatar;
+
+	/** 
+	 * Constructor function for Apoc Avatar class
+	 * Optionally accepts arguments to avoid unnecessary DB interaction
+	 */
+	function __construct( $args = array() ) {
+	
+		// Setup default arguments
+		$defaults = array(
+			'user_id'		=> 0,
+			'alliance'		=> '',
+			'race'			=> '',
+			'type'			=> 'thumb',
+			'size'			=> 100,
+			'link'			=> false,
+			'url'			=> '',
+			);
+		
+		// Parse with supplied params
+		$args = wp_parse_args( $args , $defaults );
+		
+		// Set class attributes
+		foreach ( $args as $prop => $attr ) {
+			$this->$prop = $attr;
+		}
+		
+		// If no url was supplied, get it
+		if ( $this->link == true && '' == $this->url && 0 < $this->user_id )
+			$this->url = bp_core_get_user_domain( $this->user_id );		
+			
+		// Get the avatar
+		$this->get_avatar();
+		
+		// Display the avatar
+		$this->display_avatar();
+	}
+	
+	function get_avatar() {
+		
+		// Get the avatar from BuddyPress
+		if ( $this->user_id > 0 ) {
+			$avatar	= bp_core_fetch_avatar( $args = array (
+				'item_id' 		=> $this->user_id,
+				'type'			=> $this->type,
+				'height'		=> $this->size,
+				'width'			=> $this->size,
+				'no_grav'		=> true,
+				));
+				
+			// If the user has not uploaded an avatar, get the default
+			if ( strrpos( $avatar , 'mystery-man.jpg' ) ) 
+				$avatar = $this->guest_avatar();
+		}
+		else 
+			$avatar = $this->guest_avatar();
+		
+		// Set the avatar to the class object
+		$this->avatar = $avatar;	
+	}
+	
+	function guest_avatar() {
+	
+		// Get needed descriptors
+		$race 			= $this->race;
+		$alliance		= $this->alliance;
+		
+		// If nothing was passed, try race first
+		if ( '' == $race && '' == $alliance ) {
+			$race 		= get_user_meta( $this->user_id , 'race' , true );
+			$this->race = $race;
+		}
+			
+		// If it's still unset, try alliance next
+		if ( '' == $race && '' == $alliance ) {
+			$alliance 	= get_user_meta( $this->user_id , 'faction' , true );
+			$this->alliance	= $alliance;
+		}
+		
+		// See if anything stuck
+		$type = ( '' != $race ) ? $race : $alliance;
+			
+		// If nothing has worked, use neutral
+		if ( '' == $type )
+			$type 	= 'neutral';
+			
+		// Return the appropriate guest avatar
+		$avsize		= ( 'thumb' == $this->type ) ? 100 : 200;
+		$src 		= trailingslashit( THEME_URI ) . "images/avatars/{$type}-{$avsize}.jpg";
+		$avatar 	= '<img src="' . $src . '" alt="Member Avatar" class="avatar" width="' . $this->size . '" height="' . $this->size . '">';
+		return $avatar;
+	}
+	
+	function display_avatar() {
+	
+		$avatar = $this->avatar;
+		
+		// Wrap the avatar in a profile link?
+		if ( true == $this->link ) 
+			$avatar	= '<a class="member-avatar" href="' . $this->url . '" title="View User Profile">' . $this->avatar . '</a>';
+			
+		// Return the avatar
+		return $avatar;
+	}
+}
+
+/*--------------------------------------------------------------
 3.0 - STANDALONE FUNCTIONS
 --------------------------------------------------------------*/
-
-/** 
- * Get a user's avatar link
- * @version 1.0.0
- */
-function apoc_fetch_avatar_link( $user_id , $type='thumb' , $size=100 ) {
-	
-	// Get the avatar
-	$avatar	= apoc_fetch_avatar( $user_id , $type , $size );
-	
-	// For members, give a profile link
-	if ( $user_id > 0 ) {
-		$url 	= bp_core_get_user_domain( $user_id );
-		$link	= '<a class="member-avatar" href="' . $link . '" title="View User Profile">' . $avatar . '</a>';
-		
-	// Otherwise just the avatar is fine
-	} else $link	= $avatar;
-	
-	// Echo it
-	echo $link;		
-}
-
-/** 
- * Get a user's avatar without using gravatar, uses custom defaults
- * @version 1.0.0
- */
-function apoc_fetch_avatar( $user_id , $type='thumb' , $size=100 ) {
-	
-	if ( $user_id > 0 ) {
-		$avatar	= bp_core_fetch_avatar( $args = array (
-			'item_id' 		=> $user_id,
-			'type'			=> $type,
-			'height'		=> $size,
-			'width'			=> $size,
-			'no_grav'		=> true,
-			));
-		if ( strrpos( $avatar , 'mystery-man.jpg' ) ) 
-			$avatar = apoc_guest_avatar( $type , $size ); 
-	}
-	else $avatar = apoc_guest_avatar( $type , $size ); 
-	return $avatar;
-}
-
-/**
- * Randomly selects and returns a guest avatar from the available choices
- * @version 1.0.0
- */
-function apoc_guest_avatar( $type ='thumb' , $size = 100 ) {
-	$avsize = ( 'full' == $type ) ? '-large' : '' ;
-	$avatars = array( 'aldmeri' , 'daggerfall' , 'ebonheart' , 'undecided' );
-	$avatar = $avatars[array_rand($avatars)];
-    $src = trailingslashit( THEME_URI ) . "images/avatars/{$avatar}{$avsize}.jpg";
-	$guest_avatar = '<img src="' . $src . '" alt="Avatar Image" class="avatar" width="' . $size . '" height="' . $size . '">';
-    return $guest_avatar;
-}
-
-
 
 /** 
  * Update a user's total post count
@@ -551,7 +636,7 @@ add_action( 'save_post'			, 'update_author_post_count' , 10 , 2 );
 function update_author_post_count( $post_ID , $post ) {
 	if ( 'post' != $post->post_type )
 		return;
-	update_user_meta( $post->post_author , $type = 'articles' );
+	update_user_post_count( $post->post_author , $type = 'articles' );
 }
  
 /** 

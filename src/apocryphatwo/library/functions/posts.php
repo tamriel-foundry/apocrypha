@@ -166,9 +166,9 @@ function entry_header_description() {
 		
 		// Show a bunch of stuff for single views
 		if ( is_single() ) :
-			$avatar = apoc_fetch_avatar_link( $author_ID , $type = 'thumb' , $size = 50 );
+			$avatar		= new Apoc_Avatar( array( 'user_id' => $author_ID , 'type' => 'thumb' , 'size' => 50 ) );
 			$category = get_the_term_list( $post_ID, 'category', ' in ' , ', ', '' );
-			$description = $avatar . 'By ' . $author . ' on ' . $published . $category . $edit_link;			
+			$description = $avatar->avatar . 'By ' . $author . ' on ' . $published . $category . $edit_link;			
 		
 		// Otherwise keep it simple
 		else : 

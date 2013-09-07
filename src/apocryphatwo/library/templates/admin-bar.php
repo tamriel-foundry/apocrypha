@@ -45,14 +45,14 @@ if ( 0 == $user_id ) :  ?>
 <?php // Otherwise, it is a known user, so let's get more information
 else : 
 	$name 			= $user->display_name;
-	$avatar			= apoc_fetch_avatar( $user_id , 'thumb' , 25 );
+	$avatar			= new Apoc_Avatar( array( 'user_id' => $user_id , 'type' => 'thumb' , 'size' => 25 ) );
 	$link			= trailingslashit( SITEURL ) . trailingslashit( BP_MEMBERS_SLUG ) . $user->user_nicename;
 	$redirect 		= wp_logout_url( get_current_url() );
 	$notifications 	= apoc_user_notifications( $user_id );
 ?>
 
 <div id="admin-bar-login" class="logged-in">	
-	<a href="<?php echo $link; ?>" title="Visit your user profile"><?php echo $avatar; ?></a>
+	<a href="<?php echo $link; ?>" title="Visit your user profile"><?php echo $avatar->avatar; ?></a>
 	<span id="logged-in-welcome">Welcome back, <?php echo $name; ?></span>
 	<a id="top-login-logout" class="admin-bar-login-link button" href="<?php echo $redirect; ?>" title="Log out of this account."><i class="icon-lock"></i>Logout</a>
 </div><!-- #admin-bar-login -->

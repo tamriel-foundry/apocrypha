@@ -103,13 +103,13 @@ class Apoc_Breadcrumbs {
 		// Start with a link to the home page 
 		$trail[] = '<a href="' . SITEURL . '" title="' . SITENAME . '" rel="home" class="trail-home">' . $this->args['home'] . '</a>';	
 		
-		// If bbPress is installed and we're on a bbPress page (but not a user profile or forum search). 
-		if ( class_exists( 'bbPress' ) && is_bbpress() ) :
-			$trail = array_merge( $trail , $this->bbpress_crumbs() );
-		
 		// If BuddyPress is installed and we're on a BuddyPress page 
-		elseif ( class_exists( 'BuddyPress' ) && is_buddypress() ) :
+		if ( class_exists( 'BuddyPress' ) && is_buddypress() ) :
 			$trail = array_merge( $trail , $this->buddypress_crumbs() );
+		
+		// If bbPress is installed and we're on a bbPress page
+		elseif ( class_exists( 'bbPress' ) && is_bbpress() ) :
+			$trail = array_merge( $trail , $this->bbpress_crumbs() );
 		
 		// Otherwise, it's a basic WordPress component
 		else :
@@ -332,9 +332,34 @@ class Apoc_Breadcrumbs {
 		return $bbp_trail;
 	}
 
+	/**
+	 * Get BuddyPress breadcrumb items
+	 */	
 	function buddypress_crumbs() {
+				
+	// User Profile
+	if ( bp_is_user() ) : 
+	
+		// Your own profile
+		if ( bp_is_home() ) :
+			 $bp_trail[] = '<a href="'.bp_displayed_user_domain().'" title="Your Profile">Your Profile</a>';
+			 
+		// Someone else's profile
+		else :
+			$bp_trail[] = '<a href="'. bp_get_members_directory_permalink() .'" title="Members Directory">Members</a>';
+			$bp_trail[] = '<a href="'.bp_displayed_user_domain().'" title="'.bp_get_displayed_user_fullname(). '">' . bp_get_displayed_user_fullname() . '</a>';
+		endif;
+
+		// Display the current component
+		$bp_trail[] = ucfirst( bp_current_component() );
 		
-		return array( 'THIS...IS...BUDDYPRESS' );
+	// Backup Placeholder
+	else :
+		$bp_trail = 'buddypress placeholder';
+	endif;
+		
+	// Return the BuddyPress trail
+	return $bp_trail;
 	}
 	
 	function trail_parents( $post_id ) {

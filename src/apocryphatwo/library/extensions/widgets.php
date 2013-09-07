@@ -43,6 +43,9 @@ function recent_comments_widget( $number = 3 , $size = 50 ) {
 
 		<?php $comment_alt = 1; ?>
 		<?php foreach ($comments as $comment) :  
+		
+			// Get the comment author
+			$user_id 	= $comment->user_id;
 			
 			// Get the comment time, and make it relative 
 			$comment_time = $comment->comment_date_gmt;
@@ -57,15 +60,16 @@ function recent_comments_widget( $number = 3 , $size = 50 ) {
 			// Display the comment  
             echo '<li class="recent-discussion '.$class.'">';
 			
+			// Get the avatar
+			$avatar	= new Apoc_Avatar( array( 'user_id' => $user_id , 'type' => 'thumb' , 'size' => $size ) );
+			
 			// If it's a registered user, link to BuddyPress 
 			if ( $comment->user_id > 0 ) : 
-				$avatar	= apoc_fetch_avatar( $comment->user_id , 'thumb' , $size );
-				$author = bp_core_get_userlink( $comment->user_id ); ?>
-                <a class="discussion-avatar" href="<?php echo bp_core_get_user_domain( $comment->user_id ); ?>" title="View <?php echo $comment->comment_author; ?>'s Profile"><?php echo $avatar; ?></a><?php 
+				$author = bp_core_get_userlink( $user_id ); ?>
+                <a class="discussion-avatar" href="<?php echo bp_core_get_user_domain( $user_id ); ?>" title="View <?php echo $comment->comment_author; ?>'s Profile"><?php echo $avatar->avatar; ?></a><?php 
 				
 			// Otherwise, get their guest info 
 			else : 
-				$avatar = apoc_guest_avatar( 'thumb' , $size );
 				$author = $comment->comment_author; ?>
                 <a class="discussion-avatar"><?php echo $avatar; ?></a><?php
 				
@@ -130,7 +134,7 @@ function recent_forums_widget( $args = '' ) {
 			$post_title 	= ucfirst( $widget_query->post->post_title );
 			$author_name	= bp_core_get_user_displayname( $author_id );
 			$author_link 	= bp_core_get_userlink( $author_id );
-			$avatar			= apoc_fetch_avatar( $author_id , 'thumb' , $size );
+			$avatar			= new Apoc_Avatar( array( 'user_id' => $author_id , 'type' => 'thumb' , 'size' => $size ) );
 			
 			// Get the post time, and make it relative 
 			$post_time 		= get_the_time( 'U' , false );
@@ -153,7 +157,7 @@ function recent_forums_widget( $args = '' ) {
 
 			// Display the topics  
             echo '<li class="recent-discussion '.$class.'">'; ?>
-				<a class="discussion-avatar" href="<?php echo bp_core_get_user_domain( $author_id ); ?>" title="View <?php echo $author_name; ?>'s Profile"><?php echo $avatar; ?></a>
+				<a class="discussion-avatar" href="<?php echo bp_core_get_user_domain( $author_id ); ?>" title="View <?php echo $author_name; ?>'s Profile"><?php echo $avatar->avatar; ?></a>
 				<div class="recent-discussion-content">
 					<span class="recent-discussion-title">
 						<?php echo $author . ' ' . $post_link; ?>

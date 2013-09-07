@@ -366,7 +366,6 @@ p.spoiler-title {
 	text-shadow: 1px 1px #000;
 	}
 
-
 /* Font-Awesome Icons */
 i[class^="icon-"],
 i[class*=" icon-"] {
@@ -452,6 +451,7 @@ form li.submit {
 input[type="text"],
 input[type="password"],
 input[type="url"],
+input[type="file"],
 select {
 	height: 24px;
 	line-height: 24px;
@@ -2507,6 +2507,13 @@ div#profile-widgets div.widget > ul {
 	}
 div#detail-post-count ul li span { float: right; }
 
+/* Contacts */
+ul.user-contact-list li span { 
+	display: inline-block;
+	width: 75px; 
+	}
+
+
 /* User Badges */
 div#profile-badges ul.user-badges {
 	width: 100%;
@@ -2555,9 +2562,10 @@ div#character-sheet.ebonheart { background-position: -600px 0; }
 div#character-sheet.argonian { background-position: -600px -169px; }
 div#character-sheet.dunmer { background-position: -600px -338px; }
 div#character-sheet.nord { background-position: -600px -507px; }
+div#character-sheet.default { background-position: 0 -676px; }
 
 div#character-sheet > ul {
-	margin: 1.5em 2em;
+	margin: 17px 2em;
 	background: rgba( 17,17,17,0.75 );
 	padding: 0.5em 1em;
 	text-align: left;

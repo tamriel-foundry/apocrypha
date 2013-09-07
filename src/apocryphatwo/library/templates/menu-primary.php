@@ -75,7 +75,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 				<div class="sub col">
 					<h3>The Foundry Team</h3>
 					<ul class="submenu">
-						<li><a href="<?php echo SITEURL . '/join-us/' ?>">About Tamriel Foundry</a></li>
+						<li><a href="<?php echo SITEURL . '/about-us/' ?>">About Tamriel Foundry</a></li>
 						<li><a href="<?php echo SITEURL . '/contact-us/' ?>">Contact Us</a></li>
 						<li><a href="<?php echo SITEURL . '/entropy-rising/' ?>">Entropy Rising</a></li>
 						<li><a href="#">Partnerships</a></li>

@@ -9,7 +9,6 @@
 // Get the reply author block
 $author = new Apoc_User( bbp_get_reply_author_id() , 'reply' );
 $block	= $author->block;
-$sig	= $author->sig;
 ?>
 
 <li id="post-<?php bbp_reply_id(); ?>" <?php bbp_reply_class(); ?>>
@@ -32,6 +31,6 @@ $sig	= $author->sig;
 		<div class="reply-content">
 			<?php bbp_reply_content(); ?>
 		</div>
-		<?php echo $sig; ?>
+		<?php $author->signature(); ?>
 	</div>
 </li>

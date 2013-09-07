@@ -34,6 +34,6 @@ $author	= new Apoc_User( $comment->user_id , 'reply' );
 			<?php endif; ?>
 			<?php comment_text( $comment->comment_ID ); ?>
 		</div>
-		<?php echo $author->sig; ?>
+		<?php $author->signature(); ?>
 	</div>
 </li>

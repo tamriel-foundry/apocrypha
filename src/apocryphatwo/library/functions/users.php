@@ -57,12 +57,9 @@ class Apoc_User {
 		$this->race		= $meta['race'];
 		$this->class	= $meta['playerclass'];
 		$this->posts	= maybe_unserialize( $meta['post_count'] );
+		$this->guild	= $meta['guild'];
 		$this->bio		= do_shortcode( $meta['description'] );
-		
-		// Format the signature
-		$signature 		= $meta['signature'];
-		if ( '' != $signature )
-			$this->sig	= '<div class="user-signature"><div class="signature-content">' . do_shortcode( $signature ) . '</div></div>';
+		$this->sig		= $meta['signature'];
 		
 		// If the post count is not yet in the database, build it
 		if ( $user_id > 0 && empty( $this->posts ) )
@@ -92,7 +89,6 @@ class Apoc_User {
 			$this->last_name	= $meta['last_name'];
 			$this->charname		= implode( ' ' , array( $meta['first_name'] , $meta['last_name'] ) );
 			$this->prefrole		= $meta['prefrole'];
-			$this->guild		= $meta['guild'];
 		}
 	}
 	
@@ -222,6 +218,13 @@ class Apoc_User {
 		return $bar;
 	}
 	
+	/**
+	 * Display user signature
+	 */
+	function signature() {
+		if ( '' != $this->sig )
+			echo '<div class="user-signature"><div class="signature-content">' . do_shortcode( $this->sig ) . '</div></div>';
+	}
 	
 	/* 
 	 * Generate a byline for the user profile with their allegiance information
@@ -334,6 +337,7 @@ class Apoc_User {
 		$block		= '<a class="member-name" href="' . $this->domain . '" title="View ' . $this->fullname . '&apos;s Profile">' . $this->fullname . '</a>';
 		$block		.= $this->title;	
 		$block		.= $this->allegiance();
+		$block		.= ( '' != $this->guild ) ? '<p class="user-guild">' . $this->guild . '</p>' : '' ;
 		$block		.= '<p class="user-post-count">Total Posts: ' . $this->posts['total'] . '</p>';
 
 	

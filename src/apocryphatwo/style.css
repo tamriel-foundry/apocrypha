@@ -1497,6 +1497,7 @@ div.user-block > p {
 	margin: 0;
 	font-size: 0.75em;
 	}
+div.user-block > p.user-guild { font-style: italic; }
 div.user-block > p.user-title {	
 	font-size: 0.875em;
 	font-style: italic;

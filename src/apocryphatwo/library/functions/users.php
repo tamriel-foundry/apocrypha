@@ -10,6 +10,9 @@
 if ( !defined( 'ABSPATH' ) ) exit;
 
 
+/*--------------------------------------------------------------
+1.0 - APOCRYPHA USER CLASS
+--------------------------------------------------------------*/
 class Apoc_User {
 
 	// The context in which this user is being displayed
@@ -85,6 +88,8 @@ class Apoc_User {
 				'bethforums' 	=> $meta['bethforums'],
 			);
 			$this->badges		= $this->badges();
+			$this->first_name	= $meta['first_name'];
+			$this->last_name	= $meta['last_name'];
 			$this->charname		= implode( ' ' , array( $meta['first_name'] , $meta['last_name'] ) );
 		}
 	}
@@ -360,9 +365,34 @@ class Apoc_User {
 		$this->block 	= $block;
 	}
 }
+
+/*--------------------------------------------------------------
+2.0 - EDIT PROFILE CLASS
+--------------------------------------------------------------*/
+class Edit_Profile extends Apoc_User {
+
+	/** 
+	 * Constructor function for Edit Profile class
+	 * Inherits the arguments $user_id and $context from the Apoc_User class
+	 * Checks to see if the edit form has been submitted, if so, update the form
+	 */
+	function __construct( $user_id = 0 ) {
+	
+		// Construct the user
+		parent::__construct( $user_id , 'profile' );
+	
+		// Was the form submitted?
+		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'update-user' )
+			$this->save();
+			
+	}
+	
+	
+
+}
  
 /*--------------------------------------------------------------
-2.0 - STANDALONE FUNCTIONS
+3.0 - STANDALONE FUNCTIONS
 --------------------------------------------------------------*/
 
 /** 

@@ -221,7 +221,7 @@ ul,
 .reply-content ul {
 	list-style: square;
 	margin: 0 0 1em 0;
-	padding: 0 0 0 3em;
+	padding: 0 0 0 2em;
 	}
 ul ul,
 ol ul,
@@ -235,7 +235,7 @@ ol,
 .reply-content ol {
 	list-style: upper-roman;
 	margin: 0 0 1em 0;
-	padding: 0 0 0 3em;
+	padding: 0 0 0 2em;
 	}
 ol ol,
 ul ol,
@@ -662,7 +662,7 @@ div.warning,
 div.error,
 div.updated,
 div.success,
-div.instructions {
+.instructions {
 	width: 95%;
 	float: left;
 	margin: 0.5em 0;
@@ -709,15 +709,18 @@ div.error {
 div.error:before {	content: "\F12A"; }
 
 /* Instructions */
-div.instructions {
+.instructions {
 	margin: 0 0 0.5em;
 	background-image: url(images/backgrounds/dark-denim.jpg);
 	font-family: 'Open Sans' , sans-serif;
+	font-size: 0.8em;
 	color: #BBB;
 	border: 1px solid #000;
 	box-shadow: 0 0 3px #666 inset;
 	}
-div.instructions > * { margin: 0.5em 0; }
+.instructions > h3 { float: left; }
+.instructions > h3 + * { clear: left; }
+.instructions > * { margin: 0.5em 0; }
 
 /*--------------------------------------------------------------
 4.0 - NAVIGATION
@@ -2504,7 +2507,6 @@ div#detail-post-count ul li span { float: right; }
 div#profile-badges ul.user-badges {
 	width: 100%;
 	float: left;
-	margin: 0.5em 0;
 	}
 ul.user-badges li.user-badge {
 	width: 50px;
@@ -2530,23 +2532,26 @@ div#character-sheet {
 	height: 169px;
 	margin: 0.5em 0;
 	background-image: url( "images/backgrounds/flags.jpg" );
+	background-position: 900px 0;
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 3px #111 inset;
 	text-align: center;
 	text-shadow: 1px 1px #000;
 	}
-div#character-sheet.bosmer { background-position: 0 -169px; }
-div#character-sheet.khajiit { background-position: 300px 0; }
-div#character-sheet.breton { background-position: 300px 0; }
+div#character-sheet.aldmeri { background-position: 0 0; }
+div#character-sheet.altmer { background-position: 0 -169px; }
+div#character-sheet.bosmer { background-position: 0 -338px; }
+div#character-sheet.khajiit { background-position: 0 -507px; }
 div#character-sheet.daggerfall { background-position: 300px 0; }
-div#character-sheet.orc { background-position: 300px 0; }
-div#character-sheet.redguard { background-position: 0 -676px; }
-div#character-sheet.argonian { background-position: 300px 0; }
-div#character-sheet.dunmer { background-position: 0 -338px; }
-div#character-sheet.nord { background-position: 0 -507px; }
-div#character-sheet.ebonheart { background-position: 0 -507px; }
-div#character-sheet.default { background-position: 300px 0; }
+div#character-sheet.breton { background-position: -300px -169px; }
+div#character-sheet.orc { background-position: -300px -338px; }
+div#character-sheet.redguard { background-position: -300px -507px; }
+div#character-sheet.ebonheart { background-position: -600px 0; }
+div#character-sheet.argonian { background-position: -600px -169px; }
+div#character-sheet.dunmer { background-position: -600px -338px; }
+div#character-sheet.nord { background-position: -600px -507px; }
+
 div#character-sheet > ul {
 	margin: 1.5em 2em;
 	background: rgba( 17,17,17,0.75 );
@@ -2560,11 +2565,25 @@ div#character-sheet > ul li span {
 	margin: 0 3px; 
 	}
 
-
-
+/*---------------------------------------------
+	9.2 - Edit Profile
+----------------------------------------------*/
+form#edit-profile-form {
+	width: 98%;
+	margin: 0 1% 1em;
+	}
+form#edit-profile-form > ol {
+	width: 100%;
+	float: left;
+	margin: 0 0 1em;
+	padding: 0 0 0 2em;
+	list-style: decimal;
+	}
+form#edit-profile-form > ul.edit-submit { list-style: none; }
+form#edit-profile-form label {	min-width: 200px; }
 	
 /*---------------------------------------------
-	9.2 - Directories
+	9.3 - Directories
 ----------------------------------------------*/
 nav.directory-subheader {
 	width: 100%;

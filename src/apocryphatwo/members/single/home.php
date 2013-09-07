@@ -5,6 +5,10 @@
  * Version 1.0.0
  * 8-18-2013
  */
+ 
+// Get the currently displayed user
+global $user;
+$user 	= new Apoc_User( bp_displayed_user_id() , 'profile' );
 ?>
 
 <?php get_header(); ?>

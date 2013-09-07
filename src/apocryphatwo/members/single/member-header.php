@@ -8,7 +8,6 @@
 
 // Get the user info block
 global $user;
-$user 	= new Apoc_User( bp_displayed_user_id() , 'profile' );
 ?>	
 
 <header id="profile-header" class="entry-header <?php echo $user->faction; ?>">

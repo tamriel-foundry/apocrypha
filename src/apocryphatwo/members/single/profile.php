@@ -33,7 +33,7 @@ else : ?>
 		<div id="character-sheet" class="<?php echo $charsheet_class; ?>">
 			<ul>
 				<li><i class="icon-book icon-fixed-width"></i><span>Name:</span><?php echo $user->charname; ?></li>
-				<li><i class="icon-flag icon-fixed-width"></i><span>Race:</span><?php echo ucfirst( $user->race ); ?></li>
+				<li><i class="icon-user icon-fixed-width"></i><span>Race:</span><?php echo ucfirst( $user->race ); ?></li>
 				<li><i class="icon-gear icon-fixed-width"></i><span>Class:</span><?php echo ucfirst( $user->class ); ?></li>
 				<li><i class="icon-shield icon-fixed-width"></i><span>Role:</span></li>
 				<li><i class="icon-group icon-fixed-width"></i><span>Guild:</span></li>

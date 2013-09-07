@@ -57,7 +57,7 @@ class Apoc_User {
 		$this->race		= $meta['race'];
 		$this->class	= $meta['playerclass'];
 		$this->posts	= maybe_unserialize( $meta['post_count'] );
-		$this->bio		= ( '' == $meta['description'] ) ? "This member has not written a biography." : do_shortcode( $meta['description'] );
+		$this->bio		= do_shortcode( $meta['description'] );
 		
 		// Format the signature
 		$signature 		= $meta['signature'];
@@ -91,6 +91,8 @@ class Apoc_User {
 			$this->first_name	= $meta['first_name'];
 			$this->last_name	= $meta['last_name'];
 			$this->charname		= implode( ' ' , array( $meta['first_name'] , $meta['last_name'] ) );
+			$this->prefrole		= $meta['prefrole'];
+			$this->guild		= $meta['guild'];
 		}
 	}
 	
@@ -383,12 +385,64 @@ class Edit_Profile extends Apoc_User {
 	
 		// Was the form submitted?
 		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'update-user' )
-			$this->save();
+			$this->save( $user_id );
 			
 	}
 	
-	
+	function save( $user_id ) {
+		
+		// Check the nonce
+		if ( !wp_verify_nonce( $_POST['edit_user_nonce'] , 'update-user' ) )
+			exit;
 
+		// Update character info
+		if ( !empty( $_POST['first-name'] ) )
+			update_user_meta( $user_id	, 'first_name'		, esc_attr( $_POST['first-name'] ) );
+		if ( !empty( $_POST['last-name'] ) )
+			update_user_meta( $user_id	, 'last_name'		, esc_attr( $_POST['last-name'] ) );
+		if ( !empty( $_POST['faction'] ) )
+			update_user_meta( $user_id	, 'faction'			, $_POST['faction'] );
+		if ( !empty( $_POST['race'] ) )
+			update_user_meta( $user_id	, 'race'			, $_POST['race'] );
+		if ( !empty( $_POST['playerclass'] ) )
+			update_user_meta( $user_id	, 'playerclass'		, $_POST['playerclass'] );
+		if ( !empty( $_POST['prefrole'] ) )
+			update_user_meta( $user_id	, 'prefrole'		, $_POST['prefrole'] );
+		if ( !empty( $_POST['guild'] ) )
+			update_user_meta( $user_id	, 'guild'			, $_POST['guild'] );
+			
+		// Update biography and signature
+		if ( !empty( $_POST['description'] ) )
+			update_user_meta( $user_id, 	'description'	, apoc_custom_kses( $_POST['description'] ) );	
+		if ( !empty( $_POST['signature'] ) )
+			update_user_meta( $user_id, 	'signature'		, apoc_custom_kses( $_POST['signature'] ) );
+		
+		// Update contact methods
+		if ( !empty( $_POST['url'] ) )
+			update_user_meta( $user_id, 	'user_url'		, esc_url( $_POST['url'] ) );
+		if ( !empty( $_POST['facebook'] ) )
+			update_user_meta( $user_id, 	'facebook'		, esc_attr( trim( $_POST['facebook'] ) ) );
+		if ( !empty( $_POST['twitter'] ) )
+			update_user_meta( $user_id, 	'twitter'		, esc_attr( trim( $_POST['twitter'] ) ) );
+		if ( !empty( $_POST['youtube'] ) )
+			update_user_meta( $user_id, 	'youtube'		, esc_attr( trim( $_POST['youtube'] ) ) );
+		if ( !empty( $_POST['steam'] ) )
+			update_user_meta( $user_id, 	'steam'			, esc_attr( trim( $_POST['steam'] ) ) );
+		if ( !empty( $_POST['twitch'] ) )
+			update_user_meta( $user_id, 	'twitch'		, esc_attr( trim( $_POST['twitch'] ) ) );
+		if ( !empty( $_POST['bethforums'] ) )
+			update_user_meta( $user_id, 	'bethforums'	, esc_attr( trim( $_POST['bethforums'] ) ) );
+		
+		// Let plugins save their stuff
+		do_action('edit_user_profile_update', $user_id );
+		
+		// Add a success message
+		bp_core_add_message( 'User profile successfully updated!' );
+		
+		// Redirect back to the profile
+		global $bp;
+		wp_redirect( $bp->displayed_user->domain );
+	}
 }
  
 /*--------------------------------------------------------------

@@ -73,6 +73,12 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! End Document Ready */
 ;});
 
+/*! --------------------------------------- 
+X.X - PROCEDURAL FUNCTIONS
+----------------------------------------- */
+
+/*! Update Profile Race Dropdown */
+;function updateRaceDropdown(a){if("faction"==a){factionid=jQuery("select#faction :selected").val();jQuery("select#race option").not("."+factionid).attr("disabled","disabled").removeAttr("selected");jQuery("select#race option."+factionid).removeAttr("disabled");jQuery("select#race option:first-child").removeAttr("disabled")}else{if("race"==a){raceid=jQuery("select#race :selected").attr("class");if(undefined!=raceid){jQuery("select#faction option").removeAttr("selected");jQuery("select#faction option."+raceid).attr("selected","selected")}}}};
 
 
 /* ______ REFACTORED / NEW BY ZAYDOK BELOW (TEMPORARY COMMENT) _____ */

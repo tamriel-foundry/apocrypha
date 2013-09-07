@@ -110,4 +110,21 @@ function homepage_have_posts() {
 	query_posts( $args );
 }
 
+
+
+
+
+/* 
+ * My own default filtering set
+ * @since 0.3
+ */
+function apoc_custom_kses( $content ) {
+	$content = wp_filter_post_kses( $content );
+	$content = wptexturize( $content );
+	$content = wpautop( $content );
+	$content = convert_chars( $content );
+	$content = force_balance_tags( $content );
+	return $content;
+	}
+
 ?>

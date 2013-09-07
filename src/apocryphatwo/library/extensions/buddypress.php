@@ -358,5 +358,11 @@ function get_guild_allegiance( $group_id ) {
 	return $allegiance;
 }
 
+function group_is_guild( $group_id ) {
+	$guild = groups_get_groupmeta( $group_id , 'is_guild' );
+	$is_guild = ( $guild == 1 ) ? true : false;
+	return $is_guild;
+}
+
 
 ?>

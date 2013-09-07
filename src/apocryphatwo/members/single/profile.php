@@ -11,13 +11,12 @@ if ( '' != $user->race ) $charsheet_class = $user->race;
 elseif ( '' != $user->faction ) $charsheet_class = $user->faction;
 ?>
 
+<?php do_action( 'template_notices' ); ?>
 <nav class="directory-subheader no-ajax" id="subnav" >
 	<ul id="profile-tabs" class="tabs" role="navigation">
 		<?php bp_get_options_nav(); ?>
 	</ul>
 </nav><!-- #subnav -->
-<?php do_action( 'template_notices' ); ?>
-
 
 <?php // Secondary template options
 if ( bp_is_current_action( 'change-avatar' ) ) : 
@@ -35,14 +34,18 @@ else : ?>
 				<li><i class="icon-book icon-fixed-width"></i><span>Name:</span><?php echo $user->charname; ?></li>
 				<li><i class="icon-user icon-fixed-width"></i><span>Race:</span><?php echo ucfirst( $user->race ); ?></li>
 				<li><i class="icon-gear icon-fixed-width"></i><span>Class:</span><?php echo ucfirst( $user->class ); ?></li>
-				<li><i class="icon-shield icon-fixed-width"></i><span>Role:</span></li>
-				<li><i class="icon-group icon-fixed-width"></i><span>Guild:</span></li>
+				<li><i class="icon-shield icon-fixed-width"></i><span>Role:</span><?php echo ucfirst( $user->prefrole ); ?></li>
+				<li><i class="icon-group icon-fixed-width"></i><span>Guild:</span><?php echo $user->guild; ?></li>
 			</ul>
 		</div>
 	</div>	
 
 	<div id="user-biography">
-		<?php echo $user->bio; ?>
+		<?php if( !empty( $user->bio ) ) :
+			echo $user->bio;
+		else :
+			echo 'This member has not written a biography.';
+		endif; ?>
 	</div>
 	
 

@@ -687,7 +687,10 @@ div.success:before {
 div.warning >p,
 div.error > p,
 div.updated > p,
-div.success > p {	margin: 0; }
+div.success > p {
+	display: inline-block;
+	margin: 0; 
+	}
 	
 /* Warnings */
 div.warning:before {	content: "\F071"; }
@@ -696,7 +699,7 @@ div.warning:before {	content: "\F071"; }
 div.updated {
 	color: #CCC;
 	background: rgba( 51,85,102,0.5);
-	border: 1px solid #BBB;
+	border: 1px solid #6cf;
 	}
 div.updated:before {	content: "\F024"; }
 
@@ -2558,6 +2561,9 @@ div#character-sheet > ul {
 	padding: 0.5em 1em;
 	text-align: left;
 	font-size: 0.8em;
+	border: 1px solid #111;
+	border-radius: 3px;
+	box-shadow: 0 0 5px #000;
 	}
 div#character-sheet > ul li span { 
 	display: inline-block;
@@ -2573,8 +2579,6 @@ form#edit-profile-form {
 	margin: 0 1% 1em;
 	}
 form#edit-profile-form > ol {
-	width: 100%;
-	float: left;
 	margin: 0 0 1em;
 	padding: 0 0 0 2em;
 	list-style: decimal;

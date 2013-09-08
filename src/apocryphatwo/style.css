@@ -1497,12 +1497,9 @@ div.user-block > p {
 	margin: 0;
 	font-size: 0.75em;
 	}
-div.user-block > p.user-guild { font-style: italic; }
+div.user-block > p.user-guild,
+div.user-block > p.user-title { font-style: italic; }
 p.user-guild.entropy-rising { text-shadow: 1px 0 10px #0F0; }
-div.user-block > p.user-title {	
-	font-size: 0.875em;
-	font-style: italic;
-	}
 p.user-title.daedric-prince,
 p.user-title.moderator {
 	text-shadow: 1px 0 10px #F30;
@@ -2416,19 +2413,19 @@ div#profile-body{
 div#user-profile { margin: 0 0 1em; }
 	
 /* Profile Menu */
-nav#profile-menu {
-	width: 100%;
+nav#directory-nav {
+	width: 98%;
 	float: left;
-	margin: -4px 0 0;
+	margin: -4px 1% 0;
 	}
-ul#profile-actions { 
+ul#directory-actions { 
 	width: 100%;
 	float: left;
 	margin: 0;
 	padding: 0;
 	list-style: none; 
 	}
-ul#profile-actions > li {
+ul#directory-actions > li {
 	float: left;
 	padding: 8px 0 4px;
 	margin: 0 0.5% 0 0;
@@ -2441,26 +2438,27 @@ ul#profile-actions > li {
 	font-family: 'Open Sans';
 	font-size: 0.75em;
 	}
-ul#profile-actions > li:last-child { margin-right: 0; }
-ul#profile-actions > li a {	
+.directory ul#directory-actions > li { width: 15%; }
+ul#directory-actions > li:last-child { margin-right: 0; }
+ul#directory-actions > li a {	
 	display: block;
 	color: #999; 
 	}
-ul#profile-actions > li:hover {
+ul#directory-actions > li:hover {
 	background: rgba( 34,34,34,0.5 );
 	box-shadow: 0 0 3px #c60;
 	}
-ul#profile-actions > li:hover a { color: #BBB; }
-ul#profile-actions > li.current,
-ul#profile-actions > li.current:hover {
+ul#directory-actions > li:hover a { color: #BBB; }
+ul#directory-actions > li.selected,
+ul#directory-actions > li.selected:hover {
 	background: rgba( 51,51,51,0.5); 
 	box-shadow: none;
 	}
-ul#profile-actions > li.current a { 
+ul#directory-actions > li.selected a { 
 	color: #BBB;
 	text-shadow: 0 0 20px #c60; 
 	}
-ul#profile-actions > li a span {
+ul#directory-actions > li a span {
 	position: absolute;
 	top: -12px;
 	right: -5px;
@@ -2475,13 +2473,13 @@ ul#profile-actions > li a span {
 	}
 	
 /* Profile Header */
-blockquote#user-status {
+blockquote.user-status {
 	width: 90%;
-	margin: 1em 0 1em 0.5em;
+	margin: 0.5em;
 	padding-right: 0;
 	}
-blockquote#user-status span.activity,
-blockquote#user-status a.update-status-button {
+blockquote.user-status span.activity,
+blockquote.user-status a.update-status-button {
 	position: absolute;
 	top: 1em;
 	right: 1em;
@@ -2596,10 +2594,55 @@ form#edit-profile-form label {	min-width: 200px; }
 /*---------------------------------------------
 	9.3 - Directories
 ----------------------------------------------*/
-nav.directory-subheader {
+#subnav { position: relative; }
+header#directory-header { margin: 0; }
+form.dir-form { margin: 0 0 1em; }
+form.dir-form header.discussion-header { 
+	margin: 1em 0 0;
+	border-radius: 3px;
+	}
+ul.directory-list {
 	width: 100%;
 	float: left;
+	margin: 0 0 1em;
+	padding: 0;
+	list-style: none;
+	border-bottom: 1px solid #444;
 	}
+ul.directory-list > li {
+	width: 100%;
+	float: left;
+	padding: 0.5em 0;
+	border-bottom: 1px solid #000;
+	}
+ul.directory-list > li + li {
+	border-top: 1px solid #333;
+	}
+
+/* Members Directory */
+div.directory-member {
+	width: 230px;
+	padding: 0 10px;
+	float: left;
+	text-align: center;
+	}
+div.directory-content {
+	margin: 0 0 0 250px;
+	}
+div#members-order-select {
+	position: absolute;
+	top: 5px;
+	right: 8px;
+	}
+li.member span.activity { margin: 5px; }
+li.member div.actions { float: right;	}
+
+div.directory-member a.member-avatar { float: left; }
+div.directory-member a.member-avatar > img { float: left; }
+div.directory-member div.member-meta { margin: 4px 0 0 115px; }
+
+
+
 
 
 /*--------------------------------------------------------------
@@ -2619,6 +2662,7 @@ span.activity-count {
 	color: #BBB;
 	}
 span.activity { 
+	float: left;
 	padding: 1px 8px;
 	border-radius: 3px; 
 	line-height: inherit;

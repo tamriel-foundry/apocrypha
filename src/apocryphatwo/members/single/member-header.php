@@ -29,13 +29,13 @@ global $user;
 </div><!-- #profile-sidebar -->
 
 <div id="profile-content">
-	<nav id="profile-menu" class="no-ajax">
-		<ul id="profile-actions" role="navigation">
+	<nav id="directory-nav" class="no-ajax">
+		<ul id="directory-actions" role="navigation">
 			<?php bp_get_displayed_user_nav(); ?>
 		</ul>
 	</nav>
 	
-	<blockquote id="user-status">
+	<blockquote class="user-status">
 		<p><?php echo '@' . $user->nicename . ' &rarr; ' . bp_get_activity_latest_update( $user->ID ); ?></p>
 		<?php if ( bp_is_my_profile() ) : ?>
 			<a class="update-status-button button"><i class="icon-pencil"></i>What's New?</a>

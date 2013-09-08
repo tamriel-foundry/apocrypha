@@ -198,7 +198,8 @@ class Apocrypha {
 	private function filters() {
 	
 		// Override WordPress default avatars
-		add_filter( 'get_avatar' , array( $this , 'filter_avatar' ) , 10 , 3 );
+		if ( !is_admin() )
+			add_filter( 'get_avatar' , array( $this , 'filter_avatar' ) , 10 , 3 );
 		
 	}
 		

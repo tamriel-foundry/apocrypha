@@ -57,11 +57,11 @@ class Apoc_SEO {
 		// BuddyPress Pages
 		elseif ( class_exists( 'BuddyPress' ) && is_buddypress() ) {
 		
-			// Directories
-			if ( bp_is_directory() ) :
-				$description 	= get_post_meta( $id , 'Description' , true );
+			// Setup defaults
+			$doctitle		= $object->post_title;
+			$description 	= $object->post_content;
 		
-			elseif ( bp_is_user() ) :
+			if ( bp_is_user() ) :
 				$doctitle		= bp_get_displayed_user_fullname() . $separator . 'User Profile';
 				$description 	= $sitename . ' user profile for ' . bp_get_displayed_user_fullname();
 			
@@ -111,7 +111,7 @@ class Apoc_SEO {
 		// Singular Post
 		elseif ( is_singular() ) {
 			$doctitle 			= $object->post_title;
-			$description 		= get_post_meta( $id , 'Description' , true );
+			$description 		= get_post_meta( $id , 'description' , true );
 			
 			// If nothing is found, give a post excerpt
 			if ( empty ( $description ) )

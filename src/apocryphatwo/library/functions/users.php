@@ -340,7 +340,7 @@ class Apoc_User {
 		$block		.= $this->title;	
 		$block		.= $this->allegiance();
 		$block		.= ( '' != $this->guild ) ? '<p class="user-guild ' . strtolower( str_replace( ' ' , '-' , $this->guild ) ) . '">' . $this->guild . '</p>' : '' ;
-		$block		.= '<p class="user-post-count">Total Posts: ' . $this->posts['total'] . '</p>';
+		
 
 	
 		// Do some things differently depending on context
@@ -348,16 +348,18 @@ class Apoc_User {
 		switch( $context ) {
 		
 			case 'directory' :
-				$block 					= '<div class="member-meta">' . $block . '</div>';
+				$block 					= '<div class="member-meta user-block">' . $block . '</div>';
 				break;
 		
 			case 'reply' :
+				$block					.= '<p class="user-post-count">Total Posts: ' . $this->posts['total'] . '</p>';
 				$block					.= $this->expbar();
 				break;
 					
 			case 'profile' :
 				$avatar_args['type'] 	= 'full';
 				$avatar_args['size']	= 200;
+				$block					.= '<p class="user-post-count">Total Posts: ' . $this->posts['total'] . '</p>';
 				$block					.= $this->expbar();
 				$regdate				= date("F j, Y", $this->regdate );
 				$block					.= '<p class="user-join-date">Joined ' . $regdate . '</p>';

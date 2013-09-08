@@ -336,30 +336,40 @@ class Apoc_Breadcrumbs {
 	 * Get BuddyPress breadcrumb items
 	 */	
 	function buddypress_crumbs() {
-				
-	// User Profile
-	if ( bp_is_user() ) : 
 	
-		// Your own profile
-		if ( bp_is_home() ) :
-			 $bp_trail[] = '<a href="'.bp_displayed_user_domain().'" title="Your Profile">Your Profile</a>';
-			 
-		// Someone else's profile
-		else :
-			$bp_trail[] = '<a href="'. bp_get_members_directory_permalink() .'" title="Members Directory">Members</a>';
-			$bp_trail[] = '<a href="'.bp_displayed_user_domain().'" title="'.bp_get_displayed_user_fullname(). '">' . bp_get_displayed_user_fullname() . '</a>';
-		endif;
+		// Setup the trail
+		$bp_trail = array();
+				
+		// User Profiles
+		if ( bp_is_user() ) : 
+		
+			// Your own profile
+			if ( bp_is_home() ) :
+				 $bp_trail[] = '<a href="'.bp_displayed_user_domain().'" title="Your Profile">Your Profile</a>';
+				 
+			// Someone else's profile
+			else :
+				$bp_trail[] = '<a href="'. bp_get_members_directory_permalink() .'" title="Members Directory">Members</a>';
+				$bp_trail[] = '<a href="'.bp_displayed_user_domain().'" title="'.bp_get_displayed_user_fullname(). '">' . bp_get_displayed_user_fullname() . '</a>';
+			endif;
 
-		// Display the current component
-		$bp_trail[] = ucfirst( bp_current_component() );
+			// Display the current component
+			$bp_trail[] = ucfirst( bp_current_component() );
 		
-	// Backup Placeholder
-	else :
-		$bp_trail = 'buddypress placeholder';
-	endif;
-		
-	// Return the BuddyPress trail
-	return $bp_trail;
+		// Directories
+		elseif ( bp_is_directory() ) :	
+			if ( bp_is_activity_component() ) 		$bp_trail[] = 'Recent Activity';
+			elseif ( bp_is_members_component() )	$bp_trail[] = 'Members Directory';
+			elseif ( bp_is_groups_component() )		$bp_trail[] = 'Guilds Directory';
+			else 									$bp_trail[] = ucfirst( bp_current_component() );
+			
+		// Backup Placeholder
+		else :
+			$bp_trail[] = 'buddypress placeholder';
+		endif;
+			
+		// Return the BuddyPress trail
+		return $bp_trail;
 	}
 	
 	function trail_parents( $post_id ) {

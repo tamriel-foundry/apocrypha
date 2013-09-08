@@ -35,7 +35,7 @@ global $user;
 		</ul>
 	</nav>
 	
-	<blockquote class="user-status">
+	<blockquote id="profile-status" class="user-status">
 		<p><?php echo '@' . $user->nicename . ' &rarr; ' . bp_get_activity_latest_update( $user->ID ); ?></p>
 		<?php if ( bp_is_my_profile() ) : ?>
 			<a class="update-status-button button"><i class="icon-pencil"></i>What's New?</a>

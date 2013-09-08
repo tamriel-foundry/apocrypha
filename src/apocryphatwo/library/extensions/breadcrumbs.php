@@ -358,7 +358,7 @@ class Apoc_Breadcrumbs {
 		
 		// Directories
 		elseif ( bp_is_directory() ) :	
-			if ( bp_is_activity_component() ) 		$bp_trail[] = 'Recent Activity';
+			if ( bp_is_activity_component() ) 		$bp_trail[] = 'Sitewide Activity';
 			elseif ( bp_is_members_component() )	$bp_trail[] = 'Members Directory';
 			elseif ( bp_is_groups_component() )		$bp_trail[] = 'Guilds Directory';
 			else 									$bp_trail[] = ucfirst( bp_current_component() );

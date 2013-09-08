@@ -26,7 +26,7 @@ $user_id	= $user->ID;
 			<nav id="directory-nav" role="navigation">
 				<ul id="directory-actions" class="directory-tabs">
 					<li class="selected" id="members-all"><a href="<?php echo trailingslashit( SITEURL . '/' . bp_get_members_root_slug() ); ?>">All Members<span><?php echo bp_get_total_member_count(); ?></span></a></li>
-					<?php if ( is_user_logged_in() ) : ?>
+					<?php if ( $user_id > 0 ) : ?>
 					<li id="members-personal"><a href="<?php echo bp_loggedin_user_domain() . bp_get_friends_slug() . '/my-friends/' ?>">My Friends<span><?php echo bp_get_total_friend_count( $user_id ); ?></span></a></li>
 					<?php endif; ?>
 				</ul>

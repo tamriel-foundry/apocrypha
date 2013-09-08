@@ -328,6 +328,13 @@ class Apoc_Profile {
 }
 
 
+add_filter( 'bp_get_activity_delete_link' , 'apoc_activity_delete_icon' );
+function apoc_activity_delete_icon( $link ) {
+	$link = str_replace( 'Delete' , '<i class="icon-remove"></i>Delete' , $link );
+	return $link;
+	}
+
+
 
 /*--------------------------------------------------------------
 X.0 - GROUPS

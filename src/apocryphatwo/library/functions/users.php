@@ -518,9 +518,6 @@ class Apoc_Avatar {
 			
 		// Get the avatar
 		$this->get_avatar();
-		
-		// Display the avatar
-		$this->display_avatar();
 	}
 	
 	function get_avatar() {
@@ -541,6 +538,10 @@ class Apoc_Avatar {
 		}
 		else 
 			$avatar = $this->guest_avatar();
+			
+		// Wrap the avatar in a profile link?
+		if ( true == $this->link && $this->user_id > 0 ) 
+			$avatar	= '<a class="member-avatar" href="' . $this->url . '" title="View User Profile">' . $avatar . '</a>';
 		
 		// Set the avatar to the class object
 		$this->avatar = $avatar;	
@@ -575,18 +576,6 @@ class Apoc_Avatar {
 		$avsize		= ( 'thumb' == $this->type ) ? 100 : 200;
 		$src 		= trailingslashit( THEME_URI ) . "images/avatars/{$type}-{$avsize}.jpg";
 		$avatar 	= '<img src="' . $src . '" alt="Member Avatar" class="avatar" width="' . $this->size . '" height="' . $this->size . '">';
-		return $avatar;
-	}
-	
-	function display_avatar() {
-	
-		$avatar = $this->avatar;
-		
-		// Wrap the avatar in a profile link?
-		if ( true == $this->link ) 
-			$avatar	= '<a class="member-avatar" href="' . $this->url . '" title="View User Profile">' . $this->avatar . '</a>';
-			
-		// Return the avatar
 		return $avatar;
 	}
 }

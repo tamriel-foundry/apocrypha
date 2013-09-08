@@ -474,7 +474,10 @@ input[type="password"]:focus {
 	}
 	
 /* Selects */
-select { height: 32px; }
+select { 
+	height: 32px;
+	padding: 5px;
+	}
 select option {	background: #b3a695;}
 
 /* Radios and Checkboxes */
@@ -2408,7 +2411,7 @@ div#profile-content{ margin: 0 0 1em 220px; }
 div#profile-body{ 
 	width: 100%;
 	float: left;
-	margin: 1em 0;
+	margin: 0 0 1em;
 	}
 div#user-profile { margin: 0 0 1em; }
 	
@@ -2594,13 +2597,13 @@ form#edit-profile-form label {	min-width: 200px; }
 /*---------------------------------------------
 	9.3 - Directories
 ----------------------------------------------*/
-#subnav { position: relative; }
 header#directory-header { margin: 0; }
-form.dir-form { margin: 0 0 1em; }
-form.dir-form header.discussion-header { 
+#subnav { 
+	position: relative;
 	margin: 1em 0 0;
 	border-radius: 3px;
 	}
+form.dir-form { margin: 0 0 1em; }
 ul.directory-list {
 	width: 100%;
 	float: left;
@@ -2621,26 +2624,79 @@ ul.directory-list > li + li {
 
 /* Members Directory */
 div.directory-member {
-	width: 230px;
+	width: 250px;
 	padding: 0 10px;
 	float: left;
 	text-align: center;
 	}
 div.directory-content {
-	margin: 0 0 0 250px;
+	margin: 0 0 0 275px;
 	}
-div#members-order-select {
+#subnav div.filter {
 	position: absolute;
 	top: 5px;
 	right: 8px;
 	}
-li.member span.activity { margin: 5px; }
-li.member div.actions { float: right;	}
+li.directory-entry span.activity { margin: 5px; }
+li.directory-entry div.actions { float: right;	}
 
 div.directory-member a.member-avatar { float: left; }
 div.directory-member a.member-avatar > img { float: left; }
 div.directory-member div.member-meta { margin: 4px 0 0 115px; }
 
+/* Activity Directory */
+ul#activity-stream { border-bottom: none; }
+ul#activity-stream li.load-more { border-bottom: none; }
+div#activity-status { 
+	width: 98%;
+	float: left;
+	margin: 1em 1% 0; 
+	}
+div#activity-status a.member-avatar { 
+	float: left; 
+	margin: 5px 0 0;
+	}
+div#activity-status blockquote#profile-status { 
+	width: 85%;
+	float: left;
+	}
+header.activity-header {
+	width: 100%;
+	float: left;
+	}
+header.activity-header > p {
+	float: left;
+	position: relative; 
+	padding: 0 0 0.5em;
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 0.8em;
+	color: #999;
+	border-bottom: 1px solid #333;
+	}
+header.activity-header > p:before {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 0;
+    width: 100%;
+    box-sizing: border-box;
+	border-bottom: 1px solid #000;
+	}
+blockquote.activity-content {
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 0.8em;
+	}
+span.activity-quote-mention {
+	background: rgba(17,17,17,0.75);
+	padding: 0.5em 1em;
+	margin: 0 0 0.5em;
+	font-style: italic;
+	border: 1px solid #000;
+	border-radius: 3px;
+	box-shadow: 0 0 2px #444 inset;
+	}
 
 
 

@@ -12,6 +12,8 @@
 2.0 - Notifications
 3.0 - Posts
 4.0 - Comments
+
+X.X - Contact Form
 --------------------------------------------------------------*/
 
 // Exit if accessed directly
@@ -445,4 +447,36 @@ function apoc_load_topics() {
 	die( $content );
 }
 
+
+
+/*---------------------------------------------
+X.X - CONTACT FORM
+----------------------------------------------*/
+add_action( 'wp_ajax_nopriv_apoc_contact_form' 	, 'apoc_contact_form' );
+add_action( 'wp_ajax_apoc_contact_form' 		, 'apoc_contact_form' );
+function apoc_contact_form () {
+
+	// Get the data
+	$name 		= trim( $_POST['name'] );
+	$email 		= trim( $_POST['name'] );
+	$comments 	= stripslashes( trim( $_POST['comments'] ) );
+	$copy		= $_POST['copy'];
+	
+	// Configure headers
+	$emailto	= 'admin@tamrielfoundry.com';
+	$subject 	= 'Contact Form Submission from ' . $name;
+	$body 		= "Name: $name \n\nEmail: $email \n\nComments: $comments";
+	$headers[] 	= "From: $name <$email>\r\n";
+	$headers[] 	= "Content-Type: text/html; charset=UTF-8";	
+	
+	// Send mail
+	wp_mail($emailto, $subject, $body, $headers);
+	if( true == $copy ) {
+		$subject 	= 'Tamriel Foundry Contact Form Submission';
+		$headers[0] = 'From: Tamriel Foundry <admin@tamrielfoundry.com>';
+		wp_mail($email, $subject, $body, $headers);
+	}
+	
+	exit(1);
+}
 ?>

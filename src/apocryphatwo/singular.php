@@ -29,6 +29,6 @@
 		
 	</div><!-- #content -->
 	
-	<?php apoc_primary_sidebar(); // Load the community sidebar ?>
+	<?php apoc_primary_sidebar(); ?>
 	<?php comments_template( '/library/templates/comments.php', true ); ?>	
-<?php get_footer(); // Load the footer ?>
+<?php get_footer(); ?>

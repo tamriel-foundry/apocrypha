@@ -11,10 +11,6 @@
 $user 		= apocrypha()->user->data;
 $user_id	= $user->ID;
 
-// Enqueue Javascript to handle contact form submission
-wp_register_script( 'contactform' , THEME_URI . '/library/js/contactform.js' , 'jquery' , $ver='0.1' , true );
-wp_enqueue_script( 'contactform' );
-
 // Let's do some basic PHP processing, in case JavaScript is disabled
 if ( isset( $_POST['submitted'] ) ) {
 
@@ -23,17 +19,17 @@ if ( isset( $_POST['submitted'] ) ) {
 		$error = "Die Robot!";
 	
 	// Name	
-	if( empty( $_POST['name'] )
+	if( empty( $_POST['name'] ) )
 		$error = "Please enter your name!";
 	
 	// Email
-	if( empty( $_POST['email'] )
+	if( empty( $_POST['email'] ) )
 		$error = "Please enter your email address!";
-	elseif filter_var( trim( $_POST['email'] ) , FILTER_VALIDATE_EMAIL ) === false )
+	elseif ( filter_var( trim( $_POST['email'] ) , FILTER_VALIDATE_EMAIL ) === false )
 		$error = "Please enter a valid email address!";
 	
 	// Comments
-	if( empty( $_POST['comments'] )
+	if( empty( $_POST['comments'] ) )
 		$error = "Please include a message!";	
 	
 	// Send the email
@@ -62,7 +58,7 @@ if ( isset( $_POST['submitted'] ) ) {
 
 <?php get_header(); ?>
 
-	<div id="content" class="no-sidebar" role="main">
+	<div id="content" role="main">
 		<?php apoc_breadcrumbs(); ?>
 		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 		
@@ -77,7 +73,7 @@ if ( isset( $_POST['submitted'] ) ) {
 					<?php the_content(); ?>
 				</div>
 				
-				<form action="<?php the_permalink((); ?>" id="contact-form" method="post">
+				<form action="<?php the_permalink(); ?>" id="contact-form" method="post">
 					
 					<?php if ( $error ) : ?>
 						<div id="contact-error" class="error"><?php echo $error; ?></div>
@@ -88,9 +84,9 @@ if ( isset( $_POST['submitted'] ) ) {
 						<?php // If it's a registered user, get their info from the theme
 						if ( $user_id > 0 ) : ?>
 							<li>
-								<p>Hey there, <?php echo $user->nicename; ?>, what can we help you with?</p>
-								<input type="hidden" name="name" id="name" value="<?php echo $user->nicename; ?>"/>
-								<input type="hidden" name="email" id="email" value="<?php echo $user->email; ?>"/>
+								<blockquote>Hey there, <?php echo $user->display_name; ?>, what can we help you with?</blockquote>
+								<input type="hidden" name="name" id="name" value="<?php echo $user->user_nicename; ?>"/>
+								<input type="hidden" name="email" id="email" value="<?php echo $user->user_email; ?>"/>
 							</li>
 						<?php // Otherwise, give them name and email input fields
 						else : ?>
@@ -105,15 +101,13 @@ if ( isset( $_POST['submitted'] ) ) {
 							</li>					
 						<?php endif; ?>
 						
-						<li class="textarea">
-							<p><i class="icon-comment"></i>Your Comments</p>			
+						<li class="textarea">		
 							<?php $thecontent = stripslashes($_POST['comments']);
 							wp_editor( $thecontent, 'comments', array(
 								'media_buttons' => false,
 								'wpautop'		=> false,
 								'editor_class'  => 'contact_form_comment',
 								'quicktags'		=> false,
-								'teeny'			=> true,
 								) ); ?>
 						</li>
 							

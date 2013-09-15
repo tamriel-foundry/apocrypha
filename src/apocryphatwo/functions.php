@@ -134,6 +134,10 @@ function apoc_enqueue_scripts() {
 	// Some scripts are only needed on specific pages
 	if ( is_home() || is_page_template( 'guild/guild-home.php' ) ) 
 		wp_enqueue_script( 'flexslider' );
+	if ( is_page( 'contact-us' ) ) {
+		wp_register_script( 'contactform' 	, THEME_URI . '/library/js/contactform.js' 	, 'jquery' , $ver='0.1' , true 	);
+		wp_enqueue_script( 'contactform' );
+	}
 	
 	// My JS file comes last
 	wp_enqueue_script( 'foundry' );

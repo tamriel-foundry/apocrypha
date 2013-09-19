@@ -46,7 +46,6 @@ else : ?>
 			echo 'This member has not written a biography.';
 		endif; ?>
 	</div>
-	
 
 </div><!-- #user-profile -->
 <?php endif; ?>

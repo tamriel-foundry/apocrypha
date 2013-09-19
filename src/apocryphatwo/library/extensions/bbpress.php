@@ -6,6 +6,8 @@
  * 8-10-2013
  */
 
+// IMPORTANT - Don't let bbPress do theme compatibility
+ remove_filter( 'bbp_template_include',   'bbp_template_include_theme_compat',   4, 2 );
 
 /*---------------------------------------------
 1.0 - FORUM ARCHIVE
@@ -373,9 +375,7 @@ function bestof_has_topics() {
 	remove_filter( 'posts_where' , 'filter_bestof_topics' );
 	
 	return $topics;
-}
- 
- 
+} 
 
 /*---------------------------------------------
 X.X - NEW POSTS
@@ -400,14 +400,6 @@ function apoc_bbp_allowed_kses( $allowed ) {
 	$allowed['span']['style']	= array();
 	return $allowed;
 }
-
-/** 
- * Prevent bbpress from escaping topic and reply content in the editor.
- * @version 1.0.0
- */
-remove_filter( 'bbp_get_form_forum_content', 'esc_textarea' );
-remove_filter( 'bbp_get_form_topic_content', 'esc_textarea' );
-remove_filter( 'bbp_get_form_reply_content', 'esc_textarea' );
 
 
 /*---------------------------------------------

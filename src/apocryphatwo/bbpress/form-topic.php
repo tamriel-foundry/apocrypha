@@ -68,7 +68,7 @@ elseif ( bbp_current_user_can_access_create_topic_form() ) : ?>
 				<?php // Moderators can set topic tags
 				if ( current_user_can( 'moderate' ) ) : ?>
 				<li class="select form-left">
-					<label for="bbp_stick_topic"><i class="icon-pushpin"></i><?php _e( 'Topic Type: ' , 'bbpress' ); ?></label>
+					<label for="bbp_stick_topic_select"><i class="icon-pushpin"></i><?php _e( 'Topic Type: ' , 'bbpress' ); ?></label>
 					<?php bbp_topic_type_select(); ?>
 				</li>
 				<?php endif; ?>

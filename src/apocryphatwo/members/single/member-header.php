@@ -44,6 +44,10 @@ global $user;
 		<?php endif; ?>
 	</blockquote>
 	
+	<?php if ( bp_is_my_profile() ) : ?>
+		<?php locate_template( array( 'activity/post-form.php'), true ); ?>
+	<?php endif; ?>
+	
 	<div id="profile-widgets">		
 		<div id="detail-post-count" class="widget profile-widget">
 			<header class="widget-header">

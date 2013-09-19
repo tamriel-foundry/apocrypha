@@ -45,14 +45,16 @@ $avatar		= new Apoc_Avatar( array ( 'user_id' => $user_id , 'size' => 50 , 'link
 		</nav><!-- #directory-header -->
 		
 		<?php if ( $user_id > 0 ) : ?>		
-		<div id="activity-status">
-			<?php echo $avatar->avatar; ?>		
-			<blockquote id="profile-status" class="user-status">
-				<p><?php echo '@' . $user->user_nicename . ' &rarr; ' . bp_get_activity_latest_update( $user_id ); ?></p>
-				<a class="update-status-button button"><i class="icon-pencil"></i>What's New?</a>
-			</blockquote>
-		</div>
+			<div id="activity-status">
+				<?php echo $avatar->avatar; ?>		
+				<blockquote id="profile-status" class="user-status">
+					<p><?php echo '@' . $user->user_nicename . ' &rarr; ' . bp_get_activity_latest_update( $user_id ); ?></p>
+					<a class="update-status-button button"><i class="icon-pencil"></i>What's New?</a>
+				</blockquote>
+			</div>
+			<?php locate_template( array( 'activity/post-form.php'), true ); ?>
 		<?php endif; ?>
+		<?php do_action( 'template_notices' ); ?>	
 		
 		<header class="discussion-header" id="subnav" role="navigation">
 			<div class="directory-member">Member</div>

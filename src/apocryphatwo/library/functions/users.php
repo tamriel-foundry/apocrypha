@@ -331,7 +331,7 @@ class Apoc_User {
 
 	
 	/**
-	 * Gets user data for a forum reply or article comment
+	 * Format the output user block
 	 */	
 	function format_data( $context ) {
 	

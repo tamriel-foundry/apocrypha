@@ -32,17 +32,8 @@ require_once( BP_PLUGIN_DIR . '/bp-themes/bp-default/_inc/ajax.php' );
 // Register buttons for BuddyPress actions 	
 if ( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 
-	// User Profile
+	// Profile Filters
 	new Apoc_Profile();
-
-	// Group Profile
-	add_action( 'bp_group_header_actions'		,	'bp_group_join_button',           5 	);
-	add_action( 'bp_group_header_actions'		,	'bp_group_new_topic_button',      20 	);
-	add_action( 'bp_directory_groups_actions'	, 	'bp_group_join_button'					);
-	
-	// Directories
-	
-	// Registration
 }
 	
 /*--------------------------------------------------------------
@@ -236,7 +227,6 @@ function apoc_user_notifications( $user_id ) {
  */
 class Apoc_Profile {
 
-
 	/**
 	 * Initialize BuddyPress user profile methods
 	 */
@@ -259,7 +249,10 @@ class Apoc_Profile {
 		add_action( 'bp_member_header_actions'		,	'bp_add_friend_button',           5 	);
 		add_action( 'bp_member_header_actions'		,	'bp_send_public_message_button',  20 	);
 		add_action( 'bp_member_header_actions'		,	'bp_send_private_message_button', 20 	);
-	
+		
+		// Guild Buttons
+		add_action( 'bp_group_header_actions'		,	'bp_group_join_button',           5 	);
+		add_action( 'bp_directory_groups_actions'	, 	'bp_group_join_button'					);
 	}
 	
 
@@ -281,6 +274,9 @@ class Apoc_Profile {
 		add_filter( 'bbp_member_forums_screen_replies' 		 , array( $this, 'forums_template' ) );
 		add_filter( 'bbp_member_forums_screen_favorites' 	 , array( $this, 'forums_template' ) );
 		add_filter( 'bbp_member_forums_screen_subscriptions' , array( $this, 'forums_template' ) );
+		
+		// Guild Buttons
+		add_filter( 'bp_get_group_join_button' 				, array( $this, 'join_button' ) );
 	}
 	
 	
@@ -288,10 +284,10 @@ class Apoc_Profile {
 	 * Modify user profile buttons
 	 */
 	function friend_button( $button ) {
-	$button['wrapper'] 	= false;
-	$button['link_class'] 	.= ' button';
-	$button['link_text']	= '<i class="icon-male"></i>' . $button['link_text']; 
-	return $button;
+		$button['wrapper'] 	= false;
+		$button['link_class'] 	.= ' button';
+		$button['link_text']	= '<i class="icon-male"></i>' . $button['link_text']; 
+		return $button;
 	}
 	function mention_button( $button ) {
 		$button['wrapper']		= false;
@@ -305,8 +301,16 @@ class Apoc_Profile {
 		$button['link_text']	= '<i class="icon-envelope"></i>' . $button['link_text']; 
 		return $button;
 	}
-	
-	
+	function join_button( $button ) {
+		global $groups_template;
+		$is_member = $groups_template->group->is_member;
+		
+		$button['wrapper'] 		= false;
+		$button['link_class'] 	.= ' button';
+		$button['link_text']	= $is_member ? '<i class="icon-remove"></i>' . $button['link_text'] : '<i class="icon-group"></i>' . $button['link_text']; 
+		return $button;
+	}
+		
 	/**
 	 * Strip "View" link out of activity updates
 	 */
@@ -315,16 +319,13 @@ class Apoc_Profile {
 		return $update;
 	}
 	
-	
 	/**
 	 * Override the bbPress forum tracker templating
 	 */
 	function forums_template( $template ) {
 		$template = 'members/single/forums';
 		return $template;
-		}
-	
-	
+		}	
 }
 
 
@@ -335,10 +336,219 @@ function apoc_activity_delete_icon( $link ) {
 	}
 
 
-
+/*--------------------------------------------------------------
+X.0 - DIRECTORIES
+--------------------------------------------------------------*/
+/** 
+ * Customize search forms a bit for context
+ * @since 0.1
+ */
+function apoc_members_search_form() {
+	$default_search_value = 'Search for members...';
+	$search_value         = !empty( $_REQUEST['s'] ) ? stripslashes( $_REQUEST['s'] ) : $default_search_value; ?>
+	<input type="text" name="s" id="members_search" placeholder="<?php echo esc_attr( $search_value ) ?>" /><?php
+}
+function apoc_groups_search_form() {
+	$default_search_value = 'Search for guilds...';
+	$search_value         = !empty( $_REQUEST['s'] ) ? stripslashes( $_REQUEST['s'] ) : $default_search_value; ?>
+	<input type="text" name="s" id="groups_search" placeholder="<?php echo esc_attr( $search_value ) ?>" /><?php
+}
+function apoc_messages_search_form() {
+	$default_search_value = 'Search messages...';
+	$search_value         = !empty( $_REQUEST['s'] ) ? stripslashes( $_REQUEST['s'] ) : $default_search_value; ?>
+	<form action="" method="get" id="search-message-form">
+		<input type="text" name="s" id="messages_search" placeholder="<?php echo esc_attr( $search_value ) ?>">
+	</form><?php
+}
+	
+	
 /*--------------------------------------------------------------
 X.0 - GROUPS
 --------------------------------------------------------------*/
+
+/**
+ * Apocrypha Group Class
+ * For use in directories and guild profiles
+ */
+class Apoc_Group {
+
+	// The context in which this user is being displayed
+	public $context;
+	
+	// The HTML member block
+	public $block;
+	
+	/**
+	 * Constructs relevant information regarding a TF user 
+	 * The scope of information that is added depends on the context supplied
+	 */	
+	function __construct( $group_id = 0 , $context = 'profile' ) {
+	
+		// Set the context
+		$this->context = $context;
+		
+		// Get data for the user
+		$this->get_data( $group_id );
+		
+		// Format data depending on the context
+		$this->format_data( $context );
+	}
+	
+	/**
+	 * Gets user data for a forum reply or article comment
+	 */	
+	function get_data( $group_id ) {
+		
+		// Get the meta data
+		$allmeta = wp_cache_get( 'bp_groups_allmeta_' . $group_id, 'bp' );
+		if ( false === $allmeta ) {
+			global $bp, $wpdb;
+			$allmeta = array();
+			$rawmeta = $wpdb->get_results( $wpdb->prepare( "SELECT meta_key, meta_value FROM " . $bp->groups->table_name_groupmeta . " WHERE group_id = %d", $group_id ) );
+			foreach( $rawmeta as $meta ) {
+				$allmeta[$meta->meta_key] = $meta->meta_value;			
+			}
+			wp_cache_set( 'bp_groups_allmeta_' . $group_id, $allmeta, 'bp' );
+		}
+		
+		// Add data to the class object
+		$this->id			= $group_id;
+		$this->fullname		= bp_get_group_name();
+		$this->domain		= bp_get_group_permalink();
+		$this->slug			= bp_get_group_slug();
+		$this->guild		= ( $allmeta['is_guild'] == 1 ) ? true : false;
+		$this->type			= $this->type();
+		$this->members		= bp_get_group_member_count();
+		$this->alliance		= $allmeta['group_faction'];
+		$this->faction		= $this->allegiance();
+		$this->platform		= $allmeta['group_platform'];
+		$this->region		= $allmeta['group_region'];
+		$this->style		= $allmeta['group_style'];
+		$this->interests	= unserialize( $allmeta['group_interests'] );
+		
+	}
+	
+	/* 
+	 * Get a group's filtered type
+	 * @since 0.4
+	 */
+	function type() {
+		$type = bp_get_group_type();
+		if ( $this->guild )
+			$type = str_replace( 'Group' , 'Guild' , $type );
+		return $type;
+	}
+
+	/* 
+	 * Get a group's declared allegiance
+	 */
+	function allegiance() {
+	
+		switch( $this->alliance ) {
+			
+			case 'aldmeri' :
+				$faction = 'Aldmeri Dominion';
+				break;
+			case 'daggerfall' :
+				$faction = 'Daggerfall Covenant';
+				break;
+			case 'ebonheart' :
+				$faction = 'Ebonheart Pact';
+				break;
+			case 'neutral' :
+				$faction = 'Neutral';
+				break;
+			default :
+				$faction = 'Undeclared';
+				break;		
+		}
+		return $faction;
+	}
+
+	/* 
+	 * Get a group's platform and region preference
+	 */	
+	function platform() {
+		
+		// Format platform
+		$platform 	= $this->platform;
+		if ( $platform ) {
+			$sql	 	= array( 'pcmac' , 'xbox' , 'playstation' , 'blank' );
+			$formatted	= array( 'PC' , 'Xbox' , 'PS4' , '' );
+			$platform	= str_replace( $sql , $formatted , $platform );
+		}
+		
+		// Format region
+		$region		= $this->region;
+		if ( $region ) {
+			$sql		= array( 'NA' , 'EU' , 'OC' , 'blank' , '' );
+			$formatted	= array( 'North America' , 'Europe' , 'Oceania' , 'Global' , 'Global' );
+			$region		= str_replace( $sql , $formatted , $region );
+		}
+		
+		// No Platform Specified
+		if ( $platform == '' && $region != '' ) 
+			$tooltip = $region;
+		else
+			$tooltip = implode( ' - ' , array( $platform , $region ) );
+		
+		$tooltip 	= '<p class="group-member-count">' . $tooltip . '</p>';
+		return $tooltip;
+	}	
+	
+	/**
+	 * Formats the output user block
+	 */	
+	function format_data( $context ) {
+		
+		// Setup the basic info block
+		$block		= '<a class="member-name" href="' . $this->domain . '" title="View ' . $this->fullname . ' Group Page">' . $this->fullname . '</a>';
+		$block		.= $this->title;	
+		$block		.= '<p class="group-type">' . $this->type . '</p>';
+		$block		.= $allegiance = '<p class="user-allegiance ' . $this->alliance . '">' . $this->faction . '</p>';
+		$block		.= $this->platform();
+		$block		.= '<p class="group-member-count">' . $this->members . '</p>';
+
+		// Do some things differently depending on context
+		$avatar_args = array( 'type' => 'thumb' , 'size' => 100 );
+		switch( $context ) {
+		
+			case 'directory' :
+				$block 					= '<div class="member-meta user-block">' . $block . '</div>';
+				break;
+					
+			case 'profile' :
+				$avatar_args['type'] 	= 'full';
+				$avatar_args['size']	= 200;
+				break;
+		}
+		
+		// Prepend the avatar
+		$avatar			= bp_get_group_avatar( $args = array(
+							'type' 		=> $avatar_args['type'],
+							'height'	=> $avatar_args['size'],
+							'width'		=> $avatar_args['size'], 
+						) );
+		$avatar			= '<a class="member-avatar" href="' . $this->domain . '" title="View ' . $this->fullname . ' Group Page">' . $avatar . '</a>';
+		$this->avatar 	= $avatar;
+		$block			= $avatar . $block;
+		
+		// Add the html to the object
+		$this->block 	= $block;
+	}
+}
+
+
+/**
+ * Count guilds by a specific meta key
+ * @since 0.1
+ */
+function count_groups_by_meta($meta_key, $meta_value) {
+	global $wpdb, $bp;
+	$user_meta_query = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM " . $bp->groups->table_name_groupmeta . " WHERE meta_key = %d AND meta_value= %s" , $meta_key , $meta_value ) );
+	return intval($user_meta_query);
+}
+
 
 /**
  * Get the allegiance of a guild from the database.
@@ -365,6 +575,9 @@ function get_guild_allegiance( $group_id ) {
 	return $allegiance;
 }
 
+/**
+ * Helper function to check if a group is a guild
+ */
 function group_is_guild( $group_id ) {
 	$guild = groups_get_groupmeta( $group_id , 'is_guild' );
 	$is_guild = ( $guild == 1 ) ? true : false;

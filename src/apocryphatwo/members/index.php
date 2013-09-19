@@ -16,12 +16,15 @@ $user_id	= $user->ID;
 	<div id="content" class="no-sidebar">
 		<?php apoc_breadcrumbs(); ?>
 		
-		<header id="directory-header" class="entry-header <?php page_header_class(); ?>">
-			<h1 class="entry-title"><?php entry_header_title( false ); ?></h1>
-			<p class="entry-byline">A directory listing of all Tamriel Foundry members.</p>
-		</header>
-			
 		<form action="<?php the_permalink(); ?>" method="post" id="members-directory-form" class="dir-form">
+		
+			<header id="directory-header" class="entry-header <?php page_header_class(); ?>">
+				<h1 class="entry-title"><?php entry_header_title( false ); ?></h1>
+				<p class="entry-byline">A directory listing of all Tamriel Foundry members.</p>
+				<div id="members-search" class="directory-search" role="search">
+					<?php apoc_members_search_form(); ?>
+				</div>
+			</header>
 		
 			<nav id="directory-nav" role="navigation">
 				<ul id="directory-actions" class="directory-tabs">

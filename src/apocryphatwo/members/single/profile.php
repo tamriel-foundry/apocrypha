@@ -11,7 +11,6 @@ if ( '' != $user->race ) $charsheet_class = $user->race;
 elseif ( '' != $user->faction ) $charsheet_class = $user->faction;
 ?>
 
-<?php do_action( 'template_notices' ); ?>
 <nav class="directory-subheader no-ajax" id="subnav" >
 	<ul id="profile-tabs" class="tabs" role="navigation">
 		<?php bp_get_options_nav(); ?>

@@ -62,10 +62,10 @@ $avatar		= new Apoc_Avatar( array ( 'user_id' => $user_id , 'size' => 50 , 'link
 				<div id="activity-filter-select" class="filter">
 					<select id="activity-filter-by">
 					<option value="-1">All Activity</option>
+					<option value="activity_update">Status Updates</option>
 					<option value="new_blog_post">Front-Page Articles</option>
 					<option value="new_blog_comment">Article Comments</option>						
 					<?php do_action( 'bp_activity_filter_options' ); // Topics & Replies ?>
-					<option value="activity_update">Status Updates</option>
 					<option value="new_member">New Members</option>
 					<option value="friendship_accepted,friendship_created">Friendships</option>
 					<option value="created_group">New Guilds</option>

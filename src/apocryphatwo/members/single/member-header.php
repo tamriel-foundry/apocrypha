@@ -86,6 +86,5 @@ global $user;
 			</header>
 			<?php $user->contacts(); ?>
 		</div>
-	</div>
-	
+	</div>	
 </div>

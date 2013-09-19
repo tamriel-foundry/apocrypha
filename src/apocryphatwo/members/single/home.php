@@ -19,23 +19,24 @@ $user 	= new Apoc_User( bp_displayed_user_id() , 'profile' );
 		<?php locate_template( array( 'members/single/member-header.php' ), true ); ?>		
 		
 		<div id="profile-body">
-		<?php if ( bp_is_user_profile() ) :
+			<?php do_action( 'template_notices' ); ?>
+			<?php if ( bp_is_user_profile() ) :
 			locate_template( array( 'members/single/profile.php'	), true );
-		elseif ( bp_is_user_activity() ) :
+			elseif ( bp_is_user_activity() ) :
 			locate_template( array( 'members/single/activity.php'	), true ); 
-		elseif ( bp_is_user_forums() ) :
+			elseif ( bp_is_user_forums() ) :
 			locate_template( array( 'members/single/forums.php'		), true );
-		elseif ( bp_is_user_friends() ) :
+			elseif ( bp_is_user_friends() ) :
 			locate_template( array( 'members/single/friends.php'	), true );
-		elseif ( bp_is_user_groups() ) :
+			elseif ( bp_is_user_groups() ) :
 			locate_template( array( 'members/single/groups.php'		), true );
-		elseif ( bp_is_user_messages() ) :
+			elseif ( bp_is_user_messages() ) :
 			locate_template( array( 'members/single/messages.php'	), true );
-		elseif ( bp_is_user_settings() ) :
+			elseif ( bp_is_user_settings() ) :
 			locate_template( array( 'members/single/settings.php'	), true );
-		else :
+			else :
 			locate_template( array( 'members/single/plugins.php'	), true );
-		endif; ?>
+			endif; ?>
 		</div>		
 		
 	</div><!-- #content -->

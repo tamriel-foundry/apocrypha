@@ -7,7 +7,6 @@
  */
 ?>
 
-<?php do_action( 'template_notices' ); ?>
 <nav class="directory-subheader no-ajax" id="subnav" >
 	<ul id="profile-tabs" class="tabs" role="navigation">
 		<?php bp_get_options_nav(); ?>

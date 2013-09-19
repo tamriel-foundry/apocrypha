@@ -29,6 +29,7 @@ $user_id	= $user->ID;
 		<?php // Post directly to group from main activity feed
 		if ( !bp_is_my_profile() && !bp_is_group() ) : ?>	
 		<li class="select form-left">
+			<label for="whats-new-post-in"><i class="icon-home"></i>Post Update To:</label>
 			<select id="whats-new-post-in" name="whats-new-post-in">
 				<option selected="selected" value="0"><?php _e( 'My Profile', 'buddypress' ); ?></option>
 				<?php if ( bp_has_groups( 'user_id=' . $user_id . '&type=alphabetical&max=100&per_page=100&populate_extras=0' ) ) : while ( bp_groups() ) : bp_the_group(); ?>

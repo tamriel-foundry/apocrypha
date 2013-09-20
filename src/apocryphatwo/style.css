@@ -747,7 +747,7 @@ div.error:before {	content: "\F12A"; }
 	font-size: 0.8em;
 	color: #BBB;
 	border: 1px solid #000;
-	box-shadow: 0 0 3px #666 inset;
+	box-shadow: 0 0 2px #444 inset;
 	}
 .instructions > h3 { float: left; }
 .instructions > h3 + * { clear: left; }
@@ -2678,7 +2678,7 @@ div.directory-member div.member-meta { margin: 4px 0 0 115px; }
 
 /* Activity Directory */
 ul#activity-stream { border-bottom: none; }
-ul#activity-stream li.load-more { border-bottom: none; }
+ul#activity-stream li:last-child { border-bottom: none; }
 div#activity-status { 
 	width: 98%;
 	float: left;
@@ -2735,6 +2735,10 @@ a#create-guild-button {
 	top: 8px;
 	right: 160px;
 }
+div.group-avatar-block {
+	width: 110px;
+	float: left;
+	}
 div.guild-description {
 	color: #BBB;
 	font-family: 'Open Sans' , sans-serif;
@@ -2742,7 +2746,39 @@ div.guild-description {
 	width: 100%;
 	float: left;
 	}
-
+div.guild-style-icons {
+	float: left;
+	position: relative;
+	left: 50%;
+	margin: 5px 0 0;
+	}
+div.guild-style-icons ul {
+	float: left;
+	position: relative;
+	left: -50%;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	background: rgba(17,17,17,0.5);
+	border: 1px solid #000;
+	border-radius: 3px;
+	box-shadow: 0 0 3px #666;
+	}
+div.guild-style-icons.casual ul { box-shadow: 0 0 3px #4682B4; }
+div.guild-style-icons.moderate ul { box-shadow: 0 0 3px #FFA500; }
+div.guild-style-icons.hardcore ul { box-shadow: 0 0 3px #800000; }
+li.guild-style-icon {
+	display: block;
+	height: 24px;
+	width: 24px;
+	float: left;
+	margin: 1px;
+	background-image: url(images/icons/guild-style-icons.png);
+	}
+li.guild-style-icon.pvp { background-position: 0px 0px; }
+li.guild-style-icon.pve { background-position: -24px 0px; }
+li.guild-style-icon.rp { background-position: -48px 0px; }
+li.guild-style-icon.crafting { background-position: -72px 0px; }
 
 
 /*--------------------------------------------------------------

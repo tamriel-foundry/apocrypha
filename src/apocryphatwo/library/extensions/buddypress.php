@@ -494,7 +494,39 @@ class Apoc_Group {
 		
 		$tooltip 	= '<p class="group-member-count">' . $tooltip . '</p>';
 		return $tooltip;
-	}	
+	}
+	
+	/* 
+	 * Display the group's interest icons
+	 */	
+	function interest_icons() {
+	
+		// Get the data
+		$interests 	= $this->interests;
+		if ( empty ( $interests ) )
+			return false;
+			
+		$playstyle 	= $this->style;
+		if ( $playstyle == 'blank' ) 
+			$playstyle = '';
+
+		// Do some grammar
+		$lower 	= array( 'pve' , 'pvp' , 'rp' , 'crafting' );
+		$upper 	= array( 'PvE' , 'PvP' , 'RP' , 'Crafting' );
+		$focus 	= implode( ', ' , $interests );
+		$focus 	= str_replace ( $lower , $upper , $focus );
+		
+		// Generate a tooltip for our icons
+		$tooltip = implode( ' - ' , array ( ucfirst( $playstyle ) ,  $focus ) );
+			
+		// Display them
+		$icons 		 = '<div class="guild-style-icons ' . $playstyle . '" title="' . $tooltip . '"><ul>';
+		foreach( $interests as $interest_name => $interest_val ) {
+			$icons 	.= '<li class="guild-style-icon ' . $interest_val . '"></li>';
+		}
+		$icons 		.= '</ul></div>';
+		return $icons;
+	}
 	
 	/**
 	 * Formats the output user block
@@ -510,26 +542,24 @@ class Apoc_Group {
 		$block		.= '<p class="group-member-count">' . $this->members . '</p>';
 
 		// Do some things differently depending on context
-		$avatar_args = array( 'type' => 'thumb' , 'size' => 100 );
+		$icons			= $this->interest_icons();
 		switch( $context ) {
 		
 			case 'directory' :
-				$block 					= '<div class="member-meta user-block">' . $block . '</div>';
+				$avatar					= bp_get_group_avatar( $args = array( 'type' => 'thumb' , 'height' => 100, 'width' => 100 ) );
+				$avatar					= '<a class="member-avatar" href="' . $this->domain . '" title="View ' . $this->fullname . ' Group Page">' . $avatar . '</a>';
+				$avatar					= '<div class="group-avatar-block">' . $avatar . $icons . '</div>';
+				$block 					= '<div class="member-meta user-block">' . $block . '</div>';	
 				break;
 					
 			case 'profile' :
-				$avatar_args['type'] 	= 'full';
-				$avatar_args['size']	= 200;
+				$avatar					= bp_get_group_avatar( $args = array( 'type' => 'full' , 'height' => 200, 'width' => 200 ) );
+				$avatar					= '<a class="member-avatar" href="' . $this->domain . '" title="View ' . $this->fullname . ' Group Page">' . $avatar . '</a>';
+				$block					= $block . $icons;
 				break;
 		}
 		
 		// Prepend the avatar
-		$avatar			= bp_get_group_avatar( $args = array(
-							'type' 		=> $avatar_args['type'],
-							'height'	=> $avatar_args['size'],
-							'width'		=> $avatar_args['size'], 
-						) );
-		$avatar			= '<a class="member-avatar" href="' . $this->domain . '" title="View ' . $this->fullname . ' Group Page">' . $avatar . '</a>';
 		$this->avatar 	= $avatar;
 		$block			= $avatar . $block;
 		

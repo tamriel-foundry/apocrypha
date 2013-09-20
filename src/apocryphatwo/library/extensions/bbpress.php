@@ -433,8 +433,8 @@ function apoc_activity_replace_quote( $reply_content ) {
 		
 		// Add the mentions to the content and register them with BuddyPress
 		$reply_content = $mentions . $reply_content ;
-		$reply_content = bp_activity_at_name_filter( $reply_content );
 		$reply_content = strip_shortcodes( $reply_content );
+		$reply_content = bp_activity_at_name_filter( $reply_content );
 	endif;
 	
 	// Return the excerpt

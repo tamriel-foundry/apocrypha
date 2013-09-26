@@ -1259,7 +1259,8 @@ ul.tabs li {
 ul.tabs li + li { border-left: 1px solid #222; }
 ul.tabs li:last-child { border-right: none; }
 
-ul.tabs li > a {
+ul.tabs li > a,
+ul.tabs li > span {
 	font-family: Cinzel , serif;
 	color: #BBB;
 	text-align: center;

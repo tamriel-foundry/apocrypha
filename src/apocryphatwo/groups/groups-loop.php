@@ -6,12 +6,17 @@
  * 9-19-2013
  */
  
-// Parse the querystring to allow for faction filtering
+// First check to see if an alliance was passed with a GET request
+if ( isset( $_GET['faction'] ) )
+	$faction = $_GET['faction'];
+ 
+// Allow AJAX to override the GET
 $groupquery		= bp_ajax_querystring( 'groups' );
-$splitquery		= explode( '&' , $groupquery);
-$grouptype		= preg_grep( '#scope=#' , $splitquery);
-if ( $grouptype != '' )
-	$faction	= array_pop( explode( '=' , implode( $grouptype ) ));
+if ( $groupquery ) {
+	$splitquery		= explode( '&' , $groupquery);
+	$grouptype		= preg_grep( '#scope=#' , $splitquery);
+	$faction		= array_pop( explode( '=' , implode( $grouptype ) ));
+}
 	
 /* If we are targetting a specific faction, apply the meta filter */
 if ( in_array( $faction , array( 'aldmeri' , 'daggerfall' , 'ebonheart' )))

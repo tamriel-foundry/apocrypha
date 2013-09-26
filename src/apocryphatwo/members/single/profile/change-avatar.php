@@ -64,7 +64,7 @@ $action_url = $bp->displayed_user->domain . $bp->profile->slug . '/change-avatar
 				<?php wp_nonce_field( 'bp_avatar_cropstore' ); ?>
 				
 				<button type="submit" name="avatar-crop-submit" id="avatar-crop-submit" class="button">
-					<i class="icon-picture"></i>Crop Image				
+					<i class="icon-crop"></i>Crop Image				
 				</button>
 					
 		</fieldset>

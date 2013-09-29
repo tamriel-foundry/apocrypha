@@ -301,13 +301,29 @@ class Apoc_Profile {
 		$button['link_text']	= '<i class="icon-envelope"></i>' . $button['link_text']; 
 		return $button;
 	}
+	
+
+	/**
+	 * Modify the join guild button
+	 */
 	function join_button( $button ) {
 		global $groups_template;
 		$is_member = $groups_template->group->is_member;
 		
+		// Force private groups to use the request membership form
+		if ( 'private' == $groups_template->group->status && 1 != $groups_template->group->is_member )
+			$button['link_href'] = bp_get_group_permalink( $group ) . 'request-membership';
+		
+		// Apply some styling
 		$button['wrapper'] 		= false;
 		$button['link_class'] 	.= ' button';
 		$button['link_text']	= $is_member ? '<i class="icon-remove"></i>' . $button['link_text'] : '<i class="icon-group"></i>' . $button['link_text']; 
+		
+		// Don't let people try to join Entropy Rising
+		if ( 1 != $groups_template->group->id )
+			$button = NULL;
+			
+		// Return the button
 		return $button;
 	}
 		
@@ -335,7 +351,8 @@ function apoc_activity_delete_icon( $link ) {
 	return $link;
 	}
 
-
+	
+	
 /*--------------------------------------------------------------
 X.0 - DIRECTORIES
 --------------------------------------------------------------*/
@@ -425,7 +442,14 @@ class Apoc_Group {
 		$this->region		= $allmeta['group_region'];
 		$this->style		= $allmeta['group_style'];
 		$this->interests	= unserialize( $allmeta['group_interests'] );
+		$this->website		= $allmeta['group_website'];
 		
+		// Get some extra stuff on user profiles
+		if ( $this->context == 'profile' ) {
+			$this->byline	= $this->byline();	
+			$this->admins 	= $this->admins();
+			$this->mods		= $this->mods();
+		}
 	}
 	
 	/* 
@@ -486,13 +510,16 @@ class Apoc_Group {
 			$region		= str_replace( $sql , $formatted , $region );
 		}
 		
-		// No Platform Specified
-		if ( $platform == '' && $region != '' ) 
-			$tooltip = $region;
-		else
+		// Format the tooltip based on what data is available
+		if ( $platform != '' && $region != '' )
 			$tooltip = implode( ' - ' , array( $platform , $region ) );
-		
-		$tooltip 	= '<p class="group-member-count">' . $tooltip . '</p>';
+		elseif ( $platform == '' && $region != '' ) 
+			$tooltip = $region;
+		elseif ( $platform != '' && $region == '' ) 
+			$tooltip = $platform;
+	
+		// Return the tip
+		$tooltip 	= ( $tooltip ) ? '<p class="group-member-count">' . $tooltip . '</p>' : '';
 		return $tooltip;
 	}
 	
@@ -528,6 +555,76 @@ class Apoc_Group {
 		return $icons;
 	}
 	
+	/* 
+	 * Generate a byline for the user profile with their allegiance information
+	 */
+	function byline() {
+	
+		// Get the data
+		$faction	= $this->faction;
+		$type		= strtolower( $this->type );
+		$name		= $this->fullname;
+			
+		// Generate the byline
+		if ( $faction == 'Undeclared' || $faction == 'Neutral' )
+			$byline = $name . ' is a ' . $type . ' with no declared political allegiance.';
+		else
+			$byline = $name . ' is a ' . $type . ' of the ' . $faction;
+		
+		// Return the byline
+		return $byline;
+	}
+	
+	/**
+	 * Formats the guild website
+	 */	
+	function website() {
+	
+		// Get the url
+		$url = $this->website;
+		$website = '';
+		if ( $url )	$website = '<p class="group-website"><a href="' . $url . '" title="Visit Guild Website" target="_blank">Guild Website</a></p>';
+		return $website;
+	}
+	
+	function admins() {
+	
+		global $groups_template;
+		$admins = $groups_template->group->admins;
+		$list = '';
+		
+		if ( !empty( $admins ) ) {
+			$list = '<ul id="group-admins">';
+			foreach( $admins as $admin ) {
+				$avatar = new Apoc_Avatar( array( 'user_id' => $admin->user_id , 'size' => 50 , 'link' => true ) );
+				$list .= '<li>' . $avatar->avatar;
+				$list .= '<span class="leader-name">' . bp_core_get_user_displayname( $admin->user_id ) . '</span></li>';
+			}
+			$list .= '</ul>';
+		}
+		
+		return $list;
+	}
+	
+	function mods() {
+	
+		global $groups_template;
+		$mods = $groups_template->group->mods;
+		$list = '';
+		
+		if ( !empty( $mods ) ) {
+			$list = '<ul id="group-admins">';
+			foreach( $mods as $mod ) {
+				$avatar = new Apoc_Avatar( array( 'user_id' => $mod->user_id , 'size' => 50 , 'link' => true ) );
+				$list .= '<li>' . $avatar->avatar;
+				$list .= '<span class="leader-name">' . bp_core_get_user_displayname( $mod->user_id ) . '</span></li>';
+			}
+			$list .= '</ul>';
+		}
+		
+		return $list;
+	}
+	
 	/**
 	 * Formats the output user block
 	 */	
@@ -555,6 +652,7 @@ class Apoc_Group {
 			case 'profile' :
 				$avatar					= bp_get_group_avatar( $args = array( 'type' => 'full' , 'height' => 200, 'width' => 200 ) );
 				$avatar					= '<a class="member-avatar" href="' . $this->domain . '" title="View ' . $this->fullname . ' Group Page">' . $avatar . '</a>';
+				$block					.= $this->website();
 				$block					= $block . $icons;
 				break;
 		}
@@ -612,6 +710,35 @@ function group_is_guild( $group_id ) {
 	$guild = groups_get_groupmeta( $group_id , 'is_guild' );
 	$is_guild = ( $guild == 1 ) ? true : false;
 	return $is_guild;
+}
+
+
+/*
+ * Improve the friend invite interface to use fancy checkboxes!
+ */
+function apoc_group_invite_friend_list() {
+	global $bp;
+	if ( empty( $group_id ) )
+		$group_id = !empty( $bp->groups->new_group_id ) ? $bp->groups->new_group_id : $bp->groups->current_group->id;
+
+	if ( $friends = friends_get_friends_invite_list( bp_loggedin_user_id(), $group_id ) ) {
+		$invites = groups_get_invites_for_group( bp_loggedin_user_id(), $group_id );
+
+		for ( $i = 0, $count = count( $friends ); $i < $count; ++$i ) {
+			$checked = '';
+			if ( !empty( $invites ) ) {
+				if ( in_array( $friends[$i]['id'], $invites ) )
+					$checked = ' checked="checked"';
+			}
+			$items[] = '<li><input' . $checked . ' type="checkbox" name="friends[]" id="f-' . $friends[$i]['id'] . '" value="' . esc_attr( $friends[$i]['id'] ) . '" /><label for="friends">' . $friends[$i]['full_name'] . '</label></li>';
+		}
+	}
+
+	// Return the list
+	if ( !empty( $items ) )
+		echo implode( "\n", (array) $items );
+	else
+	return false;
 }
 
 

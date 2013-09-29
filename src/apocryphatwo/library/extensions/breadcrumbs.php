@@ -355,6 +355,11 @@ class Apoc_Breadcrumbs {
 
 			// Display the current component
 			$bp_trail[] = ucfirst( bp_current_component() );
+			
+		// Guild Profile
+		elseif ( bp_is_group() ) :
+			$bp_trail[] = '<a href="'. bp_get_groups_directory_permalink() .'" title="Groups and Guilds Directory">Groups</a>';
+			$bp_trail[] = bp_get_group_name();			
 		
 		// Directories
 		elseif ( bp_is_directory() ) :	

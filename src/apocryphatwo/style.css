@@ -489,6 +489,7 @@ input[type="radio"] {
 	vertical-align: middle;
 	cursor: pointer;
 	opacity: 0;
+	z-index: 100;
 	}
 input[type='radio'] + label, 
 input[type='checkbox'] + label {
@@ -1268,7 +1269,10 @@ ul.tabs li > span {
 	}
 ul.tabs li:hover { background: rgba(51,51,51,0.2); }
 ul.tabs li:hover > a {  text-shadow: 0 0 20px #c60; }
-ul.tabs li.current { background: rgba( 51,51,51,0.3 ); }
+ul.tabs li.current { 
+	background: rgba( 51,51,51,0.3 ); 
+	border-right: 1px solid #000;
+	}
 ul.tabs li.current > a { text-shadow: 0 0 20px #c60; }
 	
 	
@@ -2747,6 +2751,44 @@ div.guild-description {
 	width: 100%;
 	float: left;
 	}
+	
+	
+	
+/*---------------------------------------------
+	9.4 - Guild Profile
+----------------------------------------------*/
+span#guild-activity {
+	position: relative;
+	top: 4px;
+	}
+div.guild-leaders {
+	width: 45%;
+	float: left;
+	margin: 1em 2.5%;
+	}
+div.guild-leaders h3 {
+	float: left;
+	padding: 0 1em;
+	margin-bottom: 0.5em; 
+	}
+div.guild-leaders ul {
+	clear: left;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	}
+div.guild-leaders img.avatar {
+	float: left;
+	}
+div.guild-leaders span.leader-name {
+	display: block;
+	margin: 0 0 0 70px;
+	font-size: 1.125em;
+	text-shadow: 1px 1px #000;
+	line-height: 60px;
+	}
+	
+	
 div.guild-style-icons {
 	float: left;
 	position: relative;
@@ -2780,6 +2822,29 @@ li.guild-style-icon.pvp { background-position: 0px 0px; }
 li.guild-style-icon.pve { background-position: -24px 0px; }
 li.guild-style-icon.rp { background-position: -48px 0px; }
 li.guild-style-icon.crafting { background-position: -72px 0px; }
+
+/* Guild Send Invites */
+div#invited-list,
+div#invite-list {
+	width: 20%;
+	float: left;
+	margin: 1em 5%	1em 0;
+	}
+div#invited-list { 
+	width: 75%;
+	margin: 1em 0 0 0; 
+	}
+ul#friend-list { border-bottom: none; }
+ul#group-invite-list {
+	margin: 0 1em;
+	padding: 0;
+	list-style: none;
+	}
+div#group-invite-submit {
+	float: right;
+	}
+
+
 
 
 /*--------------------------------------------------------------

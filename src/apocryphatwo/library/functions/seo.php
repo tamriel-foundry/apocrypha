@@ -66,6 +66,7 @@ class Apoc_SEO {
 				$description 	= $sitename . ' user profile for ' . bp_get_displayed_user_fullname();
 			
 			elseif ( bp_is_group() ) :
+				$doctitle		= bp_get_current_group_name() . $separator . 'Guild Profile';
 				$description 	= $sitename . ' group profile for ' . bp_get_current_group_name();
 				
 			elseif ( bp_is_register_page() || bp_is_activation_page() ) :

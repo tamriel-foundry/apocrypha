@@ -394,8 +394,7 @@ class Edit_Profile extends Apoc_User {
 	
 		// Was the form submitted?
 		if ( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) && $_POST['action'] == 'update-user' )
-			$this->save( $user_id );
-			
+			$this->save( $user_id );		
 	}
 	
 	function save( $user_id ) {
@@ -456,14 +455,14 @@ class Edit_Profile extends Apoc_User {
 			
 			// Loop through fields
 			foreach ( $fields as $field ) {
+				
+				// There is a new value to save
+				if ( !empty( $_POST[$field] ) && $_POST[$field] != $originals[$field] )
+					update_user_meta( $user_id	, $field , call_user_func( $treat , $_POST[$field] ) );
 					
-					// There is a new value to save
-					if ( !empty( $_POST[$field] ) && $_POST[$field] != $originals[$field] )
-						update_user_meta( $user_id	, $field , call_user_func( $treat , $_POST[$field] ) );
-						
-					// The value was removed
-					elseif ( empty( $_POST[$field] ) )
-						delete_user_meta( $user_id	, $field  )	;	
+				// The value was removed
+				elseif ( empty( $_POST[$field] ) )
+					delete_user_meta( $user_id	, $field  )	;	
 			}			
 		}
 		

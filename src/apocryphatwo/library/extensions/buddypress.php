@@ -11,12 +11,12 @@
 1.0 - Initialization
 2.0 - Notifications
 3.0 - User Profiles
+4.0 - Directories
+5.0 - Groups
+
 ______________________________
 
-4.0 - Directories
-5.0 - Activity
-6.0 - Groups
-7.0 - Registration
+6.0 - Registration
 --------------------------------------------------------------*/
 
 // Exit if accessed directly
@@ -253,6 +253,10 @@ class Apoc_Profile {
 		// Guild Buttons
 		add_action( 'bp_group_header_actions'		,	'bp_group_join_button',           5 	);
 		add_action( 'bp_directory_groups_actions'	, 	'bp_group_join_button'					);
+		
+		// Group Profile Fields
+		add_action( 'groups_create_group_step_save_group-details' 	, array( $this , 'save_group_fields' ) );
+		add_action( 'groups_details_updated'						, array( $this , 'save_group_fields' ) );
 	}
 	
 
@@ -341,7 +345,37 @@ class Apoc_Profile {
 	function forums_template( $template ) {
 		$template = 'members/single/forums';
 		return $template;
-		}	
+		}
+			
+	/* 
+	 * Save Custom Group Fields to SQL 
+	 */
+	function save_group_fields( $group_id ) {
+		global $bp;
+		if($bp->groups->new_group_id)  $id = $bp->groups->new_group_id;
+		else  $id = $group_id;
+		
+		$group_is_guild = ( 'group' == $_POST['group-type'] ) ? 0 : 1;
+			groups_update_groupmeta( $id, 'is_guild', $group_is_guild );
+			
+		if ( $_POST['group-website'] )
+			groups_update_groupmeta( $id, 'group_website', $_POST['group-website'] );  
+	
+		if ( $_POST['group-platform']  )
+			groups_update_groupmeta( $id, 'group_platform', $_POST['group-platform'] );
+			
+		if ( $_POST['group-faction']  )
+			groups_update_groupmeta( $id, 'group_faction', $_POST['group-faction'] );
+			
+		if ( $_POST['group-region']  )
+			groups_update_groupmeta( $id, 'group_region', $_POST['group-region'] );
+			
+		if ( $_POST['group-style']  )
+			groups_update_groupmeta( $id, 'group_style', $_POST['group-style'] );
+			
+		if ( $_POST['group-interests']  )
+			groups_update_groupmeta( $id, 'group_interests', $_POST['group-interests'] );
+	}
 }
 
 
@@ -354,7 +388,7 @@ function apoc_activity_delete_icon( $link ) {
 	
 	
 /*--------------------------------------------------------------
-X.0 - DIRECTORIES
+4.0 - DIRECTORIES
 --------------------------------------------------------------*/
 /** 
  * Customize search forms a bit for context
@@ -380,7 +414,7 @@ function apoc_messages_search_form() {
 	
 	
 /*--------------------------------------------------------------
-X.0 - GROUPS
+5.0 - GROUPS
 --------------------------------------------------------------*/
 
 /**
@@ -665,7 +699,6 @@ class Apoc_Group {
 		$this->block 	= $block;
 	}
 }
-
 
 /**
  * Count guilds by a specific meta key

@@ -46,3 +46,5 @@ global $guild;
 	</div>
 	<?php endif; ?>
 </div>
+
+<?php do_action( 'template_notices' ); ?>

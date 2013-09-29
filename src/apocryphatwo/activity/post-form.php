@@ -50,7 +50,7 @@ $user_id	= $user->ID;
 		<li class="hidden">
 			<?php wp_nonce_field( 'post_update', '_wpnonce_post_update' ); ?>
 			<input type="hidden" id="whats-new-post-object" name="whats-new-post-object" value="groups" />
-			<?php if ( bp_is_group_home() ) : ?>
+			<?php if ( bp_is_group() ) : ?>
 			<input type="hidden" id="whats-new-post-object" name="whats-new-post-object" value="groups" />
 			<input type="hidden" id="whats-new-post-in" name="whats-new-post-in" value="<?php bp_group_id(); ?>" />
 			<?php endif; ?>

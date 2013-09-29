@@ -20,6 +20,10 @@
 	</div>
 </nav><!-- #subnav -->
 
+<?php if ( is_user_logged_in() && bp_group_is_member() ) : ?>
+	<?php locate_template( array( 'activity/post-form.php'), true ); ?>
+<?php endif; ?>
+
 <div id="activity-directory" class="activity" role="main">
 	<?php locate_template( array( 'activity/activity-loop.php' ), true ); ?>
 </div><!-- #activity-directory -->

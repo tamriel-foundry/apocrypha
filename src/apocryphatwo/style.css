@@ -438,6 +438,7 @@ form li.submit button {
 	}
 form ol li label { display: inline-block }
 form li.wp-editor { margin: 0; }
+form li.checkbox label{ margin-right: 0.5em; }
 form li.hidden { margin: 0; }
 form li.submit { 
 	float: right;
@@ -2843,6 +2844,12 @@ ul#group-invite-list {
 div#group-invite-submit {
 	float: right;
 	}
+	
+/* Guild Administration Screens */
+ul#group-interests-list li {
+	margin: 0;
+	list-style: none;
+}
 
 
 

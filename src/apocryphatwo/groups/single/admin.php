@@ -104,9 +104,9 @@ global $guild;
 				</select>
 			</li>
 			
-			<li class="radio">
+			<li class="checkboxes">
 				<label for="group-interests"><i class="icon-gear icon-fixed-width"></i>Group Interests (&#9734;) :</label><br>
-				<ul id="group-interests-list">
+				<ul id="group-interests-list" class="radio-options-list">
 					<li><input type="checkbox" name="group-interests[]" value="pve" <?php checked( in_array( 'pve' , $guild->interests ) , 1 ); ?>><label for="group-interests">Player vs. Environment (PvE)</label></li>
 					<li><input type="checkbox" name="group-interests[]" value="pvp" <?php checked( in_array( 'pvp' , $guild->interests ) , 1 ); ?>><label for="group-interests">Player vs. Player (PvP)</label></li>
 					<li><input type="checkbox" name="group-interests[]" value="rp" <?php checked( in_array( 'rp' , $guild->interests ) , 1 ); ?>><label for="group-interests">Roleplaying (RP)</label></li>
@@ -130,20 +130,237 @@ global $guild;
 				<?php wp_nonce_field( 'groups_edit_group_details' ); ?>
 			</li>
 		</ol>
-
-
 		
 	<?php // Manage Group Settings
 	elseif ( bp_is_group_admin_screen( 'group-settings' ) ) : ?>
-		Group management screen
+		<div class="instructions">	
+			<h3 class="double-border bottom">Guild Privacy Settings</h3>
+			<ul>
+				<li>You can fine tune your guild's privacy settings below.</li>
+				<li>Please also specify which members of this guild should be allowed to invite others to join.</li>
+				<li>Please note that the settings you choose will affect the Tamriel Foundry community's ability to interact with your guild!</li>
+			</ul>
+		</div>
+		<ol class="group-edit-list">
+			<li class="checkbox">
+				<input type="radio" name="group-status" value="public"<?php bp_group_show_status_setting( 'public' ); ?> /><label><i class="icon-unlock icon-fixed-width"></i><strong>This is a public guild.</strong></label>
+				<ul class="radio-options-list">
+					<li>Any Tamriel Foundry member can join this guild.</li>
+					<li>This guild will be listed in the guilds directory and will appear in search results.</li>
+					<li>Guild content and activity will be visible to all site members and guests.</li>
+				</ul>
+			</li>
+			<li class="checkbox">				
+				<input type="radio" name="group-status" value="private"<?php bp_group_show_status_setting( 'private' ); ?> /><label><i class="icon-lock icon-fixed-width"></i><strong>This is a private guild.</strong></label>
+				<ul class="radio-options-list">
+					<li>Only users who request membership and are accepted can join this guild.</li>
+					<li>This guild will be listed in the guilds directory and will appear in search results.</li>
+					<li>Guild content and activity will only be visible to guild members.</li>
+				</ul>
+			</li>
+				
+			<?php if ( current_user_can( 'manage_options') ) : // only admins can set hidden groups ?>
+			<li class="checkbox">			
+				<input type="radio" name="group-status" value="hidden"<?php bp_group_show_status_setting( 'hidden' ); ?> /><label><i class="icon-eye-close icon-fixed-width"></i><strong>This is a hidden guild.</strong></label>
+				<ul class="radio-options-list">
+					<li>Only users who are invited can join this guild</li>
+					<li>This guild will not be listed in the guilds directory or search results.</li>
+					<li>Guild content and activity will only be visible to guild members</li>
+				</ul>
+			</li>
+			<?php endif; ?>
+			
+			<li class="checkbox">
+				<p><i class="icon-legal icon-fixed-width"></i><strong>Set guild invitation permissions</strong></p>
+				<ul class="radio-options-list">
+					<input type="radio" name="group-invite-status" value="members" <?php bp_group_show_invite_status_setting( 'members' ); ?> />
+					<label>All guild members can invite others.</label><br>
+					<input type="radio" name="group-invite-status" value="mods" <?php bp_group_show_invite_status_setting( 'mods' ); ?> />
+					<label>Guild leaders and officers can invite others.</label><br>	
+					<input type="radio" name="group-invite-status" value="admins" <?php bp_group_show_invite_status_setting( 'admins' ); ?> />
+					<label>Only guild leaders can invite others.</label>
+				</ul>
+			</li>
+			
+			<li class="submit">
+				<button type="submit" id="save" name="save"><i class="icon-pencil"></i>Update Group</button>
+			</li>
+			
+			<li class="hidden">
+				<?php wp_nonce_field( 'groups_edit_group_settings' ); ?>
+			</li>
+		</ol>
 
 	<?php // Group Avatar Settings
 	elseif ( bp_is_group_admin_screen( 'group-avatar' ) ) : ?>
-		Group avatar screen
+		<div class="instructions">
+			<h3 class="double-border-bottom">Upload Guild Avatar</h3>
+			<ul>
+				<li>Upload an image to use as the guild avatar.</li>
+				<li>The image will be shown on the main group page, and in search results.</li>
+				<li>Avatars are automatically resized to 200 pixel jpegs after cropping.</li>
+				<li>If you'd like to remove the existing avatar without uploading a new one, please use the delete avatar button.</li>
+			</ul>
+		</div>
+		<?php if ( 'upload-image' == bp_get_avatar_admin_step() ) : ?>
+		<ol class="group-edit-list">
+			<li class="file">
+				<?php bp_new_group_avatar( $args = array(
+							'type' => 'full',
+							'width' => 200,
+							'height' => 200,
+							'no_grav' => true,
+							) ); ?>
+				<input type="file" name="file" id="file" />
+				<?php if ( bp_get_group_has_avatar() ) : ?>
+					<?php bp_button( array( 'id' => 'delete_group_avatar', 'component' => 'groups', 'wrapper_id' => 'delete-group-avatar-button', 'link_class' => 'edit button', 'link_href' => bp_get_group_avatar_delete_link(), 'link_title' => __( 'Delete Avatar', 'buddypress' ), 'link_text' => '<i class="icon-remove"></i>Delete Avatar' , 'wrapper' => false ) ); ?>
+				<?php endif; ?>	
+			</li>
+			<li class="submit">
+				<button type="submit" name="upload" id="upload"><i class="icon-upload"></i>Upload Image</button>
+			</li>
+			<li class="hidden">
+				<?php wp_nonce_field( 'bp_avatar_upload' ); ?>
+				<input type="hidden" name="action" id="action" value="bp_avatar_upload" />
+			</li>
+		</ol>
+		
+		<?php elseif ( 'crop-image' == bp_get_avatar_admin_step() ) : ?>
+		<ol class="group-edit-list">
+			<li>
+				<img src="<?php bp_avatar_to_crop(); ?>" id="avatar-to-crop" class="avatar" alt="<?php _e( 'Avatar to crop', 'buddypress' ); ?>" />
+				<div id="avatar-crop-pane">
+					<img src="<?php bp_avatar_to_crop(); ?>" id="avatar-crop-preview" class="avatar" alt="<?php _e( 'Avatar preview', 'buddypress' ); ?>" />
+				</div>	
+			</li>	
+			<li class="submit">
+				<button type="submit" name="avatar-crop-submit" id="avatar-crop-submit" class="button"><i class="icon-crop"></i>Crop Image</button>
+			</li>		
+			<li class="hidden">
+				<input type="hidden" name="image_src" id="image_src" value="<?php bp_avatar_to_crop_src(); ?>" />
+				<input type="hidden" id="x" name="x" />
+				<input type="hidden" id="y" name="y" />
+				<input type="hidden" id="w" name="w" />
+				<input type="hidden" id="h" name="h" />
+				<?php wp_nonce_field( 'bp_avatar_cropstore' ); ?>
+			</li>
+		</ol>		
+		<?php endif; ?>
 	
 	<?php // Manage Group Members
 	elseif ( bp_is_group_admin_screen( 'manage-members' ) ) : ?>	
-		Member management screen
+		<div class="instructions">
+			<h3 class="double-border bottom">Manage Guild Members</h3>
+			<ul>
+				<li>From this panel you can manage the current members of this guild.</li>
+				<li>Guilds are allowed three member ranks: member, officer, and leader.</li>
+			</ul>
+		</div>
+		
+		<?php if ( bp_has_members( '&include='. bp_group_admin_ids() ) ) : ?>
+		<h2>Group Leaders</h2>
+		<ul id="members-list" class="directory-list" role="main">
+			<?php while ( bp_members() ) : bp_the_member();
+			$user = new Apoc_User( bp_get_member_user_id() , 'directory' );	?>
+			<li class="member directory-entry">
+			
+				<div class="directory-member">
+					<?php echo $user->block; ?>
+				</div>
+				
+				<div class="directory-content">
+					<span class="activity"><?php bp_member_last_active(); ?></span>
+					<div class="actions">
+						<?php if ( count( bp_group_admin_ids( false, 'array' ) ) > 1 ) : ?>
+						<a class="button confirm admin-demote-to-member" href="<?php bp_group_member_demote_link( bp_get_member_user_id() ); ?>"><i class="icon-level-down"></i>Demote to Member</a>
+						<?php endif; ?>
+					</div>
+					<?php if ( $user->status['content'] ) : ?>
+					<blockquote class="user-status">
+						<p><?php echo $user->status['content']; ?></p>
+					</blockquote>
+					<?php endif; ?>
+				</div>
+			</li>
+			<?php endwhile; ?>
+		</ul>
+		<?php endif; ?>
+		
+		<?php if ( bp_group_has_moderators() ) : if ( bp_has_members( '&include=' . bp_group_mod_ids() ) ) : ?>
+		<h2>Group Officers</h2>	
+		<ul id="members-list" class="directory-list" role="main">
+			<?php while ( bp_members() ) : bp_the_member();
+			$user = new Apoc_User( bp_get_member_user_id() , 'directory' );	?>
+			<li class="member directory-entry">
+			
+				<div class="directory-member">
+					<?php echo $user->block; ?>
+				</div>
+				
+				<div class="directory-content">
+					<span class="activity"><?php bp_member_last_active(); ?></span>
+					<div class="actions">
+						<a href="<?php bp_group_member_promote_admin_link( array( 'user_id' => bp_get_member_user_id() ) ); ?>" class="button confirm mod-promote-to-admin" title="Promote to Leader"><i class="icon-level-up"></i>Promote to Leader</a>
+						<a class="button confirm mod-demote-to-member" href="<?php bp_group_member_demote_link( bp_get_member_user_id() ); ?>"><i class="icon-level-down"></i>Demote to Member</a>
+					</div>
+					<?php if ( $user->status['content'] ) : ?>
+					<blockquote class="user-status">
+						<p><?php echo $user->status['content']; ?></p>
+					</blockquote>
+					<?php endif; ?>
+				</div>
+			</li>
+			<?php endwhile; ?>
+		</ul>			
+		<?php endif; endif; ?>
+		
+		<h2>Group Members</h2>
+		<?php if ( bp_group_has_members( 'per_page=15&exclude_banned=false' ) ) : ?>
+		<ul id="members-list" class="directory-list" role="main">
+			<?php while ( bp_members() ) : bp_the_member();
+			$user = new Apoc_User( bp_get_member_user_id() , 'directory' );	?>
+			<li class="member directory-entry">
+			
+				<div class="directory-member">
+					<?php echo $user->block; ?>
+				</div>
+				
+				<div class="directory-content">
+					<span class="activity"><?php bp_member_last_active(); ?></span>
+					<div class="actions">
+						<?php if ( bp_get_group_member_is_banned() ) : ?>
+							<a href="<?php bp_group_member_unban_link(); ?>" class="button confirm member-unban" title="<?php _e( 'Unban this member', 'buddypress' ); ?>"><i class="icon-ok"></i>Unban User</a>
+						<?php else : ?>
+							<a href="<?php bp_group_member_ban_link(); ?>" class="button confirm member-ban" title="<?php _e( 'Kick and ban this member', 'buddypress' ); ?>"><i class="icon-remove-circle"></i>Kick and Ban</a>
+							<a href="<?php bp_group_member_promote_mod_link(); ?>" class="button confirm member-promote-to-mod" title="Promote to Officer"><i class="icon-level-up"></i>Promote to Officer</a>
+							<a href="<?php bp_group_member_promote_admin_link(); ?>" class="button confirm member-promote-to-admin" title="Promote to Leader"><i class="icon-level-up"></i>Promote to Leader</a>
+						<?php endif; ?>
+						<a href="<?php bp_group_member_remove_link(); ?>" class="button confirm" title="<?php _e( 'Remove this member', 'buddypress' ); ?>"><i class="icon-remove"></i>Remove from Guild</a>
+					</div>
+					<?php if ( $user->status['content'] ) : ?>
+					<blockquote class="user-status">
+						<p><?php echo $user->status['content']; ?></p>
+					</blockquote>
+					<?php endif; ?>
+				</div>
+			</li>
+			<?php endwhile; ?>
+		</ul>
+	
+		<?php else : ?>
+			<p class="no-results"><?php _e( 'This group has no members.', 'buddypress' ); ?></p>
+		<?php endif; ?>
+		
+		<?php if ( bp_group_member_needs_pagination() ) : ?>
+		<nav class="pagination no-ajax">
+			<div id="member-count" class="pagination-count">
+				<?php bp_group_member_pagination_count(); ?>
+			</div>
+			<div id="member-admin-pagination" class="pagination-links">
+				<?php bp_group_member_admin_pagination(); ?>
+			</div>
+		</nav>
+		<?php endif; ?>
 		
 	<?php // Manage Membership Requests
 	elseif ( bp_is_group_admin_screen( 'membership-requests' ) ) : ?>

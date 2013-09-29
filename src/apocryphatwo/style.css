@@ -444,6 +444,10 @@ form li.submit {
 	float: right;
 	margin: 0;
 	}
+ul.radio-options-list li {
+	margin: 0;
+	list-style: none;
+}
 	
 /*---------------------------------------------
 	3.3 - Fields
@@ -2786,10 +2790,8 @@ div.guild-leaders span.leader-name {
 	margin: 0 0 0 70px;
 	font-size: 1.125em;
 	text-shadow: 1px 1px #000;
-	line-height: 60px;
+	line-height: 55px;
 	}
-	
-	
 div.guild-style-icons {
 	float: left;
 	position: relative;
@@ -2846,10 +2848,6 @@ div#group-invite-submit {
 	}
 	
 /* Guild Administration Screens */
-ul#group-interests-list li {
-	margin: 0;
-	list-style: none;
-}
 
 
 

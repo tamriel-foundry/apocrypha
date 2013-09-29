@@ -2766,16 +2766,7 @@ span#guild-activity {
 	position: relative;
 	top: 4px;
 	}
-div.guild-leaders {
-	width: 45%;
-	float: left;
-	margin: 1em 2.5%;
-	}
-div.guild-leaders h3 {
-	float: left;
-	padding: 0 1em;
-	margin-bottom: 0.5em; 
-	}
+div#profile-widgets.guild-profile-widgets { margin-top: 2em; }
 div.guild-leaders ul {
 	clear: left;
 	margin: 0;

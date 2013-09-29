@@ -32,19 +32,25 @@ global $guild;
 		</ul>
 	</nav>
 	
-	<div id="group-administrators" class="guild-leaders">
-		<?php $header = ( $guild->guild == 1 ) ? 'Guild Leaders' : 'Group Administrators'; ?>
-		<h3 class="double-border bottom"><?php echo $header; ?></h3>
-		<?php echo $guild->admins; ?>
+	<div id="profile-widgets" class="guild-profile-widgets">
+		<div id="group-administrators" class="widget profile-widget guild-leaders">
+			<?php $header = ( $guild->guild == 1 ) ? 'Guild Leaders' : 'Group Administrators'; ?>
+			<header class="widget-header">
+				<h3 class="widget-title"><?php echo $header; ?></h3>
+			</header>
+			<?php echo $guild->admins; ?>
+		</div>
+			
+		<?php if (bp_group_has_moderators() ) : ?>
+		<div id="group-moderators" class="widget profile-widget guild-leaders">
+			<?php $header = ( $guild->guild == 1 ) ? 'Guild Officers' : 'Group Moderators'; ?>
+			<header class="widget-header">
+				<h3 class="widget-title"><?php echo $header; ?></h3>
+			</header>
+			<?php echo $guild->mods; ?>
+		</div>
+		<?php endif; ?>
 	</div>
-		
-	<?php if (bp_group_has_moderators() ) : ?>
-	<div id="group-moderators" class="guild-leaders">
-		<?php $header = ( $guild->guild == 1 ) ? 'Guild Officers' : 'Group Moderators'; ?>
-		<h3 class="double-border bottom"><?php echo $header; ?></h3>
-		<?php echo $guild->mods; ?>
-	</div>
-	<?php endif; ?>
 </div>
 
 <?php do_action( 'template_notices' ); ?>

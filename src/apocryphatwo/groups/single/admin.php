@@ -51,20 +51,20 @@ global $guild;
 				/*<textarea name="group-desc" id="group-desc" aria-required="true"><?php bp_group_description_editable(); ?></textarea>*/ ?>
 			</li>
 			
-			<li class="text">
+			<li class="text form-left">
 				<label for="group-website"><i class="icon-home icon-fixed-width"></i>Group Website: </label>
 				<input type="url" name="group-website" id="group-website" value="<?php echo $guild->website; ?>" size="50" />
 			</li>
 
 			<?php if ( current_user_can( 'edit_posts' ) ) : ?>
-			<li class="checkbox">
+			<li class="checkbox form-right">
 				<label for="group-type"><i class="icon-group icon-fixed-width"></i>Group Type &#9734; :</label>
 				<input type="radio" name="group-type" value="group" <?php checked( $guild->guild, 0 , true ) ?>><label for="group-type">Group</label>
 				<input type="radio" name="group-type" value="guild" <?php checked( $guild->guild, 1 , true ) ?>><label for="group-type">Guild</label>
 			</li>
 			<?php endif; ?>
 			
-			<li class="select">
+			<li class="select form-left">
 				<label for="group-platform"><i class="icon-desktop icon-fixed-width"></i>Platform:</label>
 				<select name="group-platform" id="group-platform">
 					<option value="blank" <?php selected( $guild->platform, 'blank' ); ?>></option>
@@ -74,7 +74,7 @@ global $guild;
 				</select>
 			</li>
 
-			<li class="select">
+			<li class="select form-right">
 				<label for="group-faction"><i class="icon-flag icon-fixed-width"></i>Faction Allegiance (&#9734;) :</label>
 				<select name="group-faction" id="group-faction">
 					<option value="neutral" <?php selected( $guild->alliance, 'neutral' ); ?>>Undeclared</option>
@@ -84,7 +84,7 @@ global $guild;
 				</select>
 			</li>
 			
-			<li class="select">
+			<li class="select form-left">
 				<label for="group-region"><i class="icon-globe icon-fixed-width"></i>Region (&#9734;) :</label>
 				<select name="group-region" id="group-region">
 					<option value="blank" <?php selected( $guild->region, 'blank' ); ?>></option>
@@ -94,7 +94,7 @@ global $guild;
 				</select>
 			</li>
 			
-			<li class="select">
+			<li class="select form-right">
 				<label for="group-style"><i class="icon-shield icon-fixed-width"></i>Guild Playstyle:</label>
 				<select name="group-style" id="group-style">
 					<option value="blank" <?php selected( $guild->style, 'blank' ); ?>></option>

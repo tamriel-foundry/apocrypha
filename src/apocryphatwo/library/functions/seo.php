@@ -47,32 +47,41 @@ class Apoc_SEO {
 		$sitename 	= SITENAME;
 		$id			= $apoc->queried_id;
 		$object		= $apoc->queried_object;
-		
+				
 		// Homepage
 		if ( is_home() ) {
 			$description		= get_bloginfo( 'description' );
 			$doctitle 			= $sitename . $separator . $description;
 		}
-		
+
 		// BuddyPress Pages
 		elseif ( class_exists( 'BuddyPress' ) && is_buddypress() ) {
-		
-			// Setup defaults
-			$doctitle		= $object->post_title;
-			$description 	= $object->post_content;
-		
+					
+			// Profiles
 			if ( bp_is_user() ) :
 				$doctitle		= bp_get_displayed_user_fullname() . $separator . 'User Profile';
 				$description 	= $sitename . ' user profile for ' . bp_get_displayed_user_fullname();
 			
+			elseif ( bp_is_group_create() ) :
+				$doctitle		= 'Create New Group';
+				$description 	= 'Create a new group for the ' . $sitename . ' groups directory.';
+			
+			// Groups
 			elseif ( bp_is_group() ) :
 				$doctitle		= bp_get_current_group_name() . $separator . 'Guild Profile';
 				$description 	= $sitename . ' group profile for ' . bp_get_current_group_name();
-				
+			
+			// Registration and activation
 			elseif ( bp_is_register_page() || bp_is_activation_page() ) :
 				$description 	= get_post_field( 'post_excerpt' , get_queried_object_id() );
 			endif;
-		}		
+			
+			// Have some fallbacks just in case
+			if ( !$doctitle )
+				$doctitle		= $object->post_title;
+			if ( !$description )
+				$description 	= $object->post_content;
+		}
 		
 		// bbPress Forums
 		elseif ( class_exists( 'bbPress' ) && is_bbpress() ) {

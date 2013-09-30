@@ -26,8 +26,10 @@ if ( 0 == $user_id ) :  ?>
 			<input type="text" name="username" id="username" class="input" value="" placeholder="Username" size="20" tabindex="1">
 			<input type="password" name="password" id="password" class="input" value="" placeholder="Password" size="20" tabindex="1">
 			
-			<input type="checkbox" name="remember" id="remember" value="forever" tabindex="1">
-			<label id="remember-label" for="remember">Save</label>
+			<div id="login-remember" class="checkbox">
+				<input type="checkbox" name="remember" id="remember" value="forever" tabindex="1">
+				<label id="remember-label" for="remember">Save</label>
+			</div>
 			
 			<input type="hidden" name="redirect" value="<?php echo get_current_url(); ?>">
 			<input type="hidden" name="action" value="toplogin">

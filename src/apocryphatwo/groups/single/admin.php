@@ -55,16 +55,8 @@ global $guild;
 				<label for="group-website"><i class="icon-home icon-fixed-width"></i>Group Website: </label>
 				<input type="url" name="group-website" id="group-website" value="<?php echo $guild->website; ?>" size="50" />
 			</li>
-
-			<?php if ( current_user_can( 'edit_posts' ) ) : ?>
-			<li class="checkbox form-right">
-				<label for="group-type"><i class="icon-group icon-fixed-width"></i>Group Type &#9734; :</label>
-				<input type="radio" name="group-type" value="group" <?php checked( $guild->guild, 0 , true ) ?>><label for="group-type">Group</label>
-				<input type="radio" name="group-type" value="guild" <?php checked( $guild->guild, 1 , true ) ?>><label for="group-type">Guild</label>
-			</li>
-			<?php endif; ?>
-			
-			<li class="select form-left">
+					
+			<li class="select form-right">
 				<label for="group-platform"><i class="icon-desktop icon-fixed-width"></i>Platform:</label>
 				<select name="group-platform" id="group-platform">
 					<option value="blank" <?php selected( $guild->platform, 'blank' ); ?>></option>
@@ -73,6 +65,14 @@ global $guild;
 					<option value="playstation" <?php selected( $guild->platform, 'playstation' ); ?>>PlayStation 4</option>
 				</select>
 			</li>
+
+			<?php if ( current_user_can( 'edit_posts' ) ) : ?>
+			<li class="checkbox form-left">
+				<label for="group-type"><i class="icon-group icon-fixed-width"></i>Group Type &#9734; :</label>
+				<input type="radio" name="group-type" value="group" <?php checked( $guild->guild, 0 , true ) ?>><label for="group-type">Group</label>
+				<input type="radio" name="group-type" value="guild" <?php checked( $guild->guild, 1 , true ) ?>><label for="group-type">Guild</label>
+			</li>
+			<?php endif; ?>
 
 			<li class="select form-right">
 				<label for="group-faction"><i class="icon-flag icon-fixed-width"></i>Faction Allegiance (&#9734;) :</label>
@@ -84,7 +84,17 @@ global $guild;
 				</select>
 			</li>
 			
-			<li class="select form-left">
+			<li class="checkboxes form-left">
+				<label for="group-interests"><i class="icon-gear icon-fixed-width"></i>Group Interests (&#9734;) :</label><br>
+				<ul id="group-interests-list" class="radio-options-list">
+					<li><input type="checkbox" name="group-interests[]" value="pve" <?php checked( in_array( 'pve' , $guild->interests ) , 1 ); ?>><label for="group-interests">Player vs. Environment (PvE)</label></li>
+					<li><input type="checkbox" name="group-interests[]" value="pvp" <?php checked( in_array( 'pvp' , $guild->interests ) , 1 ); ?>><label for="group-interests">Player vs. Player (PvP)</label></li>
+					<li><input type="checkbox" name="group-interests[]" value="rp" <?php checked( in_array( 'rp' , $guild->interests ) , 1 ); ?>><label for="group-interests">Roleplaying (RP)</label></li>
+					<li><input type="checkbox" name="group-interests[]" value="crafting" <?php checked( in_array( 'crafting' , $guild->interests ) , 1 ); ?>><label for="group-interests">Crafting</label></li>
+				</ul>
+			</li>	
+			
+			<li class="select form-right">
 				<label for="group-region"><i class="icon-globe icon-fixed-width"></i>Region (&#9734;) :</label>
 				<select name="group-region" id="group-region">
 					<option value="blank" <?php selected( $guild->region, 'blank' ); ?>></option>
@@ -104,15 +114,7 @@ global $guild;
 				</select>
 			</li>
 			
-			<li class="checkboxes">
-				<label for="group-interests"><i class="icon-gear icon-fixed-width"></i>Group Interests (&#9734;) :</label><br>
-				<ul id="group-interests-list" class="radio-options-list">
-					<li><input type="checkbox" name="group-interests[]" value="pve" <?php checked( in_array( 'pve' , $guild->interests ) , 1 ); ?>><label for="group-interests">Player vs. Environment (PvE)</label></li>
-					<li><input type="checkbox" name="group-interests[]" value="pvp" <?php checked( in_array( 'pvp' , $guild->interests ) , 1 ); ?>><label for="group-interests">Player vs. Player (PvP)</label></li>
-					<li><input type="checkbox" name="group-interests[]" value="rp" <?php checked( in_array( 'rp' , $guild->interests ) , 1 ); ?>><label for="group-interests">Roleplaying (RP)</label></li>
-					<li><input type="checkbox" name="group-interests[]" value="crafting" <?php checked( in_array( 'crafting' , $guild->interests ) , 1 ); ?>><label for="group-interests">Crafting</label></li>
-				</ul>
-			</li>	
+
 							
 			<?php // Allow plugins to hook in 
 			do_action( 'groups_custom_group_fields_editable' ); ?>
@@ -143,7 +145,8 @@ global $guild;
 		</div>
 		<ol class="group-edit-list">
 			<li class="checkbox">
-				<input type="radio" name="group-status" value="public"<?php bp_group_show_status_setting( 'public' ); ?> /><label><i class="icon-unlock icon-fixed-width"></i><strong>This is a public guild.</strong></label>
+				<input type="radio" name="group-status" value="public"<?php bp_group_show_status_setting( 'public' ); ?> />
+				<label><i class="icon-unlock icon-fixed-width"></i><strong>This is a public guild.</strong></label>
 				<ul class="radio-options-list">
 					<li>Any Tamriel Foundry member can join this guild.</li>
 					<li>This guild will be listed in the guilds directory and will appear in search results.</li>
@@ -151,7 +154,8 @@ global $guild;
 				</ul>
 			</li>
 			<li class="checkbox">				
-				<input type="radio" name="group-status" value="private"<?php bp_group_show_status_setting( 'private' ); ?> /><label><i class="icon-lock icon-fixed-width"></i><strong>This is a private guild.</strong></label>
+				<input type="radio" name="group-status" value="private"<?php bp_group_show_status_setting( 'private' ); ?> />
+				<label><i class="icon-lock icon-fixed-width"></i><strong>This is a private guild.</strong></label>
 				<ul class="radio-options-list">
 					<li>Only users who request membership and are accepted can join this guild.</li>
 					<li>This guild will be listed in the guilds directory and will appear in search results.</li>
@@ -161,7 +165,8 @@ global $guild;
 				
 			<?php if ( current_user_can( 'manage_options') ) : // only admins can set hidden groups ?>
 			<li class="checkbox">			
-				<input type="radio" name="group-status" value="hidden"<?php bp_group_show_status_setting( 'hidden' ); ?> /><label><i class="icon-eye-close icon-fixed-width"></i><strong>This is a hidden guild.</strong></label>
+				<input type="radio" name="group-status" value="hidden"<?php bp_group_show_status_setting( 'hidden' ); ?> />
+				<label><i class="icon-eye-close icon-fixed-width"></i><strong>This is a hidden guild.</strong></label>
 				<ul class="radio-options-list">
 					<li>Only users who are invited can join this guild</li>
 					<li>This guild will not be listed in the guilds directory or search results.</li>
@@ -170,15 +175,12 @@ global $guild;
 			</li>
 			<?php endif; ?>
 			
-			<li class="checkbox">
+			<li class="radio">
 				<p><i class="icon-legal icon-fixed-width"></i><strong>Set guild invitation permissions</strong></p>
 				<ul class="radio-options-list">
-					<input type="radio" name="group-invite-status" value="members" <?php bp_group_show_invite_status_setting( 'members' ); ?> />
-					<label>All guild members can invite others.</label><br>
-					<input type="radio" name="group-invite-status" value="mods" <?php bp_group_show_invite_status_setting( 'mods' ); ?> />
-					<label>Guild leaders and officers can invite others.</label><br>	
-					<input type="radio" name="group-invite-status" value="admins" <?php bp_group_show_invite_status_setting( 'admins' ); ?> />
-					<label>Only guild leaders can invite others.</label>
+					<li><input type="radio" name="group-invite-status" value="members" <?php bp_group_show_invite_status_setting( 'members' ); ?> /><label>All guild members can invite others.</label></li>
+					<li><input type="radio" name="group-invite-status" value="mods" <?php bp_group_show_invite_status_setting( 'mods' ); ?> /><label>Guild leaders and officers can invite others.</label></li>	
+					<li><input type="radio" name="group-invite-status" value="admins" <?php bp_group_show_invite_status_setting( 'admins' ); ?> /><label>Only guild leaders can invite others.</label></li>
 				</ul>
 			</li>
 			

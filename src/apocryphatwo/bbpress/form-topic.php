@@ -101,11 +101,12 @@ elseif ( bbp_current_user_can_access_create_topic_form() ) : ?>
 						
 				<?php // Save revision history on edits
 				if ( bbp_allow_revisions() && bbp_is_topic_edit() ) : ?>
-				<li class="checkbox form-left">
+				<li class="text form-left">
 					<label for="bbp_topic_edit_reason"><i class="icon-eraser"></i>Edit Reason?</label>
 					<input type="text" value="<?php bbp_form_topic_edit_reason(); ?>" tabindex="<?php bbp_tab_index(); ?>" size="40" name="bbp_topic_edit_reason" id="bbp_topic_edit_reason" />
-					<br><input name="bbp_log_topic_edit" id="bbp_log_topic_edit" type="checkbox" value="1" <?php bbp_form_topic_log_edit(); ?> tabindex="<?php bbp_tab_index(); ?>" />
-					<label for="bbp_log_topic_edit">Display Reason?</label>
+				</li>
+				<li class="checkbox form-left">
+					<input name="bbp_log_topic_edit" id="bbp_log_topic_edit" type="checkbox" value="1" <?php bbp_form_topic_log_edit(); ?> tabindex="<?php bbp_tab_index(); ?>" /><label for="bbp_log_topic_edit">Display Reason?</label>
 				</li>
 				<?php endif; ?>
 			

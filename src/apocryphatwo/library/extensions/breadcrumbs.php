@@ -359,7 +359,13 @@ class Apoc_Breadcrumbs {
 		// Guild Profile
 		elseif ( bp_is_group() ) :
 			$bp_trail[] = '<a href="'. bp_get_groups_directory_permalink() .'" title="Groups and Guilds Directory">Groups</a>';
-			$bp_trail[] = bp_get_group_name();			
+			
+			// Group Creation
+			if ( bp_is_group_create() )
+				$bp_trail[] = 'Create New Group';
+			else
+			$bp_trail[] = bp_get_group_name();
+				
 		
 		// Directories
 		elseif ( bp_is_directory() ) :	
@@ -367,6 +373,8 @@ class Apoc_Breadcrumbs {
 			elseif ( bp_is_members_component() )	$bp_trail[] = 'Members Directory';
 			elseif ( bp_is_groups_component() )		$bp_trail[] = 'Guilds Directory';
 			else 									$bp_trail[] = ucfirst( bp_current_component() );
+			
+		
 			
 		// Backup Placeholder
 		else :

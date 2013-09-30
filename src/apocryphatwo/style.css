@@ -438,13 +438,18 @@ form li.submit button {
 	}
 form ol li label { display: inline-block }
 form li.wp-editor { margin: 0; }
-form li.checkbox label{ margin-right: 0.5em; }
+
 form li.hidden { margin: 0; }
 form li.submit { 
 	float: right;
 	margin: 0;
 	}
+	
+/* Radios and Checkboxes */
+.checkbox,
+.radio {	position: relative;	}
 ul.radio-options-list li {
+	position: relative;
 	margin: 0;
 	list-style: none;
 }
@@ -487,11 +492,10 @@ select option {	background: #b3a695;}
 /* Radios and Checkboxes */
 input[type="checkbox"], 
 input[type="radio"] {
-	position: relative;
 	width: 16px;
 	height: 16px;
-	margin: -6px -24px 0 0;
-	vertical-align: middle;
+	position: absolute;
+	top: 6px;
 	cursor: pointer;
 	opacity: 0;
 	z-index: 100;
@@ -953,16 +957,28 @@ input#password {
 	background-position: 100% 100%;
 	}
 form#top-login-form input[type="password"] { background-position: 100% 1px; }
-input#remember { margin: 5px 0 0 3px;	}
-label#remember-label {
-	top: -12px;
-	font-size: 10px;
-	margin: -12px 0 0 -25px;
-	padding: 0 0 20px 3px;
-	background-position: 6px -45px;
+
+
+div#login-remember {
+	float: left;
+	position: relative;
 	}
-label#remember-label:hover { background-position: 6px -15px; }
-input#remember:checked + label#remember-label {	background-position: 6px 14px; }
+input#remember { 
+	position: absolute;
+	top: 8px;
+	left: 2px;	
+	}
+label#remember-label {
+	display: block;
+	float: left;
+	font-size: 10px;
+	line-height: 14px;
+	margin: 0 3px;
+	padding: 0 0 16px;
+	background-position: 3px -46px;
+	}
+label#remember-label:hover { background-position: 3px -16px; }
+input#remember:checked + label#remember-label {	background-position: 3px 13px; }
 div#top-login-error { display: none; }
 
 /* Front-end Notifications */
@@ -2836,11 +2852,19 @@ ul#group-invite-list {
 	padding: 0;
 	list-style: none;
 	}
+ul#group-invite-list > li { position: relative; }
 div#group-invite-submit { float: right; }
 	
 /* Guild Administration Screens */
 form#group-settings-form,
 form#request-membership-form { margin: 0; }
+
+/* Guild Creation Form */
+form li#previous {
+	float: left;
+	text-align: left;
+	}
+form li#previous > button { float: left; }
 
 
 /*--------------------------------------------------------------

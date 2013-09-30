@@ -13,10 +13,10 @@
 3.0 - User Profiles
 4.0 - Directories
 5.0 - Groups
-
+6.0 - Group Creation
 ______________________________
 
-6.0 - Registration
+7.0 - Registration
 --------------------------------------------------------------*/
 
 // Exit if accessed directly
@@ -34,6 +34,10 @@ if ( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 
 	// Profile Filters
 	new Apoc_Profile();
+	
+	// Group Extensions
+	if ( class_exists( 'BP_Group_Extension' ) )
+		bp_register_group_extension( 'Apoc_Group_Add_Leader' );
 }
 	
 /*--------------------------------------------------------------
@@ -283,7 +287,6 @@ class Apoc_Profile {
 		add_filter( 'bp_get_group_join_button' 				, array( $this, 'join_button' ) );
 	}
 	
-	
 	/**
 	 * Modify user profile buttons
 	 */
@@ -305,7 +308,6 @@ class Apoc_Profile {
 		$button['link_text']	= '<i class="icon-envelope"></i>' . $button['link_text']; 
 		return $button;
 	}
-	
 
 	/**
 	 * Modify the join guild button
@@ -377,7 +379,6 @@ class Apoc_Profile {
 			groups_update_groupmeta( $id, 'group_interests', $_POST['group-interests'] );
 	}
 }
-
 
 add_filter( 'bp_get_activity_delete_link' , 'apoc_activity_delete_icon' );
 function apoc_activity_delete_icon( $link ) {
@@ -467,7 +468,7 @@ class Apoc_Group {
 		$this->fullname		= bp_get_group_name();
 		$this->domain		= bp_get_group_permalink();
 		$this->slug			= bp_get_group_slug();
-		$this->guild		= ( $allmeta['is_guild'] == 1 ) ? true : false;
+		$this->guild		= ( $allmeta['is_guild'] == 1 ) ? 1 : 0;
 		$this->type			= $this->type();
 		$this->members		= bp_get_group_member_count();
 		$this->alliance		= $allmeta['group_faction'];
@@ -689,6 +690,13 @@ class Apoc_Group {
 				$block					.= $this->website();
 				$block					= $block . $icons;
 				break;
+				
+			case 'widget' :
+				$avatar					= bp_get_group_avatar( $args = array( 'type' => 'thumb' , 'height' => 100, 'width' => 100 ) );
+				$avatar					= '<a class="member-avatar" href="' . $this->domain . '" title="View ' . $this->fullname . ' Group Page">' . $avatar . '</a>';
+				$avatar					= '<div id="featured-guild-avatar" class="group-avatar-block">' . $avatar . '</div>';
+				$block 					= '<div id="featured-guild-meta" class="member-meta user-block">' . $block . '</div>';	
+				break;				
 		}
 		
 		// Prepend the avatar
@@ -710,32 +718,6 @@ function count_groups_by_meta($meta_key, $meta_value) {
 	return intval($user_meta_query);
 }
 
-
-/**
- * Get the allegiance of a guild from the database.
- * Display an allegiance block with the faction listed.
- * @Since 2.0
- */
-function get_guild_allegiance( $group_id ) {
-	$faction = groups_get_groupmeta( $group_id, 'group_faction' );
-	$name = 'Neutral';
-	switch ( $faction ) {
-		case 'aldmeri' :
-			$name = 'Aldmeri Dominion';
-		break;
-		
-		case 'daggerfall' :
-			$name = 'Daggerfall Covenant';
-		break;
-		
-		case 'ebonheart' :
-			$name = 'Ebonheart Pact';
-		break;
-	}
-	$allegiance = '<p class="guild-allegiance ' . $faction . '">' . $name . '</p>';	
-	return $allegiance;
-}
-
 /**
  * Helper function to check if a group is a guild
  */
@@ -745,6 +727,116 @@ function group_is_guild( $group_id ) {
 	return $is_guild;
 }
 
+/*--------------------------------------------------------------
+6.0 - GROUP CREATION
+--------------------------------------------------------------*/
+class Apoc_Group_Add_Leader extends BP_Group_Extension {
+
+	// Define the slug
+	public $slug = 'leader';
+
+	function __construct() {
+		
+		// Provide arguments used by the groups API
+		$args = array(
+		
+			// Where is the component used
+			'visibility' => 'private',		
+			
+			// Set the details of where the component is used
+			'screens'	=> array (
+				'create' => array (
+					'enabled'					=> true,
+					'name'						=> 'Guild Leader',
+					'slug'						=> 'leader',
+					'create_step_position'		=> 99 ),
+				'edit'	=> array (
+					'enabled'					=> false ),
+				'admin'	=> array (
+					'enabled'					=> false ),
+			),		
+		);
+		
+		// Pass the args back to the groups API
+		parent::init( $args );
+	}
+	
+	/*
+	 * Generates markup for the create/edit/admin screens
+	 */
+	function settings_screen() {
+	
+		// Make sure we are in the right place
+		global $bp, $groups_template;
+		if ( !bp_is_group_creation_step( $this->slug ) )
+		return false; 
+		
+		
+		// Display the form fields ?>
+		<div class="instructions">
+			<h3 class="double-border bottom">Step 6 - Appoint Guild Leader</h3>
+			<ul>
+				<li>Enter the exact email address of the user you wish to promote to guild leader.</li>
+				<li>Please be careful to precisely enter this field, as errors in the email address may have unintended consequences.</li>
+			</ul>
+		</div>
+		
+		<ol id="group-create-list">
+			<li class="text">
+				<label for="editable-guild-leader">Guild Leader's Email (&#9734;) :</label>
+				<input type="text" id="editable-guild-leader" name="editable-guild-leader" title="Leader email address" value="" size="50" />
+			</li>
+			
+			<li class="hidden">
+				<?php wp_nonce_field( 'groups_create_save_' . $this->slug ); ?>
+			</li><?php			
+	}
+	
+	/*
+	 * Save the data and assign the new leader
+	 */
+	function settings_screen_save() {
+		global $bp;
+		
+		// Make sure we have the group ID
+		$group_id = $_POST['group_id'];
+		if ( !$group_id )
+			$group_id = $bp->groups->current_group->id;	
+			
+		// Set error redirect based on save method
+		$redirect_url = $bp->root_domain . '/' . $bp->groups->slug . '/create/step/' . $this->slug;
+		
+		// Email cannot be empty
+		if ( empty( $_POST['editable-guild-leader'] ) ) {
+			bp_core_add_message( 'You must enter a valid email address.' , 'error' );
+			bp_core_redirect( $redirect_url );
+			exit();
+		}
+		
+		// Make sure the nonce checks
+		check_admin_referer( 'groups_create_save_' . $this->slug );
+		
+		// Get the leader by email
+		$leader_email 	= sanitize_email ( $_POST['editable-guild-leader'] );
+		$leader			= get_user_by( 'email' , $leader_email );
+		
+		// If we don't recognize the email, bail out
+		if( empty( $leader ) ) {
+			bp_core_add_message( 'This email address is not recognized.' , 'error' );
+			bp_core_redirect( $redirect_url );
+			exit();
+		}
+
+		// Otherwise, set the group leader, and remove the creator
+		$leader_id	= $leader->ID;
+		if ( $leader_id != get_current_user_id() ) { 
+			groups_accept_invite( $leader_id , $group_id );	
+			$member = new BP_Groups_Member( $leader_id , $group_id );
+			$member->promote( 'admin' );
+			groups_leave_group( $group_id , $creator_id	);
+		}		
+	}
+}
 
 /*
  * Improve the friend invite interface to use fancy checkboxes!

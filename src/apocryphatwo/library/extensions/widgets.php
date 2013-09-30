@@ -291,26 +291,16 @@ function featured_guild_box() {
 
 	// Pick a random guild 
 	bp_has_groups( 'type=random&max=1&populate_extras=0' );
-	while ( bp_groups() ) : bp_the_group(); ?>
+	while ( bp_groups() ) : bp_the_group(); 
 	
+	// Get the apoc group object
+	$group = new Apoc_Group( bp_get_group_id() , 'widget' ); ?>
 	<div class="widget featured-guild-widget">
 		<header class="widget-header"><h3 class="widget-title">Featured Guild</h3></header>
 		<div id="featured-guild">
-			<a id="featured-guild-avatar" href="<?php bp_group_permalink(); ?>">
-				<?php bp_group_avatar( $args = array(
-					'type' 	=> 'thumb',
-					'height'	=> 100,
-					'width'		=> 100 )); ?>
-			</a>
-			<div id="featured-guild-meta">
-				<h4 id="featured-guild-name"><a href="<?php bp_group_permalink(); ?>" title="<?php bp_group_name(); ?>"><?php bp_group_name(); ?></a></h4>
-				<p id="featured-guild-type"><?php bp_group_type(); ?></p>
-				<?php echo get_guild_allegiance( bp_get_group_id() ); ?>
-				<p id="featured-guild-count"><?php bp_group_member_count(); ?></p>
-			</div>
-		</div>	
+			<?php echo $group->block; ?>
+		</div>
 	</div>
-	
 	<?php endwhile;
 }
 	

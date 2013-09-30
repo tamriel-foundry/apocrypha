@@ -11,7 +11,7 @@ global $guild;
 ?>
 
 
-<header id="profile-header" class="entry-header <?php echo $guild->faction; ?>">
+<header id="profile-header" class="entry-header <?php echo $guild->alliance; ?>">
 	<h1 id="profile-title" class="entry-title">Guild Profile - <?php echo $guild->fullname; ?></h1>
 	<p class="entry-byline <?php echo $guild->faction; ?>"><?php echo $guild->byline; ?></p>		
 	<div id="profile-actions">

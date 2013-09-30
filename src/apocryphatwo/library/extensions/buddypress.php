@@ -324,7 +324,7 @@ class Apoc_Profile {
 		$button['link_text']	= $is_member ? '<i class="icon-remove"></i>' . $button['link_text'] : '<i class="icon-group"></i>' . $button['link_text']; 
 		
 		// Don't let people try to join Entropy Rising
-		if ( 1 != $groups_template->group->id )
+		if ( 1 == $groups_template->group->id )
 			$button = NULL;
 			
 		// Return the button

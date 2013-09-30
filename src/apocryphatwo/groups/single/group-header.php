@@ -10,6 +10,7 @@
 global $guild;
 ?>
 
+
 <header id="profile-header" class="entry-header <?php echo $guild->faction; ?>">
 	<h1 id="profile-title" class="entry-title">Guild Profile - <?php echo $guild->fullname; ?></h1>
 	<p class="entry-byline <?php echo $guild->faction; ?>"><?php echo $guild->byline; ?></p>		
@@ -34,7 +35,7 @@ global $guild;
 	
 	<div id="profile-widgets" class="guild-profile-widgets">
 		<div id="group-administrators" class="widget profile-widget guild-leaders">
-			<?php $header = ( $guild->guild == 1 ) ? 'Guild Leaders' : 'Group Administrators'; ?>
+			<?php $header = ( $guild->guild == 1 ) ? 'Guild Leaders' : 'Group Admins'; ?>
 			<header class="widget-header">
 				<h3 class="widget-title"><?php echo $header; ?></h3>
 			</header>

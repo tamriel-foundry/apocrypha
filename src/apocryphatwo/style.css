@@ -2762,6 +2762,7 @@ div.guild-description {
 /*---------------------------------------------
 	9.4 - Guild Profile
 ----------------------------------------------*/
+body.groups ul#directory-actions > li { width: 15%; }
 span#guild-activity {
 	position: relative;
 	top: 4px;
@@ -2773,6 +2774,7 @@ div.guild-leaders ul {
 	padding: 0;
 	list-style: none;
 	}
+div.guild-leaders ul li { margin: 0.5em 0; }
 div.guild-leaders img.avatar {
 	float: left;
 	}
@@ -2834,13 +2836,11 @@ ul#group-invite-list {
 	padding: 0;
 	list-style: none;
 	}
-div#group-invite-submit {
-	float: right;
-	}
+div#group-invite-submit { float: right; }
 	
 /* Guild Administration Screens */
-
-
+form#group-settings-form,
+form#request-membership-form { margin: 0; }
 
 
 /*--------------------------------------------------------------

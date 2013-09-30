@@ -160,6 +160,7 @@ function google_analytics_js() {
  * @version 1.0.0
  */
 add_filter( 'tiny_mce_before_init' , 'apoc_mce_options' );
+add_filter( 'teeny_mce_before_init' , 'apoc_mce_options' );
 function apoc_mce_options( $init ) {
     
 	// Get the proper URL format

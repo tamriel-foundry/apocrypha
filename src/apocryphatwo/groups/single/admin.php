@@ -364,11 +364,58 @@ global $guild;
 		
 	<?php // Manage Membership Requests
 	elseif ( bp_is_group_admin_screen( 'membership-requests' ) ) : ?>
-		Membership requests screen
+		<?php if ( bp_group_has_membership_requests() ) : ?>
+		<h2>Pending Membership Requests</h2>
+		<ul id="members-list" class="directory-list">
+			<?php while ( bp_group_membership_requests() ) : bp_group_the_membership_request();
+			global $requests_template; 
+			$user = new Apoc_User( $requests_template->request->user_id , 'directory' ); ?>
+			<li class="member directory-entry">
+				<div class="directory-member">
+					<?php echo $user->block; ?>
+				</div>
+				
+				<div class="directory-content">
+					<span class="activity"><?php bp_group_request_time_since_requested(); ?></span>
+					<div class="actions">
+						<?php bp_button( array( 'id' => 'group_membership_accept', 'component' => 'groups', 'wrapper_class' => 'accept', 'link_href' => bp_get_group_request_accept_link(), 'link_title' => __( 'Accept', 'buddypress' ), 'link_class' => 'button' , 'link_text' => '<i class="icon-ok"></i>Accept' , 'wrapper' => false ) ); ?>
+						<?php bp_button( array( 'id' => 'group_membership_reject', 'component' => 'groups', 'wrapper_class' => 'reject', 'link_href' => bp_get_group_request_reject_link(), 'link_title' => __( 'Reject', 'buddypress' ), 'link_class' => 'button' , 'link_text' => '<i class="icon-remove"></i>Reject' , 'wrapper' => false ) ); ?>
+					</div>
+					<blockquote class="user-status">
+						<?php bp_group_request_comment(); ?>
+					</blockquote>
+				</div>
+			</li>		
+			<?php endwhile ?>
+		</ul>
+		
+		<?php else: ?>
+		<p class="no-results"><?php _e( 'There are no pending membership requests.', 'buddypress' ); ?></p>
+		<?php endif; ?>
 		
 	<?php // Delete Group Option
 	elseif ( bp_is_group_admin_screen( 'delete-group' ) ) : ?>
-		Group deletion screen
+		<div class="instructions">
+			<h3 class="double-border bottom">Delete Group</h3>
+			<ul>
+				<li>If you so choose, you may delete this group/guild and remove it from the Tamriel Foundry directory.</li>
+				<li>WARNING: Deleting this group will completely remove ALL content associated with it. There is no way back, please be careful with this option.</li>
+			</ul>
+		</div>
+		
+		<ol class="group-edit-list">
+			<li class="checkbox">
+				<input type="checkbox" name="delete-group-understand" id="delete-group-understand" value="1" onclick="if(this.checked) { document.getElementById('delete-group-button').disabled = ''; } else { document.getElementById('delete-group-button').disabled = 'disabled'; }" /><label>I understand the consequences of deleting this guild.</label>
+			</li>
+			
+			<li class="submit">
+				<button type="submit" disabled="disabled" id="delete-group-button" name="delete-group-button"><i class="icon-remove"></i>Delete This Group</button>
+			</li>
+			
+			<li class="hidden">
+				<?php wp_nonce_field( 'groups_delete_group' ); ?>			
+			</li>
+		</ol>
 	<?php endif; ?>
 		
 	<?php // Allow plugins to add custom group edit screens

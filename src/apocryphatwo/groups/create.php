@@ -49,7 +49,7 @@ $user_id	= $user->ID;
 				</li>
 				
 				<li class="textarea">
-					<label for="group-desc"><i class="icon-edit"></i>Guild Description (&#9734;) :</label><br>
+					<p><i class="icon-edit"></i><strong>Guild Description &#9734; :</strong></p>
 					<?php // Load the TinyMCE Editor
 					$thecontent = bp_get_new_group_description();
 					wp_editor( htmlspecialchars_decode( $thecontent, ENT_QUOTES ), 'group-desc', array(
@@ -85,7 +85,7 @@ $user_id	= $user->ID;
 				<?php endif; ?>
 
 				<li class="select form-right">
-					<label for="group-faction"><i class="icon-flag icon-fixed-width"></i>Faction Allegiance (&#9734;) :</label>
+					<label for="group-faction"><i class="icon-flag icon-fixed-width"></i>Faction Allegiance &#9734; :</label>
 					<select name="group-faction" id="group-faction">
 						<option value="neutral">Undeclared</option>
 						<option value="aldmeri">Aldmeri Dominion</option>
@@ -95,17 +95,29 @@ $user_id	= $user->ID;
 				</li>
 				
 				<li class="checkboxes form-left">
-					<label for="group-interests"><i class="icon-gear icon-fixed-width"></i>Group Interests (&#9734;) :</label><br>
+					<p><i class="icon-gear icon-fixed-width"></i>Group Interests &#9734; :</p>
 					<ul id="group-interests-list" class="radio-options-list">
-						<li><input type="checkbox" name="group-interests[]" value="pve"><label for="group-interests">Player vs. Environment (PvE)</label></li>
-						<li><input type="checkbox" name="group-interests[]" value="pvp"><label for="group-interests">Player vs. Player (PvP)</label></li>
-						<li><input type="checkbox" name="group-interests[]" value="rp"><label for="group-interests">Roleplaying (RP)</label></li>
-						<li><input type="checkbox" name="group-interests[]" value="crafting"><label for="group-interests">Crafting</label></li>
+						<li>
+							<input type="checkbox" name="group-interests[]" value="pve">
+							<label for="group-interests">Player vs. Environment (PvE)</label>
+						</li>
+						<li>
+							<input type="checkbox" name="group-interests[]" value="pvp">
+							<label for="group-interests">Player vs. Player (PvP)</label>
+						</li>
+						<li>
+							<input type="checkbox" name="group-interests[]" value="rp">
+							<label for="group-interests">Roleplaying (RP)</label>
+						</li>
+						<li>
+							<input type="checkbox" name="group-interests[]" value="crafting">
+							<label for="group-interests">Crafting</label>
+						</li>
 					</ul>
 				</li>	
 				
 				<li class="select form-right">
-					<label for="group-region"><i class="icon-globe icon-fixed-width"></i>Region (&#9734;) :</label>
+					<label for="group-region"><i class="icon-globe icon-fixed-width"></i>Region &#9734; :</label>
 					<select name="group-region" id="group-region">
 						<option value="blank"></option>
 						<option value="NA">North America</option>

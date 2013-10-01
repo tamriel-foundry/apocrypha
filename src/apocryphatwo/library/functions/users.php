@@ -109,7 +109,10 @@ class Apoc_User {
 			4 => array(	'min_posts' => 100	, 'next_rank' => 250	, 'title' => 'Adept' 		),
 			5 => array(	'min_posts' => 250	, 'next_rank' => 500	, 'title' => 'Expert'		),
 			6 => array( 'min_posts' => 500	, 'next_rank' => 1000	, 'title' => 'Master' 		),
-			7 => array( 'min_posts' => 1000	, 'next_rank' => 10000	, 'title' => 'Grandmaster' 	),
+			7 => array( 'min_posts' => 1000	, 'next_rank' => 2500	, 'title' => 'Grandmaster' 	),
+			7 => array( 'min_posts' => 2500	, 'next_rank' => 5000	, 'title' => 'Hero' 		),
+			7 => array( 'min_posts' => 5000	, 'next_rank' => 10000	, 'title' => 'Legend' 		),
+			7 => array( 'min_posts' => 10000, 'next_rank' => 20000	, 'title' => 'Divine' 		),
 		);
 		
 		// Iterate through the ranks, determining where the user's postcount falls
@@ -310,22 +313,78 @@ class Apoc_User {
 		// Setup array
 		$badges = array();
 		
-		// Veterancy Badges
-		if( $this->regdate <= strtotime( '11/12/2012' ) )
-			$badges['founder']	= 'Founder';
-		if( $this->regdate <= strtotime( '-1 year' ) )
-			$badges['yearone']	= 'One Year Veteran';
+		// Role Badges
+		if ( 'administrator' == $this->roles[0] || 'bbp_moderator' == $this->roles[1] ) {
+			$badges['tfteam'] = array(
+				'name'		=> 'TF Team Member',
+				'class'		=> 'tfteam',
+				'tier'		=> 'gold' 
+		);}		
 		
+		// Veterancy Badges
+		if( $this->regdate <= strtotime( '11/12/2012' ) ) {
+			$badges['founder']	= array(
+				'name'		=> 'Founder',
+				'class'		=> 'founder',
+				'tier'		=> 'gold' 
+		);}
+		if( $this->regdate <= strtotime( '-1 year' ) ) {
+			$badges['veteran']	= array(
+				'name'		=> 'One Year Veteran',
+				'class'		=> 'veteran',
+				'tier'		=> 'bronze' 
+		);}
+		if( $this->regdate <= strtotime( '-2 years' ) ) {
+			$badges['veteran']	= array(
+				'name'		=> 'Two	Year Veteran',
+				'class'		=> 'veteran',
+				'tier'		=> 'silver' 
+		);}
+			
 		// Posting Badges
-		if( 'Scamp' != $this->rank['rank_title'] )
-			$badges[str_replace( ' ' , '-' , strtolower($this->rank['rank_title']) )] = $this->rank['rank_title'];
+		if( $this->posts['total'] >= 10 ) {
+			if 		( $this->posts['total'] >= 1000 ) 	$badge_tier = 'gold';
+			elseif 	( $this->posts['total'] >= 100 ) 	$badge_tier = 'silver';
+			else										$badge_tier = 'bronze';
+			$badges['posting']	= array(
+				'name'		=> $this->rank['rank_title'],
+				'class'		=> 'posting',
+				'tier'		=> $badge_tier 
+		);}
+		if ( $this->posts['articles'] > 0 ) {
+			$badges['contributor'] = array(
+				'name'		=> 'Contributor',
+				'class'		=> 'contributor',
+				'tier'		=> 'gold',
+		);}
 		
 		// Social Badges
-		if ( 1 <= bp_get_total_group_count_for_user( $this->id ) )
-			$badges['group']	= "It's Dangerous To Go Alone...";
-			
-		// In-Game Badges
+		if ( 1 <= bp_get_total_group_count_for_user( $this->id ) ) {
+			$badges['grouped'] = array(
+				'name'		=> "It's Dangerous To Go Alone...",
+				'class'		=> 'grouped',
+				'tier'		=> 'bronze',
+		);}
+		if ( groups_is_user_member( $this->id , 1 ) {
+			$badges['ermember'] = array(
+				'name'		=> 'Entropy Rising Member',
+				'class'		=> 'ermember',
+				'tier'		=> 'gold',
+		);}
 		
+		// Game Badges
+		if ( '' != $this->faction ) {
+			$badges['declared'] = array(
+				'name'		=> 'Declared Allegiance',
+				'class'		=> $this->faction,
+				'tier'		=> 'bronze',
+		);}
+		if ( $this->race && $this->class && $this->prefrole ) {
+			$badges['character'] = array(
+				'name'		=> 'In Character!',
+				'class'		=> 'character',
+				'tier'		=> 'silver',
+		);}			
 		return $badges;
 	}
 
@@ -341,8 +400,6 @@ class Apoc_User {
 		$block		.= $this->allegiance();
 		$block		.= ( '' != $this->guild ) ? '<p class="user-guild ' . strtolower( str_replace( ' ' , '-' , $this->guild ) ) . '">' . $this->guild . '</p>' : '' ;
 		
-
-	
 		// Do some things differently depending on context
 		$avatar_args = array( 'user_id' => $this->id , 'alliance' => $this->faction , 'race' => $this->race );
 		switch( $context ) {

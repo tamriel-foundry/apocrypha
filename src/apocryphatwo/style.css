@@ -439,10 +439,14 @@ form li.submit button {
 form ol li label { display: inline-block }
 form li.wp-editor { margin: 0; }
 
-form li.hidden { margin: 0; }
+form li.hidden { 
+	margin: 0; 
+	list-style: none;
+	}
 form li.submit { 
 	float: right;
 	margin: 0;
+	list-style: none;
 	}
 	
 /* Radios and Checkboxes */
@@ -2865,6 +2869,12 @@ form li#previous {
 	text-align: left;
 	}
 form li#previous > button { float: left; }
+
+/* Guild Submission Page */
+ol#group-create-list {
+	list-style: decimal;
+	padding: 0 0 0 2em;
+	}
 
 
 /*--------------------------------------------------------------

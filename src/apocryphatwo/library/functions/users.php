@@ -84,11 +84,11 @@ class Apoc_User {
 				'twitch' 		=> $meta['twitch'],
 				'bethforums' 	=> $meta['bethforums'],
 			);
-			$this->badges		= $this->badges();
 			$this->first_name	= $meta['first_name'];
 			$this->last_name	= $meta['last_name'];
 			$this->charname		= implode( ' ' , array( $meta['first_name'] , $meta['last_name'] ) );
 			$this->prefrole		= $meta['prefrole'];
+			$this->badges		= $this->badges();
 		}
 	}
 	
@@ -365,7 +365,7 @@ class Apoc_User {
 				'class'		=> 'grouped',
 				'tier'		=> 'bronze',
 		);}
-		if ( groups_is_user_member( $this->id , 1 ) {
+		if ( groups_is_user_member( $this->id , 1 ) ) {
 			$badges['ermember'] = array(
 				'name'		=> 'Entropy Rising Member',
 				'class'		=> 'ermember',
@@ -379,7 +379,7 @@ class Apoc_User {
 				'class'		=> $this->faction,
 				'tier'		=> 'bronze',
 		);}
-		if ( $this->race && $this->class && $this->prefrole ) {
+		if ( $this->charname && $this->race && $this->class && $this->prefrole ) {
 			$badges['character'] = array(
 				'name'		=> 'In Character!',
 				'class'		=> 'character',

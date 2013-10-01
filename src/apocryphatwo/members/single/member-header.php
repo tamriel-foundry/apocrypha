@@ -71,8 +71,8 @@ global $user;
 			</header>
 			<ul class="user-badges">
 				<?php if ( !empty( $user->badges ) ) :
-				foreach ( $user->badges as $badge => $name ) : ?>
-					<li class="user-badge <?php echo $badge; ?>" title="<?php echo $name; ?>"></li>
+				foreach ( $user->badges as $badge ) : ?>
+					<li class="user-badge <?php echo $badge['class']; ?> <?php echo $badge['tier']; ?>" title="<?php echo $badge['name']; ?>"></li>
 				<?php endforeach;
 				else : ?>
 					<li>No badges earned yet!</li>

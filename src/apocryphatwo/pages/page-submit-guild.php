@@ -24,11 +24,11 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 		die( 'Security Failure' );
 	
 	// Validate guild name and make sure it name isn't already in use
+	$slug = sanitize_title( esc_attr( $_POST['group-name'] ) );
 	if( trim( $_POST['group-name'] === '' )) {
 		$name_error 	= 'You must enter a guild name.';
 		$has_error 		= true;
 	}
-	$slug = sanitize_title( esc_attr( $_POST['group-name'] ) );
 	elseif ( BP_Groups_Group::check_slug( $slug ) ) {
 		$name_error		= 'This guild name is already in use!';
 		$has_error 		= true;
@@ -145,10 +145,6 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 		if ( $email_sent ) : ?>
 		<div class="updated">Thank you for submitting your guild, <?php echo $user->display_name; ?>. Your request was successfully sent. We will review it and respond as soon as possible. If your request is approved, you will be added to your group, and promoted to guild leader. We will contact you via email regarding your guild request once it has been processed. Thank you for contributing to Tamriel Foundry!</div>
 			
-		<?php // If something went wrong, give an error
-		elseif ( $has_error ) : ?>
-		<div class="error">There was an error submitting the guild request, please double check the required fields.</div>
-			
 		<?php // Make sure it's a registered user
 		elseif ( 0 == $user_id ) : ?>
 		<div class="warning">You must be a registered Tamriel Foundry member to submit a guild!</div>
@@ -166,15 +162,19 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 		<form action="<?php the_permalink(); ?>" id="guild-submit-form" method="post">		
 			<h2>Guild Submission Form</h2>
 			
+			<?php // If something went wrong, give an error
+			if ( $has_error ) : ?>
+			<div class="error">There was an error submitting the guild request, please double check the required fields.</div>
+			<?php endif; ?>
+			
 			<ol id="group-create-list">
 				<li class="text">
-					<?php if( $name_error ) echo '<div class="error">' . $name_error . '</div>'; ?>
 					<label for="group-name"><i class="icon-bookmark"></i> Guild Name &#9734; :</label>
 					<input type="text" name="group-name" id="group-name" aria-required="true" value="<?php if(isset($_POST['group-name'])) echo trim($_POST['group-name']);?>" maxlength="100" size="100"/>
+					<?php if( $name_error ) echo '<div class="error">' . $name_error . '</div>'; ?>
 				</li>
 				
 				<li class="radio">
-					<?php if( $recruit_error ) echo '<div class="error">' . $recruit_error . '</div>'; ?>
 					<p><i class="icon-legal icon-fixed-width"></i><strong>Recruitment Status &#9734; : </strong></p>
 					<ul class="radio-options-list">
 						<li>
@@ -185,31 +185,32 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 							<label for="group-recruitment">Private Guild - Users must request membership to join.</label>
 						</li>
 					</ul>
+					<?php if( $recruit_error ) echo '<div class="error">' . $recruit_error . '</div>'; ?>
 				</li>
 				
 				<li class="select">
-					<?php if( $platform_error ) echo '<div class="error">' . $platform_error . '</div>'; ?>
 					<label for="group-platform"><i class="icon-desktop icon-fixed-width"></i><strong>Platform &#9734; :</strong></label>
 					<select name="group-platform" id="group-platform">
-						<option value="none" <?php selected( $_POST['group-platform'] , 'none' ); ?>></option>
+						<option value=""></option>
 						<option value="pc" <?php selected( $_POST['group-platform'] , 'pc' ); ?>>PC/Mac</option>
 						<option value="xbox" <?php selected( $_POST['group-platform'] , 'xbox' ); ?>>Xbox One</option>
 						<option value="playstation" <?php selected( $_POST['group-platform'] , 'playstation' ); ?>>Playstation 4</option>
 					</select>
+					<?php if( $platform_error ) echo '<div class="error">' . $platform_error . '</div>'; ?>
 				</li>
 				
 				<li class="select">
-					<?php if( $faction_error ) echo '<div class="error">' . $faction_error . '</div>'; ?>
 					<label for="group-faction"><i class="icon-flag icon-fixed-width"></i><strong>Faction Allegiance &#9734; :</strong></label>
 					<select name="group-faction" id="group-faction">
+						<option value=""></option>
 						<option value="aldmeri" <?php selected( $_POST['group-faction'] , 'aldmeri' ); ?>>Aldmeri Dominion</option>
 						<option value="daggerfall" <?php selected( $_POST['group-faction'] , 'daggerfall' ); ?>>Daggerfall Covenant</option>
 						<option value="ebonheart" <?php selected( $_POST['group-faction'] , 'ebonheart' ); ?>>Ebonheart Pact</option>
 					</select>
+					<?php if( $faction_error ) echo '<div class="error">' . $faction_error . '</div>'; ?>
 				</li>
 				
 				<li class="select">
-					<?php if( $region_error ) echo '<div class="error">' . $region_error . '</div>'; ?>
 					<label for="group-region"><i class="icon-globe icon-fixed-width"></i><strong>Region &#9734; :</strong></label>
 					<select name="group-region" id="group-region">
 						<option value=""></option>
@@ -217,6 +218,7 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 						<option value="EU" <?php selected( $_POST['group-region'] , 'EU' ); ?>>Europe</option>
 						<option value="OC" <?php selected( $_POST['group-region'] , 'OC' ); ?>>Oceania</option>
 					</select>
+					<?php if( $region_error ) echo '<div class="error">' . $region_error . '</div>'; ?>
 				</li>
 				
 				<li class="select">
@@ -230,7 +232,6 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 				</li>
 					
 				<li class="checkbox">
-					<?php if( $interest_error ) echo '<div class="error">' . $interest_error . '</div>'; ?>
 					<?php if ( '' == $_POST['group-interests'] ) $_POST['group-interests'] = array(); ?>
 					<p><i class="icon-gear icon-fixed-width"></i><strong>Group Interests &#9734; :</strong></p>
 					<ul id="group-interests-list" class="radio-options-list">
@@ -251,11 +252,11 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 							<label for="group-interests[]">Crafting</label><br>
 						</li>
 					</ul>
+					<?php if( $interest_error ) echo '<div class="error">' . $interest_error . '</div>'; ?>
 				</li>
 				
 				
 				<li class="textarea">
-					<?php if( $description_error ) echo '<div class="error">' . $description_error . '</p>'; ?>
 					<p><i class="icon-edit icon-fixed-width"></i><strong>Guild Description &#9734; :</strong></p>
 					<?php // Load the TinyMCE Editor
 					$description = stripslashes($_POST['group-description']);
@@ -266,10 +267,11 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 						'quicktags'		=> false,
 						'teeny'			=> true,
 						) ); ?>
+					<?php if( $description_error ) echo '<div class="error">' . $description_error . '</div>'; ?>
 				</li>
 				
 				<li class="text">
-					<label class="settings-field-label"><i class="icon-home icon-fixed-width"><strong>Guild Website: </strong></label>
+					<label class="settings-field-label"><i class="icon-home icon-fixed-width"></i><strong>Guild Website: </strong></label>
 					<input type="url" name="group-website" id="group-website" value="<?php if(isset($_POST['group-website'])) echo trim($_POST['group-website']); ?>" size="50"/>
 				</li>
 				

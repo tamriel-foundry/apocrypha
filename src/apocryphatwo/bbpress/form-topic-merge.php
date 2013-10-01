@@ -45,14 +45,20 @@ if ( is_user_logged_in() && current_user_can( 'edit_topic', bbp_get_topic_id() )
 			<?php // Merge options, what settings to keep ?>		
 			<li id="merge-options" class="checkbox form-right">
 				<h3>Merge Options</h3>
-				<input name="bbp_topic_subscribers" id="bbp_topic_subscribers" type="checkbox" value="1" checked="checked" tabindex="<?php bbp_tab_index(); ?>" />
-				<label for="bbp_topic_subscribers">Merge Topic Subscribers?</label><br>
-
-				<input name="bbp_topic_favoriters" id="bbp_topic_favoriters" type="checkbox" value="1" checked="checked" tabindex="<?php bbp_tab_index(); ?>" />
-				<label for="bbp_topic_favoriters">Merge Topic Favorites?</label><br>
-
-				<input name="bbp_topic_tags" id="bbp_topic_tags" type="checkbox" value="1" checked="checked" tabindex="<?php bbp_tab_index(); ?>" />
-				<label for="bbp_topic_tags">Merge Topic Tags?</label>
+				<ul class="radio-options-list">
+					<li>
+						<input name="bbp_topic_subscribers" id="bbp_topic_subscribers" type="checkbox" value="1" checked="checked" tabindex="<?php bbp_tab_index(); ?>" />
+						<label for="bbp_topic_subscribers">Merge Topic Subscribers?</label>
+					</li>
+					<li>
+						<input name="bbp_topic_favoriters" id="bbp_topic_favoriters" type="checkbox" value="1" checked="checked" tabindex="<?php bbp_tab_index(); ?>" />
+						<label for="bbp_topic_favoriters">Merge Topic Favorites?</label>
+					</li>
+					<li>
+						<input name="bbp_topic_tags" id="bbp_topic_tags" type="checkbox" value="1" checked="checked" tabindex="<?php bbp_tab_index(); ?>" />
+						<label for="bbp_topic_tags">Merge Topic Tags?</label>
+					</li>
+				</ul>
 			</li>
 			
 			<?php // Warning ?>

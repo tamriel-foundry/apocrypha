@@ -15,6 +15,7 @@
 		<select id="activity-filter-by">
 		<option value="-1">All Activity</option>
 		<option value="activity_update">Status Updates</option>
+		<?php if ( bp_group_is_forum_enabled() ) do_action( 'bp_activity_filter_options' ); // Topics & Replies ?>
 		<option value="joined_group">Guild Memberships</option>
 		</select>
 	</div>

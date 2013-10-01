@@ -361,21 +361,31 @@ class Apoc_Breadcrumbs {
 			$bp_trail[] = '<a href="'. bp_get_groups_directory_permalink() .'" title="Groups and Guilds Directory">Groups</a>';
 			
 			// Group Creation
-			if ( bp_is_group_create() )
+			if ( bp_is_group_create() ) :
 				$bp_trail[] = 'Create New Group';
-			else
-			$bp_trail[] = bp_get_group_name();
 				
-		
+			// Group Profile Home
+			elseif ( 'home' == bp_current_action() ) :
+				$bp_trail[] = bp_get_group_name();
+				
+			// Group Profile Sub-Component
+			elseif ( bp_current_action() != 'forum' ) : 
+				$bp_trail[] = '<a href="'. bp_get_group_permalink() .'" title="'.bp_get_current_group_name().'">'.bp_get_current_group_name().'</a>';
+				$bp_trail[] = ucfirst( bp_current_action() );
+			endif;
+				
+			if ( bp_current_action() == 'forum' ) :
+				$bp_trail[] = '<a href="'. bp_get_group_permalink() .'" title="'.bp_get_current_group_name().'">'.bp_get_current_group_name().'</a>';
+				$bp_trail = array_merge( $bp_trail, $this->group_forum_crumbs() );
+			endif;
+
 		// Directories
 		elseif ( bp_is_directory() ) :	
 			if ( bp_is_activity_component() ) 		$bp_trail[] = 'Sitewide Activity';
 			elseif ( bp_is_members_component() )	$bp_trail[] = 'Members Directory';
 			elseif ( bp_is_groups_component() )		$bp_trail[] = 'Guilds Directory';
 			else 									$bp_trail[] = ucfirst( bp_current_component() );
-			
-		
-			
+				
 		// Backup Placeholder
 		else :
 			$bp_trail[] = 'buddypress placeholder';
@@ -384,6 +394,52 @@ class Apoc_Breadcrumbs {
 		// Return the BuddyPress trail
 		return $bp_trail;
 	}
+	
+	/**
+	 * Get BuddyPress breadcrumb items
+	 */	
+	function group_forum_crumbs() {
+		
+		// Setup the empty trail
+		$forum_trail = array();
+		
+		// Group forum root
+		if ( NULL == bp_action_variable() ) :
+			$forum_trail[] = 'Forum';
+		
+		// Group forum subcomponent
+		else :
+			$forum_trail[] = '<a href="'. bp_get_group_permalink() .'forum/" title="Group Forum">Forum</a>';
+			
+		// Single Topic
+		if ( bp_is_action_variable( 'topic' , 0 ) ) :
+			$topic_info = apoc_get_group_topic_info();
+					
+			// Edit Topic
+			if ( bp_is_action_variable( 'edit' , 2 ) ) :
+				$forum_trail[] = '<a href="'. bp_get_group_permalink() .'forum/topic/' . $topic_info->url . '" title="' . $topic_info->title . '">' . $topic_info->title . '</a>';
+				$forum_trail[] = 'Edit Topic';
+				
+			else :
+				$forum_trail[] = $topic_info->title;
+			endif; 
+			
+			// Edit Reply
+			elseif ( bp_is_action_variable( 'reply' , 0 ) ) :
+				$topic_info = apoc_get_group_reply_info();
+				
+				if ( bp_is_action_variable( 'edit' , 2 ) ) :
+					$forum_trail[] = '<a href="'. bp_get_group_permalink() .'forum/topic/' . $topic_info->url . '" title="' . $topic_info->title . '">' . $topic_info->title . '</a>';
+					$forum_trail[] = 'Edit Reply';
+				endif;
+			endif;
+		
+		endif;
+		
+		// Return the group forum crumbs
+		return $forum_trail;
+	}			
+
 	
 	function trail_parents( $post_id ) {
 	
@@ -542,7 +598,7 @@ function apoc_get_group_topic_info() {
 function apoc_get_group_reply_info() {
 
 	global $bp;
-	$slug = 'reply-to-here-is-a-post-in-the-private-roleplaying-forum';
+	$slug = $bp->action_variables[1];
 	
 	global $wpdb;
 	$topic = $wpdb->get_row( 

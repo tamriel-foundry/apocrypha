@@ -70,6 +70,9 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! bbPress Favorites / Subs */
 ;function bbp_ajax_call(e,b,d,a){var c={action:e,id:b,nonce:d};$.post(bbpTopicJS.bbp_ajaxurl,c,function(f){if(f.success){var f=$($.parseHTML(f.content));var g=f.find("a");var h=g.text();if("#favorite-toggle"==a){if(h=="Favorited"){h='<i class="icon-thumbs-down"></i>This Got Ugly'}else{h='<i class="icon-thumbs-up"></i>This Thread Rocks'}}else{if("#subscription-toggle"==a){if(h=="Unsubscribe"){h='<i class="icon-remove"></i>'+h}else{h='<i class="icon-bookmark"></i>'+h}}}g.html(h);$(a).html(g)}else{if(!f.content){f.content=bbpTopicJS.generic_ajax_error}alert(f.content)}})}$("#favorite-toggle").on("click","span a.favorite-toggle",function(a){a.preventDefault();bbp_ajax_call("favorite",$(this).attr("data-topic"),bbpTopicJS.fav_nonce,"#favorite-toggle")});$("#subscription-toggle").on("click","span a.subscription-toggle",function(a){a.preventDefault();bbp_ajax_call("subscription",$(this).attr("data-topic"),bbpTopicJS.subs_nonce,"#subscription-toggle")});
 
+/*! Post Reporting */
+;$("#comments,#forums").on("click","a.report-post",function(b){confirmation=confirm("Report this post? Please make sure this is a valid report.");if(confirmation){var a=postid=postnum=author=reason="";reason=prompt("Reason For Report","Why you are reporting this post...");if("Why you are reporting this post..."==reason){reason="No reason given by reporter."}a=$(this).data("type");postid=$(this).data("id");postnum=$(this).data("number");user=$(this).data("user");$(this).remove();$.post(ajaxurl,{action:"apoc_report_post",type:a,id:postid,num:postnum,user:user,reason:reason},function(c){if(c==1){alert("Report sent successfully, thank you.")}});return false}});
+
 /*! End Document Ready */
 ;});
 

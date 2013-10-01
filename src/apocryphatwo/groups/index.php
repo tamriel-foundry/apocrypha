@@ -27,7 +27,7 @@ $user_id	= $user->ID;
 				<?php if ( is_user_logged_in() && bp_user_can_create_groups() ) : ?>
 					<a id="create-guild-button" class="button" href="<?php echo SITEURL . '/' . bp_get_groups_root_slug() . '/create/'; ?>">Create New Guild</a>
 				<?php elseif ( is_user_logged_in() ) : ?>
-					<a class="button" href="<?php echo SITEURL . '/submit-guild/'; ?>">Submit New Guild</a>
+					<a id="create-guild-button" class="button" href="<?php echo SITEURL . '/submit-guild/'; ?>">Submit New Guild</a>
 				<?php endif; ?>
 			</header>
 			

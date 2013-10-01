@@ -447,6 +447,51 @@ function apoc_load_topics() {
 	die( $content );
 }
 
+/**
+ * Process post reports using AJAX
+ * @version 1.0.0
+ */
+add_action( 'wp_ajax_apoc_report_post' , 'apoc_report_post' );
+function apoc_report_post() {
+	
+	/* Get the needed data */
+	$userid = get_current_user_id();
+	$from	= bp_core_get_user_displayname( $userid );
+	
+	/* Get AJAX data */
+	$type	= $_POST['type'];
+	$postid = $_POST['id'];
+	$number	= $_POST['num'];
+	$user 	= $_POST['user'];
+	$reason	= $_POST['reason'];
+	
+	/* Get the post URL */
+	if( 'reply' == $type ) :
+		$link = bbp_get_reply_url( $postid );
+	elseif ( 'comment' == $type ) :
+		$link = get_comment_link( $postid );
+	endif;
+	
+	/* Set the email headers */
+	$subject 	= "Reported Post From $from";
+	$headers 	= "From: Post Report Bot <noreply@tamrielfoundry.com>\r\n";
+	$headers	.= "Content-Type: text/html; charset=UTF-8";
+	
+	/* Construct the message */
+	$body = '<h3>' . $from . ' has reported a post violating the Code of Conduct.</h3>';
+	$body .= '<ul><li>Report URL: <a href="' . $link . '" title="View Post" target="_blank">' . $link . '</a></li>';
+	$body .= '<li>Post Number: ' . $number . '</li>';
+	$body .= '<li>User Reported: ' . $user . '</li>';
+	$body .= '<li>Reason: ' . $reason . '</li></ul>';
+	
+	/* Send the email */
+	$emailto = get_moderator_emails();
+	wp_mail( $emailto , $subject , $body , $headers );
+	
+	echo "1";
+	exit(0);
+}
+
 
 
 /*---------------------------------------------

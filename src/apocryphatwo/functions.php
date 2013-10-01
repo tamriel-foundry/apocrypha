@@ -199,6 +199,25 @@ function dump_variable( $var = '' ) {
 		print_r( $var );
 	echo '</pre>';
 }
+
+
+
+
+
+
+
+
+
+function get_moderator_emails() {
+	$emails = array(
+		'atropos@tamrielfoundry.com',
+		'rial@tamrielfoundry.com',
+		'isarii@tamrielfoundry.com',
+		'tonsha@tamrielfoundry.com', 
+		'grimalkin@tamrielfoundry.com', 
+	);
+	return $emails;
+}
 ?>
 
 

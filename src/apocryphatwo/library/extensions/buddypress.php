@@ -261,6 +261,9 @@ class Apoc_Profile {
 		// Group Profile Fields
 		add_action( 'groups_create_group_step_save_group-details' 	, array( $this , 'save_group_fields' ) );
 		add_action( 'groups_details_updated'						, array( $this , 'save_group_fields' ) );
+		
+		// Private Messaging Hack
+		add_action( 'bp_actions' 					, 	array( $this , 'tinymce_messages_hack' ) , 1 );
 	}
 	
 
@@ -307,6 +310,15 @@ class Apoc_Profile {
 		$button['link_class'] 	.= ' button';
 		$button['link_text']	= '<i class="icon-envelope"></i>' . $button['link_text']; 
 		return $button;
+	}
+	
+	/** 
+	 * Copies 'message_content' from TinyMCE into the form's 'content' field (required hack)
+	 */
+	function tinymce_messages_hack() {
+		if ( bp_is_messages_component() && isset( $_POST['send'] ) && empty( $_POST['content'] ) && !empty( $_POST['message_content'] ) ) {
+			$_POST['content'] = $_POST['message_content'];
+		}
 	}
 
 	/**
@@ -384,10 +396,8 @@ add_filter( 'bp_get_activity_delete_link' , 'apoc_activity_delete_icon' );
 function apoc_activity_delete_icon( $link ) {
 	$link = str_replace( 'Delete' , '<i class="icon-remove"></i>Delete' , $link );
 	return $link;
-	}
+}
 
-	
-	
 /*--------------------------------------------------------------
 4.0 - DIRECTORIES
 --------------------------------------------------------------*/

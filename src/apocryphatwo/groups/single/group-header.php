@@ -26,7 +26,7 @@ global $guild;
 	</div>
 </div><!-- #profile-sidebar -->
 
-<div id="profile-content">
+<div id="profile-content" class="group-profile-content">
 	<nav id="directory-nav" class="no-ajax">
 		<ul id="directory-actions" role="navigation">
 			<?php bp_get_options_nav(); ?>

@@ -710,8 +710,7 @@ div.updated,
 div.success,
 .instructions {
 	width: 95%;
-	float: left;
-	margin: 0.5em 0;
+	margin: 1em 0;
 	padding: 0.5em 2.5%;
 	background: rgba(204, 153, 0, 0.5);
 	border: 1px solid #FC0;	
@@ -2637,6 +2636,50 @@ div#character-sheet > ul li span {
 	display: inline-block;
 	width: 60px;
 	margin: 0 3px; 
+	}
+	
+/* Infraction Form */
+ol.infraction-list {
+	width: 100%;
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	}
+li.infraction-entry {
+	background: rgba( 17,17,17,0.5);
+	padding: 1em;
+	margin: 0 0 1em 0;
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #444;
+	overflow: hidden;
+	position: relative;
+	}
+li.infraction-entry header {
+	width: 100%;
+	float: left;
+	margin: 0 0 0.5em;
+	}
+li.infraction-entry div.infraction-content {
+	width: 100%;
+	float: left;
+	}
+li.infraction-entry p { margin: 0; }
+li.infraction-entry span.infraction-meta {
+	padding: 0.25em 1em;
+	background: rgba(51,0,0,0.75);
+	}
+li.infraction-entry span.infraction-mod { 
+	float: right;
+	font-size: 0.875em;
+	}
+li.infraction-entry span.mod-note-meta { padding: 0.25em 1em; }
+li.infraction-entry a.clear-infraction,
+li.infraction-entry a.clear-mod-note { 
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
 	}
 
 /*---------------------------------------------

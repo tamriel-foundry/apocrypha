@@ -13,6 +13,7 @@
 3.0 - Posts
 4.0 - Comments
 
+X.X - Infractions
 X.X - Contact Form
 --------------------------------------------------------------*/
 
@@ -488,6 +489,75 @@ function apoc_report_post() {
 	$emailto = get_moderator_emails();
 	wp_mail( $emailto , $subject , $body , $headers );
 	
+	echo "1";
+	exit(0);
+}
+
+/*--------------------------------------------------------------
+X.X - INFRACTIONS
+--------------------------------------------------------------*/
+
+/** 
+ * Clear an Infraction using AJAX
+ * @since 0.5
+ */
+add_action( 'wp_ajax_apoc_clear_infraction' , 'apoc_clear_infraction' );
+function apoc_clear_infraction() {
+
+	// Get the data
+	$userid = bp_displayed_user_id();
+	$id 	= $_REQUEST['id'];
+	
+	// Check the nonce
+	check_ajax_referer( 'clear-single-infraction' );
+	
+	// Flush any cached stuff	
+	if ( function_exists( 'w3tc_pgcache_flush' ) ) w3tc_pgcache_flush();
+	if ( function_exists( 'w3tc_objectcache_flush' ) ) w3tc_objectcache_flush();
+	if ( function_exists( 'apc_clear_cache' ) ) apc_clear_cache('user');
+	
+	// Delete the infraction
+	$warnings = maybe_unserialize( get_user_meta( $userid , 'infraction_history' , true ) );
+	unset( $warnings[$id] );
+	$warnings = array_values( $warnings );
+	
+	// Resave the stuff
+	if ( count( $warnings ) > 0 )
+		update_user_meta( $userid , 'infraction_history' , $warnings );
+	else 
+		delete_user_meta( $userid , 'infraction_history' );
+	
+	// Return success
+	echo "1";
+	exit(0);
+}
+
+/** 
+ * Clear a moderator note using AJAX handler
+ * @since 0.5
+ */
+add_action( 'wp_ajax_apoc_clear_mod_note' , 'apoc_clear_mod_note' );
+function apoc_clear_mod_note() {
+	
+	// Get the data
+	$userid = bp_displayed_user_id();
+	$id 	= $_REQUEST['id'];
+	
+	// Check the nonce
+	check_ajax_referer( 'clear-moderator-note' );
+	
+	// Delete the note
+	$notes = maybe_unserialize( get_user_meta( $userid , 'moderator_notes' , true ) );
+	unset( $notes[$id] );
+	$notes = array_values( $notes );
+	
+	// Resave the stuff
+	if ( count( $notes ) > 0 )
+		update_user_meta( $userid , 'moderator_notes' , $notes );
+	else 
+		delete_user_meta( $userid , 'moderator_notes' );
+	
+	// Return success
 	echo "1";
 	exit(0);
 }

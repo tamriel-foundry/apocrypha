@@ -59,7 +59,7 @@
 		<a class="button" href="#" id="mark_as_read"><?php _e('Mark as Read', 'buddypress') ?></a>
 		<a class="button" href="#" id="mark_as_unread"><?php _e('Mark as Unread', 'buddypress') ?></a>
 	<?php endif; ?>
-	<a class="button" href="#" id="delete_<?php echo bp_current_action(); ?>_messages"><i class="icon-remove"></i><?php _e( 'Delete Selected', 'buddypress' ); ?></a>
+	<a class="button" href="#" id="delete_<?php echo bp_current_action(); ?>_messages"><i class="icon-trash"></i><?php _e( 'Delete Selected', 'buddypress' ); ?></a>
 </div><!-- .messages-options-nav -->
 
 <nav class="pagination no-ajax" id="messages-pagination">
@@ -73,8 +73,8 @@
 
 <?php else : ?>
 	<?php if ( 'sentbox' == bp_current_action() ) : ?>	
-	<p class="no-results">Your outbox is empty!</p>
+	<p class="no-results"><i class="icon-inbox"></i>Your outbox is empty!</p>
 	<?php else : ?>
-	<p class="no-results">Your inbox is empty!</p>
+	<p class="no-results"><i class="icon-inbox"></i>Your inbox is empty!</p>
 	<?php endif; ?>
 <?php endif; ?>

@@ -89,6 +89,8 @@ class Apoc_User {
 			$this->charname		= implode( ' ' , array( $meta['first_name'] , $meta['last_name'] ) );
 			$this->prefrole		= $meta['prefrole'];
 			$this->badges		= $this->badges();
+			$this->warnings		= $this->warnings( $meta['infraction_history'] );
+			$this->mod_notes	= $this->notes( $meta['moderator_notes'] );
 		}
 	}
 	
@@ -387,6 +389,44 @@ class Apoc_User {
 		);}			
 		return $badges;
 	}
+	
+	/**
+	 * Retrieves the user's warnings and current warning level from the database
+	 */
+	function warnings( $warnings ) {
+	
+		// Setup an array
+		$infractions = array();
+	
+		// Grab the infractions
+		$infractions['history'] = maybe_unserialize( $warnings );
+		
+		// Get an accurate count
+		$level = 0;
+		if ( !empty( $infractions['history'] ) ) {
+			foreach ( $infractions['history'] as $id => $warning ) {
+				$level += $warning['points'];	
+			}
+		}
+		$infractions['level'] = min( $level , 5 );
+		return $infractions;
+	}
+	
+	/**
+	 * Retrieves the user's moderator notes and notes count
+	 */
+	function notes( $mod_notes ) {
+	
+		// Setup an array
+		$notes = array();
+	
+		// Grab the infractions
+		$notes['history'] = maybe_unserialize( $mod_notes );
+		
+		// Get an accurate count
+		$notes['count'] = count( $notes['history'] );	
+		return $notes;
+	}
 
 	
 	/**
@@ -637,7 +677,7 @@ class Apoc_Avatar {
 }
 
 /*--------------------------------------------------------------
-3.0 - STANDALONE FUNCTIONS
+4.0 - STANDALONE FUNCTIONS
 --------------------------------------------------------------*/
 
 /** 
@@ -747,15 +787,6 @@ function get_user_article_count( $user_id ) {
 /*--------------------------------------------------------------
 3.0 - MISCELLANEOUS
 --------------------------------------------------------------*/
-/** 
- * Get a user's current warning level
- * @since 0.5
- */
-function get_user_warning_level( $userid ) {
-	$level = intval( get_user_meta( $userid , 'warning_level' , true ) );
-	return $level;
-}
-
 /**
  * Count users by a specific meta key
  * @since 0.1
@@ -773,4 +804,3 @@ function count_users_by_meta( $meta_key , $meta_value ) {
 		);
 	return intval($user_meta_query);
 }
-

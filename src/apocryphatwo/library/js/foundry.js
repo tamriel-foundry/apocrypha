@@ -73,6 +73,43 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! Post Reporting */
 ;$("#comments,#forums").on("click","a.report-post",function(b){confirmation=confirm("Report this post? Please make sure this is a valid report.");if(confirmation){var a=postid=postnum=author=reason="";reason=prompt("Reason For Report","Why you are reporting this post...");if("Why you are reporting this post..."==reason){reason="No reason given by reporter."}a=$(this).data("type");postid=$(this).data("id");postnum=$(this).data("number");user=$(this).data("user");$(this).remove();$.post(ajaxurl,{action:"apoc_report_post",type:a,id:postid,num:postnum,user:user,reason:reason},function(c){if(c==1){alert("Report sent successfully, thank you.")}});return false}});
 
+/*! --------------------------------------- 
+5.0 - USERS
+----------------------------------------- */
+
+/*! Clear Infraction */
+;$("a.clear-infraction").click(function(){var a=$(this);var b=get_var_in_url(a.attr("href"),"_wpnonce");var c=get_var_in_url(a.attr("href"),"id");a.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");$.post(ajaxurl,{action:"apoc_clear_infraction",_wpnonce:b,id:c},function(d){if(d==1){$("li#infraction-"+c).slideUp()}});return false});
+
+
+/*! Clear Mod Notes */
+$("a.clear-mod-note").click( function() {
+		
+	// Get some info about what we are doing
+	var button	= $(this);
+	var nonce	= get_var_in_url( button.attr('href') , '_wpnonce' );
+	var id 		= get_var_in_url( button.attr('href') , 'id' );
+	
+	// Disable the button
+	button.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");
+
+	// Submit the POST AJAX
+	$.post( ajaxurl, { 
+			'action': 'apoc_clear_mod_note',
+			'_wpnonce': nonce,
+			'id' : id,
+		},
+		function( resp ) {
+			if( resp == 1 ) {
+				$( "li#modnote-" + id ).slideUp();
+			}
+		}
+	);
+		
+	// Prevent the default pageload
+	return false;
+});
+
+
 /*! End Document Ready */
 ;});
 

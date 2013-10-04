@@ -885,11 +885,26 @@ function apoc_group_invite_friend_list() {
  * @since 0.1
  */
 function user_registration_hack() {
+	
+	// Force the display name and login name to match
 	if ( bp_is_register_page() && isset( $_POST['signup_submit'] ) ) {
 		$_POST['field_1'] = $_POST['signup_username'];
 	}
 }
 add_action( 'bp_actions' , 'user_registration_hack', 1 );
+
+/*
+ * Store user IP address at registration
+ */
+add_action( 'bp_core_signup_user' , 'store_registration_ip' , 10 , 1 );
+function store_registration_ip( $user_id ) {
+	
+	// Get the ip address
+	$ip = $_SERVER['REMOTE_ADDR'];
+	
+	// Add it to the meta array
+	add_user_meta( $user_id , 'registration-ip' , $ip );
+}
 
 /*
  * Check that custom registration fields have been successfully completed.

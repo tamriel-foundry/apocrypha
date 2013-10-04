@@ -67,6 +67,10 @@ class Admin_Postmeta {
 			case 'page' :
 				add_meta_box( 'apoc-post-seo' , 'SEO' , array( $this , 'display_seo' ) , $post_type , 'normal', 'high' );
 				break;
+				
+			case 'forum' :
+				add_meta_box( 'apoc-forum-rules' , 'Forum Rules' , array( $this , 'forum_rules' ) , $post_type , 'normal', 'high' );
+				break;
 		}
 	}
 		
@@ -116,6 +120,22 @@ class Admin_Postmeta {
 	}
 	
 	/**
+	 * Displays the SEO meta box
+	 */
+	function forum_rules( $post , $box ) {
+	
+		// Add a nonce
+		wp_nonce_field( basename( __FILE__ ), 'apoc-forum-rules' ); 
+		
+		// Display the field ?>
+		<p>
+			<label for="apoc-meta-description">Provide a short notice if this forum has special posting rules:</label>
+			<br />
+			<textarea name="forum-rules" id="forum-rules" cols="60" rows="3" tabindex="30" style="width: 99%;"><?php echo esc_textarea( get_post_meta( $post->ID, 'forum-rules', true ) ); ?></textarea>
+		</p><?php 
+	}
+	
+	/**
 	 * Gets available custom post templates
 	 */	
 	function get_post_templates( $post_type ) {
@@ -160,6 +180,10 @@ class Admin_Postmeta {
 		// Custom post template
 		if ( isset( $_POST['apoc-post-template'] ) && wp_verify_nonce( $_POST['apoc-post-template-nonce'] , basename( __FILE__ ) ) )
 			$meta["_wp_{$post->post_type}_template"] = $_POST['apoc-post-template'];
+			
+		// Forum rules
+		if ( isset( $_POST['forum-rules'] ) && wp_verify_nonce( $_POST['apoc-forum-rules'] , basename( __FILE__ ) ) )
+			$meta['forum-rules'] = $_POST['forum-rules'];
 		
 		// Loop through the registered meta, saving each value
 		foreach ( $meta as $meta_key => $new_meta_value ) {

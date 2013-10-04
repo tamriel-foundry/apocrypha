@@ -39,6 +39,8 @@ elseif ( bbp_current_user_can_access_create_topic_form() ) : ?>
 	
 	<form id="new-post" name="new-post" method="post" action="<?php the_permalink(); ?>">
 		<fieldset class="topic-form">
+		
+			<?php apoc_forum_rules(); ?>
 
 			<?php if ( !bbp_is_topic_edit() && bbp_is_forum_closed() ) : ?>
 			<div class="warning"><?php _e( 'This forum is marked as closed to new topics, however your posting capabilities still allow you to do so.', 'bbpress' ); ?></div>

@@ -195,6 +195,25 @@ function apoc_reply_class( $classes ) {
 	return $classes;
 }
 
+/**
+ * Display a warning notice on forums which have special posting rules
+ * @version 1.0.0
+ */
+function apoc_forum_rules() {
+
+	// Determine context, and get the correct forum ID
+	if ( bbp_is_single_forum() ) :
+		$forum_id = bbp_get_forum_id();
+	elseif ( bbp_is_single_topic() || bbp_is_topic_edit() || bbp_is_reply_edit() ) :
+		$forum_id = bbp_get_topic_forum_id();
+	endif;
+	
+	// Check whether the forum has special rules
+	$rules = get_post_meta( $forum_id , 'forum-rules' , true );
+	if ( '' != $rules ) {
+		echo '<div class="instructions">' . $rules . '</div>';
+	}
+}
 
 /**
  * Output custom bbPress admin links
@@ -375,7 +394,9 @@ function bestof_has_topics() {
 	remove_filter( 'posts_where' , 'filter_bestof_topics' );
 	
 	return $topics;
-} 
+}
+
+
 
 /*---------------------------------------------
 X.X - NEW POSTS

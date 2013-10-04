@@ -58,6 +58,7 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	9.3 - Group Profiles
 	9.4 - Directories
 	9.5 - Private Messages
+	9.6 - New User Registration
 10.0 - Responsive Width
 	
 	
@@ -422,14 +423,14 @@ form li.honeypot {
 	position: absolute;
 	left: -999em;
 	}
-form li.form-right,
-form li.form-left { 
+form .form-right,
+form .form-left { 
 	width: 45%; 
 	float: left;
 	clear: left;
 	text-align: left;
 	}
-form li.form-right { 
+form .form-right { 
 	float: right; 
 	clear: right;
 	text-align: right;
@@ -758,7 +759,7 @@ div.error:before {	content: "\F12A"; }
 
 /* Instructions */
 .instructions {
-	margin: 0 0 0.5em;
+	float: left;
 	background-image: url(images/backgrounds/dark-denim.jpg);
 	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.8em;
@@ -3000,6 +3001,39 @@ header#message-header > a.button {
 	top: 3px;
 	}
 ol#message-thread div.reply-content { padding: 0; }
+
+
+/*---------------------------------------------
+	9.6 - New User Registration
+----------------------------------------------*/
+form#signup_form { margin-top: 0; }
+h3.registration-header { 
+	width: 60%;
+	float: left;
+	}
+form#signup_form li.text > label { width: 200px; }
+ul#registration-terms-left {
+	width: 60%;
+	float: left;
+	margin: 0 2.5% 0 0;
+	}
+ul#registration-terms-right {
+	width: 30%;
+	float: right;
+	}
+img#humanity-image {
+	clear: left;
+	float: left;
+	border: none;
+	box-shadow: none;
+	}
+div#humanity-fields {
+	float: left;
+	margin: 2em 1em;
+	}
+div#xprofile-section {
+	display: none;
+	}
 	
 
 

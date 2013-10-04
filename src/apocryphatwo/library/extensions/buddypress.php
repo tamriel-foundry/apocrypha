@@ -877,4 +877,37 @@ function apoc_group_invite_friend_list() {
 }
 
 
+/*--------------------------------------------------------------
+7.0 - NEW USER REGISTRATION
+--------------------------------------------------------------*/
+/*
+ * Autofills the hidden "display name" field with the username provided
+ * @since 0.1
+ */
+function user_registration_hack() {
+	if ( bp_is_register_page() && isset( $_POST['signup_submit'] ) ) {
+		$_POST['field_1'] = $_POST['signup_username'];
+	}
+}
+add_action( 'bp_actions' , 'user_registration_hack', 1 );
+
+/*
+ * Check that custom registration fields have been successfully completed.
+ * @since 0.1
+ */
+function apoc_registration_check() {
+	global $bp;
+
+	if ( empty( $_POST['confirm_tos_box'] ) )
+		$bp->signup->errors['confirm_tos_box'] = 'You must indicate that you understand the fundamental purpose of the Tamriel Foundry website and community.';
+
+	if ( empty( $_POST['confirm_coc_box'] ) )
+		$bp->signup->errors['confirm_coc_box'] = 'You must indicate your acknowledgement of the Tamriel Foundry code of conduct.';
+		
+	if ( 'argonian'	!=	trim( strtolower ( $_POST['confirm_humanity'] ) ) )
+		$bp->signup->errors['confirm_humanity'] = 'That is incorrect. Hover on the image if you require a hint.';
+}
+add_action( 'bp_signup_validate', 'apoc_registration_check' );
+
+
 ?>

@@ -385,6 +385,9 @@ class Apoc_Breadcrumbs {
 			elseif ( bp_is_members_component() )	$bp_trail[] = 'Members Directory';
 			elseif ( bp_is_groups_component() )		$bp_trail[] = 'Guilds Directory';
 			else 									$bp_trail[] = ucfirst( bp_current_component() );
+			
+		elseif ( bp_is_register_page() || bp_is_activation_page() ) :
+			$bp_trail[] = 'New User Registration';
 				
 		// Backup Placeholder
 		else :

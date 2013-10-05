@@ -18,6 +18,7 @@
 			<header id="forum-header" class="entry-header <?php apoc_topic_header_class(); ?>">
 				<h1 class="entry-title"><?php bbp_topic_title(); ?></h1>
 				<?php apoc_topic_description(); ?>
+				<?php apoc_get_search_form( 'topic' ); ?>
 			</header>		
 
 			<div id="forums">

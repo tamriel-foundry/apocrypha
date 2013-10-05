@@ -773,6 +773,13 @@ div.error:before {	content: "\F12A"; }
 .instructions > h3 + * { clear: left; }
 .instructions > * { margin: 0.5em 0; }
 
+/* No Results */
+p.no-results { 
+	width: 98%;
+	float: left;
+	margin: 1em 1%;
+}
+
 /*--------------------------------------------------------------
 4.0 - NAVIGATION
 --------------------------------------------------------------*/	
@@ -1121,12 +1128,7 @@ div#search-dropdown label.search-label {
 	width: 240px;
 	margin: 10px 0 5px;
 	text-align: center;
-	border-bottom: 1px solid #444;
 	font-size: 0.875em;
-	}
-div#search-dropdown label.search-label span {
-	display: block;
-	border-bottom: 1px solid #000;
 	}
 div#search-dropdown input.search-text {
 	display: block;
@@ -1362,7 +1364,7 @@ header.entry-header {
 
 /* Full Width Headers */
 .no-sidebar .entry-header { background-image: url(images/headers/page-headers.jpg); }
-.archive .post .entry-header { 
+.archive .entry-header { 
 	height: 75px;
 	margin: 0 0 0.5em 0;
 	box-shadow: 0 0 8px #111;
@@ -1388,7 +1390,7 @@ header.entry-header {
 	padding: 0 0.75em;
 	margin: 0;
 	}
-.archive .post .entry-title {
+.archive .entry-title  {
 	height: 50px;
 	line-height: 50px;
 	padding: 0;
@@ -1439,7 +1441,7 @@ div.entry-content {
 	float: left;
 	padding: 0 1%;
 	}
-.archive .post .entry-content { padding-bottom: 40px; }
+.archive .entry-content { padding-bottom: 40px; }
 
 .singular .entry-content > p,
 .singular .entry-content > ol,
@@ -1730,14 +1732,15 @@ h1#home-posts-title {
 	}
 	
 /* Posts Inside Loop */
-.archive div.post {
+.archive div.post,
+.archive div.page {
 	width: 49%;
 	height: 300px;
 	margin: 0 0 1em 0;
 	float: left;
 	border-bottom: 1px solid #444;
 	}
-.archive .post.even { float: right; }
+.archive div.even { float: right; }
 div.entry-content a img.thumbnail {
 	float: right;
 	margin: 5px 0 1em 0.5em;
@@ -1757,7 +1760,7 @@ footer.entry-footer {
 	position: absolute;
 	bottom: 0;
 	}
-.archive .post footer.entry-footer { border-bottom: 1px solid #000; }
+.archive footer.entry-footer { border-bottom: 1px solid #000; }
 div.entry-meta {
 	float: left;
 	margin: -1px 0 0;
@@ -2199,7 +2202,12 @@ form#advanced-search {
 	}
 form#advanced-search li > label {
 	width: 150px;
-}
+	}
+div#search-results {
+	width: 100%;
+	float: left;
+	margin: 0 0 1em;
+	}
 	
 /*--------------------------------------------------------------
 8.0 - BBPRESS
@@ -2237,6 +2245,13 @@ header.forum-header h2 {
 	font-size: 1em;
 	font-weight: normal;
 	}
+form.forum-search {
+	width: auto;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	margin: 0;
+}
 	
 /*---------------------------------------------
 	8.1 - Forums and Topics Loops

@@ -22,11 +22,12 @@
 	</div>
 	
 	<footer class="entry-footer">
+	<?php if ( 'post' == get_post_type() ) : ?>
 		<div class="entry-meta">
 			<i class="icon-tags"></i>
 			<?php echo get_the_term_list( $post->ID, 'category', 'Posted In: ', ', ', '' ); ?> 
 		</div>
 		<?php apoc_comments_link(); ?>
+	<?php endif; ?>
 	</footer>
-	
 </div>

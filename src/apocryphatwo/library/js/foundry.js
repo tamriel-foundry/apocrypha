@@ -86,6 +86,24 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! Clear Mod Notes */
 ;$("a.clear-mod-note").click(function(){var a=$(this);var b=get_var_in_url(a.attr("href"),"_wpnonce");var c=get_var_in_url(a.attr("href"),"id");a.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");$.post(ajaxurl,{action:"apoc_clear_mod_note",_wpnonce:b,id:c},function(d){if(d==1){$("li#modnote-"+c).slideUp()}});return false});
 
+/*! Advanced Search Fields */
+$( 'ol.adv-search-fields' ).not( 'ol.active' ).hide();
+$( 'select#search-for' ).bind( 'change', function() {
+
+	// Hide old search results
+	$( '#search-results' ).slideUp();
+	
+	// Get the new field set
+	var type 		= $( 'select#search-for' ).val();
+	var target		= $( 'ol#adv-search-' + type );
+	
+	// Hide the unused fields
+	$( 'ol.adv-search-fields' ).removeClass( 'active' ).hide();
+	
+	// Show the relevant fields
+	target.addClass( 'active' ).fadeIn();
+});
+
 /*! End Document Ready */
 ;});
 

@@ -17,14 +17,15 @@ $search_type = apocrypha()->search_type;
 if ( 'topic' == $search_type ) :
 	$search_text = 'Search Forums...';
 	$search_class = 'topics'; ?>
-<form role="search" method="get" class="search-form forum-search"  action="<?php echo trailingslashit( SITEURL ); ?>">
+<form role="search" method="get" class="search-form forum-search"  action="<?php echo SITEURL . '/advsearch/'; ?>">
+							<input type="hidden" name="type" value="topics" />
 							<input class="search-text <?php echo $search_class; ?>" type="text" name="s" value="<?php echo $search_text; ?>" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"/>
-							<input type="hidden" name="post_type" value="topic" />
 						</form><!-- .search-form -->
 <?php else :
 	$search_text = 'Search Articles...';
 	$search_class = 'posts'; ?>
-<form role="search" method="get" class="search-form"  action="<?php echo trailingslashit( SITEURL ); ?>">
+<form role="search" method="get" class="search-form"  action="<?php echo SITEURL . '/advsearch/'; ?>">
+							<input type="hidden" name="type" value="posts" />
 							<label class="search-label double-border bottom"><i class="icon-search"></i>Search Tamriel Foundry:</label>
 							<input class="search-text <?php echo $search_class; ?>" type="text" name="s" value="<?php echo $search_text; ?>" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"/>
 						</form><!-- .search-form -->

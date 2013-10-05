@@ -16,6 +16,7 @@
 		<header id="forum-header" class="entry-header <?php page_header_class(); ?>">
 			<h1 class="entry-title">Move - <?php bbp_reply_title(); ?></h1>
 			<?php apoc_topic_description(); ?>
+			<?php apoc_get_search_form( 'topic' ); ?>
 		</header>
 		
 		<div id="respond" class="edit-reply">

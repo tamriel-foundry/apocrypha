@@ -14,6 +14,7 @@
 		<header id="forum-header" class="entry-header <?php page_header_class(); ?>">
 			<h1 class="entry-title"><?php echo SITENAME; ?> Forums</h1>
 			<p class="entry-byline">Discussion forums for The Elder Scrolls Online with a specific focus on development news, game mechanics, and theorycrafting.</p>
+			<?php apoc_get_search_form( 'topic' ); ?>
 		</header>		
 		
 		<div id="forums">

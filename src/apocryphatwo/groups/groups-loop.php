@@ -57,7 +57,7 @@ if ( in_array( $faction , array( 'aldmeri' , 'daggerfall' , 'ebonheart' )))
 </nav>
 
 <?php else: ?>
-	<p class="notice">Sorry, no guilds were found.</p>
+	<p class="no-results">Sorry, no guilds were found.</p>
 <?php endif; ?>
 
 <?php if ( $meta_filter ) $meta_filter->remove_filters(); ?>

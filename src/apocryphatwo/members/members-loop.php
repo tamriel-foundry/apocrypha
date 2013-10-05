@@ -45,5 +45,5 @@
 </nav>
 
 <?php else: ?>
-<p class="notice"><?php _e( "Sorry, no members were found.", 'buddypress' ); ?></p>
+	<p class="no-results"><?php _e( "Sorry, no members were found.", 'buddypress' ); ?></p>
 <?php endif; ?>

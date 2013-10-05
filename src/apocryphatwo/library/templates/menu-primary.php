@@ -69,6 +69,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 						<li><a href="<?php echo SITEURL . '/activity/' ?>">Activity Feed</a></li>
 						<li><a href="<?php echo SITEURL . '/members/' ?>">Members</a></li>
 						<li><a href="<?php echo SITEURL . '/groups/' ?>">Guild Listing</a></li>
+						<li><a href="<?php echo SITEURL . '/advsearch/' ?>">Advanced Search</a></li>
 					</ul>
 				</div>
 				

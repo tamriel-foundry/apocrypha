@@ -36,7 +36,7 @@ function apoc_comment_form() {
 // Search Form
 function apoc_get_search_form( $search_type = '' ) {
 	if ( '' != $search_type )
-		apocrypha()->search->type = $search_type;
+		apocrypha()->search_type = $search_type;
 	include( THEME_DIR . '/library/templates/searchform.php' );
 }
 

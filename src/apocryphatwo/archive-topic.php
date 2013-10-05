@@ -14,6 +14,7 @@
 		<header id="forum-header" class="entry-header <?php page_header_class(); ?>">
 			<h1 class="entry-title">Recent Topics</h1>
 			<p class="entry-byline">Browse a list of the most recently updated forum topics on Tamriel Foundry within the past month.</p>
+			<?php apoc_get_search_form( 'topic' ); ?>
 		</header>	
 	
 		<div id="forums">

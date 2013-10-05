@@ -12,18 +12,13 @@ $user_id	= $user->ID;
 ?>
 
 <form action="<?php bp_activity_post_form_action(); ?>" method="post" id="whats-new-form" name="whats-new-form" role="complementary">
-	<div class="instructions">
-		<?php if ( bp_is_group() ) : ?>
-			<p><?php printf( "What's new in %s, %s?" , bp_get_group_name(), $user->display_name ); ?></p>
-		<?php else : ?>
-			<p><?php printf( "What's on your mind, %s?" , $user->display_name ); ?></p>
-		<?php endif; ?>
-	</div>
+
 	<ol id="whats-new-fields">
 		
 		<?php // The status update textarea ?>
 		<li class="textarea">
-			<textarea name="whats-new" id="whats-new" ><?php if ( isset( $_GET['r'] ) ) : ?>@<?php echo esc_attr( $_GET['r'] ); ?> <?php endif; ?></textarea>
+			<?php $placeholder = bp_is_group() ? "What's new in " . bp_get_group_name() . ', ' . $user->display_name . '?' : "What's on your mind " . $user->display_name . '?'; ?>
+			<textarea name="whats-new" id="whats-new" placeholder="<?php echo $placeholder; ?>" rows="1"><?php if ( isset( $_GET['r'] ) ) : ?>@<?php echo esc_attr( $_GET['r'] ); ?> <?php endif; ?></textarea>
 		</li>
 	
 		<?php // Post directly to group from main activity feed

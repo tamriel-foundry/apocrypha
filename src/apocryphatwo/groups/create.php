@@ -42,7 +42,7 @@ $user_id	= $user->ID;
 				</ul>
 			</div>
 			
-			<ol id="group-create-list">
+			<ol id="group-edit-list">
 				<li class="text">
 					<label for="group-name"><i class="icon-bookmark"></i> Guild Name (&#9734;) :</label>
 					<input type="text" name="group-name" id="group-name" aria-required="true" value="<?php bp_new_group_name(); ?>" size="100" />
@@ -153,7 +153,7 @@ $user_id	= $user->ID;
 				</ul>
 			</div>
 			
-			<ol id="group-create-list">
+			<ol id="group-edit-list">
 			
 				<li class="checkbox">
 					<input type="radio" name="group-status" value="public"<?php if ( 'public' == bp_get_new_group_status() || !bp_get_new_group_status() ) { ?> checked="checked"<?php } ?> />
@@ -214,7 +214,7 @@ $user_id	= $user->ID;
 				</ul>
 			</div>
 		
-			<ol id="group-create-list">			
+			<ol id="group-edit-list">			
 				<?php if ( 'upload-image' == bp_get_avatar_admin_step() ) : ?>
 				<li class="file">
 					<?php bp_new_group_avatar( $args = array(
@@ -314,7 +314,7 @@ $user_id	= $user->ID;
 					<p><?php _e( 'Once you have built up friend connections you will be able to invite others to your group. You can send invites any time in the future by selecting the "Send Invites" option when viewing your new group.', 'buddypress' ); ?></p>
 				</div>
 			<?php endif; ?>
-			<ol id="group-create-list">
+			<ol id="group-edit-list">
 				<li class="hidden">
 					<?php wp_nonce_field( 'groups_send_invites', '_wpnonce_send_invites' ); ?>
 					<?php wp_nonce_field( 'groups_invite_uninvite_user', '_wpnonce_invite_uninvite_user' ); ?>

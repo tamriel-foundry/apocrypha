@@ -38,7 +38,7 @@ $classname	= ucfirst( $context );
 			</div>
 			
 			<div id="skills" class="tab-content entry-content">
-				<?php locate_template( array( 'pages/classes/dk-skills.php' ), true ); ?>
+				<?php locate_template( array( 'pages/classes/' . $context . '.php' ), true ); ?>
 			</div>
 			
 			<div id="resources" class="tab-content entry-content">

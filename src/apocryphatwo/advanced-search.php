@@ -4,7 +4,7 @@
  * Andrew Clayton
  * Version 1.0.0
  * 8-8-2013
- * Template Name: Advanced Search
+ * Template Name: NOT USED
  */
 ?>
 

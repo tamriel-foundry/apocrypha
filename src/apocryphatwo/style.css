@@ -2193,22 +2193,12 @@ div#archive-author-info {
 /*--------------------------------------------------------------
 7.2 - ADVANCED SEARCH
 --------------------------------------------------------------*/
-#advanced-search fieldset {
-	padding: 1em 2% 0;
-	border: 1px solid #000;
-	border-radius: 5px;
-	box-shadow: 0 0 2px #666;
-}
-#advanced-search fieldset input[type="checkbox"],
-#advanced-search fieldset input[type="radio"] {
-	opacity: 1;
-}
-#advanced-search fieldset input[type="radio"] {
-	margin: 3px 0.5ex;
-}
-#if-topics, #if-members,
-#if-guilds {
-	display: none;
+form#advanced-search {
+	width: 98%;
+	margin: 0 1% 1em;
+	}
+form#advanced-search li > label {
+	width: 150px;
 }
 	
 /*--------------------------------------------------------------
@@ -2575,6 +2565,11 @@ div#profile-widgets div.widget > ul {
 	text-shadow: 1px 1px #000;
 	}
 div#detail-post-count ul li span { float: right; }
+form#whats-new-form { 
+	width: 98%;
+	margin: 0 1% 0.5em;
+	clear: none; 
+	}
 
 /* Contacts */
 ul.user-contact-list li span { 

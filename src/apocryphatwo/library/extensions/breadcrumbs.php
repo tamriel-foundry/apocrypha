@@ -243,7 +243,9 @@ class Apoc_Breadcrumbs {
 		
 		// Search Results
 		elseif ( is_search() ) :
-			$trail[] = sprintf( 'Pages and articles containing &quot;%1$s&quot;', esc_attr( get_search_query() ) );
+			$trail[] = 'Search Results';
+		elseif ( is_adv_search() ) :
+			$trail[] = 'Advanced Search';
 			
 		// Page Not Found
 		elseif ( is_404() ) : 

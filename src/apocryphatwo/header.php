@@ -4,7 +4,7 @@
  * Andrew Clayton
  * Version 0.1
  * 1-11-2012
- */ 
+ */
 ?>
 <!doctype html>
 <!-- Tamriel Foundry - an ESO fansite and forum dedicated to discussing mechanics, theorycrafting, and guides for The Elder Scrolls Online. -->

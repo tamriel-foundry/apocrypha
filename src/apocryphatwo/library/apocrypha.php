@@ -166,6 +166,7 @@ class Apocrypha {
 		require( $this->extensions_dir 	. 'events.php' );
 		require( $this->extensions_dir 	. 'thumbnail.php' );
 		require( $this->extensions_dir 	. 'shortcodes.php' );
+		require( $this->extensions_dir 	. 'search.php' );
 
 		// Integrated Plugins
 		if ( class_exists( 'BuddyPress' ) )

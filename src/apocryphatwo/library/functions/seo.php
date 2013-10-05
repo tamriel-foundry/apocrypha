@@ -152,9 +152,14 @@ class Apoc_SEO {
 		}
 		
 		// Search Results
-		elseif ( is_search() ) {
-			$doctitle 			= sprintf( 'Search results for &quot;%1$s&quot;' , esc_attr( $apoc->search->query ) );
-			$description		= "Browsing search results.";
+		elseif ( is_search() || is_adv_search() ) {
+			if ( '' != $apoc->search->query ) {
+				$doctitle 			= sprintf( 'Search results for &quot;%1$s&quot;' , esc_attr( $apoc->search->query ) );
+				$description		= "Browsing search results.";
+			} else {
+				$doctitle			= 'Advanced Search' . $separator . SITENAME;
+				$description		= "Search for articles, pages, forum posts, members, or guilds";			
+			}
 		}
 		
 		// Error 404

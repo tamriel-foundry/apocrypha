@@ -38,7 +38,7 @@ if ( isset( $_POST['submitted'] ) ) :
 				'cat' 				=> $category_id,	
 			);
 			$query = new WP_Query( $args );
-			print_r( $query );
+			//print_r( $query );
 		break;
 	}
 endif;
@@ -54,7 +54,7 @@ endif;
 			<p class="entry-byline"><?php entry_header_description(); ?></p>
 		</header>
 		
-		<form id="advanced-search" action="<?php the_permalink(); ?>" method="post">
+		<form id="advanced-search" action="<?php echo SITEURL . '/advsearch/'; ?>" method="post">
 		
 			<div class="instructions">
 				<h3 class="double-border bottom">Sitewide Search Form</h3>
@@ -79,7 +79,7 @@ endif;
 				
 				<li class="text">
 					<label for="search-query"><i class="icon-quote-left icon-fixed-width"></i>Search For: </label>
-					<input type="text" name="search-query" id="search-query" size="50" value="<?php echo $query; ?>">
+					<input type="text" name="search-query" id="search-query" size="50" value="<?php echo $search; ?>">
 				</li>
 			</ol>
 	

@@ -6,11 +6,10 @@
 This is the test 404 page.<br>
 
 
-
+<pre>
 <?php 
 
-$apoc = apocrypha();
-echo '<pre style="font-size:16px;">';
-print_r( $apoc );
-echo '</pre>';
+global $wp_query;
+print_r( $wp_query ); 
 ?>
+</pre>

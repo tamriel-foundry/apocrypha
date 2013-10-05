@@ -167,8 +167,9 @@ function apoc_mce_options( $init ) {
 	$stylesheet = substr( THEME_URI . '/library/css/' , strpos( THEME_URI . '/library/css/' , '/' , 7 ) );
 	
 	// TinyMce initialization options
+	if( !is_admin() )
+			$init['content_css']				= $stylesheet . '/editor-content.css?v=1.0.0';
 	$init['wordpress_adv_hidden'] 				= false;
-	$init['content_css']						= $stylesheet . '/editor-content.css';
 	$init['height']								= 250;
 	$init['theme_advanced_resizing_use_cookie'] = false;
     return $init;

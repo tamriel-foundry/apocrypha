@@ -29,6 +29,9 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! AJAX Posts Loop */
 ;$("#posts").on("click","nav.ajaxed a.page-numbers",function(c){var b=newPage=type=id=tooltip=dir="";var a=$(this);var d=a.parent().parent();c.preventDefault();d.css("pointer-events","none");type=$("nav.pagination").data("type");id=$("nav.pagination").data("id");baseURL=window.location.href.replace(window.location.hash,"");b=parseInt($(".page-numbers.current").text());newPage=parseInt(a.text());if(a.hasClass("next")){newPage=b+1}else{if(a.hasClass("prev")){newPage=b-1}}a.html('<i class="icon-spinner icon-spin"></i>');$.post(ajaxurl,{action:"apoc_load_posts",type:type,id:id,paged:newPage,baseurl:baseURL},function(e){if(e!="0"){$(".post").fadeOut("slow").promise().done(function(){d.remove();$("#posts").empty().append(e);$("html, body").animate({scrollTop:$("#content").offset().top},600);$("#posts").hide().fadeIn("slow")})}if(1==b){newURL=baseURL+"page/"+newPage+"/"}else{if(1==newPage){newURL=baseURL.replace("/page/"+b,"")}else{newURL=baseURL.replace("/page/"+b,"/page/"+newPage)}}window.history.replaceState({id:id,paged:b},document.title,newURL)})});
 
+/*! Tabbed Containers */
+;$("div.tab-content").not("div.active").hide();$("ul.tabs li a").click(function(){if(!$(this).parent().hasClass("current")&&!$(this).parent().hasClass("disabled")){var a=$(this).attr("href");$("ul.tabs li").removeClass("current");$(this).parent().addClass("current");$("div.tab-content").hide();$(a).fadeIn("slow")}return false});
+
 /*! --------------------------------------- 
 3.0 - COMMENTS
 ----------------------------------------- */
@@ -68,7 +71,7 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 ;$("#bbp_topic_title").bind("keydown.editor-focus",function(b){if(b.which!==9){return}if(!b.ctrlKey&&!b.altKey&&!b.shiftKey){if(typeof(tinymce)!=="undefined"){if(!tinymce.activeEditor.isHidden()){var a=tinymce.activeEditor.editorContainer;$("#"+a+" td.mceToolbar > a").focus()}else{$("textarea.bbp-the-content").focus()}}else{$("textarea.bbp-the-content").focus()}b.preventDefault()}});
 
 /*! bbPress Favorites / Subs */
-;function bbp_ajax_call(e,b,d,a){var c={action:e,id:b,nonce:d};$.post(bbpTopicJS.bbp_ajaxurl,c,function(f){if(f.success){var f=$($.parseHTML(f.content));var g=f.find("a");var h=g.text();if("#favorite-toggle"==a){if(h=="Favorited"){h='<i class="icon-thumbs-down"></i>This Got Ugly'}else{h='<i class="icon-thumbs-up"></i>This Thread Rocks'}}else{if("#subscription-toggle"==a){if(h=="Unsubscribe"){h='<i class="icon-remove"></i>'+h}else{h='<i class="icon-bookmark"></i>'+h}}}g.html(h);$(a).html(g)}else{if(!f.content){f.content=bbpTopicJS.generic_ajax_error}alert(f.content)}})}$("#favorite-toggle").on("click","span a.favorite-toggle",function(a){a.preventDefault();bbp_ajax_call("favorite",$(this).attr("data-topic"),bbpTopicJS.fav_nonce,"#favorite-toggle")});$("#subscription-toggle").on("click","span a.subscription-toggle",function(a){a.preventDefault();bbp_ajax_call("subscription",$(this).attr("data-topic"),bbpTopicJS.subs_nonce,"#subscription-toggle")});
+;function bbp_ajax_call(e,b,d,a){var c={action:e,id:b,nonce:d};$.post(bbpTopicJS.bbp_ajaxurl,c,function(f){if(f.success){$(a).html(f.content)}else{if(!f.content){f.content=bbpTopicJS.generic_ajax_error}alert(f.content)}})}$("#favorite-toggle").on("click","span a.favorite-toggle",function(a){a.preventDefault();bbp_ajax_call("favorite",$(this).attr("data-topic"),bbpTopicJS.fav_nonce,"#favorite-toggle")});$("#subscription-toggle").on("click","span a.subscription-toggle",function(a){a.preventDefault();bbp_ajax_call("subscription",$(this).attr("data-topic"),bbpTopicJS.subs_nonce,"#subscription-toggle")});
 
 /*! Post Reporting */
 ;$("#comments,#forums").on("click","a.report-post",function(b){confirmation=confirm("Report this post? Please make sure this is a valid report.");if(confirmation){var a=postid=postnum=author=reason="";reason=prompt("Reason For Report","Why you are reporting this post...");if("Why you are reporting this post..."==reason){reason="No reason given by reporter."}a=$(this).data("type");postid=$(this).data("id");postnum=$(this).data("number");user=$(this).data("user");$(this).remove();$.post(ajaxurl,{action:"apoc_report_post",type:a,id:postid,num:postnum,user:user,reason:reason},function(c){if(c==1){alert("Report sent successfully, thank you.")}});return false}});
@@ -80,35 +83,8 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! Clear Infraction */
 ;$("a.clear-infraction").click(function(){var a=$(this);var b=get_var_in_url(a.attr("href"),"_wpnonce");var c=get_var_in_url(a.attr("href"),"id");a.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");$.post(ajaxurl,{action:"apoc_clear_infraction",_wpnonce:b,id:c},function(d){if(d==1){$("li#infraction-"+c).slideUp()}});return false});
 
-
 /*! Clear Mod Notes */
-$("a.clear-mod-note").click( function() {
-		
-	// Get some info about what we are doing
-	var button	= $(this);
-	var nonce	= get_var_in_url( button.attr('href') , '_wpnonce' );
-	var id 		= get_var_in_url( button.attr('href') , 'id' );
-	
-	// Disable the button
-	button.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");
-
-	// Submit the POST AJAX
-	$.post( ajaxurl, { 
-			'action': 'apoc_clear_mod_note',
-			'_wpnonce': nonce,
-			'id' : id,
-		},
-		function( resp ) {
-			if( resp == 1 ) {
-				$( "li#modnote-" + id ).slideUp();
-			}
-		}
-	);
-		
-	// Prevent the default pageload
-	return false;
-});
-
+;$("a.clear-mod-note").click(function(){var a=$(this);var b=get_var_in_url(a.attr("href"),"_wpnonce");var c=get_var_in_url(a.attr("href"),"id");a.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");$.post(ajaxurl,{action:"apoc_clear_mod_note",_wpnonce:b,id:c},function(d){if(d==1){$("li#modnote-"+c).slideUp()}});return false});
 
 /*! End Document Ready */
 ;});

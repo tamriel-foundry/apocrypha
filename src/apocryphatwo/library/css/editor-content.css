@@ -8,7 +8,248 @@
 body#tinymce {
 	background: #151515;
 	color: #CCC;
-	min-height: 100px;
 	font-size: 12px;
 	font-family: 'Open Sans' , sans-serif;
 	}
+	
+/*---------------------------------------------
+Text Elements
+----------------------------------------------*/
+p { 	margin: 0 0 1em 0; }
+
+/* Links */
+a {
+	position: relative;
+	color: #c5772b;
+	text-decoration: none;
+	-webkit-transition: color 0.2s;
+	-moz-transition: color 0.2s;
+	-ms-transition: color 0.2s;
+	-o-transition: color 0.2s;
+	transition: color 0.2s;
+	cursor: pointer;
+	}
+a:hover { color: #ffb14c; }
+
+/* Lists */
+ul{
+	list-style: square;
+	margin: 0 0 1em 0;
+	padding: 0 0 0 2em;
+	}
+ul ul,
+ol ul{
+	list-style: circle;
+	margin: 0;
+	padding: 0 0 0 1.5em;
+	}
+ol {
+	list-style: upper-roman;
+	margin: 0 0 1em 0;
+	padding: 0 0 0 2em;
+	}
+ol ol,
+ul ol {
+	list-style: decimal;
+	margin: 0;
+	padding: 0 0 0 1.5em;
+	}
+	
+	
+/* Headers */
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+	text-shadow: 1px 1px #000;
+	margin-bottom: 1em;
+	}
+h1 {
+	font-family: 'Book Antiqua' , Serif;
+	text-transform: uppercase; 
+	font-size: 1.75em; 
+	font-weight: bold;
+	text-shadow: 2px 2px #000;
+	margin-bottom: 0.6em; 	
+	}
+h2 {
+	font-size: 1.25em; 
+	margin-bottom: 0.8em; 
+	font-weight: bold; 
+	}
+h3 {
+	font-family: 'Book Antiqua' , Serif;
+	text-transform: uppercase; 
+	font-size: 1.25em; 
+	margin-bottom: 0.75em;
+	}
+h4 {
+	font-size: 1em;
+	text-transform: uppercase; 
+	margin-bottom: 0.5em;  
+	}
+h5 {
+	font-size: 1em; 
+	font-weight: bold; 
+	}
+h6 {
+	font-size: 0.875em;
+	margin-bottom: 0; 
+	}
+	
+/* Stylings */
+strong{
+	font-weight:bold
+	}
+strong strong{
+	font-weight:normal
+	}
+em,cite{
+	font-style:italic
+	}
+em em,cite cite{
+	font-style:normal
+	}
+big{
+	font-size:120%
+	}
+small,sup,sub {
+	font-size: 11px;
+	position: relative;
+	}
+sup{
+	vertical-align: top;
+	bottom: 0.5em;
+	}
+sub{
+	vertical-align: baseline;
+	top: 0.5em;
+	}
+	
+/* Quotes */
+blockquote {
+	position: relative;
+	float: left;
+	margin: 0 1em 1em;
+	padding: 0.5em 1em 0.5em 3em;
+	font-family: 'Palatino Linotype' , 'Book Antiqua' , serif;
+	font-size: 1em;
+	color: #bbb;
+	text-shadow: 1px 1px #111;
+	background: rgba(17,17,17,0.25);
+	border-radius: 3px;
+	}
+blockquote:before {
+	position: absolute;
+	top: 1em;
+	left: 0.5em;
+	color: #222;
+	text-shadow: 1px 1px #000;
+	content: "\201D";
+	font-size: 1.5em;
+	line-height: 0;
+	margin: 0 0.25em;
+	vertical-align: -0.25em;
+	}
+blockquote > p { margin: 0.5em 0; }
+blockquote + * {
+	clear: left;
+	}
+div.quote,
+div.spoiler{
+	width: 98%;
+	margin: 0 auto 1em;
+	padding: 0.5em 1%;
+	position: relative;
+	overflow: hidden;
+	background: rgba(17,17,17,0.25);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #666 inset;
+	color: #AAA;
+	}
+div.quote > *,
+div.spoiler > * {
+	clear: both;
+	margin: 0.5em 0;
+	}
+p.quote-author,
+p.spoiler-title {
+	float: left;
+	padding: 0 1em 0.5em;
+	color: #BBB;
+	text-shadow: 1px 1px #000;
+	}
+	
+/* Text Selection */
+::selection {
+	background: rgba(204, 204, 204, 0.25);
+	}
+::-moz-selection {
+	background: rgba(204, 204, 204, 0.25);
+	}
+	
+/* Images */
+img { 
+	max-width: 100%;
+	height: auto;
+	max-height: 600px;
+	padding: 2px;
+	border: 1px solid #333;
+	border-radius: 2px;
+	box-shadow: 0 0 8px #000;
+	background: rgba( 17,17,17,0.5 );
+	}
+img.alignright, .wp-caption.alignright {
+	float:right;
+	clear: right;
+	margin: 0 0 1em 2em;
+	}
+img.alignleft, .wp-caption.alignleft {
+	float:left;
+	clear: left;
+	margin: 0 2em 1em 0;
+	}
+img.aligncenter, .wp-caption.aligncenter {
+	display: block; 
+	margin: 0 auto 1em;
+	}
+img.thumbnail {
+	float: right;
+	margin: 0 0 1em 1em;
+	}
+	
+/* Image Links */
+a img {
+	-webkit-transition: all 0.2s;
+	-moz-transition: all 0.2s;
+	-ms-transition: all 0.2s;
+	-o-transition: all 0.2s;
+	transition: all 0.2s;
+	color: transparent;
+	}
+a img:hover  {
+	background: rgba( 34,34,34,0.5 );
+	box-shadow: 0 0 5px #c60;
+	border-color: #000;
+	}
+	
+* Captions */
+.wp-caption img {
+	display: block;
+	margin: 0 auto;
+	}
+.wp-caption .wp-caption-text {
+	width: 98%;
+	margin: 0 auto;
+	padding: 3px 0;
+	background: rgba(17,17,17,0.25);
+	border: 1px solid #111;
+	border-top-color: #000;
+	border-radius: 0 0 3px 3px;
+	box-shadow: 0 0 2px #555 inset;
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 0.75em;
+	text-align: center;
+	font-style: italic;
+	color: #AAA;
+	}
+	

@@ -11,18 +11,8 @@
 	<div class="reply-author">Author</div>
 	<div class="reply-content">Post</div>
 	<div id="subscription-controls">
-		<?php bbp_user_subscribe_link( array(
-			'subscribe'		=> '<i class="icon-bookmark"></i>Subscribe',
-			'unsubscribe'	=> '<i class="icon-remove"></i>Unsubscribe',
-			'before'    	=> '',
-			'after'     	=> '',
-		)); ?>
-		<?php bbp_user_favorites_link( array(
-			'favorite'		=> '<i class="icon-thumbs-up"></i>This Thread Rocks',
-			'favorited'		=> '<i class="icon-thumbs-down"></i>This Got Ugly',
-			'before'    	=> '',
-			'after'     	=> '',
-		)); ?>
+		<?php bbp_user_subscribe_link(); ?>
+		<?php bbp_user_favorites_link(); ?>
 	</div>
 </header>
 

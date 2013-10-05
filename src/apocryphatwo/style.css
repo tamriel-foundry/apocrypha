@@ -281,7 +281,8 @@ h4 {
 	}
 h5 {
 	font-size: 1em; 
-	font-weight: bold; }
+	font-weight: bold; 
+	}
 h6 {
 	font-size: 0.875em;
 	margin-bottom: 0; 
@@ -343,10 +344,11 @@ blockquote:before {
 	vertical-align: -0.25em;
 	}
 blockquote > p { margin: 0.5em 0; }
+blockquote + * { clear: left; }
 
 div.quote,
 div.spoiler{
-	width: 98%;
+	width: 97%;
 	margin: 0 auto 1em;
 	padding: 0.5em 1%;
 	position: relative;
@@ -1303,6 +1305,11 @@ ul.tabs li.current {
 	border-right: 1px solid #000;
 	}
 ul.tabs li.current > a { text-shadow: 0 0 20px #c60; }
+div.tab-content {
+	width: 98%;
+	float: left;
+	margin: 0 1% 1em;
+	}
 	
 	
 /*--------------------------------------------------------------
@@ -1594,6 +1601,7 @@ div.reply-content {
 	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.8em;
 	word-wrap: break-word;
+	overflow: hidden;
 	}
 	
 /* Revision Log */
@@ -2539,6 +2547,7 @@ ul#directory-actions > li a span {
 /* Profile Header */
 blockquote.user-status {
 	width: 90%;
+	float: left;
 	margin: 0.5em;
 	padding-right: 0;
 	}
@@ -2892,6 +2901,7 @@ header.activity-header > p:before {
 	border-bottom: 1px solid #000;
 	}
 blockquote.activity-content {
+	float: left;
 	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.8em;
 	}

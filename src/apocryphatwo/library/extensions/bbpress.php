@@ -276,6 +276,31 @@ function apoc_reply_admin_links( $id ) {
 	));
 }
 
+/** 
+ * Apply custom styling to favorite and subscribe buttons
+ * @version 1.0.0
+ */
+add_filter( 'bbp_before_get_user_favorites_link_parse_args' , 'apoc_favorite_button_args' );
+function apoc_favorite_button_args( $r ) {
+	$r = array (
+		'favorite'		=> '<i class="icon-thumbs-up"></i>This Thread Rocks',
+		'favorited'		=> '<i class="icon-thumbs-down"></i>This Got Ugly',
+		'before'    	=> '',
+		'after'     	=> '',
+	);
+	return $r;
+}
+
+add_filter( 'bbp_before_get_user_subscribe_link_parse_args' , 'apoc_subscribe_button_args' );
+function apoc_subscribe_button_args( $r ) {
+	$r = array(
+			'subscribe'		=> '<i class="icon-bookmark"></i>Subscribe',
+			'unsubscribe'	=> '<i class="icon-remove"></i>Unsubscribe',
+			'before'    	=> '',
+			'after'     	=> '',
+		);
+	return $r;
+}
 
 /**
  * Prepend an icon to the revision log

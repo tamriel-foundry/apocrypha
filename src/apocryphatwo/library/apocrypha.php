@@ -118,32 +118,6 @@ class Apocrypha {
 	}
 	
 	/**
-	 * Add WordPress recognized theme supports
-	 * @version 1.0.0
-	 */
-	private function supports() {
-	
-		// Theme supports
-		add_theme_support( 'html5' );
-		add_theme_support( 'bbpress' );
-		add_theme_support( 'buddypress' );
-		add_theme_support( 'post-thumbnails' );
-		
-		// Theme does not support
-		show_admin_bar( false );
-		
-		// Add supported post types
-		$apoc_posts 	= new Apoc_Posts();
-		$apoc_slides 	= new Apoc_Slides();
-		
-		// Add supported shortcodes
-		$shortcodes		= new Apoc_Shortcodes();
-		
-		// Support contact methods
-		add_filter( 'user_contactmethods' , array( $this , 'contact_methods' ) ) ;
-	}
-	
-	/**
 	 * Load primary function libraries
 	 * @version 1.0.0
 	 */
@@ -180,6 +154,38 @@ class Apocrypha {
 		} elseif ( is_admin() ) {
 			require( $this->admin_dir . 'postmeta.php' );
 		}
+	}
+	
+	/**
+	 * Add WordPress recognized theme supports
+	 * @version 1.0.0
+	 */
+	private function supports() {
+	
+		// Theme supports
+		add_theme_support( 'html5' );
+		add_theme_support( 'bbpress' );
+		add_theme_support( 'buddypress' );
+		add_theme_support( 'post-thumbnails' );
+		
+		// Theme does not support
+		show_admin_bar( false );
+		
+		// Custom bbPress modifications
+		$apoc_bbpress		= new Apoc_bbPress();
+		
+		// Custom BuddyPress modifications
+		$apoc_buddypress	= new Apoc_BuddyPress();
+		
+		// Add supported post types
+		$apoc_posts 		= new Apoc_Posts();
+		$apoc_slides 		= new Apoc_Slides();
+		
+		// Add supported shortcodes
+		$shortcodes			= new Apoc_Shortcodes();
+		
+		// Support contact methods
+		add_filter( 'user_contactmethods' , array( $this , 'contact_methods' ) ) ;
 	}
 	
 	/**

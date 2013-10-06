@@ -8,36 +8,309 @@
 ----------------------------------------------------------------
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
-1.0 - Initialization
+1.0 - Apoc BuddyPress Class
 2.0 - Notifications
 3.0 - User Profiles
 4.0 - Directories
 5.0 - Groups
 6.0 - Group Creation
-______________________________
-
-7.0 - Registration
 --------------------------------------------------------------*/
 
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
 /*--------------------------------------------------------------
-1.0 - INITIALIZATION
+1.0 - APOC BUDDYPRESS CLASS
 --------------------------------------------------------------*/
+class Apoc_BuddyPress {
 
-// Include BuddyPress AJAX functions 
-require_once( BP_PLUGIN_DIR . '/bp-themes/bp-default/_inc/ajax.php' );
+	/**
+	 * Construct the BuddyPress Class
+	 * @version 1.0.0
+	 */
+	function __construct() {
 	
-// Register buttons for BuddyPress actions 	
-if ( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+		// Constants
+		$this->constants();
+		
+		// Includes
+		$this->includes();
+		
+		// Actions
+		$this->actions();
+		
+		// Filters
+		$this->filters();
+		
+		// Extensions
+		$this->extensions();
+	}
+	
+	
+	/**
+	 * Define additional BuddyPress constants
+	 */
+	function constants() {
+	
+		// Avatar Uploads
+		define( 'BP_AVATAR_THUMB_WIDTH'		, 100 );
+		define( 'BP_AVATAR_THUMB_HEIGHT'	, 100 );
+		define( 'BP_AVATAR_FULL_WIDTH'		, 200 ); 
+		define( 'BP_AVATAR_FULL_HEIGHT'		, 200 ); 
+		define( 'BP_AVATAR_DEFAULT'			, THEME_URI . '/images/avatars/neutral-200.jpg' );
+		define( 'BP_AVATAR_DEFAULT_THUMB'	, THEME_URI . '/images/avatars/neutral-100.jpg' );
+		
+		// Profile Components
+		define( 'BP_DEFAULT_COMPONENT' 		, 'profile' );
+	}
+	
+	function includes() {
+		
+		// Include BuddyPress AJAX Library
+		require_once( BP_PLUGIN_DIR . '/bp-themes/bp-default/_inc/ajax.php' );
+	}
+	
+	function actions() {
+	
+		// Profile Navigation
+		add_action( 'bp_setup_nav'			, array( $this , 'navigation' ) , 99 );
+		
+		// User Registration
+		add_action( 'bp_actions' 			, array( $this , 'registration_hack' ) 		, 1 );
+		add_action( 'bp_core_signup_user' 	, array( $this , 'store_registration_ip' ) 	, 10 , 1 );
+		add_action( 'bp_signup_validate'	, array( $this , 'registration_check' ) );
+	}
+	
+	function filters() {
+	
+		// Activity Items
+		add_filter( 'bp_get_activity_delete_link' , array( $this , 'activity_delete_icon' ) );
+	}
+	
+	
+	function extensions() {
+	
+		// Groups extensions
+		if ( class_exists( 'BP_Group_Extension' ) )
+			bp_register_group_extension( 'Apoc_Group_Add_Leader' );
+			
+		// Profile options
+		if ( !is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) )		
+			new Apoc_Profile();
+	
+	}
+	
+	/*
+	 * Custom BuddyPress user and group profile navigation
+	 */	
+	function navigation() {
+		global $bp;
+		
+		// Main navigation
+		$bp->bp_nav['profile']['position'] 	= 1;
+		$bp->bp_nav['activity']['position'] = 2;
+		$bp->bp_nav['forums']['position'] 	= 3;
+		$bp->bp_nav['friends']['position'] 	= 4;
+		$bp->bp_nav['groups']['position'] 	= 5;
+		$bp->bp_nav['messages']['position'] = 6;
+		$bp->bp_nav['settings']['position'] = 100;
+	
+		// Profile sub-navigation
+		$bp->bp_options_nav['activity']['just-me']['name'] 			= 'All Activity';
+		$bp->bp_options_nav['profile']['public']['name'] 			= 'Player Biography';
+		$bp->bp_options_nav['profile']['change-avatar']['link'] 	= $bp->displayed_user->domain . 'profile/change-avatar';
+		if ( !bp_is_my_profile() && !current_user_can( 'edit_users' ) )
+		$bp->bp_options_nav['profile']['change-avatar']				= false;
+		$bp->bp_options_nav['forums']['replies']['name'] 			= 'Recent Post Tracker';
+		if ( !current_user_can( 'moderate_comments' ) )
+		$bp->bp_options_nav['forums']['replies']					= false;
+		$bp->bp_options_nav['forums']['favorites']['name'] 			= 'Favorite Topics';
+		$bp->bp_options_nav['forums']['subscriptions']['name']	 	= 'Subscribed Topics';
+		$bp->bp_options_nav['settings']['general']['name'] 			= 'Edit Account Info';
+		$bp->bp_options_nav['settings']['notifications']['name'] 	= 'Notification Preferences';
+		
+		// Add notification counts to profile tabs
+		if ( bp_is_my_profile() ) {
+		
+			// Friend requests
+			$friend_requests = bp_friend_get_total_requests_count();
+			if ( $friend_requests ) {
+				$friend_plus = ' <span class="activity-count">+' . $friend_requests . '</span>';
+				$bp->bp_nav['friends']['name'] .= $friend_plus;
+				$bp->bp_options_nav['friends']['requests']['name'] .= $friend_plus;
+			}
+						
+			// Unread PMs
+			$unread_messages 	= bp_get_total_unread_messages_count();
+			if ( $unread_messages ) {
+				$message_plus = ' <span class="activity-count">+' . $unread_messages . '</span>';
+				$bp->bp_options_nav['messages']['inbox']['name'] .= $message_plus;
+			}
+			
+			// Group Invites
+			$group_invites		= groups_get_invites_for_user( bp_loggedin_user_id() );
+			$group_invites		= $group_invites['total'];
+			if ( $group_invites ) {
+				$guild_plus = ' <span class="activity-count">+' . $group_invites . '</span>';
+				$bp->bp_options_nav['groups']['invites']['name'] .= $guild_plus;
+			}
+		}
+		
+		// Custom edit profile screen
+		bp_core_remove_subnav_item( 'profile' , 'edit' );
+		if ( bp_is_my_profile() || current_user_can( 'edit_users' ) ) {
+			bp_core_new_subnav_item( array(
+				'name' 				=> 'Edit Profile',
+				'slug' 				=> 'edit',
+				'parent_url' 		=> $bp->displayed_user->domain . $bp->profile->slug . '/',
+				'parent_slug' 		=> $bp->profile->slug,
+				'screen_function' 	=> array( $this , 'edit_profile_screen' ),
+				'position' 			=> 20 ) );
+		}
+		
+		// Add moderation and infraction management panel
+		if ( bp_is_user() && ( bp_is_my_profile() || current_user_can( 'moderate' ) ) ) {
+			
+			if ( class_exists( 'Apoc_User' ) ) {
+				
+				// Get the user object
+				$user = new Apoc_User( bp_displayed_user_id() , 'profile' );
+				$level = $user->warnings['level'];
+				$level = ( $level > 0 ) ? '<span>' . $level . '</span>' : '';
+				$notes = $user->mod_notes['count'];
+				$notes = ( $notes > 0 ) ? '<span class="activity-count">' . $notes . '</span>' : '';
+				bp_core_new_nav_item( array(
+					'name' 					=> 'Infractions' . $level,
+					'slug' 					=> 'infractions',
+					'position' 				=> 99, 
+					'screen_function' 		=> array( $this , 'infractions_screen' ),
+					'default_subnav_slug' 	=> 'status',
+					'item_css_id' 			=> 'infractions', ) );
+			
+				// Add infraction overview screen
+				bp_core_new_subnav_item( array( 
+					'name' 					=> 'Status',
+					'slug' 					=> 'status',
+					'parent_url' 			=> $bp->displayed_user->domain . 'infractions/',
+					'parent_slug' 			=> 'infractions',
+					'screen_function' 		=> array( $this , 'infractions_screen' ),
+					'position' 				=> 10 ) );
+					
+				// Add send warning screen
+				if ( current_user_can( 'moderate' ) ) {	
+					bp_core_new_subnav_item( array( 
+						'name' 				=> 'Issue Warning',
+						'slug' 				=> 'warning',
+						'parent_url' 		=> $bp->displayed_user->domain . 'infractions/',
+						'parent_slug' 		=> 'infractions',
+						'screen_function' 	=> array( $this , 'warning_screen' ),
+						'position' 			=> 20 ) );
+				
+					// Add moderator notes screen
+					bp_core_new_subnav_item( array( 
+						'name' 				=> 'Moderator Notes' . $notes,
+						'slug' 				=> 'notes',
+						'parent_url' 		=> $bp->displayed_user->domain . 'infractions/',
+						'parent_slug' 		=> 'infractions',
+						'screen_function' 	=> array( $this , 'modnotes_screen' ),
+						'position' 			=> 30 ) );
+				}
+			}
+		}
+		
+		// Group Profile Navigation
+		if( bp_is_group() ) {
+			$group_id = bp_get_current_group_id();
+		
+			// Add activity tab
+			bp_core_new_subnav_item( array( 
+				'name' 				=> 'Activity', 
+				'slug' 				=> 'activity', 
+				'parent_slug' 		=> $bp->groups->current_group->slug, 
+				'parent_url' 		=> bp_get_group_permalink( $bp->groups->current_group ), 
+				'screen_function' 	=> array( $this , 'guild_activity_screen' ),
+				'position' 			=> 20,  ) );
+				
+			// Rename admin
+			$bp->bp_options_nav[$bp->groups->current_group->slug]['admin']['name'] = 'Administration';
+			if ( groups_is_user_admin( bp_loggedin_user_id(), $group_id ) || groups_is_user_mod( bp_loggedin_user_id(), $group_id ) ) {
+				if ( bp_group_has_membership_requests( array( 'group_id' => $group_id ) ) ) bp_group_membership_requests();
+				global $requests_template;
+				if ( $requests_template->request_count > 0 ) {
+					$request_plus = ' <span class="activity-count">+' . $requests_template->request_count . '</span>';
+					$bp->bp_options_nav[$bp->groups->current_group->slug]['admin']['name'] .= $request_plus;
+				}
+			}
+		}
+	}
+	
+	
+	/*
+	 * Autofills the hidden "display name" field with the username provided
+	 */
+	function registration_hack() {
+		
+		// Force the display name and login name to match
+		if ( bp_is_register_page() && isset( $_POST['signup_submit'] ) ) {
+			$_POST['field_1'] = $_POST['signup_username'];
+		}
+	}
 
-	// Profile Filters
-	new Apoc_Profile();
+	/*
+	 * Store user IP address at registration
+	 */
+
+	function store_registration_ip( $user_id ) {
+		
+		// Get the ip address
+		$ip = $_SERVER['REMOTE_ADDR'];
+		
+		// Add it to the meta array
+		add_user_meta( $user_id , 'registration-ip' , $ip );
+	}
+
+	/*
+	 * Check that custom registration fields have been successfully completed.
+	 */
+	function registration_check() {
+		global $bp;
+
+		if ( empty( $_POST['confirm_tos_box'] ) )
+			$bp->signup->errors['confirm_tos_box'] = 'You must indicate that you understand the fundamental purpose of the Tamriel Foundry website and community.';
+
+		if ( empty( $_POST['confirm_coc_box'] ) )
+			$bp->signup->errors['confirm_coc_box'] = 'You must indicate your acknowledgement of the Tamriel Foundry code of conduct.';
+			
+		if ( 'argonian'	!=	trim( strtolower ( $_POST['confirm_humanity'] ) ) )
+			$bp->signup->errors['confirm_humanity'] = 'That is incorrect. Hover on the image if you require a hint.';
+	}
 	
-	// Group Extensions
-	if ( class_exists( 'BP_Group_Extension' ) )
-		bp_register_group_extension( 'Apoc_Group_Add_Leader' );
+	/*
+	 * Activity delete buttons
+	 */
+	function activity_delete_icon( $link ) {
+		$link = str_replace( 'Delete' , '<i class="icon-remove"></i>Delete' , $link );
+		return $link;
+	}
+	
+	/*
+	 * Custom profile screen functions
+	 */
+	function edit_profile_screen() {
+		bp_core_load_template( apply_filters( 'apoc_edit_profile_template', 'members/single/profile/edit' ) );
+	}
+	function infractions_screen() {
+		bp_core_load_template( apply_filters( 'apoc_infractions_template', 'members/single/infractions' ) );
+	}
+	function warning_screen() {
+		bp_core_load_template( apply_filters( 'apoc_warning_template', 'members/single/infractions/warning' ) );
+	}
+	function modnotes_screen() {
+		bp_core_load_template( apply_filters( 'apoc_modnotes_template', 'members/single/infractions/notes' ) );
+	}
+	function guild_activity_screen() {
+		bp_core_load_template( apply_filters( 'apoc_guild_activity_template', 'groups/single/home' ) );
+	}
 }
 	
 /*--------------------------------------------------------------
@@ -392,12 +665,6 @@ class Apoc_Profile {
 	}
 }
 
-add_filter( 'bp_get_activity_delete_link' , 'apoc_activity_delete_icon' );
-function apoc_activity_delete_icon( $link ) {
-	$link = str_replace( 'Delete' , '<i class="icon-remove"></i>Delete' , $link );
-	return $link;
-}
-
 /*--------------------------------------------------------------
 4.0 - DIRECTORIES
 --------------------------------------------------------------*/
@@ -737,6 +1004,54 @@ function group_is_guild( $group_id ) {
 	return $is_guild;
 }
 
+
+/*
+ * This class allows a group query to be cross referenced using group_meta values
+ * @version 1.0.0
+ */
+class BP_Groups_Meta_Filter {
+	
+	// Define properties
+	protected $key;
+	protected $value;
+	protected $group_ids = array();
+
+	// Construct the filter
+	function __construct( $key, $value ) {
+		$this->key   = $key;
+		$this->value = $value;
+		$this->setup_group_ids();
+		add_filter( 'bp_groups_get_paged_groups_sql', array( &$this, 'filter_sql' ) );
+		add_filter( 'bp_groups_get_total_groups_sql', array( &$this, 'filter_sql' ) );
+	}
+
+	function setup_group_ids() {
+		global $wpdb, $bp;
+		$sql = $wpdb->prepare( "SELECT group_id FROM {$bp->groups->table_name_groupmeta} WHERE meta_key = %s AND meta_value = %s", $this->key, $this->value );
+		$this->group_ids = wp_parse_id_list( $wpdb->get_col( $sql ) );
+	}
+
+	function get_group_ids() {
+		return $this->group_ids;
+	}
+
+	function filter_sql( $sql ) {
+		$group_ids = $this->get_group_ids();
+		if ( empty( $group_ids ) ) {
+			return $sql;
+		}
+
+		$sql_a = explode( 'WHERE', $sql );
+		$new_sql = $sql_a[0] . 'WHERE g.id IN (' . implode( ',', $group_ids ) . ') AND ' . $sql_a[1];
+		return $new_sql;
+	}
+
+	function remove_filters() {
+		remove_filter( 'bp_groups_get_paged_groups_sql', array( &$this, 'filter_sql' ) );
+		remove_filter( 'bp_groups_get_total_groups_sql', array( &$this, 'filter_sql' ) );
+	}
+}
+
 /*--------------------------------------------------------------
 6.0 - GROUP CREATION
 --------------------------------------------------------------*/
@@ -875,54 +1190,6 @@ function apoc_group_invite_friend_list() {
 	else
 	return false;
 }
-
-
-/*--------------------------------------------------------------
-7.0 - NEW USER REGISTRATION
---------------------------------------------------------------*/
-/*
- * Autofills the hidden "display name" field with the username provided
- * @since 0.1
- */
-function user_registration_hack() {
-	
-	// Force the display name and login name to match
-	if ( bp_is_register_page() && isset( $_POST['signup_submit'] ) ) {
-		$_POST['field_1'] = $_POST['signup_username'];
-	}
-}
-add_action( 'bp_actions' , 'user_registration_hack', 1 );
-
-/*
- * Store user IP address at registration
- */
-add_action( 'bp_core_signup_user' , 'store_registration_ip' , 10 , 1 );
-function store_registration_ip( $user_id ) {
-	
-	// Get the ip address
-	$ip = $_SERVER['REMOTE_ADDR'];
-	
-	// Add it to the meta array
-	add_user_meta( $user_id , 'registration-ip' , $ip );
-}
-
-/*
- * Check that custom registration fields have been successfully completed.
- * @since 0.1
- */
-function apoc_registration_check() {
-	global $bp;
-
-	if ( empty( $_POST['confirm_tos_box'] ) )
-		$bp->signup->errors['confirm_tos_box'] = 'You must indicate that you understand the fundamental purpose of the Tamriel Foundry website and community.';
-
-	if ( empty( $_POST['confirm_coc_box'] ) )
-		$bp->signup->errors['confirm_coc_box'] = 'You must indicate your acknowledgement of the Tamriel Foundry code of conduct.';
-		
-	if ( 'argonian'	!=	trim( strtolower ( $_POST['confirm_humanity'] ) ) )
-		$bp->signup->errors['confirm_humanity'] = 'That is incorrect. Hover on the image if you require a hint.';
-}
-add_action( 'bp_signup_validate', 'apoc_registration_check' );
 
 
 ?>

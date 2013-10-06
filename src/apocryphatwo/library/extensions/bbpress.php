@@ -4,13 +4,220 @@
  * Andrew Clayton
  * Version 1.0.0
  * 8-10-2013
- */
 
-// IMPORTANT - Don't let bbPress do theme compatibility
- remove_filter( 'bbp_template_include',   'bbp_template_include_theme_compat',   4, 2 );
+----------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1.0 - Apoc BBPress Class
+2.0 - Forum Archives
+3.0 - Single Topics
+4.0 - Best-Of Topics
+--------------------------------------------------------------*/
+ 
+ /*---------------------------------------------
+1.0 - APOC BBPRESS CLASS
+----------------------------------------------*/ 
+class Apoc_bbPress {
+
+	/**
+	 * Construct the bbPress Class
+	 * @version 1.0.0
+	 */
+	function __construct() {
+	
+		// Add actions
+		$this->actions();
+		
+		// Register filters
+		$this->filters();
+	}
+
+	/**
+	 * Custom bbPress actions
+	 * @version 1.0.0
+	 */	
+	function actions() {
+	
+		// Increment Favorite Counts
+		add_action( 'bbp_add_user_favorite' 	, array( $this , 'fav_count_plus' )	, 10 , 2 );
+		add_action( 'bbp_remove_user_favorite' 	, array( $this , 'fav_count_minus' ), 10 , 2 );
+	}
+	
+	
+	/**
+	 * Custom bbPress filters
+	 * @version 1.0.0
+	 */
+	function filters() {
+	
+		// IMPORTANT - Don't let bbPress do theme compatibility
+		remove_filter( 'bbp_template_include',   'bbp_template_include_theme_compat',   4, 2 );
+		
+		// Reply CSS Class
+		add_filter( 'bbp_get_reply_class'								, array( $this , 'reply_class' ) );
+		
+		// Subscribe and Favorite Buttons
+		add_filter( 'bbp_before_get_user_favorites_link_parse_args' 	, array( $this , 'favorite_button' ) );
+		add_filter( 'bbp_before_get_user_subscribe_link_parse_args' 	, array( $this , 'subscribe_button' ) );
+		
+		// Prevent Self-Favoriting
+		add_filter( 'bbp_get_user_favorites_link' 						, array( $this , 'disallow_self_favorite' ) , 10 , 4 );
+		
+		// Revision Logs
+		add_filter( 'bbp_get_reply_revision_log'						, array( $this , 'revision_log' ) );
+		add_filter( 'bbp_get_topic_revision_log'						, array( $this , 'revision_log' ) );
+		
+		// Allow additional formatting options
+		add_filter( 'bbp_kses_allowed_tags'								, array( $this , 'allowed_kses' ) );
+		
+		// Quote Mentions
+		add_filter( 'bbp_activity_reply_create_excerpt' 				, array( $this , 'quote_mention' ) );
+	}
+	
+	/**
+	 * Filter the element class list for topics to only say replies
+	 * @version 1.0.0
+	 */
+	function reply_class( $classes ) {
+		$classes[1] = 'reply';
+		return $classes;
+	}
+	
+	/** 
+	 * Apply custom styling to favorite and subscribe buttons
+	 * @version 1.0.0
+	 */
+	function favorite_button( $r ) {
+		$r = array (
+			'favorite'		=> '<i class="icon-thumbs-up"></i>This Thread Rocks',
+			'favorited'		=> '<i class="icon-thumbs-down"></i>This Got Ugly',
+			'before'    	=> '',
+			'after'     	=> '',
+		);
+		return $r;
+	}
+	function subscribe_button( $r ) {
+		$r = array(
+				'subscribe'		=> '<i class="icon-bookmark"></i>Subscribe',
+				'unsubscribe'	=> '<i class="icon-remove"></i>Unsubscribe',
+				'before'    	=> '',
+				'after'     	=> '',
+			);
+		return $r;
+	}
+
+	/**
+	 * Prepend an icon to the revision log
+	 * @version 1.0.0
+	 */
+
+	function revision_log( $revision ) {
+		$revision = str_replace( 'revision-log">' , 'revision-log icons-ul double-border top">' , $revision );
+		$revision = str_replace( 'revision-log-item">' , 'revision-log-item"><i class="icon-li icon-edit"></i>' , $revision );
+		return $revision;
+	}
+
+	/**
+	 * Increment Best-Of Favorite Counts
+	 * @version 1.0.0
+	 */
+	function fav_count_plus( $user_id , $topic_id ) {
+		
+		// Get the favorite count, converting missing to zero
+		$count = (int) get_post_meta( $topic_id , 'topic_fav_count' , true );
+		
+		// Save the incremented value
+		update_post_meta( $topic_id , 'topic_fav_count' , ++$count );
+	}
+	function fav_count_minus( $user_id , $topic_id ) {
+		
+		// Get the favorite count, converting missing to zero
+		$count = (int) get_post_meta( $topic_id , 'topic_fav_count' , true );
+		
+		// Don't let the count go below zero
+		$count = max( $count , 1 );
+		
+			// Save the decremented value
+		if ( $count > 1 )
+			update_post_meta( $topic_id , 'topic_fav_count' , --$count );
+			
+		// If the count would be going to zero, just delete the postmeta entirely
+		else
+			delete_post_meta( $topic_id , 'topic_fav_count' );
+	}
+	
+	/**
+	 * Prevent users from favoriting their own posts
+	 * @version 1.0.0
+	 */
+	
+	function disallow_self_favorite( $html, $r, $user_id, $topic_id ) {
+
+		// Prevent a topic author from favoriting him/herself
+		if ( $user_id == bbp_get_topic_author_id() )
+			return false;
+		
+		// Otherwise, allow the link
+		else return $html;
+	}
+	
+	/**
+	 * Special bbPress allowed KSES
+	 * @version 1.0.0
+	 */
+	function allowed_kses( $allowed ) {
+		$allowed['div']['class']	= array();
+		$allowed['div']['style']	= array();
+		$allowed['p']['class']		= array();
+		$allowed['p']['style']		= array();
+		$allowed['h1']['style']		= array();
+		$allowed['h2']['style']		= array();
+		$allowed['h3']['style']		= array();
+		$allowed['h4']['style']		= array();
+		$allowed['h5']['style']		= array();
+		$allowed['h6']['style']		= array();
+		$allowed['span']['style']	= array();
+		return $allowed;
+	}
+
+	/** 
+	 * Modify reply content when it is passed to the activity stream
+	 * Includes quote mentions before stripping quotes
+	 * @version 1.0.0
+	 */
+	function quote_mention( $reply_content ) {
+		
+		// Match the pattern for quote shortcodes
+		$thequote = '#\[quote(.*)\](.*)\[\/quote\]#is';
+		if ( preg_match( $thequote , $reply_content ) ) :
+		
+			// If there are quotes found, match the quoted usernames
+			$author_pattern = '#(?<=\[quote author=")(.+?)(?=\|)#i';
+			preg_match_all( $author_pattern , $reply_content , $authors );
+			
+			// For each username, turn it into a mention
+			if ( isset( $authors ) ) :
+				$authors = array_unique( $authors[0] );
+				count( $authors ) > 1 ? $grammar = ' were quoted:' : $grammar = ' was quoted:';
+				$mentions = implode( ",@" , $authors );
+				$mentions = str_replace( " ", "-", $mentions );
+				$mentions = str_replace( ".", "-", $mentions );
+				$mentions = '<p><span class="activity-quote-mention">@'. $mentions . $grammar . '</span></p>';
+			endif;
+			
+			// Add the mentions to the content and register them with BuddyPress
+			$reply_content = $mentions . $reply_content ;
+			$reply_content = strip_shortcodes( $reply_content );
+			$reply_content = bp_activity_at_name_filter( $reply_content );
+		endif;
+		
+		// Return the excerpt
+		return $reply_content;
+	}	
+}
 
 /*---------------------------------------------
-1.0 - FORUM ARCHIVE
+2.0 - FORUM ARCHIVE
 ----------------------------------------------*/ 
 /**
  * Display forums hierarchically instead of the bbPress default
@@ -115,7 +322,7 @@ function apoc_subforum_freshness( $subforum_id = '' ) {
 } 
 
 /*---------------------------------------------
-2.0 - SINGLE TOPICS
+3.0 - SINGLE TOPICS
 ----------------------------------------------*/
 function apoc_topic_header_class( $topic_id = 0 ) {
 	$topic_id = bbp_get_topic_id( $topic_id );
@@ -184,16 +391,7 @@ function apoc_topic_description( $args = '' ) {
 	else
 		return $retstr;
 }
- 
-/**
- * Filter the element class list for topics to only say replies
- * @version 1.0.0
- */
-add_filter( 'bbp_get_reply_class', 'apoc_reply_class' );
-function apoc_reply_class( $classes ) {
-	$classes[1] = 'reply';
-	return $classes;
-}
+
 
 /**
  * Display a warning notice on forums which have special posting rules
@@ -276,75 +474,9 @@ function apoc_reply_admin_links( $id ) {
 	));
 }
 
-/** 
- * Apply custom styling to favorite and subscribe buttons
- * @version 1.0.0
- */
-add_filter( 'bbp_before_get_user_favorites_link_parse_args' , 'apoc_favorite_button_args' );
-function apoc_favorite_button_args( $r ) {
-	$r = array (
-		'favorite'		=> '<i class="icon-thumbs-up"></i>This Thread Rocks',
-		'favorited'		=> '<i class="icon-thumbs-down"></i>This Got Ugly',
-		'before'    	=> '',
-		'after'     	=> '',
-	);
-	return $r;
-}
-
-add_filter( 'bbp_before_get_user_subscribe_link_parse_args' , 'apoc_subscribe_button_args' );
-function apoc_subscribe_button_args( $r ) {
-	$r = array(
-			'subscribe'		=> '<i class="icon-bookmark"></i>Subscribe',
-			'unsubscribe'	=> '<i class="icon-remove"></i>Unsubscribe',
-			'before'    	=> '',
-			'after'     	=> '',
-		);
-	return $r;
-}
-
-/**
- * Prepend an icon to the revision log
- * @version 1.0.0
- */
-add_filter( 'bbp_get_reply_revision_log', 'apoc_custom_revision_log' );
-add_filter( 'bbp_get_topic_revision_log', 'apoc_custom_revision_log' );
-function apoc_custom_revision_log( $revision ) {
-	$revision = str_replace( 'revision-log">' , 'revision-log icons-ul double-border top">' , $revision );
-	$revision = str_replace( 'revision-log-item">' , 'revision-log-item"><i class="icon-li icon-edit"></i>' , $revision );
-	return $revision;
-}
-
-/**
- * Count the total number of times a topic has been favorited
- * @version 1.0.0
- */
-add_action( 'bbp_add_user_favorite' 	, 'apoc_favorite_count_plus' 	, 10 , 2 );
-add_action( 'bbp_remove_user_favorite' 	, 'apoc_favorite_count_minus' 	, 10 , 2 );
-function apoc_favorite_count_plus( $user_id , $topic_id ) {
-	
-	// Get the favorite count, converting missing to zero
-	$count = (int) get_post_meta( $topic_id , 'topic_fav_count' , true );
-	
-	// Save the incremented value
-	update_post_meta( $topic_id , 'topic_fav_count' , ++$count );
-}
-function apoc_favorite_count_minus( $user_id , $topic_id ) {
-	
-	// Get the favorite count, converting missing to zero
-	$count = (int) get_post_meta( $topic_id , 'topic_fav_count' , true );
-	
-	// Don't let the count go below zero
-	$count = max( $count , 1 );
-	
-		// Save the decremented value
-	if ( $count > 1 )
-		update_post_meta( $topic_id , 'topic_fav_count' , --$count );
-		
-	// If the count would be going to zero, just delete the postmeta entirely
-	else
-		delete_post_meta( $topic_id , 'topic_fav_count' );
-}
-
+/*---------------------------------------------
+4.0 - BEST-OF TOPICS
+----------------------------------------------*/
 
 /**
  * Display the total number of favorites a topic has recieved
@@ -372,21 +504,7 @@ function apoc_total_favs( $topic_id = 0 , $echo = true ) {
 	if ( $class ) echo '<span class="total-fav-count ' . $class . '" title="' . $favs . ' votes"></span>';
 }
 	
-/**
- * Prevent users from favoriting their own posts
- * @version 1.0.0
- */
-add_filter( 'bbp_get_user_favorites_link' , 'apoc_disallow_author_favorite' , 10 , 4 );
-function apoc_disallow_author_favorite( $html, $r, $user_id, $topic_id ) {
 
-	// Prevent a topic author from favoriting him/herself
-	if ( $user_id == bbp_get_topic_author_id() )
-		return false;
-	
-	// Otherwise, allow the link
-	else return $html;
-}
- 
 /**
  * Get the most favorited topics in the last 7 days
  * @version 1.0.0
@@ -419,72 +537,6 @@ function bestof_has_topics() {
 	remove_filter( 'posts_where' , 'filter_bestof_topics' );
 	
 	return $topics;
-}
-
-
-
-/*---------------------------------------------
-X.X - NEW POSTS
-----------------------------------------------*/ 
- 
-/**
- * Special bbPress allowed KSES
- * @version 1.0.0
- */
-add_filter( 'bbp_kses_allowed_tags', 'apoc_bbp_allowed_kses' );
-function apoc_bbp_allowed_kses( $allowed ) {
-	$allowed['div']['class']	= array();
-	$allowed['div']['style']	= array();
-	$allowed['p']['class']		= array();
-	$allowed['p']['style']		= array();
-	$allowed['h1']['style']		= array();
-	$allowed['h2']['style']		= array();
-	$allowed['h3']['style']		= array();
-	$allowed['h4']['style']		= array();
-	$allowed['h5']['style']		= array();
-	$allowed['h6']['style']		= array();
-	$allowed['span']['style']	= array();
-	return $allowed;
-}
-
-
-/*---------------------------------------------
-X.X - BUDDYPRESS INTEGRATION
-----------------------------------------------*/
-/** 
- * Modify reply content when it is passed to the activity stream
- * Includes quote mentions before stripping quotes
- * @version 1.0.0
- */
-add_filter( 'bbp_activity_reply_create_excerpt' , 'apoc_activity_replace_quote' );
-function apoc_activity_replace_quote( $reply_content ) {
-	
-	// Match the pattern for quote shortcodes
-	$thequote = '#\[quote(.*)\](.*)\[\/quote\]#is';
-	if ( preg_match( $thequote , $reply_content ) ) :
-	
-		// If there are quotes found, match the quoted usernames
-		$author_pattern = '#(?<=\[quote author=")(.+?)(?=\|)#i';
-		preg_match_all( $author_pattern , $reply_content , $authors );
-		
-		// For each username, turn it into a mention
-		if ( isset( $authors ) ) :
-			$authors = array_unique( $authors[0] );
-			count( $authors ) > 1 ? $grammar = ' were quoted:' : $grammar = ' was quoted:';
-			$mentions = implode( ",@" , $authors );
-			$mentions = str_replace( " ", "-", $mentions );
-			$mentions = str_replace( ".", "-", $mentions );
-			$mentions = '<p><span class="activity-quote-mention">@'. $mentions . $grammar . '</span></p>';
-		endif;
-		
-		// Add the mentions to the content and register them with BuddyPress
-		$reply_content = $mentions . $reply_content ;
-		$reply_content = strip_shortcodes( $reply_content );
-		$reply_content = bp_activity_at_name_filter( $reply_content );
-	endif;
-	
-	// Return the excerpt
-	return $reply_content;
 }
 
 

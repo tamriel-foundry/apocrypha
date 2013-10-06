@@ -23,7 +23,9 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 						<li><a href="<?php echo SITEURL . '/aldmeri-dominion/' ?>">Aldmeri Dominion</a></li>
 						<li><a href="<?php echo SITEURL . '/daggerfall-covenant/' ?>">Daggerfall Covenant</a></li>
 						<li><a href="<?php echo SITEURL . '/ebonheart-pact/' ?>">Ebonheart Pact</a></li>
+						<?php /*
 						<li><a href="#">Racial Comparison</a></li>
+						*/ ?>
 					</ul>
 				</div>
 				<div class="sub col">
@@ -39,18 +41,22 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 					<h3>Skill Lines</h3>
 					<ul class="submenu">
 						<li><a href="#">Weapon Skills</a></li>
+						<?php /*
 						<li><a href="#">Armor Types</a></li>
 						<li><a href="#">NPC Guilds</a></li>
 						<li><a href="#">Other Skills</a></li>
+						*/ ?>
 					</ul>
 				</div>	
 				<div class="sub col">
 					<h3>Resources</h3>
 					<ul class="submenu">
 						<li><a href="<?php echo SITEURL . '/development-faq/' ?>">Development FAQ</a></li>
+						<?php /*
 						<li><a href="#">Guides</a></li>
 						<li><a href="#">Maps</a></li>
 						<li><a href="#">Utilities</a></li>
+						*/ ?>
 					</ul>
 				</div>		
 			</div>
@@ -79,7 +85,9 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 						<li><a href="<?php echo SITEURL . '/about-us/' ?>">About Tamriel Foundry</a></li>
 						<li><a href="<?php echo SITEURL . '/contact-us/' ?>">Contact Us</a></li>
 						<li><a href="<?php echo SITEURL . '/entropy-rising/' ?>">Entropy Rising</a></li>
+						<?php /*
 						<li><a href="#">Partnerships</a></li>
+						*/ ?>
 					</ul>
 				</div>
 			

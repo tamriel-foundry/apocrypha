@@ -715,6 +715,7 @@ div.success,
 	width: 95%;
 	margin: 1em 0;
 	padding: 0.5em 2.5%;
+	overflow: hidden;
 	background: rgba(204, 153, 0, 0.5);
 	border: 1px solid #FC0;	
 	border-radius: 3px;

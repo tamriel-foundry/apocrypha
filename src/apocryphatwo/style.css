@@ -1817,9 +1817,12 @@ div.widget ul {
 	}
 	
 /* Recent Discussion Widgets */
-li.recent-discussion { margin: 3px 0; }
-li.recent-discussion a.discussion-avatar {	float: left; }
-li.recent-discussion a.discussion-avatar img { 
+li.recent-discussion { 
+	margin: 3px 0; 
+	clear: left;
+	}
+li.recent-discussion .discussion-avatar {	float: left; }
+li.recent-discussion .discussion-avatar img { 
 	margin: 0; 
 	opacity: 0.5;
 	padding: 0;
@@ -2945,6 +2948,26 @@ div.guild-description {
 	float: left;
 	}
 		
+/* Activity Comments */
+div.activity-comments ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	}
+div.activity-comments li.recent-discussion div.recent-discussion-content {
+	height: auto;
+	position: relative;
+	}
+div.acomment-options {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	}
+div.acomment-content {
+	margin: 0.5em 1em;
+	}
+div.acomment-content > p { margin: 0; }
+
 
 /*---------------------------------------------
 	9.5 - Private Messages

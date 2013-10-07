@@ -233,7 +233,7 @@ jq(document).ready( function() {
 	jq('div.activity').click( function(event) {
 		var target = jq(event.target);
 
-		/* Favoriting activity stream items - UNUSED */
+		/* Favoriting activity stream items - UNUSED
 		if ( target.hasClass('fav') || target.hasClass('unfav') ) {
 			var type = target.hasClass('fav') ? 'fav' : 'unfav';
 			var parent = target.closest('.activity-item');
@@ -282,9 +282,9 @@ jq(document).ready( function() {
 			});
 
 			return false;
-		}
+		}  */
 
-		/* Delete activity stream items - USED */
+		// Delete activity stream items
 		if ( target.hasClass('delete-activity') ) {
 		
 			// Get the data
@@ -317,7 +317,7 @@ jq(document).ready( function() {
 			return false;
 		}
 
-		// Spam activity stream items - UNUSED
+		/* Spam activity stream items - UNUSED
 		if ( target.hasClass( 'spam-activity' ) ) {
 			var li = target.parents( 'div.activity ul li' );
 			target.addClass( 'loading' );
@@ -339,9 +339,9 @@ jq(document).ready( function() {
 			});
 
 			return false;
-		}
+		} */
 
-		// Load more updates at the end of the page - USED
+		// Load more updates at the end of the page
 		if ( target.parent().hasClass('load-more') ) {
 		
 			// Tooltip
@@ -383,12 +383,12 @@ jq(document).ready( function() {
 		}
 	});
 
-	// Activity "Read More" links - UNUSED
+	/* Activity "Read More" links - UNUSED
 	jq('.activity-read-more a').on('click', function(event) {
 		var target = jq(event.target);
 		var link_id = target.parent().attr('id').split('-');
 		var a_id = link_id[3];
-		var type = link_id[0]; /* activity or acomment */
+		var type = link_id[0];
 
 		var inner_class = type == 'acomment' ? 'acomment-content' : 'activity-inner';
 		var a_inner = jq('li#' + type + '-' + a_id + ' .' + inner_class + ':first' );
@@ -403,10 +403,8 @@ jq(document).ready( function() {
 		});
 
 		return false;
-	});
+	}); */
 	
-	/*! -------------------------- CLEARED --------------------------------------------------- */
-
 	/**** Activity Comments *******************************************************/
 
 	/* Hide all activity comment forms */
@@ -420,53 +418,55 @@ jq(document).ready( function() {
 	jq('div.activity').click( function(event) {
 		var target = jq(event.target);
 
-		/* Comment / comment reply links */
-		if ( target.hasClass('acomment-reply') || target.parent().hasClass('acomment-reply') ) {
-			if ( target.parent().hasClass('acomment-reply') )
-				target = target.parent();
-
+		// Activity Comment Button
+		if ( target.hasClass('acomment-reply') ) {
+		
+			// Get data about the activity entry
 			var id = target.attr('id');
 			ids = id.split('-');
-
 			var a_id = ids[2]
 			var c_id = target.attr('href').substr( 10, target.attr('href').length );
+			
+			// Make usre the form is hidden
 			var form = jq( '#ac-form-' + a_id );
-
 			form.css( 'display', 'none' );
 			form.removeClass('root');
-			jq('.ac-form').hide();
+			jq('form.ac-form').hide();
 
-			/* Hide any error messages */
+			// Hide any error messages
 			form.children('div').each( function() {
 				if ( jq(this).hasClass( 'error' ) )
 					jq(this).hide();
 			});
 
+			// Put the activity reply form in the right place
 			if ( ids[1] != 'comment' ) {
 				jq('.activity-comments li#acomment-' + c_id).append( form );
 			} else {
 				jq('li#activity-' + a_id + ' .activity-comments').append( form );
 			}
-
 			if ( form.parent().hasClass( 'activity-comments' ) )
 				form.addClass('root');
 
+			// Scroll to the form, display it, and focus it
 			form.slideDown( 200 );
 			jq.scrollTo( form, 500, {
 				offset:-100,
 				easing:'easeOutQuad'
 			} );
 			jq('#ac-form-' + ids[2] + ' textarea').focus();
-
+			
+			// Prevent default
 			return false;
 		}
-
+		
 		/* Activity comment posting */
 		if ( target.attr('name') == 'ac_form_submit' ) {
+		
+			// Get the data
 			var form        = target.parents( 'form' );
 			var form_parent = form.parent();
 			var form_id     = form.attr('id').split('-');
-
 			if ( !form_parent.hasClass('activity-comments') ) {
 				var tmp_id = form_parent.attr('id').split('-');
 				var comment_id = tmp_id[1];
@@ -474,10 +474,13 @@ jq(document).ready( function() {
 				var comment_id = form_id[2];
 			}
 
-			/* Hide any error messages */
+			// Hide any error messages
 			jq( 'form#' + form.attr('id') + ' div.error').hide();
-			target.addClass('loading').prop('disabled', true);
+			
+			// Disable the button + tooltip
+			target.prop('disabled', true).html( '<i class="icon-spinner icon-spin"></i>Submitting' );
 
+			// Submit the AJAX
 			var ajaxdata = {
 				action: 'new_activity_comment',
 				'cookie': bp_get_cookies(),
@@ -492,11 +495,11 @@ jq(document).ready( function() {
 			if ( ak_nonce ) {
 				ajaxdata['_bp_as_nonce_' + comment_id] = ak_nonce;
 			}
-
+			
 			jq.post( ajaxurl, ajaxdata, function(response) {
 				target.removeClass('loading');
 
-				/* Check for errors and append if found. */
+				// Check for errors and append if found
 				if ( response[0] + response[1] == '-1' ) {
 					form.append( jq( response.substr( 2, response.length ) ).hide().fadeIn( 200 ) );
 				} else {
@@ -510,14 +513,16 @@ jq(document).ready( function() {
 							}
 						}
 
-						/* Preceeding whitespace breaks output with jQuery 1.9.0 */
+						// Preceeding whitespace breaks output with jQuery 1.9.0
 						var the_comment = jq.trim( response );
 
+						// Append the new comment to the form
 						activity_comments.children('ul').append( jq( the_comment ).hide().fadeIn( 200 ) );
 						form.children('textarea').val('');
 						activity_comments.parent().addClass('has-comments');
 					} );
 
+					// Empty the textarea
 					jq( 'form#' + form.attr('id') + ' textarea').val('');
 
 					/* Increase the "Reply (X)" button count */
@@ -526,38 +531,42 @@ jq(document).ready( function() {
 					// Increment the 'Show all x comments' string, if present
 					var show_all_a = activity_comments.find('.show-all').find('a');
 					if ( show_all_a ) {
-						var new_count = jq('li#activity-' + form_id[2] + ' a.acomment-reply span').html();
-						show_all_a.html( BP_DTheme.show_x_comments.replace( '%d', new_count ) );
+						var new_count = jq('li#activity-' + form_id[2] + ' a.acomment-reply span').html( new_count);
+						//show_all_a.html( BP_DTheme.show_x_comments.replace( '%d', new_count ) );
 					}
 				}
 
-				jq(target).prop("disabled", false);
+				// Restore the button
+				jq(target).prop("disabled", false).html( '<i class="icon-pencil"></i>Post Comment' );
 			});
 
+			// Prevent default
 			return false;
 		}
-
+		
 		/* Deleting an activity comment */
 		if ( target.hasClass('acomment-delete') ) {
+			
+			// Get some data
 			var link_href = target.attr('href');
-			var comment_li = target.parent().parent();
+			var comment_li = target.parent().parent().parent();
 			var form = comment_li.parents('div.activity-comments').children('form');
-
 			var nonce = link_href.split('_wpnonce=');
 			nonce = nonce[1];
-
 			var comment_id = link_href.split('cid=');
 			comment_id = comment_id[1].split('&');
 			comment_id = comment_id[0];
 
-			target.addClass('loading');
+			// Give a tooltip
+			target.html( '<i class="icon-spinner icon-spin"></i>Deleting' );
 
-			/* Remove any error messages */
+			// Remove any error messages
 			jq('.activity-comments ul .error').remove();
 
-			/* Reset the form position */
+			// Reset the form position
 			comment_li.parents('.activity-comments').append(form);
 
+			// Do the AJAX
 			jq.post( ajaxurl, {
 				action: 'delete_activity_comment',
 				'cookie': bp_get_cookies(),
@@ -566,7 +575,7 @@ jq(document).ready( function() {
 			},
 			function(response)
 			{
-				/* Check for errors and append if found. */
+				// Check for errors and append if found
 				if ( response[0] + response[1] == '-1' ) {
 					comment_li.prepend( jq( response.substr( 2, response.length ) ).hide().fadeIn( 200 ) );
 				} else {
@@ -580,7 +589,7 @@ jq(document).ready( function() {
 						comment_li.remove();
 					});
 
-					/* Decrease the "Reply (X)" button count */
+					// Decrease the "Reply (X)" button count
 					var count_span = jq('li#' + comment_li.parents('ul#activity-stream > li').attr('id') + ' a.acomment-reply span');
 					var new_count = count_span.html() - ( 1 + child_count );
 					count_span.html(new_count);
@@ -588,20 +597,21 @@ jq(document).ready( function() {
 					// Change the 'Show all x comments' text
 					var show_all_a = comment_li.siblings('.show-all').find('a');
 					if ( show_all_a ) {
-						show_all_a.html( BP_DTheme.show_x_comments.replace( '%d', new_count ) );
+						//show_all_a.html( BP_DTheme.show_x_comments.replace( '%d', new_count ) );
 					}
 
-					/* If that was the last comment for the item, remove the has-comments class to clean up the styling */
+					// If that was the last comment for the item, remove the has-comments class to clean up the styling
 					if ( 0 == new_count ) {
 						jq(comment_li.parents('ul#activity-stream > li')).removeClass('has-comments');
 					}
 				}
 			});
 
+			// Prevent default
 			return false;
 		}
 
-		// Spam an activity stream comment
+		/* Spam an activity stream comment - UNUSED
 		if ( target.hasClass( 'spam-activity-comment' ) ) {
 			var link_href  = target.attr( 'href' );
 			var comment_li = target.parent().parent();
@@ -643,7 +653,7 @@ jq(document).ready( function() {
 			});
 
 			return false;
-		}
+		} */
 
 		/* Showing hidden comments - pause for half a second */
 		if ( target.parent().hasClass('show-all') ) {
@@ -685,7 +695,7 @@ jq(document).ready( function() {
 
 	/**** Directory Search ****************************************************/
 
-	/* The search form on all directory pages */
+	/* The search form on all directory pages
 	jq('.dir-search').click( function(event) {
 		if ( jq(this).hasClass('no-ajax') )
 			return;
@@ -700,15 +710,16 @@ jq(document).ready( function() {
 
 			return false;
 		}
-	});
+	}); */
 
 	/**** Tabs and Filters ****************************************************/
 
 	/* When a navigation tab is clicked - e.g. | All Groups | My Groups | */
-	jq('div.item-list-tabs').click( function(event) {
+	jq('nav.dir-list-tabs').click( function(event) {
 		if ( jq(this).hasClass('no-ajax') )
 			return;
 
+		// Get the target
 		var targetElem = ( event.target.nodeName == 'SPAN' ) ? event.target.parentNode : event.target;
 		var target     = jq( targetElem ).parent();
 		if ( 'LI' == target[0].nodeName && !target.hasClass('last') ) {
@@ -718,40 +729,48 @@ jq(document).ready( function() {
 			if ( 'activity' == object )
 				return false;
 
+			// Give a tooltip
+			jq( 'nav.dir-list-tabs li' ).removeClass( 'selected' );
+			target.addClass( 'selected' );
+				
+			// Filter the directory
 			var scope = css_id[1];
 			var filter = jq("#" + object + "-order-select select").val();
 			var search_terms = jq("#" + object + "_search").val();
-
 			bp_filter_request( object, filter, scope, 'div.' + object, search_terms, 1, jq.cookie('bp-' + object + '-extras') );
 
+			// Prevent Default
 			return false;
 		}
 	});
 
 	/* When the filter select box is changed re-query */
-	jq('li.filter select').change( function() {
-		if ( jq('.item-list-tabs li.selected').length )
-			var el = jq('.item-list-tabs li.selected');
+	jq('div.filter select').change( function() {
+		if ( jq('.dir-list-tabs li.selected').length )
+			var el = jq('.dir-list-tabs li.selected');
 		else
 			var el = jq(this);
 
+		// Get the data
 		var css_id = el.attr('id').split('-');
 		var object = css_id[0];
 		var scope = css_id[1];
 		var filter = jq(this).val();
 		var search_terms = false;
 
+		// Check if there is a current search
 		if ( jq('.dir-search input').length )
-			search_terms = jq('.dir-search input').val();
-
+			search_terms = jq('.directory-search input').val();
 		if ( 'friends' == object )
 			object = 'members';
 
+		// Get the new data
 		bp_filter_request( object, filter, scope, 'div.' + object, search_terms, 1, jq.cookie('bp-' + object + '-extras') );
 
+		// Prevent default
 		return false;
 	});
-
+	
 	/* All pagination links run through this function */
 	jq('div#content').click( function(event) {
 		var target = jq(event.target);
@@ -759,23 +778,28 @@ jq(document).ready( function() {
 		if ( target.hasClass('button') )
 			return true;
 
-		if ( target.parent().parent().hasClass('pagination') && !target.parent().parent().hasClass('no-ajax') ) {
+		if ( target.parents( 'nav.pagination' ).length != 0 && !target.parents( 'nav.pagination' ).hasClass('no-ajax') ) {
+						
 			if ( target.hasClass('dots') || target.hasClass('current') )
 				return false;
 
-			if ( jq('.item-list-tabs li.selected').length )
-				var el = jq('.item-list-tabs li.selected');
+			// See if the directory is currently filtered or scoped
+			if ( jq('.dir-list-tabs li.selected').length )
+				var el = jq('.dir-list-tabs li.selected');
 			else
-				var el = jq('li.filter select');
+				var el = jq('div.filter select');
 
+			// Figure out the page number
 			var page_number = 1;
 			var css_id = el.attr('id').split( '-' );
 			var object = css_id[0];
 			var search_terms = false;
 
-			if ( jq('div.dir-search input').length )
-				search_terms = jq('.dir-search input').val();
+			// Check for search terms
+			if ( jq('div.directory-search input').length )
+				search_terms = jq('.directory-search input').val();
 
+			// Change the page numbers
 			if ( jq(target).hasClass('next') )
 				var page_number = Number( jq('.pagination span.current').html() ) + 1;
 			else if ( jq(target).hasClass('prev') )
@@ -783,12 +807,16 @@ jq(document).ready( function() {
 			else
 				var page_number = Number( jq(target).html() );
 
+			// Get the new content
 			bp_filter_request( object, jq.cookie('bp-' + object + '-filter'), jq.cookie('bp-' + object + '-scope'), 'div.' + object, search_terms, page_number, jq.cookie('bp-' + object + '-extras') );
 
+			// Prevent default
 			return false;
 		}
 
 	});
+	
+	/*! -------------------------- CLEARED --------------------------------------------------- */
 
 	/**** New Forum Directory Post **************************************/
 

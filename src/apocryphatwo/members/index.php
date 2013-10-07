@@ -26,7 +26,7 @@ $user_id	= $user->ID;
 				</div>
 			</header>
 		
-			<nav id="directory-nav" role="navigation">
+			<nav id="directory-nav" class="dir-list-tabs" role="navigation">
 				<ul id="directory-actions" class="directory-tabs">
 					<li class="selected" id="members-all"><a href="<?php echo trailingslashit( SITEURL . '/' . bp_get_members_root_slug() ); ?>">All Members<span><?php echo bp_get_total_member_count(); ?></span></a></li>
 					<?php if ( $user_id > 0 ) : ?>

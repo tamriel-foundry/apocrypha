@@ -31,7 +31,7 @@ $user_id	= $user->ID;
 				<?php endif; ?>
 			</header>
 			
-			<nav id="directory-nav" role="navigation">
+			<nav id="directory-nav" class="dir-list-tabs" role="navigation">
 				<ul id="directory-actions" class="directory-tabs">
 					<li class="selected" id="groups-all"><a href="<?php echo trailingslashit( SITEURL . '/' . bp_get_groups_root_slug() ); ?>">All Guilds<span><?php echo bp_get_total_group_count(); ?></span></a></li>
 					<?php if ( is_user_logged_in() && bp_get_total_group_count_for_user( $user_id ) ) : ?>

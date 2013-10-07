@@ -27,8 +27,8 @@ if ( 0 == $user_id ) :  ?>
 			<input type="password" name="password" id="password" class="input" value="" placeholder="Password" size="20" tabindex="1">
 			
 			<div id="login-remember" class="checkbox">
-				<input type="checkbox" name="remember" id="remember" value="forever" tabindex="1">
-				<label id="remember-label" for="remember">Save</label>
+				<input type="checkbox" name="rememberme" id="rememberme" value="forever" tabindex="1">
+				<label id="remember-label" for="rememberme">Save</label>
 			</div>
 			
 			<input type="hidden" name="redirect" value="<?php echo get_current_url(); ?>">

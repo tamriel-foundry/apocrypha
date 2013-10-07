@@ -981,7 +981,7 @@ div#login-remember {
 	float: left;
 	position: relative;
 	}
-input#remember { 
+input#rememberme { 
 	position: absolute;
 	top: 8px;
 	left: 2px;	
@@ -996,7 +996,7 @@ label#remember-label {
 	background-position: 3px -46px;
 	}
 label#remember-label:hover { background-position: 3px -16px; }
-input#remember:checked + label#remember-label {	background-position: 3px 13px; }
+input#rememberme:checked + label#remember-label {	background-position: 3px 13px; }
 div#top-login-error { display: none; }
 
 /* Front-end Notifications */
@@ -3022,6 +3022,21 @@ header#message-header > a.button {
 	top: 3px;
 	}
 ol#message-thread div.reply-content { padding: 0; }
+
+
+/*---------------------------------------------
+	9.6 - Profile Settings
+----------------------------------------------*/
+form#settings-form,
+form#account-capabilities-form,
+form#account-delete-form { margin: 0; }
+ol#profile-settings-form label { width: 200px; }
+ol#notification-preferences-list li.checkbox span { 
+	display: block;
+	width: 600px;
+	float: left;
+	}
+
 
 
 /*---------------------------------------------

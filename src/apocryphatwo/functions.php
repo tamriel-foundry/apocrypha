@@ -12,16 +12,7 @@
 2.0 - Head Functions
 	2.1 - Stylesheets
 	2.2 - JavaScript
-	___________________________
-	
-3.0 - WordPress Functions
-	3.1 - Posts and Pages
-	3.2 - Comments
-4.0 - BBPress Functions
-5.0 - BuddyPress Functions
-6.0 - User Functions
-	6.1 - Signature, Biography, Contact Fields
-7.0 - Entropy Rising
+3.0 - TinyMCE
 --------------------------------------------------------------*/
 
 // Exit if accessed directly
@@ -151,9 +142,9 @@ function google_analytics_js() {
 }
 
 
-/*---------------------------------------------
-	TinyMCE
-----------------------------------------------*/
+/*--------------------------------------------------------------
+3.0 - TINYMCE CUSTOMIZATION
+--------------------------------------------------------------*/
 
 /**
  * Set some TinyMCE options
@@ -201,14 +192,6 @@ function dump_variable( $var = '' ) {
 	echo '</pre>';
 }
 
-
-
-
-
-
-
-
-
 function get_moderator_emails() {
 	$emails = array(
 		'atropos@tamrielfoundry.com',
@@ -220,5 +203,3 @@ function get_moderator_emails() {
 	return $emails;
 }
 ?>
-
-

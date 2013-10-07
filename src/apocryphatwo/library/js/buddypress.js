@@ -204,9 +204,15 @@ jq(document).ready( function() {
 		// Update the CSS
 		jq( 'ul#directory-actions li' ).removeClass( 'selected' );
 		target.addClass( 'selected' );
+		jq( 'li.selected a' ).prepend( '<i class="icon-spinner icon-spin"></i>' );
 			
 		// Get new activity from AJAX
 		bp_activity_request(scope, filter);
+		
+		// Remove the tooltip
+		jq( 'li.selected a i' ).delay( 1000 ).fadeOut( 400 , function() {
+			jq( 'li.selected a i' ).remove();
+		});
 
 		return false;
 	});
@@ -221,11 +227,21 @@ jq(document).ready( function() {
 		else
 			var scope = selected_tab.attr('id').substr( 9, selected_tab.attr('id').length );
 			
+		// Display a tooltip
+		jq( 'li.selected a' ).prepend( '<i class="icon-spinner icon-spin"></i>' );
+			
 		// Get the dropdown filter
 		var filter = jq(this).val();
 
 		// Get new activity from AJAX
 		bp_activity_request(scope, filter);
+		
+		// Remove the tooltip
+		jq( 'li.selected a i' ).delay( 1000 ).fadeOut( 400 , function() {
+			jq( 'li.selected a i' ).remove();
+		});
+
+		// Prevent default
 		return false;
 	});
 
@@ -520,6 +536,7 @@ jq(document).ready( function() {
 						activity_comments.children('ul').append( jq( the_comment ).hide().fadeIn( 200 ) );
 						form.children('textarea').val('');
 						activity_comments.parent().addClass('has-comments');
+						jq('form.ac-form').hide();
 					} );
 
 					// Empty the textarea
@@ -732,13 +749,19 @@ jq(document).ready( function() {
 			// Give a tooltip
 			jq( 'nav.dir-list-tabs li' ).removeClass( 'selected' );
 			target.addClass( 'selected' );
-				
+			jq( 'li.selected a' ).prepend( '<i class="icon-spinner icon-spin"></i>' );
+			
 			// Filter the directory
 			var scope = css_id[1];
 			var filter = jq("#" + object + "-order-select select").val();
 			var search_terms = jq("#" + object + "_search").val();
 			bp_filter_request( object, filter, scope, 'div.' + object, search_terms, 1, jq.cookie('bp-' + object + '-extras') );
-
+			
+			// Remove the tooltip
+			jq( 'li.selected a i' ).delay( 1000 ).fadeOut( 400 , function() {
+				jq( 'li.selected a i' ).remove();
+			});
+			
 			// Prevent Default
 			return false;
 		}
@@ -763,9 +786,17 @@ jq(document).ready( function() {
 			search_terms = jq('.directory-search input').val();
 		if ( 'friends' == object )
 			object = 'members';
+			
+		// Give a tooltip
+		jq( 'li.selected a' ).prepend( '<i class="icon-spinner icon-spin"></i>' );
 
 		// Get the new data
 		bp_filter_request( object, filter, scope, 'div.' + object, search_terms, 1, jq.cookie('bp-' + object + '-extras') );
+		
+		// Remove the tooltip
+		jq( 'li.selected a i' ).delay( 1000 ).fadeOut( 400 , function() {
+			jq( 'li.selected a i' ).remove();
+		});
 
 		// Prevent default
 		return false;
@@ -815,12 +846,10 @@ jq(document).ready( function() {
 		}
 
 	});
-	
-	/*! -------------------------- CLEARED --------------------------------------------------- */
 
 	/**** New Forum Directory Post **************************************/
 
-	/* Hit the "New Topic" button on the forums directory page */
+	/* Hit the "New Topic" button on the forums directory page - UNUSED
 	jq('a.show-hide-new').click( function() {
 		if ( !jq('#new-topic-post').length )
 			return false;
@@ -833,38 +862,42 @@ jq(document).ready( function() {
 			} );
 
 		return false;
-	});
+	}); */
 
-	/* Cancel the posting of a new forum topic */
+	/* Cancel the posting of a new forum topic - UNUSED
 	jq('input#submit_topic_cancel').click( function() {
 		if ( !jq('#new-topic-post').length )
 			return false;
 
 		jq('#new-topic-post').slideUp(200);
 		return false;
-	});
+	}); */
 
-	/* Clicking a forum tag */
+	/* Clicking a forum tag - UNUSED
 	jq('#forum-directory-tags a').click( function() {
 		bp_filter_request( 'forums', 'tags', jq.cookie('bp-forums-scope'), 'div.forums', jq(this).html().replace( /&nbsp;/g, '-' ), 1, jq.cookie('bp-forums-extras') );
 		return false;
-	});
+	}); */
 
 	/** Invite Friends Interface ****************************************/
 
 	/* Select a user from the list of friends and add them to the invite list */
 	jq("div#invite-list input").click( function() {
 		jq('.ajax-loader').toggle();
-
+		
+		// Get the data
 		var friend_id = jq(this).val();
 
+		// Check to invite, unckeck to uninvite
 		if ( jq(this).prop('checked') == true )
 			var friend_action = 'invite';
 		else
 			var friend_action = 'uninvite';
 
-		jq('.item-list-tabs li.selected').addClass('loading');
+		// Give a loading tooltip
+		jq('#invited-list h3').prepend( '<i class="icon-spinner icon-spin"></i>' );
 
+		// AJAX the invitation
 		jq.post( ajaxurl, {
 			action: 'groups_invite_user',
 			'friend_action': friend_action,
@@ -886,7 +919,8 @@ jq(document).ready( function() {
 				jq('#friend-list li#uid-' + friend_id).remove();
 			}
 
-			jq('.item-list-tabs li.selected').removeClass('loading');
+			// Remove the loading tooltip
+			jq('#invited-list h3').text( 'Selected Friends' );
 		});
 	});
 
@@ -894,10 +928,15 @@ jq(document).ready( function() {
 	jq("#friend-list").on('click', 'li a.remove', function() {
 		jq('.ajax-loader').toggle();
 
+		// Get the data
 		var friend_id = jq(this).attr('id');
 		friend_id = friend_id.split('-');
 		friend_id = friend_id[1];
+		
+		// Give a loading tooltip
+		jq('#invited-list h3').prepend( '<i class="icon-spinner icon-spin"></i>' );
 
+		// Send the AJAX
 		jq.post( ajaxurl, {
 			action: 'groups_invite_user',
 			'friend_action': 'uninvite',
@@ -912,11 +951,16 @@ jq(document).ready( function() {
 			jq('#friend-list li#uid-' + friend_id).remove();
 			jq('#invite-list input#f-' + friend_id).prop('checked', false);
 		});
+		
+		// Remove the loading tooltip
+		jq('#invited-list h3').text( 'Selected Friends' );
 
+		// Prevent default
 		return false;
 	});
 
-	/** Profile Visibility Settings *********************************/
+	/* UNUSED
+	/** Profile Visibility Settings ********************************
 	jq('.field-visibility-settings').hide();
 	jq('.visibility-toggle-link').on( 'click', function() {
 		var toggle_div = jq(this).parent();
@@ -950,7 +994,10 @@ jq(document).ready( function() {
 				return BP_DTheme.unsaved_changes;
 			}
 		};
-	});
+	}); */
+
+	
+	/*! -------------------------- CLEARED --------------------------------------------------- */
 
 	/** Friendship Requests **************************************/
 
@@ -1094,7 +1141,13 @@ jq(document).ready( function() {
 	} );
 
 	/** Button disabling ************************************************/
-
+	jq( 'a.confirm').click( function() {
+		if ( confirm( 'Are you sure?' ) )
+			return true; 
+		else 
+			return false;
+	});
+	
 	jq('.pending').click(function() {
 		return false;
 	});

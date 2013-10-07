@@ -273,7 +273,7 @@ $user_id	= $user->ID;
 			<?php if ( bp_get_total_friend_count( bp_loggedin_user_id() ) ) : ?>
 				<div id="invite-list" class="group-invites">
 					<h3 class="double-border bottom">Your Friends</h3>
-					<ul id="group-invite-list">
+					<ul id="group-invite-list" style="display:none;">
 						<?php apoc_group_invite_friend_list(); ?>
 					</ul>
 					

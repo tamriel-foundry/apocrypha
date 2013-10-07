@@ -84,7 +84,7 @@ if ( isset( $_POST['submitted'] ) ) {
 						<?php // If it's a registered user, get their info from the theme
 						if ( $user_id > 0 ) : ?>
 							<li>
-								<blockquote>Hey there, <?php echo $user->display_name; ?>, what can we help you with?</blockquote>
+								<blockquote>Hey there, <?php echo $user->display_name; ?>. What can we help you with?</blockquote>
 								<input type="hidden" name="name" id="name" value="<?php echo $user->user_nicename; ?>"/>
 								<input type="hidden" name="email" id="email" value="<?php echo $user->user_email; ?>"/>
 							</li>
@@ -111,23 +111,24 @@ if ( isset( $_POST['submitted'] ) ) {
 								) ); ?>
 						</li>
 							
-						<li class="checkbox">
+						<li class="checkbox form-left">
 							<input type="checkbox" name="copy" id="copy" value="true" <?php checked( $_POST['copy'] , true ); ?>>
 							<label for="copy">Send a copy of this email to yourself?</label>
 						</li>						
 							
-						<li class="honeypot">
-							<input type="text" name="checking" id="checking" value=""/>
-							<label for="checking">LEAVE EMPTY</label>
-						</li>
 						
-						<li class="submit">
+						<li class="submit form-right">
 							<input type="hidden" name="submitted" value="true" />
 							<input type="hidden" name="action" value="apoc_contact_form" />
 							<button type="submit" id="submit">
 								<i class="icon-pencil"></i>Send Message</i>
 							</button>
-						</li>					
+						</li>
+
+						<li class="honeypot">
+							<input type="text" name="checking" id="checking" value=""/>
+							<label for="checking">LEAVE EMPTY</label>
+						</li>						
 					</ol>				
 				</form>			
 			</div>

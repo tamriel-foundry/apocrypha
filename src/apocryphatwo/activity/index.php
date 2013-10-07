@@ -22,9 +22,9 @@ $avatar		= new Apoc_Avatar( array ( 'user_id' => $user_id , 'size' => 50 , 'link
 			<p class="entry-byline">A feed of all recent activity happening within the Tamriel Foundry community.</p>
 		</header>		
 		
-		<nav id="directory-nav" role="navigation">
+		<nav id="directory-nav" class="activity-type-tabs" role="navigation">
 			<ul id="directory-actions" class="directory-tabs">
-				<li class="selected" id="members-all"><a href="<?php bp_activity_directory_permalink(); ?>">All Members<span><?php echo bp_get_total_member_count(); ?></span></a></li>
+				<li class="selected" id="activity-all"><a href="<?php bp_activity_directory_permalink(); ?>">All Members<span><?php echo bp_get_total_member_count(); ?></span></a></li>
 				
 				<?php if ( $user_id > 0 ) : ?>
 					<li id="activity-friends"><a href="<?php echo bp_loggedin_user_domain() . bp_get_activity_slug() . '/' . bp_get_friends_slug() . '/'; ?>">My Friends<span><?php echo bp_get_total_friend_count( $user_id ); ?></span></a></li>

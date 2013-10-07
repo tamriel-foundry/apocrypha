@@ -84,7 +84,8 @@ class Apoc_BuddyPress {
 	function filters() {
 	
 		// Activity Items
-		add_filter( 'bp_get_activity_delete_link' , array( $this , 'activity_delete_icon' ) );
+		add_filter( 'bp_get_activity_delete_link' 	, array( $this , 'activity_delete_icon' ) );
+		add_filter( 'bp_activity_can_favorite'		, array( $this , 'activity_prevent_favorite' ) ); 	
 	}
 	
 	
@@ -167,6 +168,9 @@ class Apoc_BuddyPress {
 				'screen_function' 	=> array( $this , 'edit_profile_screen' ),
 				'position' 			=> 20 ) );
 		}
+		
+		// Remove activity favorites, because they are dumb
+		bp_core_remove_subnav_item( 'activity' , 'favorites' );
 		
 		// Add moderation and infraction management panel
 		if ( bp_is_user() && ( bp_is_my_profile() || current_user_can( 'moderate' ) ) ) {
@@ -291,6 +295,14 @@ class Apoc_BuddyPress {
 	function activity_delete_icon( $link ) {
 		$link = str_replace( 'Delete' , '<i class="icon-remove"></i>Delete' , $link );
 		return $link;
+	}
+	
+	/*
+	 * Prevent activity favoriting, because it's dumb
+	 */
+	function activity_prevent_favorite( $can_favorite ) {
+		$can_favorite = false;
+		return $can_favorite;
 	}
 	
 	/*

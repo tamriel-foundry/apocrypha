@@ -2848,6 +2848,8 @@ ul.directory-list > li {
 ul.directory-list > li + li {
 	border-top: 1px solid #333;
 	}
+ul.directory-list li.load-more { border-bottom: none; }
+form#activity-loop-form { margin: 0; }
 
 /* Members Directory */
 div.directory-member {

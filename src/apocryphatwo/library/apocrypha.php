@@ -180,6 +180,7 @@ class Apocrypha {
 		// Add supported post types
 		$apoc_posts 		= new Apoc_Posts();
 		$apoc_slides 		= new Apoc_Slides();
+		$apoc_slides 		= new Apoc_Events();
 		
 		// Add supported shortcodes
 		$shortcodes			= new Apoc_Shortcodes();

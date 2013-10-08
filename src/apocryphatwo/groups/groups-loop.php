@@ -29,7 +29,7 @@ if ( in_array( $faction , array( 'aldmeri' , 'daggerfall' , 'ebonheart' )))
 	while ( bp_groups() ) : bp_the_group();
 	$group = new Apoc_Group( bp_get_group_id() , 'directory' );	?>
 	
-	<li class="group directory-entry">
+	<li id="group-<?php bp_group_id(); ?>" class="group directory-entry">
 		<div class="directory-member">
 			<?php echo $group->block; ?>
 		</div>

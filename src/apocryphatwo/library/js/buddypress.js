@@ -996,36 +996,38 @@ jq(document).ready( function() {
 		};
 	}); */
 
-	
-	/*! -------------------------- CLEARED --------------------------------------------------- */
-
 	/** Friendship Requests **************************************/
 
 	/* Accept and Reject friendship request buttons */
-	jq("ul#friend-list a.accept, ul#friend-list a.reject").click( function() {
+	jq("ul#friend-request-list a.accept, ul#friend-request-list a.reject").click( function() {
+			
+		// Get the data
 		var button = jq(this);
-		var li = jq(this).parents('ul#friend-list li');
-		var action_div = jq(this).parents('li div.action');
-
+		var li = jq(this).parents('ul#friend-request-list li');
+		var action_div = jq(this).parents('li div.actions');
 		var id = li.attr('id').substr( 11, li.attr('id').length );
 		var link_href = button.attr('href');
-
 		var nonce = link_href.split('_wpnonce=');
-		nonce = nonce[1];
+		nonce = nonce[1];		
 
+		// Prevent double clicks
 		if ( jq(this).hasClass('accepted') || jq(this).hasClass('rejected') )
 			return false;
-
+			
+		// Determine the appropriate action	and remove the alternative
 		if ( jq(this).hasClass('accept') ) {
 			var action = 'accept_friendship';
-			action_div.children('a.reject').css( 'visibility', 'hidden' );
+			action_div.children('a.reject').fadeOut();
 		} else {
 			var action = 'reject_friendship';
-			action_div.children('a.accept').css( 'visibility', 'hidden' );
+			action_div.children('a.accept').fadeOut();
 		}
 
-		button.addClass('loading');
-
+		// Get the current icon
+		var icon = button.children('i').attr( 'class' );
+		button.children('i').attr( "class", "icon-spinner icon-spin" );
+		
+		// Submit the AJAX
 		jq.post( ajaxurl, {
 			action: action,
 			'cookie': bp_get_cookies(),
@@ -1033,41 +1035,55 @@ jq(document).ready( function() {
 			'_wpnonce': nonce
 		},
 		function(response) {
-			button.removeClass('loading');
-
 			if ( response[0] + response[1] == '-1' ) {
 				li.prepend( response.substr( 2, response.length ) );
 				li.children('div#message').hide().fadeIn(200);
 			} else {
-				button.fadeOut( 100, function() {
-					if ( jq(this).hasClass('accept') ) {
-						action_div.children('a.reject').hide();
-						jq(this).html( BP_DTheme.accepted ).contents().unwrap();
-					} else {
-						action_div.children('a.accept').hide();
-						jq(this).html( BP_DTheme.rejected ).contents().unwrap();
-					}
-				});
+					
+				// Successfully accepted
+				if ( jq(this).hasClass('accept') ) {
+					action_div.children('a.reject').hide();
+					button.html('<i class="icon-ok"></i>Accepted');
+				
+				// Successfully rejected
+				} else {
+					action_div.children('a.accept').hide();
+					button.html('<i class="icon-remove"></i>Rejected');
+				}
+				
+				// Decrement the counter
+				var count = jq('#requests-personal-li span.activity-count');
+				var countn = count.text().split('+');
+				countn = countn[1] - 1;
+				if ( countn > 0 ) {
+					count.text('+' + countn );			
+				} else {
+					count.fadeOut();
+				}
 			}
 		});
 
+		// Prevent default
 		return false;
 	});
 
 	/* Add / Remove friendship buttons */
-	jq('#members-dir-list').on('click', '.friendship-button a', function() {
-		jq(this).parent().addClass('loading');
+	jq('#members-dir-list').on('click', 'a.friendship-button', function() {
+		
+		// Get the data
 		var fid = jq(this).attr('id');
 		fid = fid.split('-');
 		fid = fid[1];
-
 		var nonce = jq(this).attr('href');
 		nonce = nonce.split('?_wpnonce=');
 		nonce = nonce[1].split('&');
 		nonce = nonce[0];
-
 		var thelink = jq(this);
+		
+		// Give a tooltip
+		thelink.children('i').attr( "class", "icon-spinner icon-spin" );
 
+		// Send the AJAX
 		jq.post( ajaxurl, {
 			action: 'addremove_friend',
 			'cookie': bp_get_cookies(),
@@ -1079,44 +1095,49 @@ jq(document).ready( function() {
 			var action = thelink.attr('rel');
 			var parentdiv = thelink.parent();
 
+			// Display the new cancel button
 			if ( action == 'add' ) {
 				jq(parentdiv).fadeOut(200,
 					function() {
-						parentdiv.removeClass('add_friend');
-						parentdiv.removeClass('loading');
-						parentdiv.addClass('pending_friend');
+						thelink.removeClass('add_friend').addClass('pending_friend');
 						parentdiv.fadeIn(200).html(response);
-					}
-					);
+						parentdiv.children('a').addClass('friendship-button button').prepend('<i class="icon-remove"></i>');
+					} );
 
+			// Display the new add button
 			} else if ( action == 'remove' ) {
 				jq(parentdiv).fadeOut(200,
 					function() {
-						parentdiv.removeClass('remove_friend');
-						parentdiv.removeClass('loading');
-						parentdiv.addClass('add');
+						thelink.removeClass('remove_friend').addClass('add');
 						parentdiv.fadeIn(200).html(response);
-					}
-					);
-			}
+						parentdiv.children('a').addClass('friendship-button button').prepend('<i class="icon-male"></i>');
+					} );
+			}			
 		});
+		
+		// Prevent Default
 		return false;
 	} );
 
 	/** Group Join / Leave Buttons **************************************/
 
-	jq('#groups-dir-list').on('click', '.group-button a', function() {
-		var gid = jq(this).parent().attr('id');
+	jq('#groups-dir-list').on('click', 'a.group-button', function() {
+		
+		// Get the group data
+		var gid = jq(this).parents( 'li.group' ).attr('id');
 		gid = gid.split('-');
 		gid = gid[1];
-
 		var nonce = jq(this).attr('href');
 		nonce = nonce.split('?_wpnonce=');
 		nonce = nonce[1].split('&');
 		nonce = nonce[0];
-
 		var thelink = jq(this);
+		var parentdiv = thelink.parent();
 
+		// Display a tooltip
+		thelink.children('i').attr( "class", "icon-spinner icon-spin" );
+
+		// Send the AJAX		
 		jq.post( ajaxurl, {
 			action: 'joinleave_group',
 			'cookie': bp_get_cookies(),
@@ -1125,18 +1146,29 @@ jq(document).ready( function() {
 		},
 		function(response)
 		{
-			var parentdiv = thelink.parent();
-
+			// If it's not the groups directory, actually follow the link
 			if ( !jq('body.directory').length )
 				location.href = location.href;
+			
+			// Otherwise, display the AJAXed button
 			else {
-				jq(parentdiv).fadeOut(200,
-					function() {
-						parentdiv.fadeIn(200).html(response);
+			
+				// Determine the action
+				var action = thelink.hasClass('join-group') ? 'join' : 'leave';
+				jq(parentdiv).fadeOut(200, function() {
+
+					// Restore the tooptip
+					parentdiv.fadeIn(200).html(response);
+					if ( 'join' == action ) {
+						parentdiv.children('a').addClass('group-button button').prepend('<i class="icon-remove"></i>');
+					} else {
+						parentdiv.children('a').addClass('group-button button').prepend('<i class="icon-group"></i>');
 					}
-					);
+				});
 			}
 		});
+		
+		// Prevent default
 		return false;
 	} );
 
@@ -1151,6 +1183,8 @@ jq(document).ready( function() {
 	jq('.pending').click(function() {
 		return false;
 	});
+	
+	/*! -------------------------- CLEARED --------------------------------------------------- */
 
 	/** Private Messaging ******************************************/
 

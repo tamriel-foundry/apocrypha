@@ -53,5 +53,3 @@ global $guild;
 		<?php endif; ?>
 	</div>
 </div>
-
-<?php do_action( 'template_notices' ); ?>

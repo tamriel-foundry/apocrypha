@@ -12,7 +12,7 @@
 
 	<?php while ( bp_members() ) : bp_the_member(); 
 	$user = new Apoc_User( bp_get_member_user_id() , 'directory' ); ?>
-	<li class="member directory-entry">
+	<li id="friendship-<?php bp_friend_friendship_id(); ?>" class="member directory-entry">
 
 		<div class="directory-member">
 			<?php echo $user->block; ?>

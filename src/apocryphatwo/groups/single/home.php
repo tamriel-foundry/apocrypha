@@ -30,6 +30,8 @@ if ( 'entropy-rising' == bp_get_current_group_slug() ) {
 			
 		<div id="profile-body">
 			
+			<?php do_action( 'template_notices' ); ?>
+			
 			<?php // Group homepage
 			if ( bp_is_group_home() ) :
 				locate_template( array( 'groups/single/front.php' 					), true );

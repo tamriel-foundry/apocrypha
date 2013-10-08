@@ -2967,6 +2967,10 @@ div.acomment-content {
 	margin: 0.5em 1em;
 	}
 div.acomment-content > p { margin: 0; }
+form.ac-form {
+	margin: 0;
+	display: none;
+	}
 
 
 /*---------------------------------------------

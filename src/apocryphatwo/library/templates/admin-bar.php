@@ -56,7 +56,7 @@ else :
 <div id="admin-bar-login" class="logged-in">	
 	<a href="<?php echo $link; ?>" title="Visit your user profile"><?php echo $avatar->avatar; ?></a>
 	<span id="logged-in-welcome">Welcome back, <?php echo $name; ?></span>
-	<a id="top-login-logout" class="admin-bar-login-link button" href="<?php echo $redirect; ?>" title="Log out of this account."><i class="icon-lock"></i>Logout</a>
+	<a id="top-login-logout" class="admin-bar-login-link button logout" href="<?php echo $redirect; ?>" title="Log out of this account."><i class="icon-lock"></i>Logout</a>
 </div><!-- #admin-bar-login -->
 
 

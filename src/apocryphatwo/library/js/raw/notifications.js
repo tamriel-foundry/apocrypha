@@ -12,7 +12,7 @@ $("a.clear-notification").click( function( event ){
 
 	// Tooltip
 	button.removeAttr('href');
-	button.html('<i class="icon-ok"></i>' );
+	button.html('<i class="icon-spinner icon-spin"></i>' );
 			
 	// Submit the POST AJAX 
 	$.post( ajaxurl, {
@@ -38,9 +38,9 @@ $("a.clear-notification").click( function( event ){
 				title = $('title').text();
 				count = title.split(']')[0].substr(1);
 				if ( 1 < count ) {
-					title.replace( count , count-1 );
+					title = title.replace( count , count-1 );
 				} else {
-					title.replace(/\[.*\]/,'');
+					title = title.replace(/\[.*\]/,'');
 				}
 				document.title = title;
 			}

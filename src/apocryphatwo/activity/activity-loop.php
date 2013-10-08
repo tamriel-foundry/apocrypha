@@ -37,7 +37,7 @@
 
 <?php else : ?>
 <div id="message" class="info">
-	<p>Sorry, no activity matches your search.</p>
+	<p class="no-results">Sorry, no activity matches your search.</p>
 </div>
 <?php endif; ?>
 

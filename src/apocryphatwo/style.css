@@ -48,6 +48,7 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	7.1 - Archives
 	7.2 - Search
 	7.3 - 404
+	7.4 - Development FAQ
 8.0 - bbPress
 	8.1 - Forums and Topics Loops
 	8.2 - Single Topics
@@ -232,6 +233,7 @@ ul ul,
 ol ul,
 .reply-content ul ul,
 .reply-content ol ul {
+	font-size: 1em !important;
 	list-style: circle;
 	margin: 0;
 	padding: 0 0 0 1.5em;
@@ -246,6 +248,7 @@ ol ol,
 ul ol,
 .reply-content ol ol,
 .reply-content ul ol {
+	font-size: 1em !important;
 	list-style: decimal;
 	margin: 0;
 	padding: 0 0 0 1.5em;
@@ -262,17 +265,17 @@ h1 {
 	font-size: 1.75em; 
 	font-weight: bold;
 	text-shadow: 2px 2px #000;
-	margin-bottom: 0.6em; 	
+	margin-bottom: 0.5em; 	
 	}
 h2 {
 	font-size: 1.25em; 
-	margin-bottom: 0.8em; 
+	margin-bottom: 0.5em; 
 	font-weight: bold; 
 	}
 h3 {
 	font-family: Cinzel , 'Book Antiqua' , Serif;
 	font-size: 1.25em; 
-	margin-bottom: 0.75em;
+	margin-bottom: 0.5em;
 	}
 h4 {
 	font-size: 1em;
@@ -1296,6 +1299,8 @@ ul.tabs li:last-child { border-right: none; }
 
 ul.tabs li > a,
 ul.tabs li > span {
+	width: 100%;
+	display: block;
 	font-family: Cinzel , serif;
 	color: #BBB;
 	text-align: center;
@@ -1311,7 +1316,7 @@ ul.tabs li.current > a { text-shadow: 0 0 20px #c60; }
 div.tab-content {
 	width: 98%;
 	float: left;
-	margin: 0 1% 1em;
+	padding: 0 1% 1em;
 	}
 	
 	
@@ -1444,14 +1449,16 @@ div.entry-content {
 	}
 .archive .entry-content { padding-bottom: 40px; }
 
-.singular .entry-content > p,
-.singular .entry-content > ol,
-.singular .entry-content > ul {
+.entry-content p,
+.entry-content ol,
+.entry-content ul {
 	font-family: 'Open Sans', sans-serif;
 	font-size: 0.80em;
 	line-height: 2em;
 	}
-.singular .entry-content > p:first-child { text-indent: 2em; }
+	
+/* Indent on pages */
+.singular .entry-content p:first-child { text-indent: 2em; }
 
 /*---------------------------------------------
 	5.3 - Comments
@@ -1750,11 +1757,13 @@ div.entry-excerpt {
 	max-height: 170px;
 	overflow: hidden;
 	margin-right: 165px;
-	font-family: 'Open Sans', sans-serif;
-	font-size: 0.75em;
-	line-height: 2em;
 	color: #BBB;
 	}
+div.entry-excerpt > p {
+	font-size: 0.75em;
+	line-height: 2em;
+	}
+	
 footer.entry-footer {
 	height: 35px;
 	width: 100%;
@@ -2212,6 +2221,39 @@ div#search-results {
 	float: left;
 	margin: 0 0 1em;
 	}
+	
+/*--------------------------------------------------------------
+7.3 - 404 PAGE
+--------------------------------------------------------------*/	
+
+/*---------------------------------------------
+7.4 - DEVELOPMENT FAQ
+----------------------------------------------*/
+#dev-faq ul.faq-tabs li {
+	width: 10.9%;
+	padding: 0.5em 0;
+	}
+#dev-faq div.faq-section {
+	clear: both;
+	margin: 0 0 1em 0;
+	padding: 1em;
+	background: rgba( 17,17,17,0.3);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #444 inset;
+	}
+#dev-faq div.faq-section header { overflow: hidden; }
+#dev-faq div.faq-section header h2 { 
+	float: left; 
+	margin: 0;
+	}
+#dev-faq div.faq-section header button.faq-collapse { 
+	float: right; 
+	margin: 0;
+	}
+#dev-faq div.faq-section ul { padding: 1em 0 0 2em; }
+#dev-faq div.faq-section ul li { margin: 0 0 0.5em; }
+#dev-faq div.faq-section ul li sup { margin-left: 5px; }
 	
 /*--------------------------------------------------------------
 8.0 - BBPRESS

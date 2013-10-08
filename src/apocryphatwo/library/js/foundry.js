@@ -32,6 +32,9 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! Tabbed Containers */
 ;$("div.tab-content").not("div.active").hide();$("ul.tabs li a").click(function(){if(!$(this).parent().hasClass("current")&&!$(this).parent().hasClass("disabled")){var a=$(this).attr("href");$("ul.tabs li").removeClass("current");$(this).parent().addClass("current");$("div.tab-content").hide();$(a).fadeIn("slow")}return false});
 
+/*! Collapsing FAQ Containers */
+;$("div.faq-section header").append('<button class="faq-collapse"><i class="icon-expand"></i>Expand Section</button>');$("div.faq-section ul , div.faq-references ol").hide();$("button.faq-collapse").click(function(){var a=newtext="";$(this).parent().siblings("ul"|"ol").slideToggle(500,"swing");a=$(this).text();newtext=(a=="Expand Section")?'<i class="icon-collapse"></i>Collapse Section':'<i class="icon-expand"></i>Expand Section';$(this).html(newtext)});
+
 /*! --------------------------------------- 
 3.0 - COMMENTS
 ----------------------------------------- */

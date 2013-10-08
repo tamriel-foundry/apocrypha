@@ -20,9 +20,12 @@
 		<div class="forum-content">
 			<h3 class="forum-title">
 				<a class="topic-title-link" href="<?php bp_message_thread_view_link(); ?>" title="Read this message"><?php bp_message_thread_subject(); ?></a>
-				<?php if( bp_get_message_thread_unread_count() ) : ?>
-					<span class="unread-count">&rarr; <?php bp_message_thread_unread_count(); ?> Unread Message</span>
+				<span class="unread-count">
+				<?php if( bp_get_message_thread_unread_count() ) : 
+					$grammar = ( bp_get_message_thread_unread_count() > 1 ) ? 's' : ''; ?>
+					&rarr; <?php bp_message_thread_unread_count(); ?> Unread Message<?php echo $grammar; ?>
 				<?php endif; ?>
+				</span>
 			</h3>
 			
 			<p class="forum-description">
@@ -31,7 +34,7 @@
 			
 			<div class="thread-options checkbox">
 				<input type="checkbox" name="message_ids[]" value="<?php bp_message_thread_id(); ?>" /><label>
-				<a class="button confirm" href="<?php bp_message_thread_delete_link(); ?>" title="<?php _e( "Delete Message", "buddypress" ); ?>"><i class="icon-remove"></i>Delete</a></label>
+				<a class="button confirm delete-single-message" href="<?php bp_message_thread_delete_link(); ?>" title="<?php _e( "Delete Message", "buddypress" ); ?>"><i class="icon-remove"></i>Delete</a></label>
 			</div>
 		</div>	
 	
@@ -55,9 +58,9 @@
 		<option value="all"><?php _e('All', 'buddypress') ?></option>
 	</select>
 
-	<?php if ( !bp_is_current_action( 'sentbox' ) && bp_is_current_action( 'notices' ) ) : ?>
-		<a class="button" href="#" id="mark_as_read"><?php _e('Mark as Read', 'buddypress') ?></a>
-		<a class="button" href="#" id="mark_as_unread"><?php _e('Mark as Unread', 'buddypress') ?></a>
+	<?php if ( !bp_is_current_action( 'sentbox' ) ) : ?>
+		<a class="button" href="#" id="mark_as_read"><i class="icon-eye-open"></i>Mark as Read</a>
+		<a class="button" href="#" id="mark_as_unread"><i class="icon-eye-close"></i>Mark as Unread</a>
 	<?php endif; ?>
 	<a class="button" href="#" id="delete_<?php echo bp_current_action(); ?>_messages"><i class="icon-trash"></i><?php _e( 'Delete Selected', 'buddypress' ); ?></a>
 </div><!-- .messages-options-nav -->

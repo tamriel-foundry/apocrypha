@@ -30,7 +30,6 @@
 			<time class="reply-time"><?php bp_the_thread_message_time_since(); ?></time>
 			<?php apoc_report_post_button( 'message' ); ?>
 			<div class="reply-admin-links">
-				<?php apoc_reply_admin_links( bbp_get_reply_id() ); ?>
 				<span class="reply-permalink" href="">#<?php echo $thread_template->current_message + 1; ?></span>
 			</div>
 		</header>

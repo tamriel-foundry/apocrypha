@@ -1183,77 +1183,87 @@ jq(document).ready( function() {
 	jq('.pending').click(function() {
 		return false;
 	});
-	
-	/*! -------------------------- CLEARED --------------------------------------------------- */
 
 	/** Private Messaging ******************************************/
 
 	/** Message search*/
-	jq('.message-search').click( function(event) {
+	jq('form#search-message-form').submit( function() {
 		if ( jq(this).hasClass('no-ajax') )
 			return;
 
-		var target = jq(event.target);
+		var target = jq('input#messages_search');
 
-		if ( target.attr('type') == 'submit' ) {
-			//var css_id = jq('.item-list-tabs li.selected').attr('id').split( '-' );
-			var object = 'messages';
-
-			bp_filter_request( object, jq.cookie('bp-' + object + '-filter'), jq.cookie('bp-' + object + '-scope') , 'div.' + object, target.parent().children('label').children('input').val(), 1, jq.cookie('bp-' + object + '-extras') );
-
-			return false;
-		}
+		//var css_id = jq('.item-list-tabs li.selected').attr('id').split( '-' );
+		var object = 'messages';
+		bp_filter_request( object, jq.cookie('bp-' + object + '-filter'), jq.cookie('bp-' + object + '-scope') , 'div.' + object, target.val(), 1, jq.cookie('bp-' + object + '-extras') );
+		return false;
 	});
-
+	
 	/* AJAX send reply functionality */
-	jq("input#send_reply_button").click(
-		function() {
-			var order = jq('#messages_order').val() || 'ASC',
-			offset = jq('#message-recipients').offset();
+	jq("button#send_reply_button").click( function() {
+		
+		// Get the data
+		var order 	= jq('#messages_order').val() || 'ASC';
+		var button 	= jq(this);
+		
+		// Tooltip
+		button.attr('disabled','disabled').children('i').attr( "class", "icon-spinner icon-spin" );
+		
+		// Save content from TinyMCE into the hidden form textarea
+		tinyMCE.triggerSave();
+	
+		// Send the AJAX using my own handler
+		jq.post( ajaxurl, {
+			action		: 'apoc_private_message_reply',
+			'cookie'	: bp_get_cookies(),
+			'_wpnonce'	: jq("input#send_message_nonce").val(),
 
-			var button = jq("input#send_reply_button");
-			jq(button).addClass('loading');
+			'content'	: jq("#message_content").val(),
+			'send_to'	: jq("input#send_to").val(),
+			'subject'	: jq("input#subject").val(),
+			'thread_id'	: jq("input#thread_id").val()
+		}, 	function(response) {
+			
+			// Process errors
+			if ( response[0] + response[1] == "-1" ) {
+				jq('form#send-reply').prepend( response.substr( 2, response.length ) );
+			} else {
+				
+				// Clear errors
+				jq('form#send-reply div#message').remove();
 
-			jq.post( ajaxurl, {
-				action: 'messages_send_reply',
-				'cookie': bp_get_cookies(),
-				'_wpnonce': jq("input#send_message_nonce").val(),
-
-				'content': jq("#message_content").val(),
-				'send_to': jq("input#send_to").val(),
-				'subject': jq("input#subject").val(),
-				'thread_id': jq("input#thread_id").val()
-			},
-			function(response)
-			{
-				if ( response[0] + response[1] == "-1" ) {
-					jq('form#send-reply').prepend( response.substr( 2, response.length ) );
+				// Append the new message
+				if ( 'ASC' == order ) {
+					jq('ol#message-thread').append( response );
 				} else {
-					jq('form#send-reply div#message').remove();
-					jq("#message_content").val('');
-
-					if ( 'ASC' == order ) {
-						jq('form#send-reply').before( response );
-					} else {
-						jq('#message-recipients').after( response );
-						jq(window).scrollTop(offset.top);
-					}
-
-					jq(".new-message").hide().slideDown( 200, function() {
-						jq('.new-message').removeClass('new-message');
-					});
+					jq('ol#message-thread').prepend( response );
+					jq(window).scrollTop();
 				}
-				jq(button).removeClass('loading');
-			});
 
-			return false;
-		}
-	);
+				// Slide down the new message
+				jq(".new-message").hide().slideDown( 200, function() {
+					jq('.new-message').removeClass('new-message');
+				});
+				
+				// Clear the editor
+				tinyMCE.activeEditor.setContent('');
+				tinyMCE.triggerSave();
+			}
+			
+			// Remove the tooltip
+			button.removeAttr('disabled').children('i').attr( "class", "icon-envelope-alt" );
+		});
+
+		// Prevent default
+		return false;
+	});
 
 	/* Marking private messages as read and unread */
 	jq("a#mark_as_read, a#mark_as_unread").click(function() {
+
+		// Get the checkboxes
 		var checkboxes_tosend = '';
-		var checkboxes = jq("#message-threads tr td input[type='checkbox']");
+		var checkboxes = jq("#message-threads li input[type='checkbox']");
 
 		if ( 'mark_as_unread' == jq(this).attr('id') ) {
 			var currentClass = 'read'
@@ -1271,101 +1281,203 @@ jq(document).ready( function() {
 			var action = 'messages_markread';
 		}
 
+		// Loop through checkboxes, doing each message
 		checkboxes.each( function(i) {
 			if(jq(this).is(':checked')) {
-				if ( jq('tr#m-' + jq(this).attr('value')).hasClass(currentClass) ) {
+				if ( jq('li#m-' + jq(this).attr('value')).hasClass(currentClass) ) {
+					
+					// Mark the message
 					checkboxes_tosend += jq(this).attr('value');
-					jq('tr#m-' + jq(this).attr('value')).removeClass(currentClass);
-					jq('tr#m-' + jq(this).attr('value')).addClass(newClass);
-					var thread_count = jq('tr#m-' + jq(this).attr('value') + ' td span.unread-count').html();
-
-					jq('tr#m-' + jq(this).attr('value') + ' td span.unread-count').html(unreadCount);
-					jq('tr#m-' + jq(this).attr('value') + ' td span.unread-count').css('display', unreadCountDisplay);
-
-					var inboxcount = jq('tr.unread').length;
-
+					jq('li#m-' + jq(this).attr('value')).removeClass(currentClass);
+					jq('li#m-' + jq(this).attr('value')).addClass(newClass);
+					
+					// Display the new unread count
+					if ( unreadCount > 0 ) {
+						jq('li#m-' + jq(this).attr('value') + ' span.unread-count').hide().html( '&rarr; ' + unreadCount + ' Unread Message' ).fadeIn();
+					} else {
+						jq('li#m-' + jq(this).attr('value') + ' span.unread-count').fadeOut();
+					}
+					
+					// Count the total number of unread messages and increment the tab
+					var inboxcount = jq('li.unread').length;
 					jq('a#user-messages span').html( inboxcount );
-
+					if ( inboxcount > 0 ) {
+						jq('li#inbox-personal-li span.activity-count').html( '+' + inboxcount ).fadeIn();
+					} else {
+						jq('li#inbox-personal-li span.activity-count').fadeOut();
+					}
+					
+					// If there are more to do, comma separate them
 					if ( i != checkboxes.length - 1 ) {
 						checkboxes_tosend += ','
 					}
 				}
 			}
 		});
+		
+		// Submit the AJAX
 		jq.post( ajaxurl, {
 			action: action,
 			'thread_ids': checkboxes_tosend
 		});
+		
+		// Prevent Default
 		return false;
 	});
 
 	/* Selecting unread and read messages in inbox */
-	jq("select#message-type-select").change(
-		function() {
+	jq("select#message-type-select").change( function() {
+			
+			// Get the data
 			var selection = jq("select#message-type-select").val();
-			var checkboxes = jq("td input[type='checkbox']");
+			var checkboxes = jq("li.message input[type='checkbox']");
+			
+			// Clear existing checks
 			checkboxes.each( function(i) {
 				checkboxes[i].checked = "";
 			});
 
+			// Switch read/unread
 			switch(selection) {
 				case 'unread':
-					var checkboxes = jq("tr.unread td input[type='checkbox']");
+					var checkboxes = jq("li.unread input[type='checkbox']");
 					break;
 				case 'read':
-					var checkboxes = jq("tr.read td input[type='checkbox']");
+					var checkboxes = jq("li.read input[type='checkbox']");
 					break;
 			}
+			
+			// Check the boxes for read/unread
 			if ( selection != '' ) {
 				checkboxes.each( function(i) {
 					checkboxes[i].checked = "checked";
 				});
+				
+			// Otherwise, uncheck everything
 			} else {
 				checkboxes.each( function(i) {
 					checkboxes[i].checked = "";
 				});
 			}
-		}
-	);
+	} );
 
 	/* Bulk delete messages */
 	jq("a#delete_inbox_messages, a#delete_sentbox_messages").click( function() {
+		
+		// Get the data		
 		checkboxes_tosend = '';
-		checkboxes = jq("#message-threads tr td input[type='checkbox']");
-
+		checkboxes = jq("ol#message-threads li input[type='checkbox']");
 		jq('div#message').remove();
-		jq(this).addClass('loading');
-
+		
+		// Give a tooltip
+		jq(this).children('i').attr('class' , 'icon-spinner icon-spin' );
+		
+		// Loop through checkboxes
 		jq(checkboxes).each( function(i) {
 			if( jq(this).is(':checked') )
 				checkboxes_tosend += jq(this).attr('value') + ',';
 		});
-
+		
+		// If there are no checkboxes, bail
 		if ( '' == checkboxes_tosend ) {
-			jq(this).removeClass('loading');
+			jq(this).children('i').attr('class' , 'icon-trash' );
 			return false;
 		}
-
+		
+		// Submit the AJAX
 		jq.post( ajaxurl, {
-			action: 'messages_delete',
+			action		: 'messages_delete',
 			'thread_ids': checkboxes_tosend
 		}, function(response) {
 			if ( response[0] + response[1] == "-1" ) {
-				jq('#message-threads').prepend( response.substr( 2, response.length ) );
+				jq('#profile-body').prepend( response.substr( 2, response.length ) );
 			} else {
-				jq('#message-threads').before( '<div id="message" class="updated"><p>' + response + '</p></div>' );
+				jq('#profile-body').prepend( '<div id="message" class="updated"><p>' + response + '</p></div>' );
 
+				// Visibly fade out the deleted messages
 				jq(checkboxes).each( function(i) {
 					if( jq(this).is(':checked') )
-						jq(this).parent().parent().fadeOut(150);
+						jq(this).parents( 'li.message' ).fadeOut(150).remove();
 				});
 			}
 
+			// Show the outcome message
 			jq('div#message').hide().slideDown(150);
-			jq("a#delete_inbox_messages, a#delete_sentbox_messages").removeClass('loading');
+			
+			// Count the total number of unread messages and increment the tab
+			var inboxcount = jq('li.unread').length;
+			jq('a#user-messages span').html( inboxcount );
+			if ( inboxcount > 0 ) {
+				jq('li#inbox-personal-li span.activity-count').html( '+' + inboxcount ).fadeIn();
+			} else {
+				jq('li#inbox-personal-li span.activity-count').fadeOut();
+			}
+			
+			// If we deleted everything, hide the parent OL too
+			var parentlist = jq('ol#message-threads');
+			if ( jq('ol#message-threads li').length == 0 ) {
+				jq( 'div#private-messages' ).html( '<p class="no-results"><i class="icon-inbox"></i>Your inbox is empty!</p>' ).hide().fadeIn();
+			}
+				
+			// Restore the button icon
+			jq("a#delete_inbox_messages, a#delete_sentbox_messages").children('i').attr('class' , 'icon-trash' );
 		});
+		
+		// Prevent default
 		return false;
 	});
+	
+	/* Delete single message */
+	jq("a.delete-single-message").click( function() {
+
+		// Get the data
+		var button 	= jq(this);
+		var message	= button.parents( 'li.message' );
+		var mid		= message.attr('id')
+		mid			= mid.split('-');
+		mid			= mid[1];
+	
+		// Show a tooltip
+		button.children('i').attr('class','icon-spinner icon-spin');
+		
+		// Submit the AJAX
+		jq.post( ajaxurl, {
+			action		: 'messages_delete',
+			'thread_ids': mid,
+		}, function(response) {
+			if ( response[0] + response[1] == "-1" ) {
+				jq('#profile-body').prepend( response.substr( 2, response.length ) );
+			} else {
+				jq('#profile-body').prepend( '<div id="message" class="updated"><p>' + response + '</p></div>' );
+
+				// Visibly fade out the deleted messages
+				message.fadeOut(150).remove();				
+			}
+			
+			// Show the outcome message
+			jq('div#message').hide().slideDown(150);
+			
+			// Count the total number of unread messages and increment the tab
+			var inboxcount = jq('li.unread').length;
+			jq('a#user-messages span').html( inboxcount );
+			if ( inboxcount > 0 ) {
+				jq('li#inbox-personal-li span.activity-count').html( '+' + inboxcount ).fadeIn();
+			} else {
+				jq('li#inbox-personal-li span.activity-count').fadeOut();
+			}
+			
+			// If we deleted everything, hide the parent OL too
+			var parentlist = jq('ol#message-threads');
+			if ( jq('ol#message-threads li').length == 0 ) {
+				jq( 'div#private-messages' ).html( '<p class="no-results"><i class="icon-inbox"></i>Your inbox is empty!</p>' ).hide().fadeIn();
+			}
+		});
+		
+		// Prevent default
+		return false;
+	});
+	
+	/*! -------------------------- CLEARED --------------------------------------------------- */
 
 	/* Close site wide notices in the sidebar */
 	jq("a#close-notice").click( function() {

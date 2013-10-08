@@ -15,6 +15,8 @@
 
 X.X - Infractions
 X.X - Contact Form
+
+X.X - Private Messages
 --------------------------------------------------------------*/
 
 // Exit if accessed directly
@@ -593,5 +595,52 @@ function apoc_contact_form () {
 	}
 	
 	exit(1);
+}
+
+
+/*---------------------------------------------
+X.X - PRIVATE MESSAGES
+----------------------------------------------*/
+
+/**
+ * Send a private message reply to a thread via a POST request.
+ * Overrides the default AJAX function provided by BuddyPress
+ */
+add_action( 'wp_ajax_apoc_private_message_reply' , 'apoc_private_message_reply' );
+function apoc_private_message_reply() {
+	
+	// Bail if not a POST action
+	if ( 'POST' !== strtoupper( $_SERVER['REQUEST_METHOD'] ) )
+		return;
+
+	// Check the nonce and register the new message
+	check_ajax_referer( 'messages_send_message' );
+	$result = messages_new_message( array( 'thread_id' => (int) $_REQUEST['thread_id'], 'content' => $_REQUEST['content'] ) );
+
+	// If the new message was registered successfully
+	if ( $result ) :
+	$user = new Apoc_User( get_current_user_id() , 'reply' ); ?>
+	<li class="reply new-message">
+		<header class="reply-header">
+			<time class="reply-time">Right Now</time>
+			<?php apoc_report_post_button( 'message' ); ?>
+		</header>		
+				
+		<div class="reply-body">	
+			<div class="reply-author user-block">
+				<?php echo $user->block; ?>
+			</div>
+			<div class="reply-content">
+				<?php echo $_REQUEST['content']; ?>
+			</div>
+			<?php $user->signature(); ?>
+		</div>	
+	</li>
+	
+	<?php // Otherwise, process errors
+	else :
+		echo "-1<div id='message' class='error'><p>" . __( 'There was a problem sending that reply. Please try again.', 'buddypress' ) . '</p></div>';
+	endif;
+	exit;
 }
 ?>

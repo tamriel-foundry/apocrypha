@@ -9,7 +9,7 @@ This is the test 404 page.<br>
 <pre>
 <?php 
 
-global $wp_query;
-print_r( $wp_query ); 
+$apoc = apocrypha();
+print_r( $apoc ); 
 ?>
 </pre>

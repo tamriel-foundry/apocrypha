@@ -510,6 +510,64 @@ function apoc_get_calendar( $calendar = '' , $number = 10 ) {
 } 
 
 /**
+ * Query upcoming events
+ * @since 0.1
+ */
+function apoc_calendar_upcoming_events( $calendar = '' ) {
+	$events_loop = new WP_Query( array(
+		'post_type'			=> 'event',
+		'posts_per_page'	=> -1,
+		'tax_query' 		=> array(
+								array(
+									'taxonomy' 	=> 'calendar',
+									'field' 	=> 'slug',
+									'terms' 	=> $calendar,
+								)),
+		'meta_query'		=> array(
+								array(
+									'key' 		=> 'event_date',
+									'value'		=> array( 
+														date( 'Y-m-d' , time() ) , 
+														date( 'Y-m-d' , strtotime('+3 weeks') ) 
+													),
+									'type'		=> 'date',
+									'compare'	=> 'BETWEEN',
+								) ),
+		'orderby'			=> 'event_date',
+	) );
+	return $events_loop;
+}
+
+
+/**
+ * Query past events
+ * @since 0.1
+ */
+function apoc_calendar_past_events( $calendar = '' , $number = 3 ) {
+	$events_loop = new WP_Query( array(
+		'post_type'			=> 'event',
+		'posts_per_page'	=> $number,
+		'tax_query' 		=> array(
+								'relation' 	=> 'AND',
+								array(
+									'taxonomy' 	=> 'calendar',
+									'field' 	=> 'slug',
+									'terms' 	=> $calendar,
+								)),
+		'meta_query'		=> array(
+								array(
+									'key' 		=> 'event_date',
+									'value'		=> date( 'Y-m-d' , time() ) , 
+									'type'		=> 'date',
+									'compare'	=> '<',
+								) ),
+		'orderby'			=> 'event_date',
+	) );
+	return $events_loop;
+}
+
+
+/**
  * Helper function to set context on calendar and event pages
  * @since 0.1
 */

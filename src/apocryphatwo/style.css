@@ -49,6 +49,7 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	7.2 - Search
 	7.3 - 404
 	7.4 - Development FAQ
+	7.5 - Calendars
 8.0 - bbPress
 	8.1 - Forums and Topics Loops
 	8.2 - Single Topics
@@ -736,6 +737,7 @@ div.warning >p,
 div.error > p,
 div.updated > p,
 div.success > p {
+	font-size: 1em;
 	display: inline-block;
 	margin: 0; 
 	}
@@ -1454,7 +1456,7 @@ div.entry-content {
 	}
 	
 /* Indent on pages */
-.singular .entry-content p:first-child { text-indent: 2em; }
+.singular .entry-content > p:first-child { text-indent: 2em; }
 
 /*---------------------------------------------
 	5.3 - Comments
@@ -2252,6 +2254,116 @@ div#search-results {
 #dev-faq div.faq-section ul { padding: 1em 0 0 2em; }
 #dev-faq div.faq-section ul li { margin: 0 0 0.5em; }
 #dev-faq div.faq-section ul li sup { margin-left: 5px; }
+
+
+/*---------------------------------------------
+7.5 - CALENDARS AND EVENTS
+----------------------------------------------*/
+.taxonomy-calendar .entry-header {
+	height: 100px;
+	margin: 0 0 1em 0;
+	background-image: url(images/headers/post-headers.jpg); 
+	box-shadow: 0 0 20px #000;
+	}
+.taxonomy-calendar .entry-title {
+	height: 65px;
+	line-height: 65px;
+	padding: 0 0.75em;
+	margin: 0;
+	font-size: 1.75em;
+	}
+.taxonomy-calendar .entry-content { padding: 0;	}
+h2.calendar-header {
+	background: rgba( 17,17,17,0.5 );
+	padding: 0.5em 1em;
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #444 inset;
+	overflow: hidden;
+	}
+ol.event-list {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	}
+li.event {
+	margin: 0;
+	padding: 0.5em 0;
+	border-bottom: 1px solid #000;
+	overflow: hidden;
+	}
+li + li.event { border-top: 1px solid #444; }
+li.event:last-child { border-bottom: none; }
+div.event-datetime {
+	width: 100px;
+	height: 100px;
+	float: left;
+	background: rgba(17,17,17,0.5);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 3px #444 inset;
+	}
+span.event-weekday,
+span.event-monthday,
+span.event-time {
+	display: block;
+	text-align: center;
+	margin: 5px 0;
+	font-size: 0.875em;
+	}
+span.event-monthday { font-size: 1.25em; }
+div.event-content {
+	width: 70%;
+	float: left;
+	margin: 0 2.5%;
+	}
+div.event-meta {
+	width: 80px;
+	height: 80px;
+	margin: 10px;
+	float: right;
+	background: rgba(17,17,17,0.5);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 3px #444 inset;
+	}
+span.event-attendance {
+	display: block;
+	padding: 15px 15px 5px;
+	text-align: center;
+	font-size: 1.5em;
+	}
+div.event-response {	text-align: center;	}
+span.event-rsvp { font-size: 0.75em; }
+span.event-role {
+	display: block;
+	width: 24px;
+	height: 24px;
+	float: right;
+	}
+
+/* Single Event */
+div.event-details,
+div.event-respondents {
+	width: 100%;
+	float: left;
+	margin: 0 0 1em;
+	position: relative;
+	}
+h2.event-time {
+	margin: 1em 0;
+	width: 80%;
+	}
+.singular-event div.event-meta {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	margin: 0;
+	}
+form#calendar-rsvp-form {
+	width: 98%;
+	margin: 0 1% 1em;
+	}
 	
 /*--------------------------------------------------------------
 8.0 - BBPRESS

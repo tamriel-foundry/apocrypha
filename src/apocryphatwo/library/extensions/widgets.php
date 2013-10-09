@@ -194,7 +194,7 @@ function community_online_widget() {
 		// Display online members  ?>
 		<div id="whos-online-block">
 		<?php if ( $online_total == 0 ) : ?>
-			<p class="whos-online-total">There are no members currently online:</p>
+			<p class="whos-online-total">There are no members currently online.</p>
 		<?php elseif ( $online_total == 1 ) : ?>
 			<p class="whos-online-total">There is currently <span class="activity-count"><?php echo $online_total; ?></span> member online:</p>
 		<?php else : ?>

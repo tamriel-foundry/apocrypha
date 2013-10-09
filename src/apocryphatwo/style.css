@@ -1579,9 +1579,8 @@ div.user-block > p.user-guild,
 div.user-block > p.user-title { font-style: italic; }
 p.user-guild.entropy-rising { text-shadow: 1px 0 10px #0F0; }
 p.user-title.daedric-prince,
-p.user-title.moderator {
-	text-shadow: 1px 0 10px #F30;
-	}
+p.user-title.moderator { text-shadow: 1px 0 10px #F30; }
+p.user-title.zenimax-online { text-shadow: 1px 0 10px #F00; }
 div.user-exp-container {
 	width: 100px;
 	height: 8px;
@@ -1927,7 +1926,6 @@ div#newest-members-block {
 	}
 p.whos-online-total {
 	margin: 0;
-	padding: 0 0 0.5em;
 	clear: both;
 	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.75em;
@@ -2762,8 +2760,24 @@ ul.user-badges li.user-badge {
 	border: 1px solid #111;
 	border-radius: 3px;
 	}
-li.user-badge.founder { background-position: 0 0; }
-li.user-badge.yearone { background-position: -50px 0; }
+li.user-badge.founder 			{ background-position: 0 0; }
+li.user-badge.veteran 			{ background-position: -50px 0; }
+li.user-badge.character 			{ background-position: -150px 0; }
+li.user-badge.tfteam 			{ background-position: 0 -100px; }
+
+li.user-badge.posting.bronze 	{ background-position: 0 -50px; }
+li.user-badge.posting.silver 	{ background-position: -50px -50px; }
+li.user-badge.posting.gold 		{ background-position: -100px -50px; }
+li.user-badge.author 			{ background-position: -150px -50px; }
+
+li.user-badge.ermember 			{ background-position: -50px -100px; }
+li.user-badge.zenimax			{ background-position: -100px -100px; }
+li.user-badge.grouped 			{ background-position: -150px -100px; }
+
+li.user-badge.aldmeri 			{ background-position: 0 -150px; }
+li.user-badge.daggerfall 		{ background-position: 0 -150px; }
+li.user-badge.ebonheart 			{ background-position: 0 -150px; }
+
 
 /* Character Biography */
 div#user-biography {	margin: 0 320px 0 1em; }

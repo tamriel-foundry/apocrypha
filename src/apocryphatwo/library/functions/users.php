@@ -152,6 +152,8 @@ class Apoc_User {
 				$title = 'Moderator'; 
 			elseif ( 'banned' == $site_role ) :
 				$title = 'Banned';
+			elseif ( 'zenimax' == $site_role ):
+				$title = 'ZeniMax Online';
 			
 			// Otherwise, the user can set a custom title
 			else :
@@ -321,7 +323,13 @@ class Apoc_User {
 				'name'		=> 'TF Team Member',
 				'class'		=> 'tfteam',
 				'tier'		=> 'gold' 
-		);}		
+		);}	
+		elseif ( 'zenimax' == $this->roles[0] ) {
+			$badges['zenimax'] = array(
+				'name'		=> 'ZeniMax Online Staff',
+				'class'		=> 'zenimax',
+				'tier'		=> 'gold' 
+		);}			
 		
 		// Veterancy Badges
 		if( $this->regdate <= strtotime( '11/12/2012' ) ) {
@@ -354,9 +362,9 @@ class Apoc_User {
 				'tier'		=> $badge_tier 
 		);}
 		if ( $this->posts['articles'] > 0 ) {
-			$badges['contributor'] = array(
+			$badges['author'] = array(
 				'name'		=> 'Contributor',
-				'class'		=> 'contributor',
+				'class'		=> 'author',
 				'tier'		=> 'gold',
 		);}
 		

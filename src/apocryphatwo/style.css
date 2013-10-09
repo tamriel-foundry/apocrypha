@@ -229,10 +229,8 @@ ul,
 	margin: 0 0 1em 0;
 	padding: 0 0 0 2em;
 	}
-ul ul,
-ol ul,
-.reply-content ul ul,
-.reply-content ol ul {
+li > ul,
+li > ul  {
 	font-size: 1em !important;
 	list-style: circle;
 	margin: 0;
@@ -244,10 +242,8 @@ ol,
 	margin: 0 0 1em 0;
 	padding: 0 0 0 2em;
 	}
-ol ol,
-ul ol,
-.reply-content ol ol,
-.reply-content ul ol {
+li > ol,
+li > ol {
 	font-size: 1em !important;
 	list-style: decimal;
 	margin: 0;
@@ -481,7 +477,7 @@ select {
 	padding: 3px 5px;
 	background: #AAA;
 	background: -ms-linear-gradient(top, #BBB, #b3a695);
-    background: -moz-linear-gradient(top, #BBB, #b3a695);
+	background: -moz-linear-gradient(top, #BBB, #b3a695);
 	background: -o-linear-gradient(top, #BBB, #b3a695);
 	background: -webkit-linear-gradient(top, #BBB, #b3a695);
 	border: 1px solid #000;
@@ -2205,6 +2201,8 @@ div#archive-author-info {
 	width: 100%;
 	float: left;
 	}
+div#archive-author-info div.reply-author { margin: 0 0 1em; }
+div#archive-author-info div.reply-content { padding: 0; }
 	
 /*--------------------------------------------------------------
 7.2 - ADVANCED SEARCH

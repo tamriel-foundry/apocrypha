@@ -83,7 +83,7 @@
 					</ul>
 				</div>
 				
-				<h3 class="registration-header double-border bottom">Terms of Registration</h3>
+				<h3 class="registration-header double-border bottom">Membership Agreement</h3>
 				<ol id="registration-use-terms">
 				
 					<li class="checkbox">

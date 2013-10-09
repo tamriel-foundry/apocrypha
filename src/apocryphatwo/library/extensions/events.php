@@ -30,20 +30,26 @@ class Apoc_Events {
 	function __construct() {
 	
 		// Add universal actions
-		add_action( 'init'						, array( $this , 'register_events' 	) );
-		add_action( 'init'						, array( $this , 'register_calendar' 	) );
+		add_action( 'init'							, array( $this , 'register_events' 	) );
+		add_action( 'init'							, array( $this , 'register_calendar' 	) );
 
 		// Admin-only methods
 		if ( is_admin() ) {
 		
 			// Admin Actions
-			add_action( 'admin_menu'			, array( $this , 'meta_boxes' ) );
-			add_action( 'save_post'				, array( $this , 'save_event' )	, 10, 2 );
+			add_action( 'admin_menu'				, array( $this , 'meta_boxes' ) );
+			add_action( 'save_post'					, array( $this , 'save_event' )	, 10, 2 );
+			add_action( 'calendar_add_form_fields'	, array( $this , 'calendar_meta_box' ) , 10, 2 );
+			add_action( 'calendar_edit_form_fields'	, array( $this , 'calendar_edit_meta_box' ) , 10 , 2  );
+			
+			add_action( 'edited_calendar'			, array( $this , 'save_calendar' ) , 10, 2 );  
+			add_action( 'create_calendar'			, array( $this , 'save_calendar' ), 10, 2 );
+			add_action( 'manage_event_posts_custom_column', array( $this , 'custom_event_columns' ) );
 
 			
 			// Admin Filters
-			add_filter( 'post_updated_messages'	, array( $this , 'update_messages') );
-		
+			add_filter( 'post_updated_messages'		, array( $this , 'update_messages') );
+			add_filter( 'manage_edit-event_columns'	, array( $this , 'event_columns' ) );
 
 		}
 	}
@@ -250,8 +256,6 @@ class Apoc_Events {
 	<?php 	
 	}
 	
-	
-	
 	/**
 	 * Save or update a new event
 	 * @since 0.1
@@ -259,10 +263,10 @@ class Apoc_Events {
 	function save_event( $post_id , $post = '' ) {
 	
 		// Don't do anything if it's not an event
-		if ( $post->post_type != 'event' ) return;
+		if ( 'event' != $post->post_type ) return;
 	
-		/* SAVE META INFORMATION 
-		------------------------------------*/
+	/* SAVE META INFORMATION 
+	------------------------------------*/
 		
 		// Verify the nonce before proceeding.
 		if ( !isset( $_POST['event-details-box'] ) || !wp_verify_nonce( $_POST['event-details-box'], basename( __FILE__ ) ) )
@@ -298,9 +302,28 @@ class Apoc_Events {
 				update_post_meta( $post_id, $meta_key, $new_meta_value );
 		}
 		
+	/* SET EVENT RECURRENCE
+	------------------------------------
+
+		// Figure out what we are working with
+		$is_single 		= empty( $_POST['event-recurrence'] );
+		$is_clone		= has_term( 'clone' , 'recurrence' , $post_id );
+
+		// Categorize the target term
+		if ( $is_clone ) :
+			$term = term_exists( 'clone' , 'recurrence' );
+		elseif ( $is_single ) :
+			$term = term_exists( 'single' , 'recurrence' );
+		else :
+			$term = term_exists( 'recurring' , 'recurrence' );
+		endif;
+
+		// Make sure the term is set, and overwrite any previous setting
+		wp_set_post_terms( $post_id, $term['term_id'] , 'recurrence' , false ); */
 		
-		/* REGISTER BUDDYPRESS NOTIFICATION 
-		------------------------------------*/
+		
+	/* REGISTER BUDDYPRESS NOTIFICATION 
+	------------------------------------*/
 		
 		// Get event data
 		global $bp, $wpdb;
@@ -375,6 +398,101 @@ class Apoc_Events {
 						
 				endwhile; endif;
 			endif;
+		}
+	}
+	
+	
+	/**
+	 * Add group association to calendar taxonomies.
+	 * @since 1.0.0
+	 */
+	function calendar_meta_box() { ?>
+
+		<div>
+			<label for="is-group-calendar"><input type="checkbox" name="is-group-calendar" value="true"> This calendar is for a BuddyPress group.</label>
+			<p class="description">A calendar may be associated with a BuddyPress group by assigning it the same slug as the slug of the group.</p>	
+		</div><?php 
+	}
+	
+	/**
+	 * Edit calendar meta box
+	 * @since 1.0.0
+	 */
+	function calendar_edit_meta_box( $term ) { 
+
+		// Get any existing value
+		$term_meta = get_option( 'taxonomy_' . $term->term_id ); ?>
+		
+		<tr>
+			<th scope="row" valign="top"><label for="is-group-calendar">This calendar is associated with a BuddyPress group.</label></th>
+			<td>
+				<input type="checkbox" name="is-group-calendar" value="true" <?php checked( $term_meta['is_group_calendar'] , 'true' ); ?>>
+				<p class="description">A calendar may be associated with a BuddyPress group by assigning it the same slug as the slug of the group.</p>	
+			</td>
+		</tr><?php
+	}
+	
+	/**
+	 * Save custom calendar taxonomy.
+	 * @since 1.0.0
+	 */
+	function save_calendar( $term_id ) {
+		
+		$term_meta 	= get_option( "taxonomy_$term_id" );
+		
+		// If it has a value, update the option
+		if ( isset( $_POST['is-group-calendar'] ) ) {
+			$term_meta['is_group_calendar'] = $_POST['is-group-calendar'];
+			update_option( "taxonomy_$term_id", $term_meta );
+		}
+		
+		// Otherwise, if it had a value, remove it
+		elseif ( !empty( $term_meta ) )
+			delete_option( "taxonomy_$term_id" );
+	}
+	
+	/**
+	 * Title event columns
+	 * @since 1.0.0
+	 */
+	function event_columns( $columns ) {
+		$columns = array(		
+			'cb'			=> '<input type="checkbox" />',
+			'title'			=> 'Event Name',
+			'calendar'		=> 'Calendar',
+			'recur'			=> 'Recurrence',
+			'event_date'	=> 'Date',
+			'event_time'	=> 'Time' );
+		return $columns; 
+	}
+	
+	/**
+	 * Customize the display of events page
+	 * @since 0.1
+	 */
+	function custom_event_columns( $columns ) {
+		global $post;
+		switch ( $columns ) {		
+			case 'calendar' :
+				echo get_the_term_list( $post->ID , 'calendar' );
+			break;
+			
+			case 'recur' :	
+				echo 'currently unused';
+				//echo get_the_term_list( $post->ID , 'recurrence' );
+			break;
+			
+			case 'event_date' :	
+				$meta_date 		= get_post_meta( $post->ID , 'event_date' , true );
+				$display_date 	= date('l, F j', strtotime( $meta_date ) );
+				echo $display_date;
+			break;
+			
+			case 'event_time' :	
+				$meta_time 		= get_post_meta( $post->ID , 'event_start' , true );
+				$display_time 	= date('g:i a', strtotime( $meta_time ) );
+				echo $display_time;
+			break;
 		}
 	}
 }

@@ -30,8 +30,8 @@ if ( $is_group ) :
 	$is_member 	= groups_is_user_member( $user_id , $group_id );
 		
 	if ( 'entropy-rising' == $slug ) :
-		//$header 	= 'entropy_rising_header';
-		//$sidebar 	= 'entropy_rising_sidebar';
+		$header 	= 'entropy_rising_header';
+		$sidebar 	= 'entropy_rising_sidebar';
 		$redirect	= SITEURL . '/entropy-rising/';
 	else :
 		$redirect	= SITEURL . '/groups/' . trailingslashit( $slug );

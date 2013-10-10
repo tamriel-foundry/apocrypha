@@ -1,0 +1,93 @@
+/* 
+--------------------------------
+Entropy Rising Guild Stylesheet
+--------------------------------
+Author: 		Andrew Clayton
+Author URI: 	http://tamrielfoundry.com
+Updated:		10-9-2013
+Copyright(c):	2013 Andrew Clayton.  All rights reserved.
+
+
+/*--------------------------------------------------------------
+1.0 - GENERAL STYLES
+--------------------------------------------------------------*/
+#header-container.erheader 	{ background-image: url("../../images/backgrounds/er-banner.jpg"); }
+a#main-banner.erheader 		{ background-image: url("../../images/headers/er-header.png"); }
+.category-entropy-rising header.entry-header,
+.category-guild-news header.entry-header,
+.entropy-rising header.entry-header { background-image: url("../../images/headers/er-page-header.jpg"); }
+
+/* Nav Menu */
+ul#top-menu li#er-private,
+li#er-private > a { border-right: none; }
+
+/* ER Guild Name Highlighting */
+span.er-name {	text-shadow: 0 0 10px #3F6;	}
+
+/* ER Sidebar */
+ul#er-twitch-streams li.er-streamer {
+	margin: 0.5em 0;
+	padding: 0.5em;
+	text-transform: uppercase;
+	background: rgba( 17,17,17,0.5 );
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #444;
+	text-shadow: 1px 1px #000;
+	}
+li.er-streamer span.stream-viewers {
+	background: #356;
+	color: #EEE;
+	padding: 0 4px;
+	margin: 0 5px;
+	border: 1px solid #000;
+	border-radius: 5px;
+	}
+li.er-streamer span.stream-status { 
+	float: right; 
+	color: darkred;
+	}
+li.er-streamer span.stream-status.online { color: green; }
+
+
+/*--------------------------------------------------------------
+2.0 - GUILD HOME
+--------------------------------------------------------------*/
+div#er-welcome {
+	width: 90%;
+	margin: 0 0 0.5em;
+	padding: 0.5em 2.5%;
+	}
+div.guild-status ul.guild-status-list {
+	margin: 0.5em 0 1em;
+	padding: 0.5em 1em;
+	background: rgba( 17,17,17,0.5 );
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #444 inset;
+	}
+li.guild-status-item {
+	position: relative;
+	overflow: visible;
+	padding: 0.5em 0;
+	border-bottom: 1px solid #000;
+	}
+li + li.guild-status-item { border-top: 1px solid #444; }
+li.guild-status-item:last-child { border-bottom: none; }
+span.guild-status-entry { 
+	float: right;
+	text-shadow: 1px 1px #000;
+	}
+span.guild-status-entry.open,
+span.guild-status-entry.high { color: green; }
+span.guild-status-entry.closed,
+span.guild-status-entry.low { color: darkred; }
+span.guild-status-entry.limited,
+span.guild-status-entry.medium { color: gold; }
+div.guild-status div.recruitment-status-popup {
+	display: none;
+	position: absolute;
+	bottom: 0px;
+	background: rgba(204, 153, 0, 0.9)
+	}
+div.guild-status li.recruitment-status-item:hover div.recruitment-status-popup { display: block; }

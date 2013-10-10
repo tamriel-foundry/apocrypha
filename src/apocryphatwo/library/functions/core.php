@@ -45,6 +45,19 @@ function apoc_display_post() {
 	include( THEME_DIR . '/library/templates/loop-single-post.php' );
 }
 
+
+// Load the Entropy Rising guild header, menu, and sidebar
+function entropy_rising_header() {
+	locate_template( array( 'guild/guild-header.php' ), true );
+}
+function entropy_rising_menu() {
+	locate_template( array( 'guild/guild-menu.php' ), true );
+}
+function entropy_rising_sidebar() {
+	locate_template( array( 'guild/guild-sidebar.php' ), true );
+}
+
+
 /*---------------------------------------------
 2.0 - FILTER TEMPLATE HIERARCHY
 ----------------------------------------------*/
@@ -110,9 +123,27 @@ function homepage_have_posts() {
 	query_posts( $args );
 }
 
+/* 
+ * Load the Entropy Rising guild posts loop
+ */
+function entropy_rising_have_posts() {
+	$posts_per_page = 6;
+	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+	$offset = ( $posts_per_page * $paged ) - $posts_per_page;
+	$guild_public = get_cat_ID( 'entropy rising' );
+	$guild_private = get_cat_ID( 'guild news' );
+	if ( is_user_guild_member() ) $guild_cats = $guild_public . ',' . $guild_private;
+	else $guild_cats = $guild_public;
 
-
-
+	$args = array( 
+		'paged'=> $paged, 
+		'posts_per_page'=> $posts_per_page,
+		'offset' => $offset,
+		'cat' => $guild_cats,
+		);
+		
+	query_posts( $args );
+}
 
 /* 
  * My own default filtering set

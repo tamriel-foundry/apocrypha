@@ -114,6 +114,12 @@ class Apoc_Context {
 				$template = str_replace( array ( "{$post->post_type}-template-", "{$post->post_type}-" ), '', basename( $template , '.php' ) );
 				$context[] = "{$post->post_type}-template";
 			}	
+			
+			// Entropy Rising Homepage
+			if ( is_page('entropy-rising') ) {
+				$context[] = 'entropy-rising';
+				$context[] = 'archive';
+			}
 		}
 		
 		// Archive view

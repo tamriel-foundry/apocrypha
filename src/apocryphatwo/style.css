@@ -876,10 +876,7 @@ div.dropdown.col2 { width: 200%; }
 div.dropdown.col3 { width: 300%; }
 div.dropdown.col4 { width: 400%; }
 li.top.drop:hover div.dropdown { left: -100% }
-li.top.drop.right:hover div.dropdown { 
-	left: auto;
-	right: -1px; 
-	}
+li.top.drop.right:hover div.dropdown { left: auto; }
 
 /* Items Within A Dropdown */
 div.dropdown.col1 div.sub.col { width: 100%; }
@@ -2410,10 +2407,7 @@ form.forum-search {
 /*---------------------------------------------
 	8.1 - Forums and Topics Loops
 ----------------------------------------------*/
-ol.forum.category { 
-	margin: 0;
-	border-bottom: none;
-	}
+ol.forum.category { 	border-bottom: none; }
 ol.topic { border-bottom: none; }
 li.sub-forum,
 li.topic {

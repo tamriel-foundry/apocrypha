@@ -13,6 +13,7 @@
 	2.1 - Stylesheets
 	2.2 - JavaScript
 3.0 - TinyMCE
+4.0 - Entropy Rising
 --------------------------------------------------------------*/
 
 // Exit if accessed directly
@@ -168,6 +169,44 @@ function apoc_mce_options( $init ) {
 }
 
 
+/*--------------------------------------------------------------
+4.0 - ENTROPY RISING
+--------------------------------------------------------------*/
+/*
+ * Set ER Recruitment Status and Class Needs
+ */
+function guild_recruitment_status() {
+	$status = 'open';
+	return $status;
+}
+function get_class_recruitment_status() {
+	$classes = ( guild_recruitment_status() == 'closed' ) ? array (
+		'dragonknight' => 'low',
+		'templar' => 'low',
+		'sorcerer' => 'low',
+		'nightblade' => 'low',
+	) : array (
+		'dragonknight' => 'medium',
+		'templar' => 'medium',
+		'sorcerer' => 'medium',
+		'nightblade' => 'medium',
+	);
+	return $classes;
+}
+
+/*
+ * Check if user is an ER member
+ * Defaults to the current user, but accepts an argument for any userid
+ */
+function is_user_guild_member( $userid = '' ) {	
+	
+	if ( '' == $userid )
+		$userid = get_current_user_id();
+		
+	$is_member = groups_is_user_member( $userid , 1 );
+	return $is_member;
+}
+
 /*---------------------------------------------
 	Debugging Functions
 ----------------------------------------------*/
@@ -202,4 +241,6 @@ function get_moderator_emails() {
 	);
 	return $emails;
 }
+
+
 ?>

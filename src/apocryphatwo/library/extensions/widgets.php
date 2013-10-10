@@ -303,4 +303,39 @@ function featured_guild_box() {
 	</div>
 	<?php endwhile;
 }
+
+
+/* 
+ * Show all Entropy Rising member's TwitchTV status
+ */
+function guild_twitch_streams() {
+	$streamers = array( 
+		'phazius' 			=> 'phazius', 
+		'atropos' 			=> 'atropos_nyx', 
+		'boontaker' 		=> 'boontaker', 
+		'nybling' 			=> 'nybling', 
+	);
+	$streams = array();
+	
+	// Check the status of each user's channel
+	foreach ( $streamers as $user_name => $streamer ) {
+		$twitch_response = @file_get_contents("http://api.justin.tv/api/stream/list.json?channel=" . $streamer , 0 , null , null );
+		$stream_array = json_decode( $twitch_response , true );
+		$streams[$user_name] = array_pop( $stream_array );
+	}
+	
+	echo '<ul id="er-twitch-streams">';
+	// Loop through each channel and display some info
+	foreach ( $streams as $user_name => $stream ) {
+		if ( empty( $streams[$user_name] ) ) {
+			echo '<li class="er-streamer"><a href="http://twitch.tv/'. $streamers[$user_name] . '" title="Visit Channel" target="_blank">' . $user_name . '</a><span class="stream-status offline">OFFLINE</span></li>';
+		} else {
+			$title = $streams[$user_name]['title'];
+			$url = $streams[$user_name]['channel']['channel_url'];
+			$count = $streams[$user_name]['stream_count'];
+			echo '<li class="er-streamer"><a href="' . $url . '" title="Now Playing: ' . $title . '" target="_blank">' . $user_name . '</a><span class="stream-viewers">' . $count . '</span><span class="stream-status online">ONLINE</span></li>';
+		}
+	}
+	echo '</ul>';
+}
 	

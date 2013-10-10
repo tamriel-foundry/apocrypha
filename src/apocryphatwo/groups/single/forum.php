@@ -11,8 +11,7 @@ if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group();
 
 // Maybe use a special guild header
 if ( 1 == bp_get_group_id() ) :
-	//entropy_rising_header();
-	get_header();
+	entropy_rising_header();
 else  :
 	get_header(); 
 endif; ?>

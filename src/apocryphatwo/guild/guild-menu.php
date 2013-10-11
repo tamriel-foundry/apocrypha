@@ -31,7 +31,6 @@
 					<ul class="submenu noheader">
 						<li><a href="<?php echo SITEURL; ?>/groups/entropy-rising/activity/">Guild Activity</a></li>
 						<li><a href="<?php echo SITEURL; ?>/calendar/entropy-rising/">Calendar</a></li>
-						<li><a href="#">DKP Tracker</a></li>
 						<li><a href="<?php echo SITEURL; ?>/groups/entropy-rising/forum/">Guild Forum</a></li>
 						<li><a href="<?php echo SITEURL; ?>/forums/">Main Forums</a></li>
 					</ul>

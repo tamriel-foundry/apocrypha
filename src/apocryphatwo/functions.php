@@ -207,6 +207,25 @@ function is_user_guild_member( $userid = '' ) {
 	return $is_member;
 }
 
+/* 
+ * Get an Entropy Rising member's guild rank
+ */
+function display_guild_member_rank( $userid ) {
+	$rank = get_guild_member_rank( $userid );
+	echo '<span class="guild-rank activity">' . $rank . '</span>';
+	}
+	
+function get_guild_member_rank( $userid ) {
+	$user = get_userdata( $userid );
+	$user_role = array_shift( $user->roles );
+	
+	if ( $user_role == 'guildinitiate' ) $guild_rank = '<i class="icon-angle-up"></i>Initiate';
+	elseif ( $user_role == 'editor' ) $guild_rank = '<i class="icon-shield"></i>Officer';
+	elseif ( $user_role == 'administrator' ) $guild_rank = '<i class="icon-star"></i>Guildmaster';
+	else $guild_rank = '<i class="icon-double-angle-up"></i>Member';
+	return $guild_rank;
+}
+
 /*---------------------------------------------
 	Debugging Functions
 ----------------------------------------------*/

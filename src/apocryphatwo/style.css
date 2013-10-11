@@ -230,7 +230,6 @@ ul,
 	margin: 0 0 1em 0;
 	padding: 0 0 0 2em;
 	}
-li > ul,
 li > ul  {
 	font-size: 1em !important;
 	list-style: circle;
@@ -243,13 +242,16 @@ ol,
 	margin: 0 0 1em 0;
 	padding: 0 0 0 2em;
 	}
-li > ol,
 li > ol {
 	font-size: 1em !important;
 	list-style: decimal;
 	margin: 0;
 	padding: 0 0 0 1.5em;
 	}
+li > p {
+	font-size: 1em !important;
+	}
+
 	
 /* Headers */
 h1, h2, h3, h4, h5, h6 {
@@ -2033,6 +2035,7 @@ div.ebonheart a.banner-count:hover {
 div.flexslider {
 	position: relative;
 	overflow: hidden;
+	z-index: 1;
 	}
 ul.slides {
 	margin: 0;

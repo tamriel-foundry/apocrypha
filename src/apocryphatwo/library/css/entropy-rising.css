@@ -60,7 +60,7 @@ div#er-welcome {
 	}
 div.guild-status ul.guild-status-list {
 	margin: 0.5em 0 1em;
-	padding: 0.5em 1em;
+	padding: 0 1em;
 	background: rgba( 17,17,17,0.5 );
 	border: 1px solid #000;
 	border-radius: 5px;
@@ -91,3 +91,46 @@ div.guild-status div.recruitment-status-popup {
 	background: rgba(204, 153, 0, 0.9)
 	}
 div.guild-status li.recruitment-status-item:hover div.recruitment-status-popup { display: block; }
+
+
+/*--------------------------------------------------------------
+3.0 - GUILD ROSTER
+--------------------------------------------------------------*/
+
+span.guild-rank {
+	background: blue;
+	}
+div#entropy-rising-roster span.activity {
+	background: rgba(0, 102, 0, 0.5);
+	box-shadow: 0 0 2px #0C0 inset;
+	}
+	
+	
+/*--------------------------------------------------------------
+4.0 - GUILD APPLICATION
+--------------------------------------------------------------*/
+div#showcase-container.er-application-showcase div#showcase { box-shadow: none; }
+div#recruitment-video  {
+	float: left;
+	margin: 0 1em 1em;
+	padding: 1.5em 1em 0.5em;
+	background: rgba(17,17,17,0.9);
+	border: 1px solid #000;
+	border-radius: 5px;
+	box-shadow: 0 0 3px #444 inset;
+	}
+div.guild-status div.instructions {
+	margin: 0.5em 0;
+	}
+div#er-application {
+	width: 100%;
+	float: left;
+	margin: 0 0 1em;
+	}
+form#guild-application-form { margin: 0 0 1em; }
+ol#guild-application-list {
+	list-style: decimal;
+	padding: 0 0 0 2em;
+	}
+form#guild-application-form li.text label,
+form#guild-application-form li.select label { width: 250px; }

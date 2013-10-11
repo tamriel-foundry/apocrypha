@@ -18,10 +18,9 @@ if ( 'entropy-rising' == bp_get_current_group_slug() ) {
 	if ( !bp_group_is_member() ) {
 		wp_redirect( SITEURL . '/entropy-rising' , 301 );
 	}
+	else entropy_rising_header();
 }
-?>
-
-<?php get_header(); ?>
+else get_header(); ?>
 
 	<div id="content" class="no-sidebar" role="main">
 		<?php apoc_breadcrumbs(); ?>

@@ -8,7 +8,7 @@
 ?>
 
 <div id="primary-sidebar" class="sidebar">
-	<div class="welcome-text">Keep track of what Entropy Rising members are doing within the ESO community!</div>
+	<div class="welcome-text">Follow what Entropy Rising members are doing within the ESO community!</div>
 	<div class="social-media-widget widget">
 		<header class="widget-header"><h3 class="widget-title">Get Connected</h3></header>
 		<div class="social-icons">

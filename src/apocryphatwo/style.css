@@ -50,6 +50,7 @@ Copyright(c):	2013 Andrew Clayton.  All rights reserved.
 	7.3 - 404
 	7.4 - Development FAQ
 	7.5 - Calendars
+	7.6 - 404 Page
 8.0 - bbPress
 	8.1 - Forums and Topics Loops
 	8.2 - Single Topics
@@ -2255,7 +2256,7 @@ div#search-results {
 
 
 /*---------------------------------------------
-7.5 - CALENDARS AND EVENTS
+	7.5 - CALENDARS AND EVENTS
 ----------------------------------------------*/
 .taxonomy-calendar .entry-header {
 	height: 100px;
@@ -2362,6 +2363,46 @@ form#calendar-rsvp-form {
 	width: 98%;
 	margin: 0 1% 1em;
 	}
+	
+	
+/*---------------------------------------------
+	7.6 - 404 PAGE
+----------------------------------------------*/
+div#error-404 {
+	width: 900px;
+	height: 300px;
+	margin: 2em auto;
+	background-image: url("images/backgrounds/404-banner.jpg");
+	border: 1px solid #000;
+	border-radius: 10px;
+	box-shadow: 0 0 20px #000;
+	overflow: hidden;
+	}
+p#tagline-404 {
+	background: rgba( 17,17,17,0.5);
+	padding: 0.5em 0;
+	margin: 2em 0 1em;
+	text-align: center;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+	box-shadow: 0 0 5px #000;
+	}
+form#search-404 {
+	width: 60%;
+	margin: 2em 20%;
+	padding: 1em;
+	background: rgba( 17,17,17,0.5);
+	border-radius: 5px;
+	float: left;
+	}
+form#search-404 input.search-text { 
+	width: 75%;
+	float: right;
+	}
+form#search-404 select#search-for {
+	width: 20%;
+	float: left;
+	}	
 	
 /*--------------------------------------------------------------
 8.0 - BBPRESS

@@ -85,7 +85,7 @@ class Apoc_BuddyPress {
 	
 		// Activity Items
 		add_filter( 'bp_get_activity_delete_link' 	, array( $this , 'activity_delete_icon' ) );
-		add_filter( 'bp_activity_can_favorite'		, array( $this , 'activity_prevent_favorite' ) ); 	
+		add_filter( 'bp_activity_can_favorite'		, array( $this , 'activity_prevent_favorite' ) ); 
 	}
 	
 	

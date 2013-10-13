@@ -15,7 +15,7 @@ $group = groups_get_group( array( 'group_id' => 1 ) );
 
 	<div id="showcase-container">
 		<div id="showcase">
-			<?php get_slideshow( $slideshow = 'entropy-rising' , $number = 5 ); ?>
+			<?php get_slideshow( $slideshow = 'er-showcase' , $number = 5 ); ?>
 		</div><!-- #showcase --> 
 		
 		<div id="showcase-sidebar">

@@ -15,7 +15,7 @@ $apoc = apocrypha();
 	<div id="content" class="no-sidebar" role="main">
 		<?php apoc_breadcrumbs(); ?>
 		
-			search results
+			search results - this *should* go unused by the theme
 		
 	</div><!-- #content -->
 	

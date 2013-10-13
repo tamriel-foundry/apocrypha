@@ -11,19 +11,17 @@ Here are the basic instructions for configuring a clean local installation of th
 	5. Members - http://wordpress.org/plugins/members/
 	6. WordPress Console - http://wordpress.org/plugins/wordpress-console/
 
-3) Download the "bpcustom.php" file from the "setup" folder of the repo. Place this file in your plugins directory: /wp-content/plugins/
+3) Download the "apocryphatwo" theme from the repo. Unpack this folder in /wp-content/themes/apocryphatwo
 
-4) Download the "apocryphatwo" theme from the repo. Unpack this folder in /wp-content/themes/apocryphatwo
+4) Remove all tables from your local database that were added with the Wordpress install.
 
-5) Remove all tables from your local database that were added with the Wordpress install.
+5) If you are using the default location of localhost/tamrielfoundry, skip to step 8. If you're using a different location for development your local database, open up localfoundry.sql in your favorite code editor and find all instances of "localhost/tamrielfoundry" and replace with the location you are using on your local machine, i.e. "dev.tamrielfoundry.com".
 
-6) If you are using the default location of localhost/tamrielfoundry, skip to step 8. If you're using a different location for development your local database, open up localfoundry.sql in your favorite code editor and find all instances of "localhost/tamrielfoundry" and replace with the location you are using on your local machine, i.e. "dev.tamrielfoundry.com".
+6) Download the database file localfoundry.sql from the "setup" folder of the repo, import all the tables into your local database.
 
-7) Download the database file localfoundry.sql from the "setup" folder of the repo, import all the tables into your local database.
+7) Download and unzip the media attachments for the lorem ipsum content "uploads.7z". Unpack this content into /wp-content/uploads/
 
-8) Download and unzip the media attachments for the lorem ipsum content "uploads.7z". Unpack this content into /wp-content/uploads/
-
-9) You should now have replicated my local install which contains the following:
+8) You should now have replicated my local install which contains the following:
 
 	* 3 Users
 	* 7 Posts
@@ -35,9 +33,9 @@ Here are the basic instructions for configuring a clean local installation of th
 	* 2 Groups
 	* 3 Slides
 
-10) You can access two of pregenerated user accounts:
+9) You can access two of pregenerated user accounts:
 
 	* Username/Password: Zaydok/zaydok - Has admin rights
 	* Username/Password: TestUser/testuser
 
-11) Feel free to branch out from here, and create content as necessary for your own testing purposes. I hope these instructions work...but they may not.
+10) Feel free to branch out from here, and create content as necessary for your own testing purposes. I hope these instructions work...but they may not.

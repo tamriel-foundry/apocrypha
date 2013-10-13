@@ -393,7 +393,7 @@ class Apoc_Breadcrumbs {
 				
 		// Backup Placeholder
 		else :
-			$bp_trail[] = 'buddypress placeholder';
+			$bp_trail[] = '404 Page Not Found';
 		endif;
 			
 		// Return the BuddyPress trail

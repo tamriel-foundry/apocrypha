@@ -9,6 +9,17 @@
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
+// The array of moderator emails
+function get_moderator_emails() {
+	$emails = array(
+		'atropos@tamrielfoundry.com',
+		'rial@tamrielfoundry.com',
+		'isarii@tamrielfoundry.com',
+		'tonsha@tamrielfoundry.com', 
+		'grimalkin@tamrielfoundry.com', 
+	);
+	return $emails;
+}
 
 /*--------------------------------------------------------------
 1.0 - APOCRYPHA USER CLASS

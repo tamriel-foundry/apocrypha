@@ -20,9 +20,9 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 				<div class="sub col">
 					<h3>Factions</h3>
 					<ul class="submenu">
-						<li><a href="<?php echo SITEURL . '/aldmeri-dominion/' ?>">Aldmeri Dominion</a></li>
-						<li><a href="<?php echo SITEURL . '/daggerfall-covenant/' ?>">Daggerfall Covenant</a></li>
-						<li><a href="<?php echo SITEURL . '/ebonheart-pact/' ?>">Ebonheart Pact</a></li>
+						<li><a href="<?php echo SITEURL . '/groups/aldmeri-dominion/' ?>">Aldmeri Dominion</a></li>
+						<li><a href="<?php echo SITEURL . '/groups/daggerfall-covenant/' ?>">Daggerfall Covenant</a></li>
+						<li><a href="<?php echo SITEURL . '/groups/ebonheart-pact/' ?>">Ebonheart Pact</a></li>
 						<?php /*
 						<li><a href="#">Racial Comparison</a></li>
 						*/ ?>

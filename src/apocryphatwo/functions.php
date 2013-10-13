@@ -114,6 +114,7 @@ function apoc_enqueue_scripts() {
 	wp_register_script( 'foundry' 		, THEME_URI . '/library/js/foundry.js' 			, 'jquery' , $ver='0.1' , true	);
 	wp_register_script( 'flexslider' 	, THEME_URI . '/library/js/flexslider.min.js' 	, 'jquery' , $ver='0.1' , true  );
 	wp_register_script( 'buddypress'	, THEME_URI . '/library/js/buddypress.js' 		, 'jquery' , $ver='0.1' , true 	);	
+	wp_register_script( 'colorbox' 		, THEME_URI . '/library/js/colorbox.min.js' 	, 'jquery' , $ver='1.0' , true	);
 	
 	// Deregister WordPress default jQuery and get from Google
 	wp_deregister_script( 'jquery' );
@@ -122,6 +123,7 @@ function apoc_enqueue_scripts() {
 	// Then enqueue
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'buddypress' );
+	wp_enqueue_script( 'colorbox' );
 	
 	// Some scripts are only needed on specific pages
 	if ( is_home() || is_page_template( 'guild/guild-home.php' ) ) 
@@ -225,41 +227,4 @@ function get_guild_member_rank( $userid ) {
 	else $guild_rank = '<i class="icon-double-angle-up"></i>Member';
 	return $guild_rank;
 }
-
-/*---------------------------------------------
-	Debugging Functions
-----------------------------------------------*/
-
-/**
- * Used for troubleshooting and development to output a global object
- * @version 1.0.0
- */
-function dump_global( $global = 'apocrypha' , $component = '' ) {
-	global ${$global};
-	echo '<pre style="display:block; overflow:hidden; font-size: 12px;">';
-	if ( '' != $component )
-		print_r( ${$global}->$component );
-	else
-		print_r( ${$global} );
-	echo '</pre>';
-}
-
-function dump_variable( $var = '' ) {
-	echo '<pre style="display:block; overflow:hidden; font-size: 12px;">';
-		print_r( $var );
-	echo '</pre>';
-}
-
-function get_moderator_emails() {
-	$emails = array(
-		'atropos@tamrielfoundry.com',
-		'rial@tamrielfoundry.com',
-		'isarii@tamrielfoundry.com',
-		'tonsha@tamrielfoundry.com', 
-		'grimalkin@tamrielfoundry.com', 
-	);
-	return $emails;
-}
-
-
 ?>

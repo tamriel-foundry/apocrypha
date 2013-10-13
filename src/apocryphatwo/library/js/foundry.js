@@ -51,6 +51,12 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! Quote Button */
 ;$("#comments,#forums").on("click","a.quote-link",function(b){var a=quoteParent=quoteSource=posttext=quote="";b.preventDefault();a=$(this).data("context");postid=$(this).data("id");author=$(this).data("author");date=$(this).data("date");if("reply"==a){quoteParent="#post-"+postid;quoteSource="#post-"+postid+" .reply-content";editor="bbp_reply_content"}else{if("comment"==a){quoteParent="#comment-"+postid;quoteSource="#comment-"+postid+" .reply-content";editor="comment"}}if(window.getSelection){posttext=window.getSelection().toString()}else{if(document.selection&&document.selection.type!="Control"){posttext=document.selection.createRange().text}else{return}}if(""!=posttext){postlines=posttext.split(/\r?\n/);firstline=postlines[0];lastline=postlines[postlines.length-1];if(0==$(quoteSource).find(":contains("+firstline+")").length||0==$(quoteSource).find(":contains("+lastline+")").length){alert("This is not a valid quote selection. Either select a specific passage or select nothing to quote the full post.");return}}if(""==posttext){posttext=$(quoteSource).html()}posttext=posttext.replace(/<ul id="bbp-reply-revision((.|\n)*?)(<\/ul>)/,"");posttext=posttext.replace(/<ul id="bbp-topic-revision((.|\n)*?)(<\/ul>)/,"");posttext=posttext.replace(/<div class="spoiler">((.|\n)*?)(<\/div>)/g,"");posttext=posttext.replace(/<img((.|\n)*?)(>)/g,"");posttext=posttext.replace(/<br>/g,"");posttext=posttext.replace(/&nbsp;/g,"");posttext=posttext.replace(/<button class="quote-toggle((.|\n)*?)(<\/button>)/g,"");posttext=posttext.replace(/display: none;/g,"");quote='\r\n\r\n[quote author="'+author+"|"+quoteParent.substring(1)+"|"+date+'"]';quote+="\r\n"+posttext;quote+="\r\n[/quote]\r\n\r\n&nbsp;";editor_html=document.getElementById(editor+"-html");switchEditors.switchto(editor_html);document.getElementById(editor).value+=quote;editor_tmce=document.getElementById(editor+"-tmce");switchEditors.switchto(editor_tmce);$("html, body").animate({scrollTop:$("#respond").offset().top},600)});
 
+/*! Collapsing Quotes */
+;$("div.quote").children("div.quote").addClass("subquote");$("div.subquote").prepend('<button class="quote-toggle button-dark">Expand Quote</button>');$("div.subquote").children().not("p.quote-author,div.subquote,button").hide();$("button.quote-toggle").click(function(){var a=newtext="";$(this).parent().children().not("p.quote-author,div.subquote,button").slideToggle(500,"swing");a=$(this).text();newtext=(a=="Expand Quote")?"Collapse Quote":"Expand Quote";$(this).text(newtext)});
+
+/*! Collapsing Spoilers */
+;$("div.spoiler").prepend('<button class="spoiler-toggle button-dark">Reveal Spoiler</button>');$("div.spoiler").children().not("p.spoiler-title,button").hide();$("button.spoiler-toggle").click(function(){var a=newtext="";$(this).parent().children().not("p.spoiler-title,button").slideToggle(500,"swing");a=$(this).text();newtext=(a=="Reveal Spoiler")?"Conceal Spoiler":"Reveal Spoiler";$(this).text(newtext)});
+
 /*! Reply Button */
 ;$("#comments,#forums").on("click","a.reply-link",function(a){a.preventDefault();$("html, body").animate({scrollTop:$("#respond").offset().top},600)});
 
@@ -90,22 +96,7 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 ;$("a.clear-mod-note").click(function(){var a=$(this);var b=get_var_in_url(a.attr("href"),"_wpnonce");var c=get_var_in_url(a.attr("href"),"id");a.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");$.post(ajaxurl,{action:"apoc_clear_mod_note",_wpnonce:b,id:c},function(d){if(d==1){$("li#modnote-"+c).slideUp()}});return false});
 
 /*! Advanced Search Fields */
-$( 'ol.adv-search-fields' ).not( 'ol.active' ).hide();
-$( 'select#search-for' ).bind( 'change', function() {
-
-	// Hide old search results
-	$( '#search-results' ).slideUp();
-	
-	// Get the new field set
-	var type 		= $( 'select#search-for' ).val();
-	var target		= $( 'ol#adv-search-' + type );
-	
-	// Hide the unused fields
-	$( 'ol.adv-search-fields' ).removeClass( 'active' ).hide();
-	
-	// Show the relevant fields
-	target.addClass( 'active' ).fadeIn();
-});
+;$("ol.adv-search-fields").not("ol.active").hide();$("select#search-for").bind("change",function(){$("#search-results").slideUp();var a=$("select#search-for").val();var b=$("ol#adv-search-"+a);$("ol.adv-search-fields").removeClass("active").hide();b.addClass("active").fadeIn()});
 
 /*! End Document Ready */
 ;});
@@ -116,42 +107,3 @@ X.X - PROCEDURAL FUNCTIONS
 
 /*! Update Profile Race Dropdown */
 ;function updateRaceDropdown(a){if("faction"==a){factionid=jQuery("select#faction :selected").val();jQuery("select#race option").not("."+factionid).attr("disabled","disabled").removeAttr("selected");jQuery("select#race option."+factionid).removeAttr("disabled");jQuery("select#race option:first-child").removeAttr("disabled")}else{if("race"==a){raceid=jQuery("select#race :selected").attr("class");if(undefined!=raceid){jQuery("select#faction option").removeAttr("selected");jQuery("select#faction option."+raceid).attr("selected","selected")}}}};
-
-
-/* ______ REFACTORED / NEW BY ZAYDOK BELOW (TEMPORARY COMMENT) _____ */
-
-// DOM ready
-jQuery(function() {
-	// Assign jQuery back to $ alias
-	var $ = jQuery,
-	// Define faux constants
-			SITE_URL = document.URL,
-			AJAX_URL 	= SITE_URL + 'wp-admin/admin-ajax.php',
-	// Define elements
-			advSearchForm = $( '#advanced-search' ),
-			searchFor = advSearchForm.find( '#search-for' ),
-			submitBtn = advSearchForm.find( 'input[type=submit]' )
-	;
-
-	// Display appropriate form fields based on "Search For" dropdown
-	searchFor.bind( 'change', function() {
-		var currentValue = searchFor.val(),
-				currentFields = advSearchForm.find( '.dynamic-form-section:visible' ),
-				inboundFields = $( '#if-' + currentValue )
-		;
-		// Animate out current fields
-		currentFields
-			.hide()
-			.slideUp( 'slow' );
-		// Animate in new fields based on newly selected "Search For" value
-		inboundFields
-			.show()
-			.slideDown( 'slow' );
-	});
-
-	// Custom "Advanced Search" submit handling via AJAX
-	submitBtn.bind( 'click', function() {
-		// Temporarily do nothing until queries are worked out.
-		return false;
-	});
-});

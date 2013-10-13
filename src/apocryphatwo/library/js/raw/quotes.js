@@ -102,45 +102,31 @@ $("#comments,#forums").on( "click" , "a.reply-link" , function( event ){
 	$('html, body').animate({ scrollTop: $( '#respond' ).offset().top }, 600);
 });
 
-
 /*! Collapsing Quotes */
-$('#forums,#comments').on( "load" , function(){
-	
-    // identify subquotes
-    $('div.quote').children('div.quote').addClass("subquote");
-	
-    // add the quote toggle button
-    $('div.subquote').children('p.quote-author').append('<button class="quote-toggle button-dark">Expand Quote</button>');
-	
-	// hide nested quote content
-    $('div.subquote').children().not('p.quote-author,div.subquote').hide();
-    
-    // perform the toggle
-    $('button.quote-toggle').click(function() {
-		var oldtext = newtext = '';
-        $(this).parent().parent().children().not('p.quote-author,div.subquote').slideToggle(500,"swing");
-        oldtext = $(this).text();
-        newtext = ( oldtext == "Expand Quote" ) ? "Collapse Quote" : "Expand Quote";
-        $(this).text(newtext);
-    });
+$('div.quote').children('div.quote').addClass("subquote");
+$('div.subquote').prepend('<button class="quote-toggle button-dark">Expand Quote</button>');
+$('div.subquote').children().not('p.quote-author,div.subquote,button').hide();
+
+// Perform the toggle
+$('button.quote-toggle').click(function() {
+	var oldtext = newtext = '';
+	$(this).parent().children().not('p.quote-author,div.subquote,button').slideToggle(500,"swing");
+	oldtext = $(this).text();
+	newtext = ( oldtext == "Expand Quote" ) ? "Collapse Quote" : "Expand Quote";
+	$(this).text(newtext);
 });
 
 /*! Collapsing Spoilers */
-$(document).ready(function(){
-    // add the spoiler toggle button
-    $('div.spoiler').children('p.spoiler-title').append('<button class="spoiler-toggle button-dark">Reveal Spoiler</button>');
-	
-	// hide nested quote content
-    $('div.spoiler').children().not('p.spoiler-title').hide();
+$('div.spoiler').prepend('<button class="quote-toggle button-dark">Reveal Spoiler</button>');
+$('div.spoiler').children().not('p.spoiler-title,button').hide();
     
-    // perform the toggle
-    $('button.spoiler-toggle').click(function() {
-		var oldtext = newtext = '';
-        $(this).parent().parent().children().not('p.spoiler-title').slideToggle(500,"swing");
-        oldtext = $(this).text();
-        newtext = ( oldtext == "Reveal Spoiler" ) ? "Conceal Spoiler" : "Reveal Spoiler";
-        $(this).text(newtext);
-    });
+// Perform the toggle
+$('button.spoiler-toggle').click(function() {
+	var oldtext = newtext = '';
+	$(this).parent().children().not('p.spoiler-title,button').slideToggle(500,"swing");
+	oldtext = $(this).text();
+	newtext = ( oldtext == "Reveal Spoiler" ) ? "Conceal Spoiler" : "Reveal Spoiler";
+	$(this).text(newtext);
 });
 
 /*! Show Author IP Address on Click */

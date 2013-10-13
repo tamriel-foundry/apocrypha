@@ -103,9 +103,9 @@ class Apoc_Shortcodes {
 		extract( shortcode_atts( array( 'title' => '' ), $atts ) );
 		
 		// Wrap the spoiler
-		$thespoiler = '<div class="spoiler"><p class="spoiler-title">';
-		$thespoiler .= '<span><strong>SPOILER:</strong> ' . esc_attr($title) . '</span></p>';
-		$thespoiler .= '<p>' . $content . '</p></div>';
+		$thespoiler = '<div class="spoiler">';
+		$thespoiler .= '<p class="spoiler-title double-border bottom"><strong>SPOILER:</strong> ' . esc_attr($title) . '</p>';
+		$thespoiler .= $content . '</div>';
 		
 		// Check for other shortcodes inside it, and return
 		return do_shortcode($thespoiler);

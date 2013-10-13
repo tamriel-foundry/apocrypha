@@ -45,7 +45,7 @@ $classname	= ucfirst( $context );
 				<h2>Useful <?php echo $classname; ?> Resources</h2>
 				<ul id="class-resources">
 					<li><a href="<?php echo SITEURL . '/category/' . $context; ?>" title="Read articles tagged as <?php echo $classname; ?>" target="_blank"><?php echo $classname; ?> Articles</a></li>
-					<li><a href="<?php echo SITEURL . '/classes/' . $context; ?>" title="Visit the class forum" target="_blank"><?php echo $classname; ?> Class Forum</a></li>
+					<li><a href="<?php echo SITEURL . '/forum/classes/' . $context; ?>" title="Visit the class forum" target="_blank"><?php echo $classname; ?> Class Forum</a></li>
 				</ul>
 			</div>
 

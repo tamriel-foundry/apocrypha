@@ -43,9 +43,9 @@ $user 		= new Edit_Profile( $user_id , 'profile' );
 					</div>
 					<ol id="character-info">
 						<li class="text">
-							<i class="icon-book icon-fixed-width"></i><label for="first-name">Character Name:</label>
-							<input name="first-name" type="text" id="first-name" value="<?php echo $user->first_name; ?>" size="30" />
-							<input name="last-name" type="text" id="last-name" value="<?php echo $user->last_name; ?>" size="30" />
+							<i class="icon-book icon-fixed-width"></i><label for="first_name">Character Name:</label>
+							<input name="first_name" type="text" id="first-name" value="<?php echo $user->first_name; ?>" size="30" />
+							<input name="last_name" type="text" id="last-name" value="<?php echo $user->last_name; ?>" size="30" />
 						</li>
 					
 						<li class="select">

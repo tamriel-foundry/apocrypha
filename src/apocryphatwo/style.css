@@ -2,7 +2,7 @@
 -----------------------------
 Apocrypha Theme Stylesheet
 -----------------------------
-Theme Name: 	Apocrypha Two
+Theme Name: 	Apocrypha
 Theme URI: 		http://tamrielfoundry.com
 Description: 	Custom Tamriel Foundry parent WordPress theme.
 Version: 		2.0
@@ -97,6 +97,7 @@ body {
 	color: #CCC;
 	background-image: url("images/backgrounds/bg-loop.jpg");
 	background-position: 50% 0;
+	position: relative;
 	}
 div#header-container {
 	width: 100%;
@@ -104,7 +105,6 @@ div#header-container {
 	background-image: url("images/backgrounds/tf-banner.jpg");
 	background-repeat: repeat-x;
 	background-position: 50% 0;
-	z-index: 1;
 	}
 div#main-container {
 	width: 1200px;
@@ -707,6 +707,18 @@ img.wp-smiley {
 	box-shadow: none !important;
 	}
 	
+/* Videos */
+iframe,
+object {
+	display: block;
+	margin: 0 auto 1em;
+	padding: 2px;
+	border: 1px solid #333;
+	border-radius: 2px;
+	background: rgba( 17,17,17,0.5 );
+	}
+.youtube { 	box-shadow: 0 0 8px #000; }
+	
 /*---------------------------------------------
 	3.3 - Feedback Elements
 ----------------------------------------------*/
@@ -777,6 +789,9 @@ div.error:before {	content: "\F12A"; }
 .instructions > h3 { float: left; }
 .instructions > h3 + * { clear: left; }
 .instructions > * { margin: 0.5em 0; }
+.instructions > p,
+.instructions > ul,
+.instructions > ol { font-size: 1em !important; }
 
 /* No Results */
 p.no-results { 
@@ -1007,6 +1022,7 @@ ul#notifications-menu {
 	margin: 3px 5px 0 0;
 	padding: 0;
 	position: relative;
+	z-index: 90;
 	}
 li.notification-type {
 	width: 24px;
@@ -1932,13 +1948,13 @@ p.whos-online-total {
 	}
 li.whos-online-member {
 	float: left;
-	margin: 0 5px 5px 0;
-	padding: 2px 8px;
+	margin: 0 3px 3px 0;
+	padding: 1px 6px;
 	border: 1px solid #000;
 	border-radius: 5px;
 	background-image: url(images/backgrounds/light-denim.jpg);
 	box-shadow: 0 0 2px #666 inset;
-	font-size: 0.875em;
+	font-size: 0.75em;
 	}
 li.whos-online-member.even {
 	background-image: url(images/backgrounds/dark-denim.jpg);
@@ -2446,6 +2462,7 @@ form.forum-search {
 	right: 10px;
 	margin: 0;
 }
+header#forum-header h1.entry-title {	font-size: 1.6em; }
 	
 /*---------------------------------------------
 	8.1 - Forums and Topics Loops
@@ -2477,6 +2494,9 @@ h3.forum-title {
 	margin: 0 10px;
 	font-size: 1.125em;
 	color: #999;
+	white-space: nowrap;
+	overflow: hidden;
+	max-height: 1.5em;
 	}
 p.forum-description {
 	margin: 2px 10px 0;
@@ -2747,11 +2767,13 @@ blockquote.user-status {
 	margin: 0.5em;
 	padding-right: 0;
 	}
+blockquote#profile-status {	margin: 1em 0.5em;	}
 blockquote.user-status span.activity,
 blockquote.user-status a.update-status-button {
+	margin: 0;
 	position: absolute;
-	top: 1em;
-	right: 1em;
+	top: -10px;
+	right: -40px;
 	text-shadow: none;
 	}
 div#profile-widgets {
@@ -2837,7 +2859,10 @@ li.user-badge.ebonheart 			{ background-position: 0 -150px; }
 
 
 /* Character Biography */
-div#user-biography {	margin: 0 320px 0 1em; }
+div#user-biography {	
+	clear: left;
+	margin: 0 320px 0 1em; 
+	}
 div#user-character {
 	width: 300px;
 	float: right;
@@ -2859,7 +2884,7 @@ div#character-sheet.aldmeri { background-position: 0 0; }
 div#character-sheet.altmer { background-position: 0 -169px; }
 div#character-sheet.bosmer { background-position: 0 -338px; }
 div#character-sheet.khajiit { background-position: 0 -507px; }
-div#character-sheet.daggerfall { background-position: 300px 0; }
+div#character-sheet.daggerfall { background-position: -300px 0; }
 div#character-sheet.breton { background-position: -300px -169px; }
 div#character-sheet.orc { background-position: -300px -338px; }
 div#character-sheet.redguard { background-position: -300px -507px; }
@@ -2948,6 +2973,7 @@ form#edit-profile-form label {	min-width: 200px; }
 /*---------------------------------------------
 	9.3 - Group Profile
 ----------------------------------------------*/
+h1#profile-title.guild-name { font-size: 1.6em; }
 div.group-profile-content ul#directory-actions > li { width: 15%; }
 span#guild-activity {
 	position: relative;
@@ -3041,12 +3067,16 @@ ol#group-create-list {
 	list-style: decimal;
 	padding: 0 0 0 2em;
 	}
+ol#group-create-list li.text label,
+ol#group-create-list li.select label { width: 200px; }
 	
 /*---------------------------------------------
 	9.4 - Directories
 ----------------------------------------------*/
 header#directory-header { margin: 0; }
 #subnav { 
+	width: 100%;
+	float: left;
 	position: relative;
 	margin: 1em 0 0;
 	border-radius: 3px;
@@ -3173,6 +3203,8 @@ div.guild-description {
 		
 /* Activity Comments */
 div.activity-comments ul {
+	width: 100%;
+	float: left;
 	list-style: none;
 	margin: 0;
 	padding: 0;

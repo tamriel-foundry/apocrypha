@@ -44,7 +44,10 @@ if ( isset( $_POST['submitted'] ) ) {
 		// Send mail
 		$emailto	= 'admin@tamrielfoundry.com';
 		$subject 	= 'Contact Form Submission from ' . $name;
-		$body 		= "Name: $name \n\nEmail: $email \n\nComments: $comments";
+		$body 		= "<p>Name: $name</p>";
+		$body		.= "<p>Email: $email</p>";
+		$body		.= "<p>Comments:</p>";
+		$body		.= $comments;
 		$headers[] 	= "From: $name <$email>\r\n";
 		$headers[] 	= "Content-Type: text/html; charset=UTF-8";	
 		wp_mail($emailto, $subject, $body, $headers);
@@ -62,7 +65,7 @@ if ( isset( $_POST['submitted'] ) ) {
 		<?php apoc_breadcrumbs(); ?>
 		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
 		
-			<div id="contact-page" class="entry-content">
+			<div id="contact-page">
 			
 				<header class="entry-header <?php post_header_class(); ?>">
 					<h1 class="entry-title"><?php entry_header_title( false ); ?></h1>

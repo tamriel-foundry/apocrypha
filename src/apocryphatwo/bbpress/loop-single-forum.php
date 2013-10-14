@@ -9,7 +9,7 @@
  
 <header class="forum-header">
 	<div class="forum-content"><h2><?php bbp_forum_title(); ?></h2></div>
-	<div class="forum-count">Posts</div>
+	<div class="forum-count">Topics</div>
 	<div class="forum-freshness">Latest Post</div>
 </header>
  

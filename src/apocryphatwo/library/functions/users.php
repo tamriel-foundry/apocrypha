@@ -59,10 +59,14 @@ class Apoc_User {
 		// Get all meta entries for a user
 		$meta = array_map( function( $a ){ return $a[0]; }, get_user_meta( $user_id ) );
 		
+		// The table prefix is needed to obtain some of the meta
+		global $wpdb;
+		$prefix = $wpdb->prefix;
+		
 		// Add meta to the class
 		$this->id		= $user_id;
 		$this->fullname = $meta['nickname'];
-		$this->roles	= array_keys( maybe_unserialize( $meta['wp_capabilities'] ) );
+		$this->roles	= array_keys( unserialize( $meta[ $prefix . 'capabilities' ] ) );
 		$this->status	= maybe_unserialize( $meta['bp_latest_update'] );
 		$this->faction	= $meta['faction'];
 		$this->race		= $meta['race'];
@@ -123,9 +127,9 @@ class Apoc_User {
 			5 => array(	'min_posts' => 250	, 'next_rank' => 500	, 'title' => 'Expert'		),
 			6 => array( 'min_posts' => 500	, 'next_rank' => 1000	, 'title' => 'Master' 		),
 			7 => array( 'min_posts' => 1000	, 'next_rank' => 2500	, 'title' => 'Grandmaster' 	),
-			7 => array( 'min_posts' => 2500	, 'next_rank' => 5000	, 'title' => 'Hero' 		),
-			7 => array( 'min_posts' => 5000	, 'next_rank' => 10000	, 'title' => 'Legend' 		),
-			7 => array( 'min_posts' => 10000, 'next_rank' => 20000	, 'title' => 'Divine' 		),
+			8 => array( 'min_posts' => 2500	, 'next_rank' => 5000	, 'title' => 'Hero' 		),
+			9 => array( 'min_posts' => 5000	, 'next_rank' => 10000	, 'title' => 'Legend' 		),
+			10 => array( 'min_posts' => 10000, 'next_rank' => 20000	, 'title' => 'Divine' 		),
 		);
 		
 		// Iterate through the ranks, determining where the user's postcount falls
@@ -521,8 +525,8 @@ class Edit_Profile extends Apoc_User {
 			
 		// Get the original values so we can tell whether they were updated
 		$originals 	= array(
-			'first-name'	=> $this->first_name,
-			'last-name'		=> $this->last_name,
+			'first_name'	=> $this->first_name,
+			'last_name'		=> $this->last_name,
 			'faction'		=> $this->faction,
 			'race'			=> $this->race,
 			'playerclass'	=> $this->class,
@@ -541,7 +545,7 @@ class Edit_Profile extends Apoc_User {
 			
 		// Group meta fields by their sanitization treatment
 		$updates = array(
-			'escattr'	=> array( 'first-name' , 'last-name' , 'guild' , 'url' , 'facebook' , 'twitter' , 'youtube' , 'steam' , 'twitch' , 'bethforums' ),
+			'escattr'	=> array( 'first_name' , 'last_name' , 'guild' , 'url' , 'facebook' , 'twitter' , 'youtube' , 'steam' , 'twitch' , 'bethforums' ),
 			'escurl'	=> array( 'url' ),
 			'kses'		=> array( 'description' , 'signature' ),
 			'noesc'		=> array( 'faction' , 'race' , 'playerclass', 'prefrole' )

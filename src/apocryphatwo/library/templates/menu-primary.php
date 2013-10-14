@@ -40,7 +40,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 				<div class="sub col">
 					<h3>Skill Lines</h3>
 					<ul class="submenu">
-						<li><a href="#">Weapon Skills</a></li>
+						<li><a href="<?php echo SITEURL . '/weapons' ?>">Weapon Skills</a></li>
 						<?php /*
 						<li><a href="#">Armor Types</a></li>
 						<li><a href="#">NPC Guilds</a></li>

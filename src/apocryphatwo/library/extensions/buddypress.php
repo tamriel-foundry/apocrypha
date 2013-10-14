@@ -137,7 +137,7 @@ class Apoc_BuddyPress {
 			$friend_requests = bp_friend_get_total_requests_count();
 			if ( $friend_requests ) {
 				$friend_plus = ' <span class="activity-count">+' . $friend_requests . '</span>';
-				$bp->bp_nav['friends']['name'] .= $friend_plus;
+				$bp->bp_nav['friends']['name'] = 'Friends ' . $friend_plus;
 				$bp->bp_options_nav['friends']['requests']['name'] .= $friend_plus;
 			}
 						

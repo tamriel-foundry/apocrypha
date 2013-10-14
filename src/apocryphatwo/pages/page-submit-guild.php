@@ -97,7 +97,7 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 		// Set the email headers
 		$emailto 	= 'admin@tamrielfoundry.com';
 		$subject 	= "Guild Creation Request From $username";
-		$headers[] 	= "From: $username <$useremail>\r\n";
+		$headers[] 	= "From: $username <$user_email>\r\n";
 		$headers[] 	= "Content-Type: text/html; charset=UTF-8";
 		
 		// Construct the message

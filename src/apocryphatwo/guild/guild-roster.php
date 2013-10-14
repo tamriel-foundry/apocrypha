@@ -52,6 +52,15 @@
 				</li>
 				<?php endwhile; ?>
 			</ul><!-- #members-list -->
+			
+			<nav id="pag-bottom" class="pagination directory-pagination">
+				<div id="member-dir-count-bottom" class="pagination-count" >
+					<?php bp_members_pagination_count(); ?>
+				</div>
+				<div id="member-dir-pag-bottom" class="pagination-links" >
+					<?php bp_members_pagination_links(); ?>
+				</div>
+			</nav>
 			<?php endif; ?>
 		</div>
 			

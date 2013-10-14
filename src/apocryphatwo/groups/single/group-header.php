@@ -12,7 +12,7 @@ global $guild;
 
 
 <header id="profile-header" class="entry-header <?php echo $guild->alliance; ?>">
-	<h1 id="profile-title" class="entry-title">Guild Profile - <?php echo $guild->fullname; ?></h1>
+	<h1 id="profile-title" class="guild-name entry-title">Guild Profile - <?php echo $guild->fullname; ?></h1>
 	<p class="entry-byline <?php echo $guild->faction; ?>"><?php echo $guild->byline; ?></p>		
 	<div id="profile-actions">
 		<span id="guild-activity" class="activity"><?php printf( __( 'active %s', 'buddypress' ), bp_get_group_last_active() ); ?></span>

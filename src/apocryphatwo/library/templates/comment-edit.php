@@ -39,20 +39,24 @@ endif;
 		<div id="respond">
 			<form id="edit-comment-form" class="standard-form" name="edit-comment-form" method="post" action="<?php echo $action_url ?>">
 			
-				<?php wp_editor( stripslashes( $comment->comment_content ) , 'comment-edit' , array(
-					'media_buttons' => false,
-					'wpautop'		=> true,
-					'editor_class'  => 'comment-edit',
-					'quicktags'		=> true,
-					'teeny'			=> false,
-					)
-				); ?>		
-
-				<p class="form-submit">
-					<input name="submit" type="submit" id="submit" value="Edit Comment" />
-					<?php wp_nonce_field( 'edit-comment' , 'edit_comment_nonce' ) ?>
-				</p>
+				<ol>
+					<li class="wp-editor">
+						<?php wp_editor( stripslashes( $comment->comment_content ) , 'comment-edit' , array(
+							'media_buttons' => false,
+							'wpautop'		=> true,
+							'editor_class'  => 'comment-edit',
+							'quicktags'		=> true,
+							'teeny'			=> false,
+							) ); ?>		
+					</li>
 					
+					<li class="submit">
+						<button type="submit" name="submit"><i class="icon-pencil"></i>Edit Comment</button>
+					</li>
+					
+					<li class="hidden">
+						<?php wp_nonce_field( 'edit-comment' , 'edit_comment_nonce' ) ?>
+					</li>					
 			</form>
 		</div><!-- #respond -->
 			

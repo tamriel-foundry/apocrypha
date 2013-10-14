@@ -74,3 +74,11 @@ LINE 887 :
 LINE 894 :
 	// Grab the custom edit reply template
 	locate_template( array( 'groups/single/forum/reply-edit.php' ), true );
+	
+	
+	
+	
+	
+bbpress/includes/replies/capabilities.php
+LINE 129 - ALLOW USERS TO EDIT REPLIES THAT HAVE BEEN FRESHLY AJAXED: 
+	} elseif ( (int) $user_id === (int) $_post->post_author ) {

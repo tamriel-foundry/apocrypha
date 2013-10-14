@@ -333,7 +333,7 @@ class Apoc_User {
 		$badges = array();
 		
 		// Role Badges
-		if ( 'administrator' == $this->roles[0] || 'bbp_moderator' == $this->roles[1] ) {
+		if ( 'administrator' == $this->roles[0] || 'bbp_moderator' == $this->roles[1] || 'bbp_keymaster' == $this->roles[1] ) {
 			$badges['tfteam'] = array(
 				'name'		=> 'TF Team Member',
 				'class'		=> 'tfteam',

@@ -84,6 +84,7 @@ class Apoc_BuddyPress {
 	function filters() {
 	
 		// Activity Items
+		add_filter( 'bp_activity_user_can_delete' 	, array( $this , 'activity_can_delete' ) );
 		add_filter( 'bp_get_activity_delete_link' 	, array( $this , 'activity_delete_icon' ) );
 		add_filter( 'bp_activity_can_favorite'		, array( $this , 'activity_prevent_favorite' ) ); 
 	}
@@ -292,6 +293,11 @@ class Apoc_BuddyPress {
 	/*
 	 * Activity delete buttons
 	 */
+	function activity_can_delete( $can_delete ) {
+		if ( bp_is_item_mod() ) return true;
+		else return $can_delete;
+	}
+	
 	function activity_delete_icon( $link ) {
 		$link = str_replace( 'Delete' , '<i class="icon-remove"></i>Delete' , $link );
 		return $link;

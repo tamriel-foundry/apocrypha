@@ -631,7 +631,7 @@ function apoc_private_message_reply() {
 				<?php echo $user->block; ?>
 			</div>
 			<div class="reply-content">
-				<?php echo $_REQUEST['content']; ?>
+				<?php echo wpautop( stripslashes( $_REQUEST['content'] ) ); ?>
 			</div>
 			<?php $user->signature(); ?>
 		</div>	

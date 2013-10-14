@@ -118,7 +118,7 @@ function apoc_comment_admin_links() {
  * Quote button for comments and replies
  * @version 1.0.0
  */
-function apoc_quote_button( $context = 'comment' ) {
+function apoc_quote_button( $context = 'comment' , $post_id = 0 ) {
 
 	// Get information by context
 	switch( $context ) {
@@ -133,9 +133,9 @@ function apoc_quote_button( $context = 'comment' ) {
 		
 		// Forum replies
 		case 'reply' :
-			$id  			= bbp_get_reply_id( $reply_id );
-			$author_name 	= bbp_get_reply_author( $reply_id );
-			$post_date 		= get_the_date();	
+			$id  			= ( $post_id > 0 ) ? $post_id : bbp_get_reply_id();
+			$author_name 	= bbp_get_reply_author( $id );
+			$post_date 		= get_post_time( 'F j, Y' , false , $id, true );
 			break;
 	}
 
@@ -156,7 +156,7 @@ function apoc_comment_edit_button() {
 	// Only show the button if the user can edit
 	if ( user_can_edit_comment() ) {
 	
-		/// Build the link
+		// Build the link
 		global $comment;
 		$parent_url 	= get_permalink( $comment->comment_post_ID );
 		$edit_url 		= $parent_url . 'comment-' . $comment->comment_ID . '/edit/';
@@ -241,7 +241,7 @@ function user_can_edit_comment() {
 
 	/* Check to see who can edit */
 	global $comment;
-	$user_id 	= apocrypha()->user->ID;
+	$user_id 	= get_current_user_id();
 	$author_id 	= $comment->user_id;
 
 	/* Comment authors and moderators are allowed */

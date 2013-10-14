@@ -108,19 +108,20 @@ elseif ( bbp_current_user_can_access_create_reply_form() ) : ?>
 	
 <?php // The topic itself is closed
 elseif ( bbp_is_topic_closed() ) : ?>
-	<header id="respond-subheader" class="reply-header" >	
-		<?php printf( 'The topic &ldquo;%s&rdquo; is closed to new replies.' , bbp_get_topic_title() ); ?>
-	</header>
+<header id="respond-subheader" class="reply-header" >	
+	<?php printf( 'The topic &ldquo;%s&rdquo; is closed to new replies.' , bbp_get_topic_title() ); ?>
+</header>
 
 <?php // The parent forum for this topic is closed
 elseif ( bbp_is_forum_closed( bbp_get_topic_forum_id() ) ) : ?>
-	<header id="respond-subheader" class="reply-header" >	
-		<?php printf( 'The forum &ldquo;%s&rdquo; is closed to new posts.' , bbp_get_forum_title( bbp_get_topic_forum_id() ) ); ?>
-	</header>
+<header id="respond-subheader" class="reply-header" >	
+	<?php printf( 'The forum &ldquo;%s&rdquo; is closed to new posts.' , bbp_get_forum_title( bbp_get_topic_forum_id() ) ); ?>
+</header>
 	
-<?php // Something else happened?
+<?php // Something else happened - most likely a private group forum
 else : ?>
-	<header id="respond-subheader" class="reply-header" >	
-		Sorry, you cannot post in this topic.
-	</header>
+<header id="respond-subheader" class="reply-header" >	
+	Sorry, you cannot post in this topic.
+</header>
+<?php apoc_forum_rules(); ?>
 <?php endif; ?>

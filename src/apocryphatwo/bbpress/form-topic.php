@@ -133,9 +133,10 @@ elseif ( bbp_is_forum_closed() ) : ?>
 	printf( __( 'The forum &#8216;%s&#8217; is closed to new topics and replies.', 'bbpress' ), bbp_get_forum_title() ); ?>
 </header>
 
-<?php // Something else happened?
+<?php // Something else happened - most likely a private group forum
 else : ?>
 <header id="respond-subheader" class="reply-header" >	
 	Sorry, you cannot create a new topic at this time.
 </header>
+<?php apoc_forum_rules(); ?>
 <?php endif; ?>

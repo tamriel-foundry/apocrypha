@@ -56,14 +56,16 @@ $group = groups_get_group( array( 'group_id' => 1 ) );
 			<h1 id="home-posts-title">Entropy Rising News</h1>
 		</header>
 		
-		<?php entropy_rising_have_posts(); ?>
-		<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-			<?php apoc_display_post(); ?>
-		<?php endwhile; endif; ?>
-		
-		<nav class="pagination ajaxed" data-type="home">
-			<?php apoc_pagination(); ?>
-		</nav>
+		<div id="posts">	
+			<?php entropy_rising_have_posts(); ?>
+			<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+				<?php apoc_display_post(); ?>
+			<?php endwhile; endif; ?>
+			
+			<nav class="pagination ajaxed" data-type="erhome">
+				<?php apoc_pagination( array() , $baseurl = SITEURL . '/entropy-rising' ); ?>
+			</nav>
+		</div>
 		
 	</div><!-- #content -->
 	<?php entropy_rising_sidebar(); ?>

@@ -10,7 +10,11 @@
 <nav class="directory-subheader no-ajax" id="subnav" >
 	<ul id="profile-tabs" class="tabs" role="navigation">
 		<li class="current"><span>Guild Activity</span></li>
+		<?php if ( is_user_logged_in() && bp_group_is_member() ) : ?>	
+			<a id="group-status-button" class="update-status-button button"><i class="icon-pencil"></i>What's New?</a>
+		<?php endif; ?>
 	</ul>
+	
 	<div id="activity-filter-select" class="filter">
 		<select id="activity-filter-by">
 		<option value="-1">All Activity</option>
@@ -21,7 +25,7 @@
 	</div>
 </nav><!-- #subnav -->
 
-<?php if ( is_user_logged_in() && bp_group_is_member() ) : ?>
+<?php if ( is_user_logged_in() && bp_group_is_member() ) : ?>		
 	<?php locate_template( array( 'activity/post-form.php'), true ); ?>
 <?php endif; ?>
 

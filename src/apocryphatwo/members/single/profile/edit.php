@@ -152,8 +152,8 @@ $user 		= new Edit_Profile( $user_id , 'profile' );
 					</div>
 					<ol id="contact-methods">						
 						<li class="text">
-							<i class="icon-globe icon-fixed-width"></i><label for="url">Your Website:</label>
-							<input class="text-input" name="url" type="url" id="url" value="<?php echo $user->contacts['url']; ?>" size="60" />
+							<i class="icon-globe icon-fixed-width"></i><label for="user_url">Your Website:</label>
+							<input class="text-input" name="user_url" type="url" id="user_url" value="<?php echo $user->contacts['user_url']; ?>" size="60" />
 						</li>
 						
 						<li class="text">
@@ -166,6 +166,12 @@ $user 		= new Edit_Profile( $user_id , 'profile' );
 							<i class="icon-twitter icon-fixed-width"></i><label for="twitter">Twitter:</label>
 							<span class="contact-url-prefix">twitter.com/</span>
 							<input type="text" name="twitter" id="twitter" value="<?php echo $user->contacts['twitter']; ?>" class="regular-text user-contact-method" size="46">
+						</li>
+						
+						<li class="text">
+							<i class="icon-google-plus icon-fixed-width"></i><label for="gplus">Google+:</label>
+							<span class="contact-url-prefix">plus.google.com/</span>
+							<input type="text" name="gplus" id="gplus" value="<?php echo $user->contacts['gplus']; ?>" class="regular-text user-contact-method" size="40">
 						</li>
 						
 						<li class="text">

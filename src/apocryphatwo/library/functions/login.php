@@ -15,7 +15,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  */
 add_action( 'login_enqueue_scripts', 'apoc_login_styles' );
 function apoc_login_styles() {
-	echo '<link rel="stylesheet" href="' . THEME_URI . '/library/css/login-style.css" type="text/css" media="all" />';
+	echo '<link rel="stylesheet" href="' . THEME_URI . '/library/css/login-style.css?ver=1.1.0" type="text/css" media="all" />';
 }
 add_filter( 'login_headerurl', 'apoc_login_url' );
 function apoc_login_url() {

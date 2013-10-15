@@ -111,7 +111,7 @@ add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_scripts' );
 function apoc_enqueue_scripts() {
 
 	// Register first
-	wp_register_script( 'foundry' 		, THEME_URI . '/library/js/foundry.js' 			, 'jquery' , $ver='0.1' , true	);
+	wp_register_script( 'foundry' 		, THEME_URI . '/library/js/foundry.js' 			, 'jquery' , $ver='0.2' , true	);
 	wp_register_script( 'flexslider' 	, THEME_URI . '/library/js/flexslider.min.js' 	, 'jquery' , $ver='0.1' , true  );
 	wp_register_script( 'buddypress'	, THEME_URI . '/library/js/buddypress.js' 		, 'jquery' , $ver='0.1' , true 	);	
 	wp_register_script( 'colorbox' 		, THEME_URI . '/library/js/colorbox.min.js' 	, 'jquery' , $ver='1.0' , true	);
@@ -148,7 +148,6 @@ function google_analytics_js() {
 /*--------------------------------------------------------------
 3.0 - TINYMCE CUSTOMIZATION
 --------------------------------------------------------------*/
-
 /**
  * Set some TinyMCE options
  * @version 1.0.0

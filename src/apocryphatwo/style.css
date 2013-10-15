@@ -617,8 +617,7 @@ button.button-dark:hover { color: #EEE; }
 
 /* Images */
 img { max-width: 100%;}
-.post img,
-.page img,
+.entry-content img,
 .reply-content img {
 	max-width: 99%;
 	height: auto;
@@ -2860,8 +2859,11 @@ li.user-badge.ebonheart 			{ background-position: -100px -150px; }
 
 /* Character Biography */
 div#user-biography {	
+	width: auto;
+	float: none;
 	clear: left;
 	margin: 0 320px 0 1em; 
+	padding: 0;
 	}
 div#user-character {
 	width: 300px;
@@ -2873,7 +2875,6 @@ div#character-sheet {
 	height: 169px;
 	margin: 0.5em 0;
 	background-image: url( "images/backgrounds/flags.jpg" );
-	background-position: 900px 0;
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 3px #111 inset;
@@ -2892,12 +2893,12 @@ div#character-sheet.ebonheart { background-position: -600px 0; }
 div#character-sheet.argonian { background-position: -600px -169px; }
 div#character-sheet.dunmer { background-position: -600px -338px; }
 div#character-sheet.nord { background-position: -600px -507px; }
-div#character-sheet.default { background-position: 0 -676px; }
+div#character-sheet.neutral { background-position: 0 -676px; }
 
 div#character-sheet > ul {
-	margin: 17px 2em;
+	margin: 1em;
 	background: rgba( 17,17,17,0.75 );
-	padding: 0.5em 1em;
+	padding: 0.75em 1em;
 	text-align: left;
 	font-size: 0.8em;
 	border: 1px solid #111;
@@ -2906,8 +2907,8 @@ div#character-sheet > ul {
 	}
 div#character-sheet > ul li span { 
 	display: inline-block;
-	width: 60px;
-	margin: 0 3px; 
+	width: 50px;
+	margin: 0 0 0 3px; 
 	}
 	
 /* Infraction Form */
@@ -3030,6 +3031,7 @@ li.guild-style-icon.pvp { background-position: 0px 0px; }
 li.guild-style-icon.pve { background-position: -24px 0px; }
 li.guild-style-icon.rp { background-position: -48px 0px; }
 li.guild-style-icon.crafting { background-position: -72px 0px; }
+a#group-status-button { margin: 0.5em 1em; }
 
 /* Guild Send Invites */
 div#invited-list,
@@ -3200,6 +3202,7 @@ div.guild-description {
 	width: 100%;
 	float: left;
 	}
+div.guild-description img { max-height: 200px; }
 		
 /* Activity Comments */
 div.activity-comments ul {
@@ -3209,14 +3212,15 @@ div.activity-comments ul {
 	margin: 0;
 	padding: 0;
 	}
-div.activity-comments li.recent-discussion div.recent-discussion-content {
+li.activity-comment span.recent-discussion-title { margin: 8px 0 4px -6px; }	
+li.activity-comment div.recent-discussion-content {
 	height: auto;
 	position: relative;
 	}
 div.acomment-options {
 	position: absolute;
-	top: 5px;
-	right: 5px;
+	top: 1px;
+	right: 1px;
 	}
 div.acomment-content {
 	margin: 0.5em 1em;

@@ -128,12 +128,11 @@ function homepage_have_posts() {
  */
 function entropy_rising_have_posts() {
 	$posts_per_page = 6;
-	$paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
-	$offset = ( $posts_per_page * $paged ) - $posts_per_page;
-	$guild_public = get_cat_ID( 'entropy rising' );
-	$guild_private = get_cat_ID( 'guild news' );
-	if ( is_user_guild_member() ) $guild_cats = $guild_public . ',' . $guild_private;
-	else $guild_cats = $guild_public;
+	$paged 			= ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
+	$offset 		= ( $posts_per_page * $paged ) - $posts_per_page;
+	$public 		= get_cat_ID( 'entropy rising' );
+	$private 		= get_cat_ID( 'guild news' );
+	$guild_cats		= is_user_guild_member() ? $public . ',' . $private : $public;
 
 	$args = array( 
 		'paged'=> $paged, 

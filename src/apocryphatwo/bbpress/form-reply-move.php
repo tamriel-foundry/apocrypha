@@ -60,9 +60,9 @@ if ( is_user_logged_in() && current_user_can( 'edit_topic', bbp_get_topic_id() )
 				<button type="submit" tabindex="<?php bbp_tab_index(); ?>" id="bbp_move_reply_submit" name="bbp_move_reply_submit"><i class="icon-move"></i>Move Reply</button>
 			</li>
 
-
-
-
+			<li class="hidden">
+				<?php bbp_move_reply_form_fields(); ?>
+			</li>
 		</ol>
 	</fieldset>
 </form>

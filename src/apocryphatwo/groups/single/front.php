@@ -15,7 +15,7 @@
 
 <div id="user-profile" role="main">
 
-	<div id="guild-description">
+	<div id="guild-description" class="entry-content">
 		<?php bp_group_description(); ?>
 	</div>
 

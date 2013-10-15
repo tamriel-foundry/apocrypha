@@ -17,6 +17,7 @@ function get_moderator_emails() {
 		'isarii@tamrielfoundry.com',
 		'tonsha@tamrielfoundry.com', 
 		'grimalkin@tamrielfoundry.com', 
+		'nybling@outlook.com',
 	);
 	return $emails;
 }
@@ -91,9 +92,10 @@ class Apoc_User {
 			$this->regdate 		= strtotime( $user->user_registered );
 			$this->byline		= $this->byline();
 			$this->contacts		= array(
-				'url' 			=> $user->user_url,
+				'user_url' 		=> $user->user_url,
 				'twitter' 		=> $meta['twitter'],
 				'facebook' 		=> $meta['facebook'],
+				'gplus' 		=> $meta['gplus'],
 				'steam' 		=> $meta['steam'],
 				'youtube' 		=> $meta['youtube'],
 				'twitch' 		=> $meta['twitch'],
@@ -303,12 +305,14 @@ class Apoc_User {
 			echo '<li><i class="icon-eye-close icon-fixed-width"></i>No contact information shared</li>';
 			return;
 		}
-		if ( $contacts['url'] != '' )
-			echo '<li><i class="icon-globe icon-fixed-width"></i><span>Website:</span><a href="' . $contacts['url'] . '" target="_blank">' . $contacts['url'] . '</a></li>' ;
+		if ( $contacts['user_url'] != '' )
+			echo '<li><i class="icon-globe icon-fixed-width"></i><span>Website:</span><a href="' . $contacts['user_url'] . '" target="_blank">' . $contacts['user_url'] . '</a></li>' ;
 		if ( $contacts['twitter'] != '' )
 			echo '<li><i class="icon-twitter icon-fixed-width"></i><span>Twitter:</span><a href="http://twitter.com/' . $contacts['twitter'] . '" target="_blank">' . $contacts['twitter'] . '</a></li>' ;
 		if ( $contacts['facebook'] != '' )
-			echo '<li><i class="icon-facebook icon-fixed-width"></i><span>Facebook:</span><a href="http://facebook.com/' . $contacts['facebook'] . '" target="_blank">' . $contacts['facebook'] . '</a></li>' ;
+			echo '<li><i class="icon-facebook icon-fixed-width"></i><span>Facebook:</span><a href="http://facebook.com/' . $contacts['facebook'] . '" target="_blank">' . $contacts['facebook'] . '</a></li>' ;		
+		if ( $contacts['gplus'] != '' )
+			echo '<li><i class="icon-google-plus icon-fixed-width"></i><span>Google+:</span><a href="http://plus.google.com/' . $contacts['gplus'] . '" target="_blank">' . $contacts['gplus'] . '</a></li>' ;
 		if ( $contacts['steam'] != '' )
 			echo '<li><i class="icon-wrench icon-fixed-width"></i><span>Steam ID:</span><a href="http://steamcommunity.com/id/' . $contacts['steam'] . '" target="_blank">' . $contacts['steam'] . '</a></li>' ;
 		if ( $contacts['youtube'] != '' )
@@ -534,10 +538,11 @@ class Edit_Profile extends Apoc_User {
 			'guild'			=> $this->guild,
 			'description'	=> $this->bio,
 			'signature'		=> $this->sig,
-			'url'			=> $this->contacts['url'],
+			'user_url'		=> $this->contacts['user_url'],
 			'twitter'		=> $this->contacts['twitter'],
 			'facebook'		=> $this->contacts['facebook'],
-			'youtube'		=> $this->contacts['facebook'],
+			'gplus'			=> $this->contacts['gplus'],
+			'youtube'		=> $this->contacts['youtube'],
 			'steam'			=> $this->contacts['steam'],
 			'twitch'		=> $this->contacts['twitch'],
 			'bethforums'	=> $this->contacts['bethforums']
@@ -545,8 +550,7 @@ class Edit_Profile extends Apoc_User {
 			
 		// Group meta fields by their sanitization treatment
 		$updates = array(
-			'escattr'	=> array( 'first_name' , 'last_name' , 'guild' , 'url' , 'facebook' , 'twitter' , 'youtube' , 'steam' , 'twitch' , 'bethforums' ),
-			'escurl'	=> array( 'url' ),
+			'escattr'	=> array( 'first_name' , 'last_name' , 'guild' , 'facebook' , 'twitter' , 'gplus' , 'youtube' , 'steam' , 'twitch' , 'bethforums' ),
 			'kses'		=> array( 'description' , 'signature' ),
 			'noesc'		=> array( 'faction' , 'race' , 'playerclass', 'prefrole' )
 		);
@@ -558,10 +562,6 @@ class Edit_Profile extends Apoc_User {
 				
 				case 'escattr' :
 					$treat = 'esc_attr';
-					break;
-				
-				case 'escurl' :
-					$treat = 'esc_url';
 					break;
 					
 				case 'kses' :
@@ -585,6 +585,10 @@ class Edit_Profile extends Apoc_User {
 					delete_user_meta( $user_id	, $field  )	;	
 			}			
 		}
+		
+		// Save the user_url to the users table
+		if ( !empty( $_POST['user_url'] ) && $_POST['user_url'] != $originals['user_url'] )
+			wp_update_user( array ( 'ID' => $user_id , 'user_url' => esc_url( $_POST['user_url'] ) ) ) ;
 		
 		// Let plugins save their stuff
 		do_action('edit_user_profile_update', $user_id );

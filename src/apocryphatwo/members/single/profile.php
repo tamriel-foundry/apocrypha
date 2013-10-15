@@ -39,7 +39,7 @@ else : ?>
 		</div>
 	</div>	
 
-	<div id="user-biography">
+	<div id="user-biography" class="entry-content">
 		<?php if( !empty( $user->bio ) ) :
 			echo $user->bio;
 		else :

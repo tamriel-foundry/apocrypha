@@ -1,5 +1,5 @@
 /*! Post Reporting */
-$("#comments,#forums").on( "click" , "a.report-post" , function( event ){
+$("#comments,#forums,#private-messages").on( "click" , "a.report-post" , function( event ){
 
 	// Confirm the user's desire to report
 	confirmation = confirm("Report this post? Please make sure this is a valid report.");

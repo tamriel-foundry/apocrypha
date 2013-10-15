@@ -109,6 +109,9 @@ function apoc_load_posts() {
 	$args = array();
 	$args['paged'] 	= $paged;
 	
+	// Don't include Entropy Rising
+	$args['cat'] 	= '-'.get_cat_ID( 'entropy rising' ) . ',-' . get_cat_ID( 'guild news' );
+	
 	// Add additional query variables depending on context
 	switch ( $type ) {
 		case 'author' :
@@ -117,7 +120,13 @@ function apoc_load_posts() {
 		
 		case 'category' :
 			$args['cat']	= $id;
-			break;			
+			break;
+
+		case 'erhome' :
+			$public 		= get_cat_ID( 'entropy rising' );
+			$private 		= get_cat_ID( 'guild news' );
+			$args['cat']	= is_user_guild_member() ? $public . ',' . $private : $public;
+			break;
 	}
 		
 	// Issue the posts query
@@ -473,6 +482,9 @@ function apoc_report_post() {
 		$link = bbp_get_reply_url( $postid );
 	elseif ( 'comment' == $type ) :
 		$link = get_comment_link( $postid );
+	elseif( 'message' == $type ) :
+		$link 	= bp_core_get_user_domain( $user ) . 'messages/view/' . trailingslashit( $postid );
+		$user	= bp_core_get_user_displayname( $user );
 	endif;
 	
 	/* Set the email headers */

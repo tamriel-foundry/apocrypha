@@ -195,8 +195,14 @@ class Apocrypha {
 	 */
 	private function actions() {
 	
+		// Block admin dashboard
+		add_action('admin_init'			, array( $this , 'block_admin' ) );
+	
 		// Populate apocrypha globals
-		add_action( 'template_redirect', array( $this , 'populate_globals' ) , 1 );	
+		add_action( 'template_redirect'	, array( $this , 'populate_globals' ) , 1 );	
+		
+		// Support more allowed tags in KSES
+		add_action('init'				, array( $this , 'kses' ) );
 	}
 
 	/**
@@ -204,6 +210,11 @@ class Apocrypha {
 	 * @version 1.0.0
 	 */
 	private function filters() {
+	
+		// Filter email name and from address
+		remove_filter	( 'wp_mail_from_name' , 'bp_core_email_from_name_filter' );
+		add_filter		( 'wp_mail_from_name' , array( $this , 'email_name' ) );
+		add_filter		( 'wp_mail_from'	  , array( $this , 'email_address' ) );
 	
 		// Override WordPress default avatars
 		if ( !is_admin() )
@@ -267,7 +278,61 @@ class Apocrypha {
 		$avatar 	= new Apoc_Avatar( array( 'user_id' => $user_id , 'type' => $type , 'size' => $size ) );
 		
 		return $avatar->avatar;
-	}	
+	}		
+	
+	/**
+	 * Adds additional supported tags to the allowed kses tags, giving users more freedom in comments and forum posts
+	 * @version 1.0.0
+	 */	
+	function kses() {
+
+		// Define the newly allowed tags
+		global $allowedtags;	
+		$newtags = array( 'div' , 'ol' , 'ul' , 'li' , 'p' , 'h1' , 'h2' , 'h3' , 'h4' , 'h5' , 'h6' , 'span' , 'pre' , 'img' );
+		
+		// Register each tag with style and class properties
+		foreach ( $newtags as $tag )
+		$allowedtags[$tag] = array(
+			'style'	=> true,
+			'class'	=> true,
+		);
+		
+		// Register extra properties for certain tags
+		$allowedtags['a']['target'] = true;
+		$allowedtags['img']['src'] = true;
+		$allowedtags['img']['height'] = true;
+		$allowedtags['img']['width'] = true;
+		$allowedtags['img']['alt'] = true;
+	}
+	
+	/**
+	 * Restrict Admin Panel Access
+	 * @since 0.1
+	 */
+	function block_admin() {
+		if ( !current_user_can( 'publish_posts' ) &&  !( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+			wp_redirect( SITEURL ); 
+			exit;
+		}
+	}
+	
+	/**
+	 * Override email header name and from URL if the default is being used
+	 * Allows other forms which have set custom headers to pass unharmed
+	 */
+	function email_name( $name ) {
+		if ( 'WordPress' == $name )
+			return 'Tamriel Foundry';
+		else
+			return $name;
+	}
+	function email_address( $email ) {
+		if ( 'wordpress@tamrielfoundry.com' == $email )
+			return 'noreply@tamrielfoundry.com';
+		else
+			return $email;
+	}
+	
 
 }
 
@@ -281,4 +346,9 @@ class Apocrypha {
 function apocrypha() {
 	return Apocrypha::instance();
 }
+
+
+
+
+
 ?>

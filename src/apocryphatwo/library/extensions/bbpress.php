@@ -53,6 +53,9 @@ class Apoc_bbPress {
 		// IMPORTANT - Don't let bbPress do theme compatibility
 		remove_filter( 'bbp_template_include',   'bbp_template_include_theme_compat',   4, 2 );
 		
+		// Topic Title Length
+		add_filter( 'bbp_get_title_max_length'							, array( $this , 'title_length' ) );
+		
 		// Reply CSS Class
 		add_filter( 'bbp_get_reply_class'								, array( $this , 'reply_class' ) );
 		
@@ -72,6 +75,14 @@ class Apoc_bbPress {
 		
 		// Quote Mentions
 		add_filter( 'bbp_activity_reply_create_excerpt' 				, array( $this , 'quote_mention' ) );
+	}
+	
+	/**
+	 * Set an intelligent maximum topic title length
+	 * @version 1.0.0
+	 */
+	function title_length( $length ) {
+		return 70;
 	}
 	
 	/**
@@ -251,26 +262,34 @@ function apoc_list_subforums( $args = array() ) {
 		// Count evens and odds
 		$i = 1;
 		
-		// Loop through subforums and display them in full
-		foreach ( $subforums as $subforum ) {
+		// Loop through subforums and store output in a buffer
+		ob_start();
+		foreach ( $subforums as $subforum ) :
 			
 			// Get forum details
 			$sub_id		= $subforum->ID;
-			$title    	= $subforum->post_title;
+			$title    = $subforum->post_title;
 			$desc		= $subforum->post_content;
 			$permalink 	= bbp_get_forum_permalink( $sub_id );
 			
-			// Get topic and reply counts
+			// Get topic counts
 			$topics	 	= bbp_get_forum_topic_count( $sub_id , false );
-			$replies 	= bbp_get_forum_reply_count( $sub_id , false );
-			$total		= $topics + $replies;
+			
+			// Get the most recent reply
+			$active_id		= bbp_get_forum_last_active_id( $sub_id );
+			if ( empty( $active_id ) )
+			$active_id 		= bbp_get_forum_last_reply_id( $sub_id );
+			if ( empty( $active_id ) )
+			$active_id		= bbp_get_forum_last_topic_id( $sub_id );
+				
+			// Get reply link
+			$link_url 		= bbp_is_reply( $active_id ) ? bbp_get_forum_last_reply_url( $sub_id ) : bbp_get_forum_last_topic_permalink( $sub_id );
 			
 			// Build the html class
 			$class = ( $i % 2 ) ? "sub-forum odd " : "sub-forum even ";
 			$class .= bbp_get_forum_status( $sub_id );
 			
-			// Build output
-			ob_start(); ?>
+			// Build output ?>
 			<li id="forum-<?php echo $sub_id ?>" class="<?php echo $class; ?>">
 				<div class="forum-content">
 					<h3 class="forum-title"><a href="<?php echo $permalink; ?>" title="Browse <?php echo $title; ?>"><?php echo $title; ?></a></h3>
@@ -278,19 +297,19 @@ function apoc_list_subforums( $args = array() ) {
 				</div>
 
 				<div class="forum-count">
-					<?php echo $total; ?>
+					<?php echo $topics; ?>
 				</div>
 
 				<div class="forum-freshness">
-					<?php bbp_author_link( array( 'post_id' => bbp_get_forum_last_active_id( $sub_id ), 'type' => 'avatar' , 'size' => 50 ) ); ?>
+					<?php bbp_author_link( array( 'post_id' => $active_id, 'type' => 'avatar' , 'size' => 50 ) ); ?>
 					<div class="freshest-meta">
-						<a class="freshest-title" href="<?php bbp_forum_last_reply_url( $sub_id ); ?>" title="<?php bbp_forum_last_topic_title( $sub_id ); ?>"><?php bbp_forum_last_topic_title( $sub_id ); ?></a>
-						<span class="freshest-author">By <?php bbp_author_link( array( 'post_id' => bbp_get_forum_last_active_id( $sub_id ), 'type' => 'name' ) ); ?></span>
+						<a class="freshest-title" href="<?php echo $link_url; ?>" title="<?php bbp_forum_last_topic_title( $sub_id ); ?>"><?php bbp_forum_last_topic_title( $sub_id ); ?></a>
+						<span class="freshest-author">By <?php bbp_author_link( array( 'post_id' => $active_id, 'type' => 'name' ) ); ?></span>
 						<span class="freshest-time"><?php bbp_forum_last_active_time( $sub_id ); ?></span>
 					</div>
 				</div>
-			</li><?php 
-		}
+			</li>
+		<?php endforeach;
 		
 		$output = ob_get_contents();
 		ob_end_clean();
@@ -299,27 +318,6 @@ function apoc_list_subforums( $args = array() ) {
 		echo $before . $output . $after;
 	}
 }
-
-/* 
- * Display a custom freshness block for subforums
- * @since 0.1
- */
-function apoc_subforum_freshness( $subforum_id = '' ) {			
-	$output = '';
-	if ( !empty( $subforum_id ) ) {
-		$author_id = bbp_get_forum_last_reply_author_id( $subforum_id );
-		$output .= '<a class="freshest-topic-title" href="' . bbp_get_forum_last_reply_url( $subforum_id ) . '">' . bbp_get_forum_last_topic_title( $subforum_id ) . '</a>';
-		$output .= '<div class="freshest-topic-meta">';
-		$output .= '<span class="freshest-author">By: ';
-		$output .= bbp_get_author_link( array( 'post_id' => bbp_get_forum_last_reply_id( $subforum_id ) , 'type' => 'name' ) ) . ' ';
-		$output .= bbp_get_author_link( array( 'post_id' => bbp_get_forum_last_reply_id( $subforum_id ) , 'type' => 'avatar' , 'size' => 20 ) );
-		$output .= '</span> ';
-		$output .= '<span class="freshness-time">';
-		$output .= bbp_get_forum_last_active_time( $subforum_id );
-		$output .= '</span></div>';
-	}
-	return $output;
-} 
 
 /*---------------------------------------------
 3.0 - SINGLE TOPICS

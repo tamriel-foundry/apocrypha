@@ -102,7 +102,7 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 		
 		// Construct the message
 		$body 		= '<p><b>From:</b> <a href="http://tamrielfoundry.com/members/'.$login.'" title="view profile" target="_blank">'.$username.'</a></p>';
-		$body 		.= "<p><b>Email:</b> $useremail</p>";
+		$body 		.= "<p><b>Email:</b> $user_email</p>";
 		$body 		.= "<p><b>Guild Name:</b> $group_name</p>";
 		$body 		.= "<p><b>Guild Description:</b></p> $group_description";
 		$body 		.= "<p><b>Guild Website:</b> $group_website</p>";
@@ -117,8 +117,7 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 		wp_mail( $emailto , $subject , $body , $headers );
 		$email_sent = true;
 	}
-}
-?>
+} ?>
 
 <?php get_header(); ?>
 

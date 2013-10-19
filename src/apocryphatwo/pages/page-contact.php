@@ -37,7 +37,7 @@ if ( isset( $_POST['submitted'] ) ) {
 		
 		// Get the data
 		$name 		= trim( $_POST['name'] );
-		$email 		= trim( $_POST['name'] );
+		$email 		= trim( $_POST['email'] );
 		$comments 	= stripslashes( trim( $_POST['comments'] ) );
 		$copy		= $_POST['copy'];
 		

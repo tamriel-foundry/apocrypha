@@ -55,7 +55,9 @@ $user_id 	= $user->id;
 					<li id="infraction-<?php echo $id; ?>" class="infraction-entry">
 						<header>
 							<span class="infraction-meta activity"><?php echo $entry['date'] . ' - ' . $points; ?></span>
+							<?php if ( current_user_can( 'moderate' ) ) : ?>
 							<span class="infraction-mod">Issued By: <?php echo $entry['moderator']; ?></span>
+							<?php endif; ?>
 						</header>
 						
 						<div class="infraction-content">

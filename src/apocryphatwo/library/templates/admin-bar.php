@@ -7,7 +7,7 @@
  */
  
 // Show the search form to everybody ?>
-<div id="header-search">
+<div id="header-search" class="notification-type" >
 	<div id="search-dropdown" class="admin-bar-dropdown">
 		<?php apoc_get_search_form( 'posts' ); ?>
 	</div>

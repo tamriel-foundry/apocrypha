@@ -1104,12 +1104,11 @@ div.admin-bar-dropdown {
 	border-radius: 0 0 5px 5px;
 	box-shadow: 0 2px 5px #000;
 	opacity:0;
-	transition: visibility 0s linear 0.25s, opacity 0.25s linear;
-	-moz-transition: visibility 0s linear 0.25s, opacity 0.25s linear;
 	-webkit-transition: visibility 0s linear 0.25s, opacity 0.25s linear;
+	-moz-transition: visibility 0s linear 0.25s, opacity 0.25s linear;
+	transition: visibility 0s linear 0.25s, opacity 0.25s linear;
 	}
-li.notification-type:hover > div.admin-bar-dropdown,
-div#header-search:hover > div#search-dropdown {
+.notification-type:hover > div.admin-bar-dropdown {
 	visibility: visible;
 	opacity: 1;
 	}
@@ -1698,7 +1697,7 @@ div.signature-content > p { margin: 0; }
 div.signature-content img {
 	max-height: 150px;
 	width: auto;
-	margin: 0;
+	margin-bottom: 0;
 	padding: 0;
 	border: none;
 	box-shadow: none;

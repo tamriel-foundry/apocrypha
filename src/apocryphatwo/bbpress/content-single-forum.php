@@ -24,7 +24,7 @@ if ( !bbp_is_forum_category() && bbp_has_topics() ) : ?>
 
 	<?php bbp_get_template_part( 'loop', 'topics' ); ?>
 
-	<nav class="forum-pagination pagination">
+	<nav class="forum-pagination pagination ajaxed" data-type="topics" data-id="<?php bbp_forum_id(); ?>">
 		<div class="pagination-count">
 			<?php bbp_forum_pagination_count(); ?>
 		</div>

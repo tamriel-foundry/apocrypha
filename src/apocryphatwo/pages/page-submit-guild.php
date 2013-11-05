@@ -8,13 +8,20 @@
  */
  
 // Set guild submission status
-$enabled = true;
-$minposts = 25;
+$enabled 	= true;
+$minposts 	= 25;
+$regtime	= '2 weeks';
 
 // Get the current user
 $user_id = get_current_user_id();
-if ( $user_id > 0 )
+if ( $user_id > 0 ) {
 	$user = new Apoc_User( $user_id , 'reply' );
+	$regdate = apocrypha()->user->data->user_registered;
+	$regdate = strtotime( $regdate );
+	}
+
+// Can the user submit a guild
+$canreg = ( $regdate <= strtotime( '-'.$regtime ) && $user->posts['total'] > $minposts ) ? true : false;
 
 // Process the form if it was submitted
 if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
@@ -153,8 +160,8 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 		<div class="warning">Guild creation is temporarily disabled while we clear backlogged applications. Sorry for the inconvenience, please check back in a few days.</div>
 				
 		<?php // Make sure the user has enough posts to submit
-		elseif ( $user->posts['total'] < $minposts ) : ?>
-		<div class="warning">Guild submission is only available to Tamriel Foundry members who have contributed more than <?php echo $minposts; ?> posts to the community. This is to prevent the submission of guilds which are only seeking to use Tamriel Foundry as a recruitment or advertisment tool with no intention to participate within the community. Acceptable posts contribute to the discussion within the Tamriel Foundry community while conforming to our site's Code of Conduct, as such, the spam creation of topics or replies will be punished accordingly.</div>
+		elseif ( !$canreg ) : ?>
+		<div class="warning">Guild submission is only available to Tamriel Foundry members who have been a site member for longer than <?php echo $regtime; ?> and contributed more than <?php echo $minposts; ?> posts to the community. This is to prevent the submission of guilds which are only seeking to use Tamriel Foundry as a recruitment or advertisment tool with no intention to participate within the community. Acceptable posts contribute to the discussion within the Tamriel Foundry community while conforming to our site's Code of Conduct, as such, the spam creation of topics or replies will be punished accordingly.</div>
 			
 		<?php // Otherwise, give them the form! 
 		else : ?>

@@ -3,6 +3,10 @@
 buddypress/bp-activity/bp-activity-functions.php
 LINE 84 :
 	if ( !empty( $user_id ) && $user_id != get_current_user_id() ) {
+	
+bbpress\includes\topics\template.php	
+LINE 2349:
+	if ( empty( $topic ) || get_current_user_id() != $topic->post_author || bbp_past_edit_lock( $topic->post_date_gmt ) ) {
 
 bbpress/includes/extend/buddypress/groups.php
 LINE 70 : 

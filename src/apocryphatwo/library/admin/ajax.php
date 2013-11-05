@@ -39,7 +39,7 @@ function top_login_ajax() {
 	$creds = array();
 	$creds['user_login'] 	= $_POST['username'];
 	$creds['user_password'] = $_POST['password'];
-	$creds['remember']		= isset( $_POST['rememberme'] ) ? $_POST['remember'] : false;
+	$creds['remember']		= isset( $_POST['rememberme'] ) ? $_POST['rememberme'] : false;
 	$redirect_url 			= $_REQUEST['redirect'];
 	
 	// Before proceeding, trim and replace any spaces in usernames with hyphens for BuddyPress
@@ -250,7 +250,7 @@ function apoc_load_replies() {
 		'order'				=> 'ASC',
 		's'					=> false,
 	);
-	
+		
 	// Allow bbPress to detect if this request is a ?view=all
 	add_filter( 'bbp_get_view_all' , 'apoc_spoof_view_get' );
 	function apoc_spoof_view_get( $retval ) {
@@ -269,15 +269,12 @@ function apoc_load_replies() {
 		$remove 	= '/\/' . $base . '\/(.*)/';
 		$baseurl 	= preg_replace( $remove , "" , $_POST['baseurl'] );
 		$format		= $base . '/%#%/';
-		
-		// Get the query
-		$bbp = bbpress();
 
 		// Define the args
 		$pagination_args = array(
 			'base'      => trailingslashit( $baseurl ) . $format,
 			'format'    => '',
-			'total'     => $bbp->reply_query->max_num_pages,
+			'total'     => bbpress()->reply_query->max_num_pages,
 			'current'   => $_POST['paged'],
 			'prev_text' => '&larr;',
 			'next_text' => '&rarr;',
@@ -291,7 +288,7 @@ function apoc_load_replies() {
 	
 	// Bluff AJAX into recognizing this as a single topic
 	bbpress()->reply_query->is_single = true;
-	set_query_var( '_bbp_query_name' , 'bbp_single_topic' );
+	set_query_var( '_bbp_query_name' , 'bbp_single_topic' );					
 	
 	// Start an output buffer and capture the formatted replies
 	ob_start();
@@ -388,6 +385,15 @@ function apoc_load_topics() {
 	if ( $forum_id == 0 ) {
 		$topic_args['meta_value'] 	= date( 'Y-m-d' , strtotime( '-30 days' ));
 		$topic_args['meta_compare']	= '>=';
+	}
+	
+	// If it's a specific forum, let bbPress know
+	if ( $forum_id > 0 ) {
+		add_filter( 'bbp_is_single_forum', 'apoc_spoof_single_forum' );
+		function apoc_spoof_single_forum( $retval ) {
+			$retval = true;
+			return $retval;
+			}
 	}
 	
 	// Allow bbPress to detect if this request is a ?view=all

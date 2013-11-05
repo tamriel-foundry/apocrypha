@@ -234,7 +234,7 @@ ol,
 .reply-content ol {
 	list-style: upper-roman;
 	margin: 0 0 1em 0;
-	padding: 0 0 0 2em;
+	padding: 0 0 0 2.5em;
 	}
 li > ol {
 	font-size: 1em !important;
@@ -652,8 +652,8 @@ img { max-width: 100%;}
 .entry-content img,
 .reply-content img {
 	max-width: 99%;
-	height: auto;
 	max-height: 600px;
+	width: auto;
 	margin: 0 3px;
 	padding: 2px;
 	border: 1px solid #333;
@@ -703,7 +703,7 @@ a img:hover  {
 .wp-caption .wp-caption-text {
 	width: 98%;
 	margin: 0 auto;
-	padding: 3px 0;
+	padding: 3px 2px;
 	background: rgba(17,17,17,0.25);
 	border: 1px solid #111;
 	border-top-color: #000;

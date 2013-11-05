@@ -427,7 +427,6 @@ function apoc_reply_admin_links( $reply_id ) {
 	$links['quote'] 		= apoc_quote_button( 'reply' , $reply_id );
 	$links['reply']			= '<a class="reply-link button button-dark" href="#new-post" title="Quick Reply"><i class="icon-reply"></i>Reply</a>';
 	
-	
 	// Topic admin links
 	if( bbp_is_topic( $reply_id ) ) :
 		$links['edit'] 		= bbp_get_topic_edit_link  ( array( 

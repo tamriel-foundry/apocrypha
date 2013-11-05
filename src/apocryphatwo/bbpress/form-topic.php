@@ -130,7 +130,7 @@ elseif ( bbp_current_user_can_access_create_topic_form() ) : ?>
 <?php // The forum itself is closed
 elseif ( bbp_is_forum_closed() ) : ?>
 <header id="respond-subheader" class="reply-header" >	
-	printf( __( 'The forum &#8216;%s&#8217; is closed to new topics and replies.', 'bbpress' ), bbp_get_forum_title() ); ?>
+	<?php printf( __( 'The forum &#8216;%s&#8217; is closed to new topics and replies.', 'bbpress' ), bbp_get_forum_title() ); ?>
 </header>
 
 <?php // Something else happened - most likely a private group forum

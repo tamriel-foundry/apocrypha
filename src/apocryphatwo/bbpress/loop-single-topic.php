@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme Single Topic Loop
  * Andrew Clayton
- * Version 1.0.0
- * 8-10-2013
+ * Version 1.0.1
+ * 10-26-2013
  */
 ?>
 
@@ -17,7 +17,7 @@
 		</h3>
 		
 		<p class="forum-description">Started by <?php bbp_topic_author_link( array( 'type' => 'name' ) ); ?>
-		<?php if ( !bbp_is_single_forum() || ( bbp_get_topic_forum_id() != bbp_get_forum_id() ) ) : ?>in <a class="topic-location" href="<?php bbp_forum_permalink( bbp_get_topic_forum_id() ); ?>" title="Browse this forum"><?php bbp_forum_title( bbp_get_topic_forum_id() ); ?></a><?php endif; ?>
+		<?php if ( !bbp_is_single_forum() ) : ?>in <a class="topic-location" href="<?php bbp_forum_permalink( bbp_get_topic_forum_id() ); ?>" title="Browse this forum"><?php bbp_forum_title( bbp_get_topic_forum_id() ); ?></a><?php endif; ?>
 		<?php apoc_total_favs(); ?>
 		</p>
 	

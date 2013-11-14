@@ -1280,7 +1280,7 @@ a.footer-nav-item:hover > img {
 	box-shadow: none;
 	background: none;
 	}
-a.footer-nav-item h3.double-border.top:before { border-bottom: 1px solid #555; }
+a.footer-nav-item h3.double-border.top:before { border-bottom: 1px solid #444; }
 div#footer-anvil {
 	height: 50px;
 	width: 135px;
@@ -1789,7 +1789,7 @@ h1#home-posts-title {
 	height: 300px;
 	margin: 0 0 1em 0;
 	float: left;
-	border-bottom: 1px solid #444;
+	border-bottom: 1px solid #333;
 	}
 .archive div.even { float: right; }
 div.entry-content a img.thumbnail {
@@ -1843,7 +1843,7 @@ div.widget {
 .sidebar div.widget {	margin: 1em 0 0.5em 5%;	}
 header.widget-header {
 	margin: 0 0 3px;
-	border-top: 1px solid #444;
+	border-top: 1px solid #333;
 	}
 h3.widget-title {
 	width: 60%;
@@ -2149,7 +2149,7 @@ li.flex-active span.slideshow-tab-title {
 	top: 0;
 	right: 0;
 	background: rgba(17,17,17,0.9);
-	border: 1px solid #444;
+	border: 1px solid #333;
 	box-shadow: 0 0 5px #000;
 	}
 .flex-caption h2 {
@@ -2714,6 +2714,7 @@ div#profile-sidebar {
 	text-align: center;
 	}
 div#profile-user a.member-avatar img {
+	background: #111;
 	padding: 0;
 	border: 1px solid #000;
 	box-shadow: 0 0 20px #000;

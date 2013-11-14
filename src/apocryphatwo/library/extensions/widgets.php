@@ -313,7 +313,8 @@ function guild_twitch_streams() {
 		'phazius' 			=> 'phazius', 
 		'atropos' 			=> 'atropos_nyx', 
 		'boontaker' 		=> 'boontaker', 
-		'nybling' 			=> 'nybling', 
+		'nybling' 			=> 'nybling',
+		'erlex' 			=> 'erlexxx', 
 	);
 	$streams = array();
 	

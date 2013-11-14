@@ -465,6 +465,33 @@ function apoc_load_topics() {
 	die( $content );
 }
 
+
+
+/**
+ * Delete replies using AJAX!
+ * @version 1.0.0
+ */
+add_action( 'wp_ajax_apoc_delete_reply' , 'apoc_delete_reply' );
+function apoc_delete_reply() {
+
+	// Get the data
+	$reply_id 	= $_POST['reply_id'];
+	$context	= $_POST['context'];
+	
+	// Make sure it's a trash action
+	if ( $context == "bbp_toggle_reply_trash" ) {
+	
+		// Trash it
+		wp_trash_post($reply_id);
+		echo "1";
+	}
+
+	// Exit
+	exit(0);
+}
+
+
+
 /**
  * Process post reports using AJAX
  * @version 1.0.0

@@ -259,6 +259,47 @@ $( '#bbp_topic_title' ).bind( 'keydown.editor-focus', function(e) {
 	}
 });
 
+/*! Trash Replies and Topics */
+$("#forums").on("click","a.bbp-reply-trash-link",function( event ){
+	
+	// Prevent default
+	event.preventDefault();
+
+	// Confirm the user's desire to delete the comment
+	confirmation = confirm("Permanently delete this post?");
+	if(confirmation){
+	
+		// Visual tooltip
+		button = $(this);
+		button.html('<i class="icon-spinner icon-spin"></i>Deleting');
+		
+		// Get the arguments
+		reply_id	= get_url_var( button.attr('href') , 'reply_id' );
+		context		= get_url_var( button.attr('href') , 'action' 	);
+		nonce		= get_url_var( button.attr('href') , '_wpnonce' );
+
+		// Submit the POST AJAX
+		$.post( ajaxurl, { 
+			'action'	: 'apoc_delete_reply',
+			'context'	: context,
+			'reply_id'	: reply_id,
+			'_wpnonce'	: nonce,
+			},
+			function( resp ){
+				if( resp == "1" ){
+					thereply 	= button.parents('li.reply')
+					replybody	= thereply.children('div.reply-body')
+					replybody.slideUp( 'slow', function() { 
+						thereply.remove(); 
+					});			
+				}
+			}
+		);
+	}
+
+});
+
+
 /*! bbPress Favorites / Subs */
 function bbp_ajax_call( action, topic_id, nonce, update_selector ) {
 	var $data = {

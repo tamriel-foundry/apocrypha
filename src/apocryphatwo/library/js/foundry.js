@@ -85,6 +85,10 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 /*! Post Reporting */
 ;$("#comments,#forums,#private-messages").on("click","a.report-post",function(b){confirmation=confirm("Report this post? Please make sure this is a valid report.");if(confirmation){var a=postid=postnum=author=reason="";reason=prompt("Reason For Report","Why you are reporting this post...");if("Why you are reporting this post..."==reason){reason="No reason given by reporter."}a=$(this).data("type");postid=$(this).data("id");postnum=$(this).data("number");user=$(this).data("user");$(this).remove();$.post(ajaxurl,{action:"apoc_report_post",type:a,id:postid,num:postnum,user:user,reason:reason},function(c){if(c==1){alert("Report sent successfully, thank you.")}});return false}});
 
+/*! Trash Replies */
+;$("#forums").on("click","a.bbp-reply-trash-link",function(a){a.preventDefault();confirmation=confirm("Permanently delete this post?");if(confirmation){button=$(this);button.html('<i class="icon-spinner icon-spin"></i>Deleting');reply_id=get_url_var(button.attr("href"),"reply_id");context=get_url_var(button.attr("href"),"action");nonce=get_url_var(button.attr("href"),"_wpnonce");$.post(ajaxurl,{action:"apoc_delete_reply",context:context,reply_id:reply_id,_wpnonce:nonce},function(b){if(b=="1"){thereply=button.parents("li.reply");replybody=thereply.children("div.reply-body");replybody.slideUp("slow",function(){thereply.remove()})}})}});
+
+
 /*! --------------------------------------- 
 5.0 - USERS
 ----------------------------------------- */
@@ -107,3 +111,6 @@ X.X - PROCEDURAL FUNCTIONS
 
 /*! Update Profile Race Dropdown */
 ;function updateRaceDropdown(a){if("faction"==a){factionid=jQuery("select#faction :selected").val();jQuery("select#race option").not("."+factionid).attr("disabled","disabled").removeAttr("selected");jQuery("select#race option."+factionid).removeAttr("disabled");jQuery("select#race option:first-child").removeAttr("disabled")}else{if("race"==a){raceid=jQuery("select#race :selected").attr("class");if(undefined!=raceid){jQuery("select#faction option").removeAttr("selected");jQuery("select#faction option."+raceid).attr("selected","selected")}}}};
+
+/*! Parse URL Variables */
+function get_url_var(b,a){var e=b.split("?");var d=e[1].split("&");for(var c=0;c<d.length;c++){var f=d[c].split("=");if(f[0]==a){return f[1]}}return""};

@@ -27,7 +27,6 @@ else
 
 	<div class="recent-discussion-content">
 		<span class="recent-discussion-title"><?php printf( __( '<a href="%1$s">%2$s</a> replied <a href="%3$s" class="activity-time-since"><span class="time-since">%4$s</span></a>', 'buddypress' ), bp_get_activity_comment_user_link(), bp_get_activity_comment_name(), bp_get_activity_thread_permalink(), bp_get_activity_comment_date_recorded() ); ?></span>
-
 	
 		<div class="acomment-options">
 		<?php if ( bp_activity_user_can_delete() ) : ?>

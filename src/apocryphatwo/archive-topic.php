@@ -23,10 +23,9 @@
 			<?php if ( bbp_has_topics( array( 
 				'meta_value'		=> date( 'Y-m-d' , strtotime( '-30 days' )),
 				'meta_compare'		=> '>=',
-				'show_stickies' 	=> false,
 			) ) ) : ?>
 			
-				<?php bbp_get_template_part( 'loop',       'topics'    ); ?>
+				<?php bbp_get_template_part( 'loop', 'topics' ); ?>
 				
 				<nav class="pagination forum-pagination ajaxed" data-type="topics" data-id="0">
 					<div class="pagination-count">

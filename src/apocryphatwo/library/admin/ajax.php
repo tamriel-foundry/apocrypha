@@ -377,7 +377,7 @@ function apoc_load_topics() {
 		'posts_per_page'	=> bbp_get_topics_per_page(),
 		'paged' 			=> $paged,
 		's'					=> false,
-		'show_stickies'		=> ( 0 < $forum_id ) ? true : false,
+		'show_stickies'		=> ( 1 == $paged ) ? true : false,
 		'max_num_pages'		=> false,
 	);
 	

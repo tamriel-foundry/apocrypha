@@ -152,12 +152,15 @@ switch ( $rsvps[$user_id]['rsvp'] ) {
 /* Date */
 $event_date	= get_post_meta( $post_id , 'event_date' , true );
 $fulldate	= date('l F j, Y', strtotime( $event_date ) );
-$is_past	= ( strtotime( $event_date ) < time() ? true : false );
 
 /* Time */
 $start		= get_post_meta( $post_id , 'event_start' , true );
 $end		= get_post_meta( $post_id , 'event_end' , true );
 $fulltime 	= date('g:i', strtotime( $start ) ) . ' - ' . date('g:ia' , strtotime( $end ) ) . ' EST';
+
+/* Is the Event Over? */
+$end_time	= strtotime( $end ) > strtotime( $start ) ? strtotime( $end ) : strtotime ( $end . ' tomorrow' );
+$is_past	= ( $end_time < strtotime( '-5 hours' ) ) ? true : false;
 
 
 $header(); // Load the header contextually ?>

@@ -13,6 +13,7 @@ $apoc = apocrypha();
 // Determine the search context
 $context 	= isset( $_REQUEST['type'] ) ? $_REQUEST['type'] : 'posts';
 $search		= trim( $_REQUEST['s'] );
+$paged		= isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : 1;
 
 // Was a search string provided OR was the form submitted?
 if ( !empty( $search ) || $_POST['submitted'] ) :
@@ -23,14 +24,14 @@ if ( !empty( $search ) || $_POST['submitted'] ) :
 		case 'posts' :
 			
 			// Get the fields
-			$author_id		= ( $_POST['search-author'] != -1 ) ? $_POST['search-author'] : NULL;
-			$category_id	= ( $_POST['search-category'] != -1 ) ? $_POST['search-category'] : NULL;
+			$author_id		= isset( $_REQUEST['search-author'] ) && $_REQUEST['search-author'] != -1 ? $_REQUEST['search-author'] : NULL;
+			$category_id	= isset( $_REQUEST['search-category'] ) && $_REQUEST['search-category'] != -1 ? $_REQUEST['search-category'] : NULL;
 		
 			// Construct a query
 			$args = array( 
 				'post_type'			=> 'post',
 				's'					=> $search,
-				'paged'				=> 1,
+				'paged'				=> $paged,
 				'author'			=> $author_id,
 				'cat' 				=> $category_id,	
 			);
@@ -45,7 +46,7 @@ if ( !empty( $search ) || $_POST['submitted'] ) :
 			$args = array( 
 				'post_type'			=> 'page',
 				's'					=> $search,
-				'paged'				=> 1,
+				'paged'				=> $paged,
 			);
 			$query = new WP_Query( $args );
 			$submitted		= true;
@@ -65,7 +66,7 @@ if ( !empty( $search ) || $_POST['submitted'] ) :
 				'orderby'       	=> 'meta_value',
 				'order'				=> 'DESC',
 				'posts_per_page'	=> 12,
-				'paged' 			=> 1,
+				'paged' 			=> $paged,
 				's'					=> $search,
 				'show_stickies'		=> false,
 				'max_num_pages'		=> false,
@@ -84,7 +85,7 @@ if ( !empty( $search ) || $_POST['submitted'] ) :
 			// Construct a query			
 			$members_args = array(
 				'type'				=> 'active',
-				'page' 				=> 1,
+				'page' 				=> $paged,
 				'per_page'			=> 12,
 				'search_terms'		=> $search,
 				'meta_key'			=> 'faction',
@@ -104,7 +105,7 @@ if ( !empty( $search ) || $_POST['submitted'] ) :
 			// Construct a query			
 			$groups_args = array(
 				'type'				=> 'active',
-				'page' 				=> 1,
+				'page' 				=> $paged,
 				'per_page'			=> 12,
 				'search_terms'		=> $search,	
 			);
@@ -118,8 +119,7 @@ if ( !empty( $search ) || $_POST['submitted'] ) :
 			$query_groups	= true;
 			break;
 	}
-endif;
-?>
+endif; ?>
 
 <?php get_header(); // Load the header ?>
 	
@@ -254,11 +254,23 @@ endif;
 		<?php endif; ?>
 		
 		<?php // Posts and Pages Results
-		if ( $query_posts || $query_pages ) : ?>
+		if ( $query_posts || $query_pages ) : 
+		$type = $query_posts ? 'posts' : 'pages'; ?>
 		<div id="posts" class="archive">
 			<?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post();
 				apoc_display_post();
-			endwhile; else : ?>
+			endwhile; ?>
+			<nav class="search-pagination pagination">
+				<div class="pagination-links">
+					<?php apoc_pagination( $args = array(
+						'context'			=> 'search',
+						'current'			=> $query->query_vars['paged'],
+						'total'       		=> $query->max_num_pages,
+						'add_fragment'		=> '&type='.$type.'&s='.$search,
+					) ); ?>
+				</div>
+			</nav>
+		<?php else : ?>
 			<p class="no-results">No articles were found that match this search.</p>
 			<?php endif; ?>
 		</div>
@@ -267,20 +279,24 @@ endif;
 		elseif ( $query_topics ) : ?>
 		<div id="forums">
 			<?php if ( bbp_has_topics( $topic_args ) ) :
-			bbp_get_template_part( 'loop', 'topics' ); ?>
-			
+			bbp_get_template_part( 'loop', 'topics' ); ?>	
 			<nav class="forum-pagination pagination">
 				<div class="pagination-count">
 					<?php bbp_forum_pagination_count(); ?>
 				</div>
 				<div class="pagination-links">
-					<?php bbp_forum_pagination_links(); ?>
+					<?php apoc_pagination( $args = array(
+						'context'			=> 'search',
+						'current'			=> bbpress()->topic_query->paged,
+						'total'       		=> bbpress()->topic_query->max_num_pages,
+						'add_fragment'		=> '&type=topics&s=' . $search,
+					) ); ?>
 				</div>
 			</nav>
 			<?php else : ?>
-			<p class="no-results">No topics were found that match this search.</p>
+				<p class="no-results">No topics were found that match this search.</p>
 			<?php endif; ?>
-		</div>
+		</div>	
 		
 		<?php // Members Results
 		elseif ( $query_members ) : ?>
@@ -320,8 +336,14 @@ endif;
 				<div id="member-dir-count-bottom" class="pagination-count" >
 					<?php bp_members_pagination_count(); ?>
 				</div>
-				<div id="member-dir-pag-bottom" class="pagination-links" >
-					<?php bp_members_pagination_links(); ?>
+				<div class="pagination-links">
+					<?php global $members_template; ?>
+					<?php apoc_pagination( $args = array(
+						'context'			=> 'search',
+						'current'			=> $members_template->pag_page,
+						'total'       		=> ceil( $members_template->total_member_count / 12 ),
+						'add_fragment'		=> '&type=members&s=' . $search,
+					) ); ?>
 				</div>
 			</nav>
 
@@ -366,8 +388,14 @@ endif;
 				<div id="group-dir-count-bottom" class="pagination-count">
 					<?php bp_groups_pagination_count(); ?>
 				</div>
-				<div id="group-dir-pag-bottom" class="pagination-links">
-					<?php bp_groups_pagination_links(); ?>
+				<div class="pagination-links">
+					<?php global $groups_template;?>
+					<?php apoc_pagination( $args = array(
+						'context'			=> 'search',
+						'current'			=> $groups_template->pag_page,
+						'total'       		=> ceil( $groups_template->total_group_count / 12 ),
+						'add_fragment'		=> '&type=groups&s=' . $search,
+					) ); ?>
 				</div>
 			</nav>
 

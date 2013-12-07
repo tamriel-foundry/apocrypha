@@ -87,6 +87,9 @@ class Apoc_BuddyPress {
 		add_filter( 'bp_activity_user_can_delete' 	, array( $this , 'activity_can_delete' ) );
 		add_filter( 'bp_get_activity_delete_link' 	, array( $this , 'activity_delete_icon' ) );
 		add_filter( 'bp_activity_can_favorite'		, array( $this , 'activity_prevent_favorite' ) ); 
+		
+		// Group Creation
+		add_filter( 'bp_user_can_create_groups' 	, array( $this , 'can_create_group' ) , 10 , 2 );
 	}
 	
 	
@@ -329,6 +332,23 @@ class Apoc_BuddyPress {
 	function guild_activity_screen() {
 		bp_core_load_template( apply_filters( 'apoc_guild_activity_template', 'groups/single/home' ) );
 	}
+	
+	
+	/** 
+	 * Allow specific non-admins to create groups
+	 */
+	function can_create_group( $can_create , $restricted ) {
+
+		// Don't bother doing anything if everyone is allowed to create
+		if( !$restricted ) return $can_create;
+		
+		// Otherwise check to see if they are on the whitelist
+		global $bp;
+		if( $bp->loggedin_user->fullname == 'lightweaver' )
+			$can_create = true;
+		return $can_create;
+	}
+
 }
 	
 /*--------------------------------------------------------------

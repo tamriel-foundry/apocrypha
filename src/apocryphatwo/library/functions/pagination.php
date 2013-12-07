@@ -149,7 +149,14 @@ class Apoc_Pagination {
 				$remove 			= '/' . $pagination_base . '[0-9]*\/(.*)/';
 				$baseurl 			= preg_replace( $remove , "" , $baseurl );
 				$baseurl			= trailingslashit( $baseurl ) . $pagination_base . '%#%/';
-				break;	
+				break;
+
+			case 'search' :
+			
+				// Set the pagination base
+				$pagination_base	= '?page=';	
+				$baseurl			= SITEURL . '/advsearch' . $pagination_base . '%#%';
+				break;
 		}				
 			
 		// Return the formatted URL

@@ -40,7 +40,7 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 		$name_error		= 'This guild name is already in use!';
 		$has_error 		= true;
 	}
-	$group_name = trim( $_POST['group-name']);
+	$group_name = stripslashes( trim( $_POST['group-name'] ) );
 	
 	// Validate recruitment status
 	if ( $_POST['group-recruitment'] === NULL )	{

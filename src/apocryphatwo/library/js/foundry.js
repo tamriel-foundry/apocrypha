@@ -114,3 +114,6 @@ X.X - PROCEDURAL FUNCTIONS
 
 /*! Parse URL Variables */
 function get_url_var(b,a){var e=b.split("?");var d=e[1].split("&");for(var c=0;c<d.length;c++){var f=d[c].split("=");if(f[0]==a){return f[1]}}return""};
+
+
+

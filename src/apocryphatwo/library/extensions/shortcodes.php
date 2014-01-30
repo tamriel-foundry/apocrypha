@@ -62,9 +62,9 @@ class Apoc_Shortcodes {
 	private function enable() {	
 		
 		// Add shortcode filters
-		add_filter( 'get_comment_text'			, 'do_shortcode' );
-		add_filter( 'bbp_get_reply_content'		, 'do_shortcode' );
-		add_filter( 'bp_get_group_description'	, 'do_shortcode' );		
+		add_filter( 'get_comment_text'			, 'do_shortcode' , 10 	);
+		add_filter( 'bbp_get_reply_content'		, 'do_shortcode' , 3 	);
+		add_filter( 'bp_get_group_description'	, 'do_shortcode' , 10 	);		
 	}
 		
 	/**

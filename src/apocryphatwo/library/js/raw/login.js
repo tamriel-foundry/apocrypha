@@ -4,7 +4,7 @@ $('#top-login-form').submit( function(){
 	// Prevent the user from taking any further action
 	$('#login-submit').attr('disabled', 'disabled');
 	$('#login-submit').html('<i class="icon-unlock-alt"></i> ... ');
-		
+	
 	// Send the request
 	$.ajax({
 		type: 'POST',

@@ -33,8 +33,8 @@ foreach ( $calendars as $calendar ) {
 	/* If we find a calendar where the user is authorized, stop */
 	if( true == $can_view ) :
 		global $allowed_calendar;
-		$header 	= ( 'entropy-rising' != $slug ) ? 'entropy_rising_header' 	: 'get_header';
-		$sidebar 	= ( 'entropy-rising' != $slug ) ? 'entropy_rising_sidebar' 	: 'apoc_primary_sidebar';
+		$header 	= ( 'entropy-rising' == $slug ) ? 'entropy_rising_header' 	: 'get_header';
+		$sidebar 	= ( 'entropy-rising' == $slug ) ? 'entropy_rising_sidebar' 	: 'apoc_primary_sidebar';
 		$allowed_calendar = $calendar;
 		break;
 	endif;

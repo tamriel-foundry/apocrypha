@@ -505,6 +505,7 @@ input[type="text"],
 input[type="password"],
 input[type="url"],
 input[type="file"],
+input[type="search"],
 select {
 	height: 24px;
 	line-height: 24px;
@@ -2640,7 +2641,13 @@ div#subscription-controls {
 	top: 7px;
 	right: 10px;
 	}
-div#subscription-controls a {
+#forum-header span#subscription-toggle {
+	position: absolute;
+	top: 13px;
+	right: 165px;
+	}
+div#subscription-controls a,
+span#subscription-toggle a {
 	padding: 4px 5px;
 	background: #AAA;
 	background: -ms-linear-gradient(top, #BBB, #b3a695);
@@ -2746,13 +2753,13 @@ ul#directory-actions {
 	}
 ul#directory-actions > li {
 	float: left;
+	width: 10%;
 	padding: 8px 0 4px;
 	margin: 0 0.5% 0 0;
 	background: rgba( 17,17,17,0.5);
 	border: 1px solid #000;
 	border-radius: 3px;
 	box-shadow: 0 0 2px #333 inset;
-	width: 11.5%;
 	text-align: center;
 	font-family: 'Open Sans';
 	font-size: 0.75em;
@@ -2761,7 +2768,9 @@ ul#directory-actions > li {
 ul#directory-actions > li:last-child { margin-right: 0; }
 ul#directory-actions > li a {	
 	display: block;
+	width: 100%;
 	color: #999; 
+	text-align: center;
 	}
 ul#directory-actions > li:hover {
 	background: rgba( 34,34,34,0.5 );
@@ -2941,6 +2950,42 @@ div#character-sheet > ul li span {
 	display: inline-block;
 	width: 50px;
 	margin: 0 0 0 3px; 
+	}
+	
+/* Notifications */
+ol#notifications-list {
+	width: 100%;
+	float: left;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+li.notification {
+	width: 100%;
+	float: left;
+	padding: 0.5em 0;
+	border-bottom: 1px solid #000;
+}
+li + li.notification {	border-top: 1px solid #333; }
+li.notification:last-child {	border-bottom: none; }
+div.notification-content {
+	width: 75%;
+	float: left;
+	margin: 0 1%;
+	}
+div.notification-content > span.activity { float: right; }
+div.notification-actions {
+	width: 15%;
+	float: right;
+	text-align: right;
+	margin: 0 1%;
+	}
+div.notification-actions > a { margin: 0; }
+div#notifications-actions {
+	width: 100%;
+	float: right;
+	margin: 0.5em 0 1em;
+	text-align: right;
 	}
 	
 /* Infraction Form */
@@ -3430,4 +3475,4 @@ div#xprofile-section {
 /*---------------------------------------------
 	11.2 - TINYMCE
 ----------------------------------------------*/
-div.wp-editor-wrap{width:98%;float:left;margin:0 1% 1em}div.wp-editor-container{width:auto;padding:0;width:100%;overflow:hidden;border:1px solid #666;border-radius:5px;box-shadow:0 0 8px #000}div.wp-editor-container td.mceIframeContainer iframe{min-height:150px}div.wp-editor-container .quicktags-toolbar,table.mceLayout tr.mceFirst td.mceToolbar{padding:5px 0;border-bottom:3px solid #111;background:#333;background:-ms-linear-gradient(top,#444,#333);background:-moz-linear-gradient(top,#444,#333);background:-o-linear-gradient(top,#444,#333);background:-webkit-linear-gradient(top,#444,#333);box-shadow:0 0 3px #000 inset}div.wp-editor-container .quicktags-toolbar{padding:5px 10px}table.mceLayout tr.mceLast td.mceStatusbar{background:#151515;border:0}table.mceLayout tr.mceLast td.mceStatusbar *{color:#AAA}.wp-editor-tools .wp-switch-editor{background:#222;border:1px solid #666;border-bottom:0;box-shadow:1px 1px 1px #000 inset}.tmce-active .wp-editor-tools .switch-tmce,.html-active .wp-editor-tools .switch-html{background:#555;border:1px solid #666;border-bottom:0;color:#AAA}.wp-editor-tools .wp-switch-editor:hover,.tmce-active .wp-editor-tools .switch-tmce:hover,.html-active .wp-editor-tools .switch-html:hover{background:#666}table.mceLayout td.mceToolbar span.mce_undo,table.mceLayout td.mceToolbar span.mce_redo,table.mceLayout td.mceToolbar span.mce_bullist,table.mceLayout td.mceToolbar span.mce_numlist,table.mceLayout td.mceToolbar span.mce_blockquote,table.mceLayout td.mceToolbar span.mce_charmap,table.mceLayout td.mceToolbar span.mce_bold,table.mceLayout td.mceToolbar span.mce_italic,table.mceLayout td.mceToolbar span.mce_underline,table.mceLayout td.mceToolbar span.mce_justifyleft,table.mceLayout td.mceToolbar span.mce_justifyright,table.mceLayout td.mceToolbar span.mce_justifycenter,table.mceLayout td.mceToolbar span.mce_justifyfull,table.mceLayout td.mceToolbar span.mce_indent,table.mceLayout td.mceToolbar span.mce_outdent,table.mceLayout td.mceToolbar span.mce_link,table.mceLayout td.mceToolbar span.mce_unlink,table.mceLayout td.mceToolbar span.mce_help,table.mceLayout td.mceToolbar span.mce_removeformat,table.mceLayout td.mceToolbar span.mce_fullscreen,table.mceLayout td.mceToolbar span.mce_wp_fullscreen,table.mceLayout td.mceToolbar span.mce_media,table.mceLayout td.mceToolbar span.mce_pastetext,table.mceLayout td.mceToolbar span.mce_pasteword,table.mceLayout td.mceToolbar span.mce_wp_help,table.mceLayout td.mceToolbar span.mce_wp_adv,table.mceLayout td.mceToolbar span.mce_wp_more,table.mceLayout td.mceToolbar span.mce_strikethrough,table.mceLayout td.mceToolbar span.mce_spellchecker,table.mceLayout td.mceToolbar span.mce_forecolor,table.mceLayout td.mceToolbar .mce_forecolorpicker,table.mceLayout td.mceToolbar .mceSplitButton .mce_spellchecker span.mce_spellchecker,table.mceLayout td.mceToolbar .mceSplitButton .mce_forecolor span.mce_forecolor,table.mceLayout td.mceToolbar .mceSplitButton span.mce_numlist,table.mceLayout td.mceToolbar .mceSplitButton span.mce_bullist{background-image:url(images/icons/mceicons.png)}table.mceLayout td.mceToolbar span.mce_strikethrough{background-position:-540px -18px}table.mceLayout td.mceToolbar a.mceButton,table.mceLayout td.mceToolbar a.mceText,table.mceLayout table.mceListBox .mceText,table.mceLayout td.mceToolbar a.mceOpen,table.mceLayout table.mceListBox .mceOpen,table.mceLayout td.mceToolbar a.mceAction{color:#CCC;background:#333;background:-ms-linear-gradient(top,#444,#222);background:-moz-linear-gradient(top,#444,#222);background:-o-linear-gradient(top,#444,#222);background:-webkit-linear-gradient(top,#444,#222);border:1px solid #111;border-radius:3px;box-shadow:0 0 2px #666 inset}table.mceLayout td.mceToolbar a.mceButton:hover{background:#555;background:-ms-linear-gradient(top,#666,#444);background:-moz-linear-gradient(top,#666,#444);background:-o-linear-gradient(top,#666,#444);background:-webkit-linear-gradient(top,#666,#444);box-shadow:0 0 2px #999 inset}table.mceLayout table.mceListBox,table.mceLayout table.mceSplitButton{background:none !important;border:none !important}table.mceLayout table.mceListBox a.mceOpen,table.mceLayout table.mceSplitButton a.mceOpen{background-image:url(images/icons/down-arrow.gif);background-position:2px 2px;background-repeat:no-repeat;border:1px solid #111;width:12px}table.mceLayout table.mceListBox:hover a.mceOpen,table.mceLayout table.mceSplitButton:hover a.mceOpen{background:#bbb;background-image:url(images/icons/down-arrow.gif);background-position:2px 2px;background-repeat:no-repeat;border:1px solid #111}table.mceLayout table.mceSplitButton:hover a.mceAction,table.mceLayout table.mceListBox:hover a.mceText{color:#111;background:#bbb;background:-ms-linear-gradient(top,#AAA,#CCC);background:-moz-linear-gradient(top,#AAA,#CCC);background:-o-linear-gradient(top,#AAA,#CCC);background:-webkit-linear-gradient(top,#AAA,#CCC);border:1px solid #111;box-shadow:0 0 2px #000 inset}div.mceMenu tr.mceMenuItem td.mceMenuItemTitle a,div.mceMenu tr.mceMenuItem td.mceMenuItemTitle span.mceText{background:#333 !important;color:#BBB}div.mceMenu tr.mceMenuItem td.mce_formatPreview span.mceText{color:#111 !important;background:#bbb !important}div.mceMenu tr.mceMenuItem td.mce_formatPreview a:hover{background:#c60 !important}table.mceLayout td.mceToolbar a.mceButton.mceButtonDisabled,table.mceLayout td.mceToolbar a.mceButton.mceButtonDisabled:hover{background:#333;background:-ms-linear-gradient(top,#444,#222);background:-moz-linear-gradient(top,#444,#222);background:-o-linear-gradient(top,#444,#222);background:-webkit-linear-gradient(top,#444,#222);box-shadow:0 0 3px #111 inset;border:1px solid #666 !important}table.mceLayout td.mceToolbar a.mceButton:active,table.mceLayout td.mceToolbar a.mceButtonEnabled:active,table.mceLayout td.mceToolbar a.mceButtonSelected:active,table.mceLayout td.mceToolbar a.mceButtonActive,table.mceLayout td.mceToolbar a.mceButtonActive:active,table.mceLayout td.mceToolbar a.mceButtonActive:hover{background:#BBB;background:-ms-linear-gradient(top,#AAA,#CCC);background:-moz-linear-gradient(top,#AAA,#CCC);background:-o-linear-gradient(top,#AAA,#CCC);background:-webkit-linear-gradient(top,#AAA,#CCC);box-shadow:0 0 2px #222 inset}table.mceLayout td.mceToolbar table.mce_spellchecker,table.mceLayout td.mceToolbar a.mce_wp_more,table.mceLayout td.mceToolbar a.mce_wp_help{display:none}.ui-dialog{color:#222;padding-bottom:10px}form#wp-link p#internal-toggle{display:none}form#wp-link div.submitbox{overflow:visible}div.wp-editor-container,div.wp-editor-container textarea.wp-editor-area{background:#151515;color:#CCC;min-width:100%;}div.wp-editor-container div.quicktags-toolbar input{color:#CCC;border:1px solid #111;border-radius:3px;background:#333;background:-ms-linear-gradient(top,#444,#222);background:-moz-linear-gradient(top,#444,#222);background:-o-linear-gradient(top,#444,#222);background:-webkit-linear-gradient(top,#444,#222);box-shadow:0 0 2px #666 inset}div.wp-editor-container div.quicktags-toolbar input:hover{border-color:#111;background:#666;box-shadow:0 0 2px #999 inset}input#link-target-checkbox{position:relative;opacity:1;}
+div.wp-editor-wrap{width:98%;float:left;margin:0 1% .5em}div.wp-editor-container{width:auto;padding:0;width:100%;overflow:hidden;border:1px solid #333;border-radius:3px;box-shadow:0 0 8px #000}td.mceIframeContainer>iframe{min-height:150px;max-height:600px}textarea.wp-editor-area{max-width:100%;background:#151515;color:#CCC;font-size:.875em;font-family:'Open Sans',sans-serif}div.wp-editor-container .quicktags-toolbar,table.mceLayout tr.mceFirst td.mceToolbar,table.mceLayout tr.mceLast td.mceStatusbar{padding:5px 10px;border-bottom:3px solid #111;background:#AAA;background:-ms-linear-gradient(top,#BBB,#b3a695);background:-moz-linear-gradient(top,#BBB,#b3a695);background:-o-linear-gradient(top,#BBB,#b3a695);background:-webkit-linear-gradient(top,#BBB,#b3a695);box-shadow:0 0 3px #000 inset;border:1px solid #000}table.mceLayout tr.mceLast td.mceStatusbar{padding:2px 10px}table.mceLayout tr.mceFirst td.mceToolbar{padding:5px 0}table.mceLayout tr.mceLast td.mceStatusbar *{color:#000}table.mceLayout tr.mceLast td.mceStatusbar a.mceResize{background-image:none}table.mceLayout tr.mceLast td.mceStatusbar a.mceResize:before{position:absolute;top:2px;right:0;font-family:FontAwesome;color:#111;content:"\F065";-moz-transform:rotate(-90deg);-webkit-transform:rotate(-90deg);transform:rotate(-90deg);filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1)}.wp-editor-tools .wp-switch-editor{background:#333;background:-ms-linear-gradient(top,#444,#111);background:-moz-linear-gradient(top,#444,#111);background:-o-linear-gradient(top,#444,#111);background:-webkit-linear-gradient(top,#444,#111);border:1px solid #000;border-bottom:0;border-radius:3px 3px 0 0;box-shadow:0 -2px 2px #000;color:#999}.tmce-active .wp-editor-tools .switch-tmce,.html-active .wp-editor-tools .switch-html{margin-bottom:-1px;background:#BBB;background:-ms-linear-gradient(top,#CCC,#BBB);background:-moz-linear-gradient(top,#CCC,#BBB);background:-o-linear-gradient(top,#CCC,#BBB);background:-webkit-linear-gradient(top,#CCC,#BBB);color:#444}.wp-editor-tools .wp-switch-editor:hover,.tmce-active .wp-editor-tools .switch-tmce:hover,.html-active .wp-editor-tools .switch-html:hover{background:#BBB;background:-ms-linear-gradient(top,#CCC,#BBB);background:-moz-linear-gradient(top,#CCC,#BBB);background:-o-linear-gradient(top,#CCC,#BBB);background:-webkit-linear-gradient(top,#CCC,#BBB);color:#c5772b;text-shadow:0 0 2px #c60}table.mceToolbar td>a.mceButton:hover,.quicktags-toolbar input.ed_button{background:#b3a695;border:1px solid #000}.quicktags-toolbar input.ed_button{margin:0 3px;color:#000;box-shadow:none}table.mceToolbar td>a.mceButtonActive,.quicktags-toolbar input.ed_button:hover{background:#BBB;border:1px solid #000}a.mceButton>span.mceIcon{color:#444}a.mceButton:hover>span.mceIcon{color:#000}table.mceToolbar table.mceListBox{background:#b3a695;border:1px solid #444}table.mceListBox a.mceText{color:#111}div.mceListBoxMenu div.mceMenu{border-color:#444}div.mceListBoxMenu div.mceMenu>table{background:#b3a695}div.mceMenu td.mceMenuItemTitle a{padding:0;background:#666;border:0}table.mceSplitButton td.mceFirst,table.mceSplitButton td.mceLast{background:#b3a695}table.mceSplitButton:hover td.mceFirst,table.mceSplitButton:hover td.mceLast{background:#CCC}table.mceSplitButton td a.mceAction,table.mceSplitButton td a.mceOpen{border:1px solid #444 !important}table.mceSplitButton td a.mceOpen{border-left:none !important}.wp_themeSkin div.mceColorSplitMenu>table.mceColorSplitMenu{background:#b3a695;border:1px solid #000}div.mceColorSplitMenu table.mceColorSplitMenu a.mceMoreColors{color:#000;border:0}.wp-dialog{background:#AAA;background:-ms-linear-gradient(top,#BBB,#999);background:-moz-linear-gradient(top,#BBB,#999);background:-o-linear-gradient(top,#BBB,#999);background:-webkit-linear-gradient(top,#BBB,#999)}.wp-dialog .ui-dialog-titlebar{border-bottom:1px solid #000}#wp-link{background:none !important;color:#000}

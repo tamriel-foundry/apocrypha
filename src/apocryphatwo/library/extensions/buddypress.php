@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme BuddyPress Functions
  * Andrew Clayton
- * Version 1.0.0
- * 8-2-2013
+ * Version 1.0.1
+ * 1-7-2013
  
 ----------------------------------------------------------------
 >>> TABLE OF CONTENTS:
@@ -130,7 +130,6 @@ class Apoc_BuddyPress {
 		if ( !current_user_can( 'moderate_comments' ) )
 		$bp->bp_options_nav['forums']['replies']					= false;
 		$bp->bp_options_nav['forums']['favorites']['name'] 			= 'Favorite Topics';
-		$bp->bp_options_nav['forums']['subscriptions']['name']	 	= 'Subscribed Topics';
 		$bp->bp_options_nav['settings']['general']['name'] 			= 'Edit Account Info';
 		$bp->bp_options_nav['settings']['notifications']['name'] 	= 'Notification Preferences';
 		
@@ -281,8 +280,12 @@ class Apoc_BuddyPress {
 	 * Check that custom registration fields have been successfully completed.
 	 */
 	function registration_check() {
-		global $bp;
 
+		// Enforce no spaces in usernames
+		global $bp;
+		$_POST['signup_username'] = str_replace( ' ' , "-" , $bp->signup->username );
+		
+		// Check extra fields
 		if ( empty( $_POST['confirm_tos_box'] ) )
 			$bp->signup->errors['confirm_tos_box'] = 'You must indicate that you understand the fundamental purpose of the Tamriel Foundry website and community.';
 
@@ -375,148 +378,50 @@ class Apoc_Notifications extends BP_Core_Notification {
 		$this->notifications	= $this->get_notifications();	
 	}
 
+	
 	function get_notifications() {
 		
-		$notifications = $this->get_all_for_user( $this->user_id );
-		$count = count( $notifications );
-		$grouped_notifications = $notification_output = array();
-
-		// Group notifications by type
-		for ( $i = 0; $i < $count; $i++ ) {
-			$notification = $notifications[$i];
-			$grouped_notifications[$notification->component_name][$notification->component_action][] = $notification;
-		}
+		// Setup notification array
+		$notifications = array();
 		
-		// If we can't identify any of the notification groups, let's bail
-		if ( empty( $grouped_notifications ) )
-			return false;
+		// Configure arguments
+		$args = array(
+			'user_id'      => $this->user_id,
+			'is_new'       => true,
+			'page'         => 1,
+			'per_page'     => 25,
+			'max'          => 25,
+			'search_terms' => ''
+		);
 		
-		// Calculate a renderable output for each notification type
-		foreach ( $grouped_notifications as $component => $actions ) {
-			if ( empty( $actions ) )
-				continue;
-
-			// Loop through each actionable item and try to map it to a component
-			foreach ( (array) $actions as $action => $items ) {
-
-				// Get the number of actionable items */
-				$total = count( $items );
-				if ( $total < 1 )
-					continue;
-
-				// Loop through the items and format notifications
-				for ( $j = 0; $j < $total; $j++ ) {
-				
-					// Format the content of the notification using the a custom callback function
-					$content = $this->format_notifications( $component , $action, $items[$j]->item_id, $items[$j]->secondary_item_id, $total );
-
-					// Add it to the notification output 
-					$notification_output[$component][] = array(
-						'content'	=> $content['text'],
-						'href'		=> $content['link'],
-						'id'		=> $items[$j]->id,
-						);
-				
-				} // end foreach notification item
-			} // end foreach notification type
-		} // end foreach notification component
-		return( $notification_output );
-	}
-
-	/** 
-	 * Format notifications how I want them
-	 * @since 0.1
-	 */
-	function format_notifications( $component , $action , $item_id , $secondary_item_id , $total_items ) {
+		// Loop through notifications, sorting them by type
+		if ( bp_has_notifications( $args ) ) :
 		
-		// Mentions 
-		if ( $component == 'activity' && $action == 'new_at_mention' ) :
+			while ( bp_the_notifications() ) : bp_the_notification();
+			
+				// Get the notification info
+				$type	= bp_get_the_notification_component_name();
+				$action	= bp_get_the_notification_component_action();
+				$id 	= bp_get_the_notification_id();
+				$desc	= bp_get_the_notification_description(); 
+				
 
-			// Construct each mention 
-			$activity_id 		= $item_id;
-			$poster_user_id		= $secondary_item_id;
-			$link				= bp_loggedin_user_domain() . bp_get_activity_slug() . '/mentions/';
-			$user_fullname		= bp_core_get_user_displayname( $poster_user_id );
-			$text 				= sprintf( '%1$s mentioned you' , $user_fullname );
-			
-		// Messages 
-		elseif ( $component == 'messages' && $action == 'new_message' ) :
-			$link  	= trailingslashit( bp_loggedin_user_domain() . bp_get_messages_slug() . '/inbox' );
-			$text = 'You have a new private message';
-			
-		// Friends 
-		elseif ( $component == 'friends' ) :
-			switch ( $action ) {
+				// Lump forums in with activity
+				if ( $type == "forums" ) $type = "activity";
+				if ( $type == "events" ) $type = "groups";
 				
-				case 'friendship_accepted' :
-					$text = sprintf( '%s accepted your friendship request' , bp_core_get_user_displayname( $item_id ) );  
-					$link = trailingslashit( bp_loggedin_user_domain() . bp_get_friends_slug() . '/my-friends' );
-					break;
-				
-				case 'friendship_request' :
-					$text = sprintf( 'New friendship request from %s',  bp_core_get_user_displayname( $item_id ) );
-					$link = bp_loggedin_user_domain() . bp_get_friends_slug() . '/requests/?new';
-					break;
-			}
-			
-		// Groups 
-		elseif ( $component == 'groups' ) :	
-			
-			// Grab some group info 
-			if ( $action == 'new_membership_request' ) 
-				$group_id = $secondary_item_id;
-			else $group_id = $item_id;
-			$group = groups_get_group( array( 'group_id' => $group_id ) );
-			$group_link = bp_get_group_permalink( $group );	
-			
-			
-			switch ( $action ) {
-				
-				case 'new_membership_request' :
-					$requesting_user_id = $item_id;
-					$user_fullname = bp_core_get_user_displayname( $requesting_user_id );
-					$text = sprintf( '%s requests group membership' , $user_fullname );
-					$link = $group_link . 'admin/membership-requests';
-					break;
-
-				case 'membership_request_accepted' :
-					$text = sprintf( 'Membership for group "%s" accepted' , $group->name );
-					$link = $group_link;
-					break;
-				
-				case 'membership_request_rejected' :
-					$text = sprintf( 'Membership for group "%s" rejected' , $group->name );
-					$link = $group_link;
-					break;
-				
-				case 'member_promoted_to_admin':
-					$text = sprintf( 'You were promoted to administrator in the group "%s"' , $group->name );
-						$link = $group_link;
-					break;
-				
-				case 'member_promoted_to_mod':
-					$text = sprintf( 'You were promoted to moderator in the group "%s"' , $group->name );
-					$link = $group_link;
-					break;
-				
-				case 'group_invite':
-					$text = sprintf( 'You have an invitation to join the group: %s' , $group->name );
-					$link = bp_loggedin_user_domain() . bp_get_groups_slug() . '/invites';
-					break;
-				
-				case 'new_calendar_event' :
-					$text = sprintf( 'New event "%1$s" added to %2$s group calendar.' , get_the_title($secondary_item_id) , $group->name );
-					$link = SITEURL . '/calendar/' . $group->slug;
-					break;
-			}
+				// Bucket notifications by component
+				$notifications[$type][] = array( 
+					'id'		=> $id , 
+					'action'	=> $action ,
+					'desc'		=> $desc 
+				);
+		
+			endwhile; 
 		endif;
 		
-		// Return the formatted mention 
-		$content = array(
-			'text' 	=> $text,
-			'link'	=> $link,
-		);
-		return $content;		
+		// Return the notifications
+		return $notifications;
 	}
 }
 

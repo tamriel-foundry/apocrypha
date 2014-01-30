@@ -35,7 +35,7 @@ $group = groups_get_group( array( 'group_id' => 1 ) );
 					<li class="guild-status-item recruitment-status-item"><span class="er-name">Recruitment:</span>
 						<?php if ( guild_recruitment_status() == 'closed' ) : ?>
 						<span class="guild-status-entry closed">Closed</span>
-						<div class="recruitment-status-popup">
+						<div class="recruitment-status-popup error">
 							We are not currently soliciting further applications, recruitment is conducted on an invite-only basis until further notice. You may still apply if you wish, and we will hold your application until recruitment is reopened.
 						</div>
 						<?php else : ?>

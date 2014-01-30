@@ -2,12 +2,21 @@
 /**
  * Apocrypha Theme Login Functions
  * Andrew Clayton
- * Version 1.0.0
- * 8-2-2013
+ * Version 1.0.1
+ * 1-7-2014
  */
  
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
+
+/**
+ * Force usernames to not contain spaces
+ * since 1.0.1
+ */
+add_filter( 'sanitize_user' , 'apoc_sanitize_user' );
+function apoc_sanitize_user( $username ) {
+	return str_replace( " " , "-" , $username );
+}
  
 /**
  * Overrides the display of wp-login.php

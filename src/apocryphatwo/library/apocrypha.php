@@ -40,6 +40,9 @@ class Apocrypha {
 		
 			// Instantiate the class
 			self::$instance = new Apocrypha;
+			
+			// Theme switch
+			//switch_theme('apocmobile');
 					
 			// Define theme constants
 			self::$instance->constants();
@@ -88,6 +91,7 @@ class Apocrypha {
 		// Basic site info
 		$this->site 					= SITENAME;
 		$this->version					= '1.0.0';
+		$this->theme					= get_current_theme();
 		
 		// User information
 		$this->device 					= '';
@@ -332,7 +336,6 @@ class Apocrypha {
 		else
 			return $email;
 	}
-	
 
 }
 
@@ -346,9 +349,5 @@ class Apocrypha {
 function apocrypha() {
 	return Apocrypha::instance();
 }
-
-
-
-
 
 ?>

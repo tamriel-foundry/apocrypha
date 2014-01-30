@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme Pagination Functions
  * Andrew Clayton
- * Version 1.0.0
- * 8-15-2013
+ * Version 1.0.1
+ * 1-26-2014
  */
  
 // Exit if accessed directly
@@ -148,7 +148,7 @@ class Apoc_Pagination {
 				// Parse existing page numbers out of the URL
 				$remove 			= '/' . $pagination_base . '[0-9]*\/(.*)/';
 				$baseurl 			= preg_replace( $remove , "" , $baseurl );
-				$baseurl			= trailingslashit( $baseurl ) . $pagination_base . '%#%/';
+				$baseurl			= trailingslashit( $baseurl ) . $pagination_base . '%#%/#comments';
 				break;
 
 			case 'search' :

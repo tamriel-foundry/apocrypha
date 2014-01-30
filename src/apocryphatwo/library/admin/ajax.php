@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme AJAX Functions
  * Andrew Clayton
- * Version 1.0.0
- * 8-6-2013
+ * Version 1.0.2
+ * 1-22-2013
 
 ----------------------------------------------------------------
 >>> TABLE OF CONTENTS:
@@ -27,14 +27,14 @@ if ( !defined( 'ABSPATH' ) ) exit;
 ----------------------------------------------*/
 /** 
  * Register and process the login AJAX action.
- * @since 0.1
+ * @since 1.0.1
  */
 add_action( 'wp_ajax_nopriv_toplogin', 'top_login_ajax' );
 function top_login_ajax() {
 	
 	// First validate the nonce
 	check_ajax_referer( 'ajax-login-nonce' , 'top-login' );
-	
+
 	// Next, get user credentials from the login form
 	$creds = array();
 	$creds['user_login'] 	= $_POST['username'];
@@ -42,12 +42,9 @@ function top_login_ajax() {
 	$creds['remember']		= isset( $_POST['rememberme'] ) ? $_POST['rememberme'] : false;
 	$redirect_url 			= $_REQUEST['redirect'];
 	
-	// Before proceeding, trim and replace any spaces in usernames with hyphens for BuddyPress
-	$creds['user_login'] 	= str_replace( ' ' , "-" , trim( $creds['user_login'] ) );
-	
 	// Process the signon!
-	$login = wp_signon( $creds , false );
-	
+	$login = wp_signon( $creds , false );	
+
 	// Check results
 	$result = array();
 	if ( !is_wp_error($login) ) {
@@ -88,6 +85,40 @@ function apoc_clear_notification() {
 	$wpdb->query( $wpdb->prepare( "DELETE FROM " . $bp->core->table_name_notifications . " WHERE user_id = %d AND id = %s", $user_id , $notification_id ) );
 	
 	// Send a response
+	echo "1";
+	die();
+}
+
+/**
+ * Mark all notifications as read
+ * @version 1.0.2
+ */
+add_action( 'wp_ajax_apoc_mark_notifications_read' , 'apoc_mark_notifications_read' );
+function apoc_mark_notifications_read() {
+
+	// Get the user data
+	$user_id = $_POST['id'];	
+	
+	// Mark all notifications as read
+	BP_Notifications_Notification::mark_all_for_user( $user_id );
+
+	echo "1";
+	die();
+}
+
+/**
+ * Delete all notifications for user
+ * @version 1.0.2
+ */
+add_action( 'wp_ajax_apoc_delete_all_notifications' , 'apoc_delete_all_notifications' );
+function apoc_delete_all_notifications() {
+
+	// Get the user data
+	$user_id = $_POST['id'];	
+	
+	// Delete all notifications
+	BP_Notifications_Notification::delete( array( 'user_id' => $user_id ) );
+
 	echo "1";
 	die();
 }
@@ -684,7 +715,7 @@ function apoc_private_message_reply() {
 	
 	<?php // Otherwise, process errors
 	else :
-		echo "-1<div id='message' class='error'><p>" . __( 'There was a problem sending that reply. Please try again.', 'buddypress' ) . '</p></div>';
+		echo "<div id='message' class='error'><p>" . __( 'There was a problem sending that reply. Please try again.', 'buddypress' ) . '</p></div>';
 	endif;
 	exit;
 }

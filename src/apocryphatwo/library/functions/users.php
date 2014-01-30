@@ -18,6 +18,7 @@ function get_moderator_emails() {
 		'tonsha@tamrielfoundry.com', 
 		'grimalkin@tamrielfoundry.com', 
 		'nybling@outlook.com',
+		'miguel.albano.nogueira@gmail.com',
 	);
 	return $emails;
 }

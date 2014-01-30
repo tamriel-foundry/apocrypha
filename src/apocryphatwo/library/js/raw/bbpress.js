@@ -299,12 +299,11 @@ $("#forums").on("click","a.bbp-reply-trash-link",function( event ){
 
 });
 
-
 /*! bbPress Favorites / Subs */
-function bbp_ajax_call( action, topic_id, nonce, update_selector ) {
+function bbp_ajax_call( action, id, nonce, update_selector ) {
 	var $data = {
 		action : action,
-		id     : topic_id,
+		id     : id,
 		nonce  : nonce
 	};
 
@@ -320,12 +319,12 @@ function bbp_ajax_call( action, topic_id, nonce, update_selector ) {
 	} );
 }
 
-$( '#favorite-toggle' ).on( 'click', 'span a.favorite-toggle', function( e ) {
+$( '#subscription-controls' ).on( 'click', 'a.favorite-toggle', function( e ) {
 	e.preventDefault();
-	bbp_ajax_call( 'favorite', $( this ).attr( 'data-topic' ), bbpTopicJS.fav_nonce, '#favorite-toggle' );
+	bbp_ajax_call( 'favorite', $( this ).attr( 'data-topic' ), bbpTopicJS.fav_nonce, '#subscription-controls #favorite-toggle' );
 } );
 
-$( '#subscription-toggle' ).on( 'click', 'span a.subscription-toggle', function( e ) {
+$( '#subscription-controls' ).on( 'click', 'a.subscription-toggle', function( e ) {
 	e.preventDefault();
-	bbp_ajax_call( 'subscription', $( this ).attr( 'data-topic' ), bbpTopicJS.subs_nonce, '#subscription-toggle' );
+	bbp_ajax_call( 'subscription', $( this ).attr( 'data-topic' ), bbpTopicJS.subs_nonce, '#subscription-controls #subscription-toggle' );
 } );

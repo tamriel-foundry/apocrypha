@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme Article Comments Template
  * Andrew Clayton
- * Version 1.0.0
- * 8-6-2013
+ * Version 1.0.1
+ * 1-26-2014
  */
 
 // Exit if accessed directly
@@ -22,7 +22,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 	</ol>
 
 	<nav class="comment-navigation pagination ajaxed" data-postid="<?php the_ID(); ?>">
-		<div class="pagination-links"><?php apoc_pagination( array( 'context' => 'comment' ) ); ?></div>
+		<div class="pagination-links"><?php apoc_pagination( array( 'context' => 'comment' ) , $baseurl = get_permalink() ); ?></div>
 	</nav>
 
 </div><!-- #comments -->

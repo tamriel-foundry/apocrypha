@@ -3,8 +3,8 @@
  * Apocrypha Theme Entropy Rising Guild Application Template
  * Template Name: Entropy Rising Application
  * Andrew Clayton
- * Version 1.0
- * 2-9-2013
+ * Version 1.1
+ * 1-21-2014
  */
 ?>
 

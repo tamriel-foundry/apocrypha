@@ -7,9 +7,24 @@
  */
 ?>
 
-<?php if ( bbp_get_user_subscriptions() ) : ?>
-	
-	<?php bbp_get_template_part( 'loop',       'topics' ); ?>
+<?php // Forum subscriptions
+if ( bbp_get_user_forum_subscriptions() ) : ?>
+	<header class="forum-header">
+		<div class="forum-content"><h2>Forum</h2></div>
+		<div class="forum-count">Topics</div>
+		<div class="forum-freshness">Latest Post</div>
+	</header>
+	<?php while ( bbp_forums() ) : bbp_the_forum(); ?>
+		<?php bbp_get_template_part( 'loop', 'single-forum' ); ?>
+	<?php endwhile;	?>
+<?php else : ?>
+	<p class="no-results"><?php bbp_is_user_home() ? _e( 'You are not currently subscribed to any forums.', 'bbpress' ) : _e( 'This user is not currently subscribed to any forums.', 'bbpress' ); ?></p>
+<?php endif; ?>
+
+
+<?php // Topic subscriptions
+if ( bbp_get_user_subscriptions() ) : ?>
+	<?php bbp_get_template_part( 'loop', 'topics' ); ?>
 	
 	<nav class="pagination forum-pagination">
 		<div class="pagination-count">

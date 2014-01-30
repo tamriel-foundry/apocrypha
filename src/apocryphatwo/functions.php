@@ -111,9 +111,9 @@ add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_scripts' );
 function apoc_enqueue_scripts() {
 
 	// Register first
-	wp_register_script( 'foundry' 		, THEME_URI . '/library/js/foundry.js' 			, 'jquery' , $ver='0.3' , true	);
+	wp_register_script( 'foundry' 		, THEME_URI . '/library/js/foundry.js' 			, 'jquery' , $ver='0.46' , true	);
 	wp_register_script( 'flexslider' 	, THEME_URI . '/library/js/flexslider.min.js' 	, 'jquery' , $ver='0.1' , true  );
-	wp_register_script( 'buddypress'	, THEME_URI . '/library/js/buddypress.js' 		, 'jquery' , $ver='0.32' , true 	);	
+	wp_register_script( 'buddypress'	, THEME_URI . '/library/js/buddypress.js' 		, 'jquery' , $ver='0.33' , true 	);	
 	wp_register_script( 'colorbox' 		, THEME_URI . '/library/js/colorbox.min.js' 	, 'jquery' , $ver='1.0' , true	);
 	
 	// Deregister WordPress default jQuery and get from Google
@@ -166,9 +166,32 @@ function apoc_mce_options( $init ) {
 	$init['height']								= 250;
 	$init['theme_advanced_resizing_use_cookie'] = false;
     return $init;
-
 }
 
+add_filter( 'mce_buttons' , 'apoc_mce_buttons' );
+add_filter( 'mce_buttons_2' , 'apoc_mce_buttons_2' );
+function apoc_mce_buttons( $buttons ) {
+
+	// Add buttons
+	array_splice($buttons, 2, 0, 'underline');
+	
+	// Only remove buttons for frontend users
+	if ( is_admin() ) return $buttons;
+	
+	// Remove buttons and return
+	$remove = array('wp_more','wp_adv','fullscreen');
+	return array_diff($buttons,$remove);
+
+}
+function apoc_mce_buttons_2( $buttons ) {
+
+	// Only remove buttons for frontend users
+	if ( is_admin() ) return $buttons;
+	
+	// Remove buttons and return
+	$remove = array('wp_help','underline','pasteword','pastetext');
+	return array_diff($buttons,$remove);
+}
 
 /*--------------------------------------------------------------
 4.0 - ENTROPY RISING

@@ -999,6 +999,42 @@ jq(document).ready( function() {
 	jq('.pending').click(function() {
 		return false;
 	});
+	
+	/** Notifications ******************************************/	
+	jq('#notifications-actions a').click( function(){
+	
+		// Add a tooltip
+		jq(this).html('<i class="icon-spinner icon-spin"></i>Deleting');
+		
+		// Get the context
+		var context = jq(this).attr('id');
+		
+		// Get data
+		var userid = jq(this).data('id');
+		
+		// Configure action by context
+		if ( 'mark_as_read' == context ) {
+			action	= 'apoc_mark_notifications_read';
+			success	= 'All notifications marked as read!';
+		} else if ( 'delete_all_notifications' == context ) {
+			action = 'apoc_delete_all_notifications';	
+			success	= 'All notifications deleted!';			
+		}
+		
+		// Submit the POST AJAX
+		jq.post( ajaxurl, { 
+				'action'	: action,
+				'id'			: userid
+				},
+			function(response){
+				if ( response == 1 ) {
+					jq('div#notifications-dir-list').slideUp().html('<div class="updated">' + success + '</div>').slideDown();
+				}
+			});
+	
+		// Prevent default action
+		return false;
+	});
 
 	/** Private Messaging ******************************************/
 

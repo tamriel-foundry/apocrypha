@@ -62,6 +62,7 @@ class Apoc_bbPress {
 		// Subscribe and Favorite Buttons
 		add_filter( 'bbp_before_get_user_favorites_link_parse_args' 	, array( $this , 'favorite_button' ) );
 		add_filter( 'bbp_before_get_user_subscribe_link_parse_args' 	, array( $this , 'subscribe_button' ) );
+		add_filter( 'bbp_is_subscriptions'								, array( $this , 'subscriptions_component' ) );
 		
 		// Prevent Self-Favoriting
 		add_filter( 'bbp_get_user_favorites_link' 						, array( $this , 'disallow_self_favorite' ) , 10 , 4 );
@@ -115,6 +116,10 @@ class Apoc_bbPress {
 				'after'     	=> '',
 			);
 		return $r;
+	}
+	function subscriptions_component() {
+		if ( bp_is_user() ) return true;
+		else return false;
 	}
 
 	/**

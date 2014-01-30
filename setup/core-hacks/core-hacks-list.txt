@@ -1,11 +1,15 @@
 // CORE HACKS
 
 buddypress/bp-activity/bp-activity-functions.php
-LINE 84 :
+LINE 84 : Don't let users mention themselves
 	if ( !empty( $user_id ) && $user_id != get_current_user_id() ) {
 	
+buddypress/bp-notifications/bp-notifications-template.php
+LINE 733-826
+	ADD .button class and change button wording
+	
 bbpress\includes\topics\template.php	
-LINE 2349:
+LINE 2502:
 	if ( empty( $topic ) || get_current_user_id() != $topic->post_author || bbp_past_edit_lock( $topic->post_date_gmt ) ) {
 
 bbpress/includes/extend/buddypress/groups.php
@@ -68,21 +72,22 @@ LINE 846 :
 	// Grab the custom forum template
 	locate_template( array( 'groups/single/forum/topic.php' ), true );
 	
-LINE 872
+LINE 864
 	REMOVE 					<h3><?php bbp_reply_title(); ?></h3>
 	
-LINE 887 :
+LINE 876 :
 	// Grab the custom edit reply template
 	locate_template( array( 'groups/single/forum/move.php' ), true );
 	
-LINE 894 :
+LINE 881 :
 	// Grab the custom edit reply template
 	locate_template( array( 'groups/single/forum/reply-edit.php' ), true );
 	
-	
-	
-	
-	
+
 bbpress/includes/replies/capabilities.php
 LINE 129 - ALLOW USERS TO EDIT REPLIES THAT HAVE BEEN FRESHLY AJAXED: 
 	} elseif ( (int) $user_id === (int) $_post->post_author ) {
+	
+	
+bbpress/includes/extend/buddypress/notifications.php
+LINE 78 - 	return $action;

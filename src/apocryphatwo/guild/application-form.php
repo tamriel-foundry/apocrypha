@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme Entropy Rising Application Form
  * Andrew Clayton
- * Version 1.0
- * 10-10-2013
+ * Version 1.1
+ * 1-21-2014
  */
 
  
@@ -245,8 +245,7 @@ if( isset( $_POST['submitted']) ) {
 		</li>
 		
 		<li class="checkbox">
-			<span>I have read the Entropy Rising <a href="http://tamrielfoundry.com/entropy-rising/charter" title="Read the charter" target="_blank">guild charter</a>, and understand what will be expected of me if my application is approved.</span>
-			<input type="checkbox" name="readrules" value="read"><label for="readrules">I understand.</label></li>
+			<input type="checkbox" name="readrules" value="read"><label for="readrules">I have read the Entropy Rising <a href="http://tamrielfoundry.com/entropy-rising/charter" title="Read the charter" target="_blank">guild charter</a>, and understand what will be expected of me if my application is approved.</label></li>
 			<?php if($readrulesError != '') echo '<div class="error">' . $readrulesError . '</div>'; ?> 
 		</li>
 		

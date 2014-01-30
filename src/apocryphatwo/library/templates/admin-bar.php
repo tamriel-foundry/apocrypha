@@ -59,7 +59,6 @@ else :
 	<a id="top-login-logout" class="admin-bar-login-link button logout" href="<?php echo $redirect; ?>" title="Log out of this account."><i class="icon-lock"></i>Logout</a>
 </div><!-- #admin-bar-login -->
 
-
 <div id="notifications-panel">
 	<ul id="notifications-menu">
 		<li id="notifications-activity" class="notification-type">
@@ -71,7 +70,7 @@ else :
 				<?php if ( !empty( $notifications['activity'] ) ) : for ( $i=0 ; $i<count( $notifications['activity'] ) ; $i++ ) : ?>
 					<li id="notification-<?php echo $notifications['activity'][$i]['id']; ?>" class="notification-entry"><i class="icon-li icon-chevron-right"></i>
 						<?php echo '<a class="clear-notification" href="' . $link . '?type=activity&amp;notid='.$notifications['activity'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"><i class="icon-remove"></i></a>'; ?>
-						<?php echo '<a href="'.$notifications['activity'][$i]['href'] .'">'.$notifications['activity'][$i]['content'] .'</a>'; ?>
+						<?php echo $notifications['activity'][$i]['desc']; ?>
 					</li>
 				<?php endfor; else: ?>
 					<li class="notification-entry"><i class="icon-li icon-chevron-right"></i>You have no new mentions.</li>
@@ -93,7 +92,7 @@ else :
 				<?php if ( !empty( $notifications['messages'] ) ) : for ( $i=0 ; $i<count( $notifications['messages'] ) ; $i++ ) : ?>
 					<li id="notification-<?php echo $notifications['messages'][$i]['id']; ?>" class="notification-entry"><i class="icon-li icon-chevron-right"></i>
 						<?php echo '<a class="clear-notification" href="' . $link . '?type=messages&amp;notid='.$notifications['messages'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"><i class="icon-remove"></i></a>'; ?>
-						<?php echo '<a href="'.$notifications['messages'][$i]['href'] .'">'.$notifications['messages'][$i]['content'] .'</a>'; ?>
+						<?php echo $notifications['messages'][$i]['desc']; ?>
 					</li>
 				<?php endfor; else: ?>
 					<li class="notification-entry"><i class="icon-li icon-chevron-right"></i>You have no new messages.</li>
@@ -116,7 +115,7 @@ else :
 				<?php if ( !empty( $notifications['friends'] ) ) : for ( $i=0 ; $i<count( $notifications['friends'] ) ; $i++ ) : ?>
 					<li id="notification-<?php echo $notifications['friends'][$i]['id']; ?>" class="notification-entry"><i class="icon-li icon-chevron-right"></i>
 						<?php echo '<a class="clear-notification" href="' . $link . '?type=friends&amp;notid='.$notifications['friends'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"><i class="icon-remove"></i></a>'; ?>
-						<?php echo '<a href="'.$notifications['friends'][$i]['href'] .'">'.$notifications['friends'][$i]['content'] .'</a>'; ?>
+						<?php echo $notifications['friends'][$i]['desc']; ?>
 					</li>
 				<?php endfor; else: ?>
 					<li class="notification-entry"><i class="icon-li icon-chevron-right"></i>You have no new friend requests.</li>
@@ -138,7 +137,7 @@ else :
 				<?php if ( !empty( $notifications['groups'] ) ) : for ( $i=0 ; $i<count( $notifications['groups'] ) ; $i++ ) : ?>
 					<li id="notification-<?php echo $notifications['groups'][$i]['id']; ?>" class="notification-entry"><i class="icon-li icon-chevron-right"></i>
 						<?php echo '<a class="clear-notification" href="' . $link . '?type=groups&amp;notid='.$notifications['groups'][$i]['id'].'&amp;_wpnonce=' . wp_create_nonce( 'clear-single-notification' ) . '"><i class="icon-remove"></i></a>'; ?>
-						<?php echo '<a href="'.$notifications['groups'][$i]['href'] .'">'.$notifications['groups'][$i]['content'] .'</a>'; ?>
+						<?php echo $notifications['groups'][$i]['desc']; ?>
 					</li>
 				<?php endfor; else: ?>
 					<li class="notification-entry"><i class="icon-li icon-chevron-right"></i>You have no new group notifications.</li>

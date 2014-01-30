@@ -14,6 +14,7 @@
 		<header id="forum-header" class="entry-header <?php page_header_class(); ?>">
 			<h1 class="entry-title"><?php bbp_forum_title(); ?></h1>
 			<p class="entry-byline"><?php bbp_forum_content(); ?></p>
+			<?php bbp_forum_subscription_link(); ?>
 			<?php apoc_get_search_form( 'topic' ); ?>
 		</header>		
 		

@@ -2,7 +2,6 @@
 $( '#comments' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	
 	// Declare some stuff
-	var curPage = newPage = postid = tooltip = dir = '';
 	var button	= $(this);
 	var nav		= button.parent().parent();
 			
@@ -13,14 +12,14 @@ $( '#comments' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	nav.css( "pointer-events" , "none" );
 	
 	// Get the pagination context
-	postid 		= $( 'nav.pagination' ).data('postid');
-	baseURL		= window.location.href.replace( window.location.hash , '' );
+	var postid 		= $( 'nav.pagination' ).data('postid');
+	var baseURL		= window.location.href.replace( window.location.hash , '' );
 	
 	// Get the current page number
-	curPage = parseInt( $( ".page-numbers.current" ).text() );
+	var curPage = parseInt( $( ".page-numbers.current" ).text() );
 	
 	// Get the requested page number
-	newPage	= parseInt( button.text() );
+	var newPage	= parseInt( button.text() );
 	if ( button.hasClass( 'next' ) ) {
 		newPage = curPage+1;
 	} else if ( button.hasClass( 'prev' ) ) {
@@ -31,7 +30,7 @@ $( '#comments' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 	button.html('<i class="icon-spinner icon-spin"></i>');
 		
 	// Send an AJAX request for more comments
-	$.post( ajaxurl , {
+	$.post( apoc_ajax , {
 			'action'	: 'apoc_load_comments',
 			'postid'	: postid,
 			'paged'		: newPage,
@@ -55,6 +54,7 @@ $( '#comments' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 				});	
 
 				// Change the URL in the browser
+				var newURL = "";
 				if ( 1 == curPage )
 					newURL = baseURL + 'comment-page-' + newPage;
 				else if ( 1 == newPage )
@@ -84,7 +84,7 @@ $( "form#commentform" ).submit( function( event ) {
 	button.attr( 'disabled' , "disabled" );
 	
 	// Create a feedback notice if one doesn't already exist
-	if ( $( '#comment-notice' ).length == 0 ) {
+	if ( $( '#comment-notice' ).length === 0 ) {
 		$(this).prepend('<div id="comment-notice"></div>');
 		$( '#comment-notice' ).hide();
 	}
@@ -93,8 +93,8 @@ $( "form#commentform" ).submit( function( event ) {
 	tinyMCE.triggerSave();
 	
 	// Make sure the form isn't empty
-	if ( '' == textarea.val() ) {
-		error = "You didn't write anything!";			
+	if ( textarea.val() === "" ) {
+		error = "You didn't write anything!";	
 	}
 			
 	// If there's been no error so far, go ahead and submit the AJAX
@@ -150,19 +150,19 @@ $( 'ol#comment-list' ).on( "click" , "a.delete-comment-link" , function(event){
 	event.preventDefault();
 
 	// Confirm the user's desire to delete the comment
-	confirmation = confirm("Permanently delete this comment?");
+	var confirmation = confirm("Permanently delete this comment?");
 	if(confirmation){
 	
 		// Visual tooltip
-		button = $(this);
-		button.text('Deleting...');
+		var button = $(this);
+		button.html('<i class="icon-spinner icon-spin"></i>Deleting');
 		
 		// Get the arguments
-		commentid	= $(this).data('id');
-		nonce		= $(this).data('nonce');
+		var commentid	= $(this).data('id');
+		var nonce		= $(this).data('nonce');
 
 		// Submit the POST AJAX
-		$.post( ajaxurl, { 
+		$.post( apoc_ajax, { 
 			'action'	: 'apoc_delete_comment',
 			'_wpnonce'	: nonce,
 			'commentid' : commentid,

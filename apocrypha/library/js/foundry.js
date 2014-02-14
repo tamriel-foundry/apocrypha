@@ -1,14 +1,14 @@
 /*! --------------------------------------- 
 0.0 - DEFINE CONSTANTS
 ----------------------------------------- */
-var	siteurl 	= ( window.location.host == 'localhost' ) ? 'http://localhost/tamrielfoundry/' : 'http://tamrielfoundry.com/';
-var themeurl	= siteurl + 'wp-content/themes/apocrypha/';
-var ajaxurl 	= siteurl + 'wp-admin/admin-ajax.php';
-var apoc_ajax 	= themeurl + "library/ajax.php";
+var	siteurl		= (window.location.host === 'localhost') ? 'http://localhost/tamrielfoundry/' : 'http://tamrielfoundry.com/';
+var themeurl	= siteurl	+ 'wp-content/themes/apocrypha/';
+var ajaxurl 	= siteurl	+ 'wp-admin/admin-ajax.php';
+var apoc_ajax 	= themeurl	+ "library/ajax.php";
 var $			= jQuery;
 
 /*! jQuery Document Ready Functions */
-;$(document).ready(function(){
+$(document).ready(function(){
 
 /*! --------------------------------------- 
 1.0 - ADMIN BAR
@@ -23,13 +23,75 @@ $('#top-login-logout').click( function(){
 	$(this).html('<i class="icon-spinner icon-spin"></i>Logging Out');
 });
 
-
-
-
-
 /*! Buddypress Frontend Notifications */
-;$("a.clear-notification").click(function(e){var a=$(this);var d=get_var_in_url(a.attr("href"),"_wpnonce");var c=get_var_in_url(a.attr("href"),"notid");var b=get_var_in_url(a.attr("href"),"type");e.preventDefault();a.removeAttr("href");a.html('<i class="icon-spinner icon-spin"></i>');$.post(ajaxurl,{action:"apoc_clear_notification",_wpnonce:d,notid:c},function(f){if(f){counter=$("li#notifications-"+b+" span.notifications-number");count=parseInt(counter.text());if(count>1){counter.text(count-1);a.parent().remove()}else{counter.remove();a.parent().text("Notifications cleared!")}title=$("title").text();count=title.split("]")[0].substr(1);if(1<count){title=title.replace(count,count-1)}else{title=title.replace(/\[.*\]/,"")}document.title=title}})});function get_var_in_url(b,a){var e=b.split("?");var d=e[1].split("&");for(var c=0;c<d.length;c++){var f=d[c].split("=");if(f[0]==a){return f[1]}}return""}function title_notification_count(){count=0;$.each(["activity","messages","groups","friends"],function(b,c){target=$("li#notifications-"+c+" span.notifications-number");if(target.is("*")){count=count+parseInt(target.text())}});if(count>0){var a=$("title").text().replace(/\[.*\]/,"");a="["+count+"]"+a;$("title").text(a)}}title_notification_count();
+$("a.clear-notification").click( function( event ){
+	
+	// Get some info about what we are doing 
+	var button	= $(this);
+	var nonce	= get_url_var( button.attr('href') , '_wpnonce' );
+	var notid 	= get_url_var( button.attr('href') , 'notid' );
+	var type 	= get_url_var( button.attr('href') , 'type' );
+	
+	// Prevent default
+	event.preventDefault();		
 
+	// Tooltip
+	button.removeAttr('href');
+	button.html('<i class="icon-spinner icon-spin"></i>' );
+			
+	// Submit the POST AJAX 
+	$.post( apoc_ajax, {
+			'action'	: 'apoc_clear_notification',
+			'_wpnonce'	: nonce,
+			'notid' 	: notid,
+		},
+		function( response ){
+			if( response ){
+				
+				// Change the notification count and remove the notification
+				var counter = $( "li#notifications-" + type + " span.notifications-number" );
+				var count = parseInt( counter.text() );
+				if ( count > 1 ) {
+					counter.text( count - 1 );
+					button.parent().remove();
+				} else {
+					counter.remove();
+					button.parent().text("Notifications cleared!");
+				}
+				
+				// Update the document title
+				var title = $('title').text();
+				count = title.split(']')[0].substr(1);
+				if ( 1 < count ) {
+					title = title.replace( count , count-1 );
+				} else {
+					title = title.replace(/\[.*\]/,'');
+				}
+				document.title = title;
+			}
+		}
+	);
+});
+
+// Add the total notification count to the title
+function title_notification_count() {
+	var count = 0;
+	$.each( ['activity','messages','groups','friends'] , function(index,type) {
+		var target = $("li#notifications-"+type+" span.notifications-number");
+		if ( target.is('*') ) {
+			count = count + parseInt( target.text() );
+		}
+	});
+	
+	// If we have notifications, add them to the title
+	if ( count > 0 ) {
+		var doctitle = $('title').text().replace(/\[.*\]/,'');
+		doctitle = "["+count+"]"+doctitle;
+		$('title').text(doctitle);
+	}
+}
+// Run it once on document ready
+title_notification_count();
 
 
 /*! --------------------------------------- 
@@ -39,7 +101,6 @@ $('#top-login-logout').click( function(){
 /*! Top and Bottom Scrolling */
 $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);return false});
 ;$("a.downtobottom").click(function(){$("html, body").animate({scrollTop:$(document).height()},600);return false});
-
 
 
 /*! --------------------------------------- 
@@ -96,7 +157,7 @@ $( '#posts' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 				$('.post').fadeOut('slow').promise().done(function() {
 					nav.remove();
 					$('#posts').empty().append(response);
-					$('#content').animate({ scrollTop: $( "#content" ).offset().top }, 600 );
+					$('html').animate({ scrollTop: $( "#content" ).offset().top }, 600 );
 					$('#posts').hide().fadeIn('slow');				
 				});			
 			}
@@ -123,14 +184,185 @@ $( '#posts' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
 3.0 - COMMENTS
 ----------------------------------------- */
 
-/*! Load Comments
-;$("#comments").on("click","nav.ajaxed a.page-numbers",function(c){var b=newPage=postid=tooltip=dir="";var a=$(this);var d=a.parent().parent();c.preventDefault();d.css("pointer-events","none");postid=$("nav.pagination").data("postid");baseURL=window.location.href.replace(window.location.hash,"");b=parseInt($(".page-numbers.current").text());newPage=parseInt(a.text());if(a.hasClass("next")){newPage=b+1}else{if(a.hasClass("prev")){newPage=b-1}}a.html('<i class="icon-spinner icon-spin"></i>');$.post(ajaxurl,{action:"apoc_load_comments",postid:postid,paged:newPage,baseurl:baseURL},function(e){if(e!="0"){$(".reply").fadeOut("slow").promise().done(function(){$("nav.pagination").remove();$("ol#comment-list").empty().append(e);$("ol#comment-list").after($("nav.pagination"));$("html, body").animate({scrollTop:$("#comments").offset().top},600);$("ol#comment-list").hide().fadeIn("slow");$("#respond").show()});if(1==b){newURL=baseURL+"comment-page-"+newPage}else{if(1==newPage){newURL=baseURL.replace("/comment-page-"+b,"")}else{newURL=baseURL.replace("/comment-page-"+b,"/comment-page-"+newPage)}}window.history.replaceState({type:"comments",id:postid,paged:b},document.title,newURL)}})});  */
+/*! Load Comments */
+$( '#comments' ).on( "click" , "nav.ajaxed a.page-numbers" , function(event){
+	
+	// Declare some stuff
+	var button	= $(this);
+	var nav		= button.parent().parent();
+			
+	// Prevent default pageload
+	event.preventDefault();
+	
+	// Prevent further clicks
+	nav.css( "pointer-events" , "none" );
+	
+	// Get the pagination context
+	var postid 		= $( 'nav.pagination' ).data('postid');
+	var baseURL		= window.location.href.replace( window.location.hash , '' );
+	
+	// Get the current page number
+	var curPage = parseInt( $( ".page-numbers.current" ).text() );
+	
+	// Get the requested page number
+	var newPage	= parseInt( button.text() );
+	if ( button.hasClass( 'next' ) ) {
+		newPage = curPage+1;
+	} else if ( button.hasClass( 'prev' ) ) {
+		newPage = curPage-1;
+	}
+	
+	// Display a loading tooltip
+	button.html('<i class="icon-spinner icon-spin"></i>');
+		
+	// Send an AJAX request for more comments
+	$.post( apoc_ajax , {
+			'action'	: 'apoc_load_comments',
+			'postid'	: postid,
+			'paged'		: newPage,
+			'baseurl'	: baseURL,
+		},
+		function( response ) {
+		
+			// If we successfully retrieved comments
+			if( response != '0' ) {
+			
+				// Do some beautiful jQuery
+				$('.reply').fadeOut('slow').promise().done(function() {
+					$('nav.pagination').remove();
+					$('ol#comment-list').empty().append(response);
+					$( 'ol#comment-list' ).after( $( 'nav.pagination' ) );
+					$('html').animate({ 
+						scrollTop: $( "#comments" ).offset().top 
+					}, 600 );
+					$('ol#comment-list').hide().fadeIn('slow');
+					$( '#respond' ).show();
+				});	
 
-/*! Insert Comments
-;$("form#commentform").submit(function(f){var c="";var e=$(this);var a=e.attr("action");var d=$("#submit",e);var b=$("#comment",e);f.preventDefault();d.attr("disabled","disabled");if($("#comment-notice").length==0){$(this).prepend('<div id="comment-notice"></div>');$("#comment-notice").hide()}tinyMCE.triggerSave();if(""==b.val()){c="You didn't write anything!"}if(!c){d.html('<i class="icon-spinner icon-spin"></i>Submitting...');$.ajax({url:a,type:"post",data:e.serialize(),success:function(g){$("#respond").slideUp("slow",function(){$("ol#comment-list").append(g);$("#comments .discussion-header").removeClass("noreplies");$("ol#comment-list li.reply:last-child").hide().slideDown("slow");tinyMCE.activeEditor.setContent("");tinyMCE.triggerSave();d.removeAttr("disabled");d.html('<i class="icon-pencil"></i>Post Comment')})},error:function(g,i,h){c="An error occurred during posting."}})}if(c){$("#comment-notice").addClass("error").text(c).fadeIn("slow");d.removeAttr("disabled");d.removeAttr("disabled");d.html('<i class="icon-pencil"></i>Post Comment')}});  */
+				// Change the URL in the browser
+				var newURL = "";
+				if ( 1 == curPage )
+					newURL = baseURL + 'comment-page-' + newPage;
+				else if ( 1 == newPage )
+					newURL = baseURL.replace( "/comment-page-" + curPage , "" );
+				else
+					newURL = baseURL.replace( "/comment-page-" + curPage , "/comment-page-" + newPage );
+				window.history.replaceState( { 'type' : 'comments' , 'id' : postid , 'paged' : curPage } , document.title , newURL );				
+			}
+		}
+	);	
+});
+
+/*! Insert Comments */
+$( "form#commentform" ).submit( function( event ) {
+
+	// Get the form
+	var error		= '';
+	var form 		= $(this);
+	var submitURL	= form.attr('action');
+	var button		= $( '#submit' , form );
+	var textarea	= $( '#comment' , form );
+	
+	// Prevent the default action
+	event.preventDefault();
+	
+	// Prevent double posting
+	button.attr( 'disabled' , "disabled" );
+	
+	// Create a feedback notice if one doesn't already exist
+	if ( $( '#comment-notice' ).length === 0 ) {
+		$(this).prepend('<div id="comment-notice"></div>');
+		$( '#comment-notice' ).hide();
+	}
+	
+	// Save content from TinyMCE into the hidden form textarea
+	tinyMCE.triggerSave();
+	
+	// Make sure the form isn't empty
+	if ( textarea.val() === "" ) {
+		error = "You didn't write anything!";	
+	}
+			
+	// If there's been no error so far, go ahead and submit the AJAX
+	if( !error ) {
+	
+		// Give a tooltip
+		button.html( '<i class="icon-spinner icon-spin"></i>Submitting...' );
+		
+		// Submit the comment form to the wordpress handler
+		$.ajax({
+			url 	: submitURL,
+			type	: 'post',
+			data	: form.serialize(),
+			success	: function( data ) {
+						
+				// Display the new comment with sexy jQuery
+				$( '#respond' ).slideUp('slow' , function() {
+					$( 'ol#comment-list' ).append( data );
+					$( '#comments .discussion-header' ).removeClass( 'noreplies' );
+					$( 'ol#comment-list li.reply:last-child' ).hide().slideDown('slow');
+	
+					// Clear the editor
+					tinyMCE.activeEditor.setContent('');
+					tinyMCE.triggerSave();
+					
+					// Re-enable the form
+					button.removeAttr( 'disabled' );
+					button.html( '<i class="icon-pencil"></i>Post Comment' );
+				});					
+			},
+			error 	: function( jqXHR , textStatus , errorThrown ) {
+					error = "An error occurred during posting.";
+			},
+		});
+	}
+	
+	// If there was an error at any point, display it
+	if ( error ) {
+		$( '#comment-notice' ).addClass('error').text(error).fadeIn('slow');
+		button.removeAttr( 'disabled' );
+		
+		// Re-enable the form
+		button.removeAttr( 'disabled' );
+		button.html( '<i class="icon-pencil"></i>Post Comment' );
+	}
+	
+});
 
 /*! Delete Comments */
-;$("ol#comment-list").on("click","a.delete-comment-link",function(a){a.preventDefault();confirmation=confirm("Permanently delete this comment?");if(confirmation){button=$(this);button.text("Deleting...");commentid=$(this).data("id");nonce=$(this).data("nonce");$.post(ajaxurl,{action:"apoc_delete_comment",_wpnonce:nonce,commentid:commentid},function(b){if(b){$("li#comment-"+commentid+" div.reply-body").slideUp("slow",function(){$("li#comment-"+commentid).remove()})}})}});
+$( 'ol#comment-list' ).on( "click" , "a.delete-comment-link" , function(event){
+
+	// Prevent the default action
+	event.preventDefault();
+
+	// Confirm the user's desire to delete the comment
+	var confirmation = confirm("Permanently delete this comment?");
+	if(confirmation){
+	
+		// Visual tooltip
+		var button = $(this);
+		button.html('<i class="icon-spinner icon-spin"></i>Deleting');
+		
+		// Get the arguments
+		var commentid	= $(this).data('id');
+		var nonce		= $(this).data('nonce');
+
+		// Submit the POST AJAX
+		$.post( apoc_ajax, { 
+			'action'	: 'apoc_delete_comment',
+			'_wpnonce'	: nonce,
+			'commentid' : commentid,
+			}, 
+			function( resp ){	
+				if( resp ){	
+					$( 'li#comment-' + commentid + ' div.reply-body' ).slideUp( 'slow', function() { 
+						$( 'li#comment-' + commentid ).remove(); 
+					});						
+				}
+			}
+		);
+	}
+});
 
 /*! Quote Button */
 ;$("#comments,#forums").on("click","a.quote-link",function(b){var a=quoteParent=quoteSource=posttext=quote="";b.preventDefault();a=$(this).data("context");postid=$(this).data("id");author=$(this).data("author");date=$(this).data("date");if("reply"==a){quoteParent="#post-"+postid;quoteSource="#post-"+postid+" .reply-content";editor="bbp_reply_content"}else{if("comment"==a){quoteParent="#comment-"+postid;quoteSource="#comment-"+postid+" .reply-content";editor="comment"}}if(window.getSelection){posttext=window.getSelection().toString()}else{if(document.selection&&document.selection.type!="Control"){posttext=document.selection.createRange().text}else{return}}if(""!=posttext){postlines=posttext.split(/\r?\n/);firstline=postlines[0];lastline=postlines[postlines.length-1];if(0==$(quoteSource).find(":contains("+firstline+")").length||0==$(quoteSource).find(":contains("+lastline+")").length){alert("This is not a valid quote selection. Either select a specific passage or select nothing to quote the full post.");return}}if(""==posttext){posttext=$(quoteSource).html()}posttext=posttext.replace(/<ul id="bbp-reply-revision((.|\n)*?)(<\/ul>)/,"");posttext=posttext.replace(/<ul id="bbp-topic-revision((.|\n)*?)(<\/ul>)/,"");posttext=posttext.replace(/<div class="spoiler">((.|\n)*?)(<\/div>)/g,"");posttext=posttext.replace(/<img((.|\n)*?)(>)/g,"");posttext=posttext.replace(/<br>/g,"");posttext=posttext.replace(/&nbsp;/g,"");posttext=posttext.replace(/<button class="quote-toggle((.|\n)*?)(<\/button>)/g,"");posttext=posttext.replace(/display: none;/g,"");quote='\r\n\r\n[quote author="'+author+"|"+quoteParent.substring(1)+"|"+date+'"]';quote+="\r\n"+posttext;quote+="\r\n[/quote]\r\n\r\n&nbsp;";editor_html=document.getElementById(editor+"-html");switchEditors.switchto(editor_html);document.getElementById(editor).value+=quote;editor_tmce=document.getElementById(editor+"-tmce");switchEditors.switchto(editor_tmce);$("html, body").animate({scrollTop:$("#respond").offset().top},600)});

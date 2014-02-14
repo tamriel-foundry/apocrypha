@@ -8,7 +8,7 @@
 ----------------------------------------------------------------
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
-1.0 - Login
+1.0 - Debug
 2.0 - Notifications
 3.0 - Posts
 4.0 - Comments
@@ -22,53 +22,15 @@ X.X - Private Messages
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
-// Debugging
+
+/*---------------------------------------------
+1.0 - DEBUG
+----------------------------------------------*/
 add_action( 'apoc_ajax_apoc_debug' , 'apoc_debug' );
 add_action( 'wp_ajax_apoc_debug' , 'apoc_debug' );
 function apoc_debug() {
 	$memory =  round ( memory_get_peak_usage() / 1048576 , 2 ) . 'megabytes used.';
 	die( $memory );
-}
- 
-/*---------------------------------------------
-1.0 - LOGIN
-----------------------------------------------*/
-/** 
- * Register and process the login AJAX action.
- * @since 1.0.1
- */
-add_action( 'wp_ajax_nopriv_toplogin', 'top_login_ajax' );
-function top_login_ajax() {
-	
-	// First validate the nonce
-	check_ajax_referer( 'ajax-login-nonce' , 'top-login' );
-
-	// Next, get user credentials from the login form
-	$creds = array();
-	$creds['user_login'] 	= $_POST['username'];
-	$creds['user_password'] = $_POST['password'];
-	$creds['remember']		= isset( $_POST['rememberme'] ) ? $_POST['rememberme'] : false;
-	$redirect_url 			= $_REQUEST['redirect'];
-	
-	// Process the signon!
-	$login = wp_signon( $creds , false );	
-
-	// Check results
-	$result = array();
-	if ( !is_wp_error($login) ) {
-		$result['success'] 	= 1;
-		$result['redirect'] = $redirect_url;
-	} else {
-		$result['success'] = 0;
-		if ( $login->errors )	
-			$result['error'] = $login->get_error_message();
-		else 
-			$result['error'] = "<strong>ERROR</strong>: Please enter a valid username and password to login.";
-	}
-	
-	// Send the JSON
-	echo json_encode( $result );
-	die();	
 }
 
 /*---------------------------------------------
@@ -78,7 +40,7 @@ function top_login_ajax() {
  * Remove frontend BuddyPress notifications with AJAX
  * @version 1.0.0
  */
-add_action( 'wp_ajax_apoc_clear_notification' , 'apoc_clear_notification' );
+add_action( 'apoc_ajax_apoc_clear_notification' , 'apoc_clear_notification' );
 function apoc_clear_notification() {
 
 	// Check the nonce
@@ -101,7 +63,7 @@ function apoc_clear_notification() {
  * Mark all notifications as read
  * @version 1.0.2
  */
-add_action( 'wp_ajax_apoc_mark_notifications_read' , 'apoc_mark_notifications_read' );
+add_action( 'apoc_ajax_apoc_mark_notifications_read' , 'apoc_mark_notifications_read' );
 function apoc_mark_notifications_read() {
 
 	// Get the user data
@@ -118,7 +80,7 @@ function apoc_mark_notifications_read() {
  * Delete all notifications for user
  * @version 1.0.2
  */
-add_action( 'wp_ajax_apoc_delete_all_notifications' , 'apoc_delete_all_notifications' );
+add_action( 'apoc_ajax_apoc_delete_all_notifications' , 'apoc_delete_all_notifications' );
 function apoc_delete_all_notifications() {
 
 	// Get the user data
@@ -136,8 +98,6 @@ function apoc_delete_all_notifications() {
 ----------------------------------------------*/
 add_action( 'apoc_ajax_nopriv_apoc_load_posts' 	, 'apoc_load_posts' );
 add_action( 'apoc_ajax_nopriv_apoc_load_posts' 	, 'apoc_load_posts' );
-add_action( 'wp_ajax_apoc_load_posts' 			, 'apoc_load_posts' );
-add_action( 'wp_ajax_apoc_load_posts' 			, 'apoc_load_posts' );
 function apoc_load_posts() {
 
 	// Get the post data
@@ -202,8 +162,8 @@ function apoc_load_posts() {
 /*---------------------------------------------
 4.0 - COMMENTS
 ----------------------------------------------*/
-add_action( 'wp_ajax_nopriv_apoc_load_comments' , 'apoc_load_comments' );
-add_action( 'wp_ajax_apoc_load_comments' 		, 'apoc_load_comments' );
+add_action( 'apoc_ajax_nopriv_apoc_load_comments' , 'apoc_load_comments' );
+add_action( 'apoc_ajax_apoc_load_comments' 		, 'apoc_load_comments' );
 function apoc_load_comments() {
 
 	// Get the post data
@@ -248,7 +208,7 @@ function apoc_load_comments() {
  * Delete article comments with AJAX
  * @version 1.0.0
  */
-add_action( 'wp_ajax_apoc_delete_comment' , 'apoc_delete_comment' );
+add_action( 'apoc_ajax_apoc_delete_comment' , 'apoc_delete_comment' );
 function apoc_delete_comment() {
 	
 	// Check the nonce
@@ -259,9 +219,7 @@ function apoc_delete_comment() {
 	
 	// Delete it
 	wp_delete_comment( $comment_id );
-	
-	echo "1";
-	die();
+	die("1");
 }
 
 /*---------------------------------------------

@@ -3,7 +3,7 @@
  * Apocrypha - Library of hidden things, and functional framework for the Tamriel Foundry WordPress theme.
  *
  * @author Andrew Clayton
- * @version 1.0.0
+ * @version 1.0.2
  * 8-14-2013
  */
  
@@ -272,11 +272,12 @@ class Apocrypha {
 	
 	/**
 	 * Filters the default WordPress avatar grabber to use the Apoc_Avatar class instead
-	 * @version 1.0.0
+	 * @version 1.0.2
 	 */	
-	function filter_avatar( $avatar , $user_id , $size ) {
+	function filter_avatar( $avatar , $id_or_email , $size ) {
 
 		// Get the full avatar for large sizes
+		$user_id	= is_numeric( $id_or_email ) ? $id_or_email : 0;
 		$type 		= ( $size > 100 ) ? 'full' : 'thumb';	
 		$avatar 	= new Apoc_Avatar( array( 'user_id' => $user_id , 'type' => $type , 'size' => $size ) );
 		

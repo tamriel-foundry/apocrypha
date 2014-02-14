@@ -3,9 +3,9 @@ $("a.clear-notification").click( function( event ){
 	
 	// Get some info about what we are doing 
 	var button	= $(this);
-	var nonce	= get_var_in_url( button.attr('href') , '_wpnonce' );
-	var notid 	= get_var_in_url( button.attr('href') , 'notid' );
-	var type 	= get_var_in_url( button.attr('href') , 'type' );
+	var nonce	= get_url_var( button.attr('href') , '_wpnonce' );
+	var notid 	= get_url_var( button.attr('href') , 'notid' );
+	var type 	= get_url_var( button.attr('href') , 'type' );
 	
 	// Prevent default
 	event.preventDefault();		
@@ -15,7 +15,7 @@ $("a.clear-notification").click( function( event ){
 	button.html('<i class="icon-spinner icon-spin"></i>' );
 			
 	// Submit the POST AJAX 
-	$.post( ajaxurl, {
+	$.post( apoc_ajax, {
 			'action'	: 'apoc_clear_notification',
 			'_wpnonce'	: nonce,
 			'notid' 	: notid,
@@ -24,8 +24,8 @@ $("a.clear-notification").click( function( event ){
 			if( response ){
 				
 				// Change the notification count and remove the notification
-				counter = $( "li#notifications-" + type + " span.notifications-number" );
-				count = parseInt( counter.text() );
+				var counter = $( "li#notifications-" + type + " span.notifications-number" );
+				var count = parseInt( counter.text() );
 				if ( count > 1 ) {
 					counter.text( count - 1 );
 					button.parent().remove();
@@ -35,7 +35,7 @@ $("a.clear-notification").click( function( event ){
 				}
 				
 				// Update the document title
-				title = $('title').text();
+				var title = $('title').text();
 				count = title.split(']')[0].substr(1);
 				if ( 1 < count ) {
 					title = title.replace( count , count-1 );
@@ -48,23 +48,11 @@ $("a.clear-notification").click( function( event ){
 	);
 });
 
-// Helper function to get url variables
-function get_var_in_url(url,name){
-	var urla = url.split( "?" );
-	var qvars = urla[1].split( "&" );
-	for( var i=0; i < qvars.length; i++ ){
-		var qv = qvars[i].split( "=" );
-		if( qv[0] == name )
-			return qv[1];
-	}
-	return '';
-}
-
 // Add the total notification count to the title
 function title_notification_count() {
-	count = 0;
+	var count = 0;
 	$.each( ['activity','messages','groups','friends'] , function(index,type) {
-		target = $("li#notifications-"+type+" span.notifications-number");
+		var target = $("li#notifications-"+type+" span.notifications-number");
 		if ( target.is('*') ) {
 			count = count + parseInt( target.text() );
 		}

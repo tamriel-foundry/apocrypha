@@ -128,7 +128,7 @@ function apoc_quote_button( $context = 'comment' , $post_id = 0 ) {
 			global $comment;
 			$id  			= $comment->comment_ID;
 			$author_name 	= $comment->comment_author;
-			$post_date 		= get_comment_date( 'F j, Y' , $comment_id );
+			$post_date 		= get_comment_date( 'F j, Y' , $comment->comment_ID );
 			break;
 		
 		// Forum replies
@@ -289,7 +289,7 @@ function apoc_ajax_comment( $comment_ID , $comment_status ) {
 	if( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
 	
 		// Format the comment and return it's HTML
-		$content  	= apoc_display_comment( $comment_ID , $count );
+		$content  	= apoc_display_comment( $comment_ID );
 	
 		// Kill the script, returning the comment HTML
 		die( $content );	
@@ -300,7 +300,7 @@ function apoc_ajax_comment( $comment_ID , $comment_status ) {
  * Gets comment HTML from the comment template to insert with AJAX
  * @version 1.0.0
  */
-function apoc_display_comment( $comment_ID , $count ) {
+function apoc_display_comment( $comment_ID ) {
 
 	// Get the current comment
 	global $comment , $post;

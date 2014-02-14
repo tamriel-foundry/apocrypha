@@ -28,19 +28,18 @@ class Apoc_Context {
 		$this->device 				= $this->get_user_agent();
 		
 		// Get the currently logged-in user
-		$this->user					= &wp_get_current_user();
+		$this->user					= wp_get_current_user();
 		
 		// Get the current object
 		$this->queried_object		= get_queried_object();
-		$this->queried_object_id	= $this->queried_object->ID;
+		$this->queried_object_id	= isset( $this->queried_object->ID ) ? $this->queried_object->ID : NULL ;
 	
 		// Get the page context
 		$this->page					= $this->get_page_context();
 		$this->paged				= ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 
 		// Get the search term		
-		if( is_search() )
-			$this->search_query		= get_search_query();
+		$this->search_query			= is_search() ? get_search_query() : "";
 	}
 	
 	/**
@@ -109,10 +108,10 @@ class Apoc_Context {
 			$context[] = "singular-{$object->post_type}-{$object_id}";		
 			
 			// Checks for custom template
-			$template = get_post_meta( $object_id , "_wp_{$post->post_type}_template", true );
+			$template = get_post_meta( $object_id , "_wp_{$object->post_type}_template", true );
 			if ( '' != $template ) {
-				$template = str_replace( array ( "{$post->post_type}-template-", "{$post->post_type}-" ), '', basename( $template , '.php' ) );
-				$context[] = "{$post->post_type}-template";
+				$template = str_replace( array ( "{$object->post_type}-template-", "{$object->post_type}-" ), '', basename( $template , '.php' ) );
+				$context[] = "{$object->post_type}-template";
 			}	
 			
 			// Entropy Rising Homepage
@@ -160,7 +159,7 @@ class Apoc_Context {
 		// Search results
 		elseif ( is_search() )
 			$context[] 	= 'search';
-			
+
 		// Error 404
 		elseif ( is_404() )
 			$context[] 	= 'error-404';

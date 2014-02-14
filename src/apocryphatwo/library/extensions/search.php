@@ -36,7 +36,7 @@ class Apoc_Search {
 		
 		global $wp_query;
 		
-		if ( $wp_query->query['name'] == 'advsearch' ) {
+		if ( isset( $wp_query->query['name'] ) && $wp_query->query['name'] == 'advsearch' ) {
 		
 			// Grab the search template
 			include ( THEME_DIR . '/library/templates/adv-search.php' );

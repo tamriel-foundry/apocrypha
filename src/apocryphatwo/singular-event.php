@@ -63,11 +63,18 @@ $req_rsvp	= get_post_meta( $post_id , 'event_require_rsvp' , true );
 $req_role	= get_post_meta( $post_id , 'event_require_role' , true );
 $url		= get_post_permalink();
 
-/* Get the RSVPS and sort them based on role */
+/* Get the RSVPS and sort them alphabetically */
 $rsvps		= get_post_meta( $post_id , 'event_rsvps' , true );
 if( !empty( $rsvps ) ) :
-	function sortByRole($a, $b) { return strcmp( $a['role'], $b['role']);}
-	uasort( $rsvps , 'sortByRole');
+	$names = array();
+	foreach ($rsvps as $uid => $info) {
+		$name = bp_core_get_user_displayname( $uid );
+		$link = bp_core_get_userlink( $uid );
+		$rsvps[$uid]['name'] = $name;
+		$rsvps[$uid]['link'] = $link;
+		$names[$uid] = strtolower( $name );
+	}
+	array_multisort($names, SORT_STRING, $rsvps);
 else : $rsvps = array();
 endif;
 
@@ -134,20 +141,21 @@ foreach ( $rsvps as $response ) {
 }
 
 /* User Response */
-switch ( $rsvps[$user_id]['rsvp'] ) {
-	case "yes" :
-		$rsvp = "Attending";
-		break;
-	case "no" :
-		$rsvp = "Absent";
-		break;
-	case "maybe" :
-		$rsvp = "Maybe";
-		break;
-	default :
-		$rsvp = "RSVP";
-		break;
-}
+if ( isset( $rsvps[$user_ID] ) ) :
+	switch ( $rsvps[$user_id]['rsvp'] ) {
+		case "yes" :
+			$rsvp = "Attending";
+			break;
+		case "no" :
+			$rsvp = "Absent";
+			break;
+		case "maybe" :
+			$rsvp = "Maybe";
+			break;
+	}
+else :
+	$rsvp = "RSVP";
+endif;
 
 /* Date */
 $event_date	= get_post_meta( $post_id , 'event_date' , true );
@@ -194,9 +202,10 @@ $header(); // Load the header contextually ?>
 				<?php if ( $confirmed > 0 ) : ?>
 				<h2 class="calendar-header">Attending (<?php echo $confirmed; ?>)</h2>
 				<ul class="respondent-list attending">
-					<?php foreach ( $rsvps as $responder => $response ) :
+					<?php foreach ( $rsvps as $uid => $response ) :
 						if ( 'yes' == $response['rsvp'] ) :
-							echo '<li class="event-respondent">' . implode( ' - ' , array_filter( array( bp_core_get_userlink( $responder )  , $response['role'] , stripslashes( $response['comment'] ) ) ) ). '</li>';
+							$role = isset( $response['role'] ) ? "(" . $response['role'] . ") " : "";							
+							echo '<li class="event-respondent">' . implode( ' - ' , array( $response['link']  , $role .  stripslashes( $response['comment'] ) ) ) . '</li>';
 						endif;
 					endforeach; ?>
 				</ul>
@@ -207,7 +216,8 @@ $header(); // Load the header contextually ?>
 				<ul class="respondent-list attending">
 					<?php foreach ( $rsvps as $responder => $response ) :
 						if ( 'maybe' == $response['rsvp'] ) :
-							echo '<li class="event-respondent">' . implode( ' - ' , array_filter( array( bp_core_get_userlink( $responder )  , $response['role'] , stripslashes( $response['comment'] ) ) ) ). '</li>';				
+							$role = isset( $response['role'] ) ? "(" . $response['role'] . ") " : "";			
+							echo '<li class="event-respondent">' . implode( ' - ' , array( $response['link']  , $role .  stripslashes( $response['comment'] ) ) ) . '</li>';
 						endif;
 					endforeach; ?>
 				</ul>
@@ -218,7 +228,7 @@ $header(); // Load the header contextually ?>
 				<ul class="respondent-list attending">
 					<?php foreach ( $rsvps as $responder => $response ) :
 						if ( 'no' == $response['rsvp'] ) :
-							echo '<li class="event-respondent">' . implode( ' - ' , array_filter( array( bp_core_get_userlink( $responder ) , stripslashes( $response['comment'] ) ) ) ). '</li>';					
+							echo '<li class="event-respondent">' . implode( ' - ' , array( $response['link']  , stripslashes( $response['comment'] ) ) ) . '</li>';
 						endif;
 					endforeach; ?>
 				</ul>
@@ -239,13 +249,13 @@ $header(); // Load the header contextually ?>
 				<li class="form-field radio">
 					<label for="attendance">Expected Attendance : &#9734;</label>
 					<ul class="radio-options-list">
-						<?php if ( $confirmed < $capacity || 'yes' == $rsvps[$user_ID]['rsvp'] ) : ?>
-						<li><input type="radio" name="attendance" value="yes" <?php checked( $rsvps[$user_ID]['rsvp'] , 'yes' ); ?> <?php echo $has_spaces; ?>/><label for="attendance">Yes</label></li>
-						<li><input type="radio" name="attendance" value="no" <?php checked( $rsvps[$user_ID]['rsvp'] , 'no' ); ?>/><label for="playstyle">No</label></li>
-						<li><input type="radio" name="attendance" value="maybe" <?php checked( $rsvps[$user_ID]['rsvp'] , 'maybe' ); ?>/><label for="attendance">Maybe</label></li>
+						<?php if ( $confirmed < $capacity || ( isset( $rsvps[$user_ID] ) && 'yes' == $rsvps[$user_ID]['rsvp'] ) ) : ?>
+						<li><input type="radio" name="attendance" value="yes" <?php if ( isset( $rsvps[$user_ID] ) ) checked( $rsvps[$user_ID]['rsvp'] , 'yes' ); ?>/><label for="attendance">Yes</label></li>
+						<li><input type="radio" name="attendance" value="no" <?php if ( isset( $rsvps[$user_ID] ) ) checked( $rsvps[$user_ID]['rsvp'] , 'no' ); ?>/><label for="playstyle">No</label></li>
+						<li><input type="radio" name="attendance" value="maybe" <?php if ( isset( $rsvps[$user_ID] ) ) checked( $rsvps[$user_ID]['rsvp'] , 'maybe' ); ?>/><label for="attendance">Maybe</label></li>
 						<?php else : ?>
-						<li><input type="radio" name="attendance" value="maybe" <?php checked( $rsvps[$user_ID]['rsvp'] , 'maybe' ); ?>/><label for="attendance">Standby</label></li>
-						<li><input type="radio" name="attendance" value="no" <?php checked( $rsvps[$user_ID]['rsvp'] , 'no' ); ?>/><label for="playstyle">No</label></li>
+						<li><input type="radio" name="attendance" value="maybe" <?php if ( isset( $rsvps[$user_ID] ) ) checked( $rsvps[$user_ID]['rsvp'] , 'maybe' ); ?>/><label for="attendance">Standby</label></li>
+						<li><input type="radio" name="attendance" value="no" <?php if ( isset( $rsvps[$user_ID] ) ) checked( $rsvps[$user_ID]['rsvp'] , 'no' ); ?>/><label for="playstyle">No</label></li>
 						<?php endif; ?>
 					</ul>
 				</li>
@@ -254,16 +264,16 @@ $header(); // Load the header contextually ?>
 					<label for="rsvp-role">Preferred Role : &#9734;</label>
 					<select name="rsvp-role">
 						<option></option>
-						<option value="tank" <?php selected( $rsvps[$user_ID]['role'] , 'tank' ); ?>>Tank</option>
-						<option value="healer" <?php selected( $rsvps[$user_ID]['role'] , 'healer' ); ?>>Healer</option>
-						<option value="dps" <?php selected( $rsvps[$user_ID]['role'] , 'dps' ); ?>>DPS</option>
-						<option value="control" <?php selected( $rsvps[$user_ID]['role'] , 'control' ); ?>>Control</option>
+						<option value="tank" <?php if ( isset( $rsvps[$user_ID] ) ) selected( $rsvps[$user_ID]['role'] , 'tank' ); ?>>Tank</option>
+						<option value="healer" <?php if ( isset( $rsvps[$user_ID] ) ) selected( $rsvps[$user_ID]['role'] , 'healer' ); ?>>Healer</option>
+						<option value="dps" <?php if ( isset( $rsvps[$user_ID] ) ) selected( $rsvps[$user_ID]['role'] , 'dps' ); ?>>DPS</option>
+						<option value="control" <?php if ( isset( $rsvps[$user_ID] ) ) selected( $rsvps[$user_ID]['role'] , 'control' ); ?>>Control</option>
 					</select>
 				</li>
 				<?php endif; ?>
 				<li class="form-field textarea">
 					<label for="rsvp-comment">Comment:</label><br/>
-					<textarea type="textarea" name="rsvp-comment" value="" rows="2" ><?php echo stripslashes( $rsvps[$user_ID]['comment'] ); ?></textarea>
+					<textarea type="textarea" name="rsvp-comment" value="" rows="2" ><?php if ( isset( $rsvps[$user_ID] ) ) echo stripslashes( $rsvps[$user_ID]['comment'] ); ?></textarea>
 				</li>		
 				<li class="form-field submit">
 					<?php wp_nonce_field( 'event-rsvp' , 'event_rsvp_nonce' ) ?>

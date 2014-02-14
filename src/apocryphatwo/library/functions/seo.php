@@ -77,10 +77,10 @@ class Apoc_SEO {
 			endif;
 			
 			// Have some fallbacks just in case
-			if ( !$doctitle )
-				$doctitle		= $object->post_title;
-			if ( !$description )
-				$description 	= $object->post_content;
+			if ( !isset( $doctitle ) )
+				$doctitle		= isset( $object->post_title ) ? $object->post_title : "Page Not Found";
+			if ( !isset( $description ) )
+				$description 	= isset( $object->post_content ) ? $object->post_content : "Page Not Found";
 		}
 		
 		// bbPress Forums

@@ -2,8 +2,8 @@
 /**
  * Apocrypha Posts Functions
  * Andrew Clayton
- * Version 1.0.0
- * 8-3-2013
+ * Version 1.0.2
+ * 2-13-2014
  */
  
 // Exit if accessed directly
@@ -146,7 +146,7 @@ function entry_header_title( $link = true ) {
  
 /**
  * Describes a post within the loop
- * @version 1.0.0
+ * @version 1.0.2
  */
 function entry_header_description() {
 	global $post;
@@ -159,10 +159,9 @@ function entry_header_description() {
 	if ( $type == 'post' ) :
 		
 		// Get some info 
-		$author = '<a class="post-author" href="' . get_author_posts_url( $author_ID ) . '" title="All posts by ' . get_the_author_meta( 'display_name' ) . '">' . get_the_author_meta( 'display_name' ) . '</a>';
-		$published = '<time class="post-date" datetime="'. get_the_time( 'Y-m-d' ) . '">' . get_the_time( 'F j, Y' ) . '</time>';
-		if ( current_user_can( 'edit_post' , $post_ID ) )
-			$edit_link = '<a class="post-edit-link" href="' . get_edit_post_link( $post_ID ) . '" title="Edit this post" target="_blank">Edit</a>';
+		$author 	= '<a class="post-author" href="' . get_author_posts_url( $author_ID ) . '" title="All posts by ' . get_the_author_meta( 'display_name' ) . '">' . get_the_author_meta( 'display_name' ) . '</a>';
+		$published 	= '<time class="post-date" datetime="'. get_the_time( 'Y-m-d' ) . '">' . get_the_time( 'F j, Y' ) . '</time>';
+		$edit_link 	= current_user_can( 'edit_post' , $post_ID ) ? '<a class="post-edit-link" href="' . get_edit_post_link( $post_ID ) . '" title="Edit this post" target="_blank">Edit</a>' : "";
 		
 		// Show a bunch of stuff for single views
 		if ( is_single() ) :

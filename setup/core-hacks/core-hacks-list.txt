@@ -1,12 +1,28 @@
-// CORE HACKS
+//---------------------------------------------------
+	CORE HACKS
+---------------------------------------------------//
+
+//---------------------------------------------------
+	BUDDYPRESS
+---------------------------------------------------//
 
 buddypress/bp-activity/bp-activity-functions.php
 LINE 84 : Don't let users mention themselves
 	if ( !empty( $user_id ) && $user_id != get_current_user_id() ) {
 	
 buddypress/bp-notifications/bp-notifications-template.php
-LINE 733-826
-	ADD .button class and change button wording
+
+* Adjust wording on notification management buttons
+
+LINE 733: 	<a href="<?php echo esc_url( $url ); ?>" class="button mark-read primary"><i class="icon-ok"></i>Mark as Read</a>
+	
+LINE 763:	<a href="<?php echo esc_url( $url ); ?>" class="button mark-unread primary"><i class="icon-ok"></i>Mark as Unread</a>
+
+LINE 826:	<a href="<?php echo esc_url( $url ); ?>" class="button delete secondary confirm"><i class="icon-remove"></i><?php _e( 'Delete', 'buddypress' ); ?></a>
+
+//---------------------------------------------------
+	BBPRESS
+---------------------------------------------------//
 	
 bbpress\includes\topics\template.php	
 LINE 2502:

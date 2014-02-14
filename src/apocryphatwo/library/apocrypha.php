@@ -91,7 +91,6 @@ class Apocrypha {
 		// Basic site info
 		$this->site 					= SITENAME;
 		$this->version					= '1.0.0';
-		$this->theme					= get_current_theme();
 		
 		// User information
 		$this->device 					= '';
@@ -145,6 +144,7 @@ class Apocrypha {
 		require( $this->extensions_dir 	. 'thumbnail.php' );
 		require( $this->extensions_dir 	. 'shortcodes.php' );
 		require( $this->extensions_dir 	. 'search.php' );
+		require( $this->extensions_dir 	. 'map.php' );
 
 		// Integrated Plugins
 		if ( class_exists( 'BuddyPress' ) )
@@ -200,7 +200,7 @@ class Apocrypha {
 	private function actions() {
 	
 		// Block admin dashboard
-		add_action('admin_init'			, array( $this , 'block_admin' ) );
+		add_action('admin_init'			, array( $this , 'init_admin' ) );
 	
 		// Populate apocrypha globals
 		add_action( 'template_redirect'	, array( $this , 'populate_globals' ) , 1 );	
@@ -241,7 +241,7 @@ class Apocrypha {
 		$this->context			= $context->page;
 		$this->queried_id		= $context->queried_object_id;
 		$this->queried_object	= $context->queried_object;
-		$this->post_type		= $context->queried_object->post_type;
+		$this->post_type		= isset( $context->queried_object->post_type ) ? $context->queried_object->post_type : NULL;
 		
 		// Search
 		$this->search->type		= 'posts';
@@ -310,14 +310,21 @@ class Apocrypha {
 	}
 	
 	/**
-	 * Restrict Admin Panel Access
+	 * Admin initialization actions
 	 * @since 0.1
 	 */
-	function block_admin() {
+	function init_admin() {
+	
+		// Stop normal users from accessing the admin panel except for AJAX requests
 		if ( !current_user_can( 'publish_posts' ) &&  !( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 			wp_redirect( SITEURL ); 
 			exit;
 		}
+		
+		// Deregister the wordpress heartbeat script except for editing new posts
+		global $pagenow;
+		if ( 'post.php' != $pagenow && 'post-new.php' != $pagenow )
+			wp_deregister_script('heartbeat');
 	}
 	
 	/**

@@ -2,8 +2,8 @@
 /**
  * Apocrypha Loop Single Post Template
  * Andrew Clayton
- * Version 1.0.0
- * 8-9-2013
+ * Version 1.0.1
+ * 2-6-2013
  */
 ?>
 	
@@ -25,7 +25,7 @@
 	<?php if ( 'post' == get_post_type() ) : ?>
 		<div class="entry-meta">
 			<i class="icon-tags"></i>
-			<?php echo get_the_term_list( $post->ID, 'category', 'Posted In: ', ', ', '' ); ?> 
+			<?php echo get_the_term_list( get_the_ID() , 'category', 'Posted In: ', ', ', '' ); ?> 
 		</div>
 		<?php apoc_comments_link(); ?>
 	<?php endif; ?>

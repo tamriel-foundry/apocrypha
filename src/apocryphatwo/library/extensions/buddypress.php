@@ -347,7 +347,7 @@ class Apoc_BuddyPress {
 		
 		// Otherwise check to see if they are on the whitelist
 		global $bp;
-		if( $bp->loggedin_user->fullname == 'lightweaver' )
+		if( apocrypha()->user->user_nicename == 'juangalt' )
 			$can_create = true;
 		return $can_create;
 	}
@@ -546,7 +546,7 @@ class Apoc_Profile {
 		
 		// Force private groups to use the request membership form
 		if ( 'private' == $groups_template->group->status && 1 != $groups_template->group->is_member )
-			$button['link_href'] = bp_get_group_permalink( $group ) . 'request-membership';
+			$button['link_href'] = bp_get_group_permalink( $groups_template->group ) . 'request-membership';
 		
 		// Apply some styling
 		$button['wrapper'] 		= false;
@@ -697,7 +697,7 @@ class Apoc_Group {
 		$this->region		= $allmeta['group_region'];
 		$this->style		= $allmeta['group_style'];
 		$this->interests	= unserialize( $allmeta['group_interests'] );
-		$this->website		= $allmeta['group_website'];
+		$this->website		= isset( $allmeta['group_website'] ) ? $allmeta['group_website'] : NULL;
 		
 		// Get some extra stuff on user profiles
 		if ( $this->context == 'profile' ) {
@@ -887,7 +887,6 @@ class Apoc_Group {
 		
 		// Setup the basic info block
 		$block		= '<a class="member-name" href="' . $this->domain . '" title="View ' . $this->fullname . ' Group Page">' . $this->fullname . '</a>';
-		$block		.= $this->title;	
 		$block		.= '<p class="group-type">' . $this->type . '</p>';
 		$block		.= $allegiance = '<p class="user-allegiance ' . $this->alliance . '">' . $this->faction . '</p>';
 		$block		.= $this->platform();
@@ -1032,7 +1031,7 @@ class Apoc_Group_Add_Leader extends BP_Group_Extension {
 	/*
 	 * Generates markup for the create/edit/admin screens
 	 */
-	function settings_screen() {
+	function settings_screen( $group_id = NULL ) {
 	
 		// Make sure we are in the right place
 		global $bp, $groups_template;
@@ -1063,7 +1062,7 @@ class Apoc_Group_Add_Leader extends BP_Group_Extension {
 	/*
 	 * Save the data and assign the new leader
 	 */
-	function settings_screen_save() {
+	function settings_screen_save( $group_id = NULL ) {
 		global $bp;
 		
 		// Make sure we have the group ID

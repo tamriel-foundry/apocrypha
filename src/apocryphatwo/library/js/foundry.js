@@ -1,7 +1,7 @@
 /*! --------------------------------------- 
 0.0 - DEFINE CONSTANTS
 ----------------------------------------- */
-var	siteurl = ( window.location.host == 'localhost' ) ? 'http://localhost/tamrielfoundry/' : 'http://tamrielfoundry.com/';
+var	siteurl 	= ( window.location.host == 'localhost' ) ? 'http://localhost/tamrielfoundry/' : 'http://tamrielfoundry.com/';
 var themeurl	= siteurl + 'wp-content/themes/apocrypha/';
 var ajaxurl 	= siteurl + 'wp-admin/admin-ajax.php';
 var $			= jQuery;
@@ -13,14 +13,25 @@ var $			= jQuery;
 1.0 - ADMIN BAR
 ----------------------------------------- */
 
-/*! Admin bar AJAX login function */
-;$("#top-login-form").submit(function(){$("#login-submit").attr("disabled","disabled");$("#login-submit").html('<i class="icon-unlock-alt"></i> ... ');$.ajax({type:"POST",dataType:"json",data:$(this).serialize(),url:ajaxurl,success:function(a){if(a.success==1){window.location=a.redirect}else{$("#login-submit").removeAttr("disabled");$("#login-submit").html('<i class="icon-lock"></i>Log In');$("#top-login-error").html(a.error);$("#top-login-error").hide().fadeToggle("slow")}}});return false});$("#top-login-logout").click(function(){$(this).html('<i class="icon-lock"></i>Logging Out')});
+/*! Admin Bar Login Tooltips */
+$('#top-login-form').submit( function(){
+	
+	// Fake AJAX functionality with a login tooltip
+	$('#login-submit').attr('disabled', 'disabled');
+	$('#login-submit').html('<i class="icon-spinner icon-spin"></i>Log In');
+});
+$('#top-login-logout').click( function(){
+	$(this).html('<i class="icon-spinner icon-spin"></i>Logging Out');
+});
 
 /*! Buddypress Frontend Notifications */
 ;$("a.clear-notification").click(function(e){var a=$(this);var d=get_var_in_url(a.attr("href"),"_wpnonce");var c=get_var_in_url(a.attr("href"),"notid");var b=get_var_in_url(a.attr("href"),"type");e.preventDefault();a.removeAttr("href");a.html('<i class="icon-spinner icon-spin"></i>');$.post(ajaxurl,{action:"apoc_clear_notification",_wpnonce:d,notid:c},function(f){if(f){counter=$("li#notifications-"+b+" span.notifications-number");count=parseInt(counter.text());if(count>1){counter.text(count-1);a.parent().remove()}else{counter.remove();a.parent().text("Notifications cleared!")}title=$("title").text();count=title.split("]")[0].substr(1);if(1<count){title=title.replace(count,count-1)}else{title=title.replace(/\[.*\]/,"")}document.title=title}})});function get_var_in_url(b,a){var e=b.split("?");var d=e[1].split("&");for(var c=0;c<d.length;c++){var f=d[c].split("=");if(f[0]==a){return f[1]}}return""}function title_notification_count(){count=0;$.each(["activity","messages","groups","friends"],function(b,c){target=$("li#notifications-"+c+" span.notifications-number");if(target.is("*")){count=count+parseInt(target.text())}});if(count>0){var a=$("title").text().replace(/\[.*\]/,"");a="["+count+"]"+a;$("title").text(a)}}title_notification_count();
 
 /*! Back To Top Link Scrolling */
 $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);return false});
+
+/*! Scroll To Bottom */
+;$("a.downtobottom").click(function(){$("html, body").animate({scrollTop:$(document).height()},600);return false});
 
 /*! --------------------------------------- 
 2.0 - POSTS
@@ -109,11 +120,19 @@ $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);ret
 X.X - PROCEDURAL FUNCTIONS
 ----------------------------------------- */
 
-/*! Update Profile Race Dropdown */
-;function updateRaceDropdown(a){if("faction"==a){factionid=jQuery("select#faction :selected").val();jQuery("select#race option").not("."+factionid).attr("disabled","disabled").removeAttr("selected");jQuery("select#race option."+factionid).removeAttr("disabled");jQuery("select#race option:first-child").removeAttr("disabled")}else{if("race"==a){raceid=jQuery("select#race :selected").attr("class");if(undefined!=raceid){jQuery("select#faction option").removeAttr("selected");jQuery("select#faction option."+raceid).attr("selected","selected")}}}};
-
 /*! Parse URL Variables */
 function get_url_var(b,a){var e=b.split("?");var d=e[1].split("&");for(var c=0;c<d.length;c++){var f=d[c].split("=");if(f[0]==a){return f[1]}}return""};
+
+
+function apoc_ajax_debug() {
+
+	jQuery.post( ajaxurl , {
+		'action'	: 'apoc_debug',
+	},
+	function( response ) {
+		alert( response);
+	} );
+}
 
 
 

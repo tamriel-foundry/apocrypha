@@ -69,14 +69,14 @@ class Apoc_User {
 		$this->id		= $user_id;
 		$this->fullname = $meta['nickname'];
 		$this->roles	= array_keys( unserialize( $meta[ $prefix . 'capabilities' ] ) );
-		$this->status	= maybe_unserialize( $meta['bp_latest_update'] );
-		$this->faction	= $meta['faction'];
-		$this->race		= $meta['race'];
-		$this->class	= $meta['playerclass'];
+		$this->status	= isset( $meta['bp_latest_update'] ) ? maybe_unserialize( $meta['bp_latest_update'] ) : NULL;
+		$this->faction	= isset( $meta['faction'] ) ? $meta['faction'] : NULL;
+		$this->race		= isset( $meta['race'] ) ? $meta['race'] : NULL;
+		$this->class	= isset( $meta['playerclass'] ) ? $meta['playerclass'] : NULL;
 		$this->posts	= maybe_unserialize( $meta['post_count'] );
-		$this->guild	= $meta['guild'];
-		$this->bio		= do_shortcode( $meta['description'] );
-		$this->sig		= $meta['signature'];
+		$this->guild	= isset( $meta['guild'] ) ? $meta['guild'] : NULL ;
+		$this->bio		= isset( $meta['description'] ) ? do_shortcode( $meta['description'] ) : NULL;
+		$this->sig		= isset( $meta['signature'] ) ? $meta['signature'] : NULL;
 		
 		// If the post count is not yet in the database, build it
 		if ( $user_id > 0 && empty( $this->posts ) )
@@ -92,23 +92,18 @@ class Apoc_User {
 			$this->nicename 	= $user->user_nicename;
 			$this->regdate 		= strtotime( $user->user_registered );
 			$this->byline		= $this->byline();
-			$this->contacts		= array(
-				'user_url' 		=> $user->user_url,
-				'twitter' 		=> $meta['twitter'],
-				'facebook' 		=> $meta['facebook'],
-				'gplus' 		=> $meta['gplus'],
-				'steam' 		=> $meta['steam'],
-				'youtube' 		=> $meta['youtube'],
-				'twitch' 		=> $meta['twitch'],
-				'bethforums' 	=> $meta['bethforums'],
-			);
 			$this->first_name	= $meta['first_name'];
 			$this->last_name	= $meta['last_name'];
 			$this->charname		= implode( ' ' , array( $meta['first_name'] , $meta['last_name'] ) );
 			$this->prefrole		= $meta['prefrole'];
 			$this->badges		= $this->badges();
-			$this->warnings		= $this->warnings( $meta['infraction_history'] );
-			$this->mod_notes	= $this->notes( $meta['moderator_notes'] );
+			$this->warnings		= isset( $meta['infraction_history'] ) ? $this->warnings( $meta['infraction_history'] ) : NULL;
+			$this->mod_notes	= isset( $meta['moderator_notes'] ) ? $this->notes( $meta['moderator_notes'] ) : NULL;
+			$contacts = array( 'twitter' , 'facebook' , 'gplus' , 'steam' , 'youtube' , 'twitch' , 'bethforums' );
+			$this->contacts		= array( 'user_url' => $user->user_url );
+			foreach( $contacts as $c ) {
+				if ( isset( $meta[$c] ) ) $this->contacts[$c] = $meta[$c];
+			}
 		}
 	}
 	
@@ -263,7 +258,7 @@ class Apoc_User {
 		// Obey proper grammar
 		if ( '' == $race ) 
 			$grammar 	= 'a sworn ';
-		elseif ( in_array( $race , array('altmer','orc','argonian' ) ) )
+		elseif ( in_array( $race , array('altmer','orc','argonian','imperial' ) ) )
 			$grammar 	= 'an ' . ucfirst($race);
 		else $grammar 	= 'a ' 	. ucfirst($race);
 			
@@ -306,21 +301,21 @@ class Apoc_User {
 			echo '<li><i class="icon-eye-close icon-fixed-width"></i>No contact information shared</li>';
 			return;
 		}
-		if ( $contacts['user_url'] != '' )
+		if ( isset( $contacts['user_url'] ) )
 			echo '<li><i class="icon-globe icon-fixed-width"></i><span>Website:</span><a href="' . $contacts['user_url'] . '" target="_blank">' . $contacts['user_url'] . '</a></li>' ;
-		if ( $contacts['twitter'] != '' )
+		if ( isset( $contacts['twitter'] ) )
 			echo '<li><i class="icon-twitter icon-fixed-width"></i><span>Twitter:</span><a href="http://twitter.com/' . $contacts['twitter'] . '" target="_blank">' . $contacts['twitter'] . '</a></li>' ;
-		if ( $contacts['facebook'] != '' )
+		if ( isset( $contacts['facebook'] ) )
 			echo '<li><i class="icon-facebook icon-fixed-width"></i><span>Facebook:</span><a href="http://facebook.com/' . $contacts['facebook'] . '" target="_blank">' . $contacts['facebook'] . '</a></li>' ;		
-		if ( $contacts['gplus'] != '' )
+		if ( isset( $contacts['gplus'] ) )
 			echo '<li><i class="icon-google-plus icon-fixed-width"></i><span>Google+:</span><a href="http://plus.google.com/' . $contacts['gplus'] . '" target="_blank">' . $contacts['gplus'] . '</a></li>' ;
-		if ( $contacts['steam'] != '' )
+		if ( isset( $contacts['steam'] ) )
 			echo '<li><i class="icon-wrench icon-fixed-width"></i><span>Steam ID:</span><a href="http://steamcommunity.com/id/' . $contacts['steam'] . '" target="_blank">' . $contacts['steam'] . '</a></li>' ;
-		if ( $contacts['youtube'] != '' )
+		if ( isset( $contacts['youtube'] ) )
 			echo '<li><i class="icon-youtube icon-fixed-width"></i><span>YouTube:</span><a href="http://www.youtube.com/user/' . $contacts['youtube'] . '" target="_blank">' . $contacts['youtube'] . '</a></li>' ;
-		if ( $contacts['twitch'] != '' )
+		if ( isset( $contacts['twitch'] ) )
 			echo '<li><i class="icon-desktop icon-fixed-width"></i><span>TwitchTV:</span><a href="http://www.twitch.tv/' . $contacts['twitch'] . '" target="_blank">' . $contacts['twitch'] . '</a></li>' ;
-		if ( $contacts['bethforums'] != '' ) {
+		if ( isset( $contacts['bethforums'] ) ) {
 			$bethforums_name = preg_replace( '#(.*)[0-9]+(-{1})#' , '' , $contacts['bethforums'] );
 			$bethforums_name = preg_replace( '#-{1}|/{1}#' , ' ' , $bethforums_name );
 			echo '<li><i class="icon-sign-blank icon-fixed-width"></i><span>Bethesda:</span><a href="http://forums.bethsoft.com/user/' . $contacts['bethforums'] . '" target="_blank">' . ucwords( $bethforums_name ) . '</a></li>' ;

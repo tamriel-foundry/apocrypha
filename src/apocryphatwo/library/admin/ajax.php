@@ -21,6 +21,17 @@ X.X - Private Messages
 
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
+
+
+// Debugging
+add_action( 'wp_ajax_apoc_debug' , 'apoc_debug' );
+function apoc_debug() {
+
+	$memory =  round ( memory_get_peak_usage() / 1048576 , 2 ) . 'megabytes used.';
+	die( $memory );
+
+}
+
  
 /*---------------------------------------------
 1.0 - LOGIN
@@ -132,7 +143,7 @@ function apoc_load_posts() {
 
 	// Get the post data
 	$type 	= $_POST['type'];
-	$id		= $_POST['id'];
+	$id		= isset( $_POST['id'] ) ? $_POST['id'] : NULL;
 	$paged	= $_POST['paged'];
 	$url	= $_POST['baseurl'];
 	

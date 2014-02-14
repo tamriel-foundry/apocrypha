@@ -105,7 +105,7 @@ if ( isset( $_POST['submitted'] ) ) {
 						<?php endif; ?>
 						
 						<li class="textarea">		
-							<?php $thecontent = stripslashes($_POST['comments']);
+							<?php $thecontent = isset( $_POST['comments'] ) ? stripslashes($_POST['comments']) : "";
 							wp_editor( $thecontent, 'comments', array(
 								'media_buttons' => false,
 								'wpautop'		=> false,
@@ -115,7 +115,7 @@ if ( isset( $_POST['submitted'] ) ) {
 						</li>
 							
 						<li class="checkbox form-left">
-							<input type="checkbox" name="copy" id="copy" value="true" <?php checked( $_POST['copy'] , true ); ?>>
+							<input type="checkbox" name="copy" id="copy" value="true">
 							<label for="copy">Send a copy of this email to yourself?</label>
 						</li>						
 							

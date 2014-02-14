@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme bbPress Functions
  * Andrew Clayton
- * Version 1.0.0
- * 8-10-2013
+ * Version 1.0.2
+ * 2-13-2014
 
 ----------------------------------------------------------------
 >>> TABLE OF CONTENTS:
@@ -53,6 +53,9 @@ class Apoc_bbPress {
 		// IMPORTANT - Don't let bbPress do theme compatibility
 		remove_filter( 'bbp_template_include',   'bbp_template_include_theme_compat',   4, 2 );
 		
+		// Remove Editor JavaScript
+		add_filter( 'bbp_default_scripts'								, array( $this , 'remove_scripts' ) );
+		
 		// Topic Title Length
 		add_filter( 'bbp_get_title_max_length'							, array( $this , 'title_length' ) );
 		
@@ -77,6 +80,17 @@ class Apoc_bbPress {
 		// Quote Mentions
 		add_filter( 'bbp_activity_reply_create_excerpt' 				, array( $this , 'quote_mention' ) );
 	}
+	
+	
+	/**
+	 * Set an intelligent maximum topic title length
+	 * @version 1.0.2
+	 */
+	function remove_scripts( $scripts ) {
+		unset( $scripts['bbpress-editor'] );
+		return $scripts;
+	}
+	
 	
 	/**
 	 * Set an intelligent maximum topic title length
@@ -242,21 +256,6 @@ class Apoc_bbPress {
  */
 function apoc_list_subforums( $args = array() ) {
 
-	// Defaults arguments
-	$defaults = array (
-		'before'            => '',
-		'after'             => '',
-		'count_before'      => '<p class="topic-count">Topics: <span class="post-count">',
-		'count_after'       => '</span></p>',
-		'count_sep'         => '</span></p><p class="reply-count">Replies: <span class="post-count">',
-		'separator'         => '',
-		'forum_id'          => '',
-		'show_topic_count'  => true,
-		'show_reply_count'  => true,
-		'show_freshness_link'  => true,
-	);				
-	$args = wp_parse_args( $args, $defaults );
-				
 	// Loop through forums and create a list
 	$subforums = bbp_forum_get_subforums();
 	if ( !empty( $subforums ) ) {
@@ -316,11 +315,10 @@ function apoc_list_subforums( $args = array() ) {
 			</li>
 		<?php endforeach;
 		
+		// Output the list
 		$output = ob_get_contents();
 		ob_end_clean();
-		
-		// Output the list
-		echo $before . $output . $after;
+		echo $output;
 	}
 }
 
@@ -508,6 +506,7 @@ function apoc_total_favs( $topic_id = 0 , $echo = true ) {
 		return $favs;
 		
 	// Otherwise, determine whether the topic gets an award
+	$class = false;
 	if ( $favs >= 250 )		$class = 'legendary';
 	elseif ( $favs >= 50 ) 	$class = 'epic';
 	elseif ( $favs >= 1 ) 	$class = 'heroic';

@@ -85,16 +85,6 @@ function get_current_url() {
 }
 
 /** 
- * Filter the lostpassword URL and send it to my own password recovery page
- * @since 0.1
- */
-add_filter( 'lostpassword_url' , 'filter_lostpassword' );
-function filter_lostpassword( $lostpassword_url ) {
-	$lostpassword_url = trailingslashit( SITEURL ) . '/login?action=password';
-	return $lostpassword_url;
-	}
-	
-/** 
  * Sets custom login urls when needed
  * @since 0.1
  */

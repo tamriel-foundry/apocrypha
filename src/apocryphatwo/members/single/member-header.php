@@ -36,11 +36,11 @@ global $user;
 	</nav>
 	
 	<blockquote id="profile-status" class="user-status">
-		<p><?php echo '@' . $user->nicename . ' &rarr; <span id="latest-status">' . bp_get_activity_latest_update( $user->ID ); ?></span></p>
+		<p><?php echo '@' . $user->nicename . ' &rarr; <span id="latest-status">' . bp_get_activity_latest_update( $user->id ); ?></span></p>
 		<?php if ( bp_is_my_profile() ) : ?>
 			<a class="update-status-button button"><i class="icon-pencil"></i>What's New?</a>
 		<?php else : ?>
-			<span class="activity"><?php bp_last_activity( $user->ID ); ?></span>
+			<span class="activity"><?php bp_last_activity( $user->id ); ?></span>
 		<?php endif; ?>
 	</blockquote>
 	

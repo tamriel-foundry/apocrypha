@@ -15,7 +15,9 @@
 		<header id="forum-header" class="entry-header <?php page_header_class(); ?>">
 			<h1 class="entry-title">Best Weekly Topics</h1>
 			<p class="entry-byline">Browse the top rated forum topics on Tamriel Foundry created in the past week.</p>
-			<?php apoc_get_search_form( 'topic' ); ?>
+			<div class="forum-actions">
+				<?php apoc_get_search_form( 'topic' ); ?>
+			</div>
 		</header>	
 	
 		<div id="forums">

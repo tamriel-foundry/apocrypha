@@ -74,7 +74,7 @@ $header(); // Load the header contextually ?>
 		/* Now check for past events */ ?>
 		<h2 class="calendar-header">Past Events</h2>
 		<?php wp_reset_query();
-		$past_events = apoc_calendar_past_events( $slug, $number );
+		$past_events = apoc_calendar_past_events( $slug, $number = 3);
 
 		/* If there are past events */
 		if ( $past_events->have_posts() ) : 

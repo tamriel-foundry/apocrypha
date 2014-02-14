@@ -62,15 +62,16 @@ $user 		= new Edit_Profile( $user_id , 'profile' );
 							<i class="icon-user icon-fixed-width"></i><label for="race">Choose Your Race:</label>
 							<select name="race" id="race" onchange="updateRaceDropdown('race')">
 								<option value="">Undecided</option>
-								<option value="altmer" class="aldmeri" <?php selected( $user->race	, 'altmer' 	, true ); ?> <?php disabled( $user->faction , 'daggerfall' 	, true ); ?> <?php disabled( $user->faction , 'ebonheart' , true ); ?>>Altmer</option>
-								<option value="bosmer" class="aldmeri" <?php selected( $user->race	, 'bosmer' 	, true ); ?> <?php disabled( $user->faction , 'daggerfall' 	, true ); ?> <?php disabled( $user->faction , 'ebonheart' , true ); ?>>Bosmer</option>
-								<option value="khajiit" class="aldmeri" <?php selected( $user->race	, 'khajiit' , true ); ?> <?php disabled( $user->faction , 'daggerfall' 	, true ); ?> <?php disabled( $user->faction , 'ebonheart' , true ); ?>>Khajiit</option>
-								<option value="breton" class="daggerfall" <?php selected( $user->race	, 'breton' 	, true ); ?> <?php disabled( $user->faction , 'aldmeri' 	, true ); ?> <?php disabled( $user->faction , 'ebonheart' , true ); ?>>Breton</option>
-								<option value="orc" class="daggerfall" <?php selected( $user->race		, 'orc'		, true ); ?> <?php disabled( $user->faction , 'aldmeri' 	, true ); ?> <?php disabled( $user->faction , 'ebonheart' , true ); ?>>Orc</option>
-								<option value="redguard" class="daggerfall" <?php selected( $user->race, 'redguard', true ); ?> <?php disabled( $user->faction , 'aldmeri' 	, true ); ?> <?php disabled( $user->faction , 'ebonheart' , true ); ?>>Redguard</option>
-								<option value="argonian" class="ebonheart" <?php selected( $user->race, 'argonian' , true );?> <?php disabled( $user->faction , 'aldmeri' 	, true ); ?> <?php disabled( $user->faction , 'daggerfall' , true ); ?>>Argonian</option>
-								<option value="dunmer" class="ebonheart" <?php selected( $user->race	, 'dunmer' 	, true ); ?> <?php disabled( $user->faction , 'aldmeri' 	, true ); ?> <?php disabled( $user->faction , 'daggerfall' , true ); ?>>Dunmer</option>
-								<option value="nord" class="ebonheart" <?php selected( $user->race	, 'nord' 	, true ); ?> <?php disabled( $user->faction , 'aldmeri' 	, true ); ?> <?php disabled( $user->faction , 'daggerfall' , true ); ?>>Nord</option>
+								<option value="altmer" <?php selected( $user->race	, 'altmer' 	, true ); ?>>Altmer</option>
+								<option value="argonian" <?php selected( $user->race, 'argonian', true ); ?>>Argonian</option>
+								<option value="bosmer" <?php selected( $user->race	, 'bosmer' 	, true ); ?>>Bosmer</option>
+								<option value="breton" <?php selected( $user->race	, 'breton' 	, true ); ?>>Breton</option>
+								<option value="dunmer" <?php selected( $user->race	, 'dunmer' 	, true ); ?>>Dunmer</option>
+								<option value="imperial" <?php selected( $user->race, 'imperial', true ); ?>>Imperial</option>
+								<option value="khajiit" <?php selected( $user->race	, 'khajiit' , true ); ?>>Khajiit</option>
+								<option value="nord" <?php selected( $user->race	, 'nord' 	, true ); ?>>Nord</option>
+								<option value="orc" <?php selected( $user->race		, 'orc'		, true ); ?>>Orc</option>
+								<option value="redguard" <?php selected( $user->race, 'redguard', true ); ?>>Redguard</option>
 							</select>
 						</li>
 						
@@ -200,8 +201,8 @@ $user 		= new Edit_Profile( $user_id , 'profile' );
 					</ol>
 					
 					<?php // Allow plugins to link in
-					do_action( 'show_user_profile' , $userid );
-					do_action( 'edit_user_profile' , $userid ); ?>
+					do_action( 'show_user_profile' , $user_id );
+					do_action( 'edit_user_profile' , $user_id ); ?>
 					
 					<?php // Submit the edit profile form ?>
 					<ul class="edit-submit">

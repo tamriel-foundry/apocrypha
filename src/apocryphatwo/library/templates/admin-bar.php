@@ -15,32 +15,27 @@
 
 <?php // Get information about the current user
 $user 		= apocrypha()->user->data;
-$user_id	= $user->ID;
+$user_id	= isset( $user ) ? $user->ID : 0;
 
 // The user is not currently logged in, show the login form
 if ( 0 == $user_id ) :  ?>
-<div id="admin-bar-login" class="logged-out">		
+<div id="admin-bar-login" class="logged-out">
 	<form name="top-login-form" id="top-login-form" action="<?php echo SITEURL . '/wp-login.php'; ?>" method="post">
-		<fieldset class="login-form">
-	
-			<input type="text" name="username" id="username" class="input" value="" placeholder="Username" size="20" tabindex="1">
-			<input type="password" name="password" id="password" class="input" value="" placeholder="Password" size="20" tabindex="1">
+			
+			<input type="text" name="log" id="username" class="input" value="" placeholder="Username" size="20" tabindex="1">
+			<input type="password" name="pwd" id="password" class="input" value="" placeholder="Password" size="20" tabindex="1">
 			
 			<div id="login-remember" class="checkbox">
 				<input type="checkbox" name="rememberme" id="rememberme" value="forever" tabindex="1">
 				<label id="remember-label" for="rememberme">Save</label>
-			</div>
+			</div>		
 			
-			<input type="hidden" name="redirect" value="<?php echo get_current_url(); ?>">
-			<input type="hidden" name="action" value="toplogin">
+			<input type="hidden" name="redirect_to" value="<?php echo get_current_url(); ?>">
+			<button type="submit" name="wp-submit" id="login-submit" class="admin-bar-login-link" tabindex="1"><i class="icon-lock"></i>Log In</button>
 			
-			<button type="submit" name="login-submit" id="login-submit" class="admin-bar-login-link" tabindex="1"><i class="icon-lock"></i>Log In</button>
 			<a class="admin-bar-login-link button" href="<?php echo trailingslashit(SITEURL) . BP_REGISTER_SLUG; ?>" title="Register a new user account!"><i class="icon-user"></i>Register</a>
-			<a class="admin-bar-login-link button" href="<?php echo wp_lostpassword_url(); ?>" title="Lost your password?"><i class="icon-question"></i>Lost Password</a>
-			
-			<?php wp_nonce_field( 'ajax-login-nonce', 'top-login' ); ?>
-		</fieldset>
-	</form>	
+			<a class="admin-bar-login-link button" href="<?php echo wp_lostpassword_url(); ?>" title="Lost your password?"><i class="icon-question"></i>Lost Password</a>		
+	</form>
 </div><!-- #admin-bar-login -->
 <div id="top-login-error" class="error"></div>
 

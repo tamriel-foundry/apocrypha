@@ -131,9 +131,11 @@ class Apoc_Breadcrumbs {
 		// Get some info
 		$apoc 		= apocrypha();
 		$post		= $apoc->queried_object;
-		$post_id	= $apoc->queried_object_id;
-		$post_type 	= $post->post_type;
-		$parent 	= absint( $post->post_parent );
+		$post_id	= $apoc->queried_id;
+		if ( isset( $post ) ) {
+			$post_type 	= isset( $post->post_type ) ? $post->post_type : NULL;
+			$parent 	= isset( $post->post_parent ) ? absint( $post->post_parent ) : NULL;
+		}
 
 		// Singular Views
 		if ( is_singular() ) :
@@ -247,6 +249,10 @@ class Apoc_Breadcrumbs {
 		elseif ( is_adv_search() ) :
 			$trail[] = 'Advanced Search';
 			
+		// Interactive Map
+		elseif ( is_interactive_map() ) :
+			$trail[] = 'Interactive Map';
+			
 		// Page Not Found
 		elseif ( is_404() ) : 
 			$trail[] = '404 Page Not Found';		
@@ -346,7 +352,7 @@ class Apoc_Breadcrumbs {
 		if ( bp_is_user() ) : 
 		
 			// Your own profile
-			if ( bp_is_home() ) :
+			if ( bp_is_my_profile() ) :
 				 $bp_trail[] = '<a href="'.bp_displayed_user_domain().'" title="Your Profile">Your Profile</a>';
 				 
 			// Someone else's profile
@@ -498,7 +504,7 @@ function apoc_get_buddypress_breadcrumbs( $args = array() ) {
 		$bp_trail[] = '<a href="'. bp_get_members_directory_permalink() .'" title="Members Directory">Members</a>';
 		
 		// Get the displayed user 
-		if ( bp_is_home() ) : $bp_trail[] = '<a href="'.bp_displayed_user_domain().'" title="Your Profile">Your Profile</a>';
+		if ( bp_is_my_profile() ) : $bp_trail[] = '<a href="'.bp_displayed_user_domain().'" title="Your Profile">Your Profile</a>';
 		else : $bp_trail[] = '<a href="'.bp_displayed_user_domain().'" title="'.bp_get_displayed_user_fullname(). '">' . bp_get_displayed_user_fullname() . '</a>';
 		endif;
 

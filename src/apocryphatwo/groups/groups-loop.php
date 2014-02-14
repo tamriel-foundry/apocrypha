@@ -7,8 +7,7 @@
  */
  
 // First check to see if an alliance was passed with a GET request
-if ( isset( $_GET['faction'] ) )
-	$faction = $_GET['faction'];
+$faction = isset( $_GET['faction'] ) ? $_GET['faction'] : "";
  
 // Allow AJAX to override the GET
 $groupquery		= bp_ajax_querystring( 'groups' );
@@ -60,4 +59,4 @@ if ( in_array( $faction , array( 'aldmeri' , 'daggerfall' , 'ebonheart' )))
 	<p class="no-results">Sorry, no guilds were found.</p>
 <?php endif; ?>
 
-<?php if ( $meta_filter ) $meta_filter->remove_filters(); ?>
+<?php if ( isset( $meta_filter ) ) $meta_filter->remove_filters(); ?>

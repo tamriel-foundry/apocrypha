@@ -101,9 +101,9 @@ function recent_forums_widget( $args = '' ) {
 
 	// Defaults and arguments 
 	$defaults = array (
-		'number'		=> '3',
+		'number'		=> 3,
 		'post_types'	=> array( 'topic' , 'reply' ), 
-		'size'		=> 50,
+		'size'			=> 50,
 		);			
 	$args = wp_parse_args( $args , $defaults );
 	extract( $args, EXTR_SKIP );
@@ -112,8 +112,7 @@ function recent_forums_widget( $args = '' ) {
 	$widget_query = new WP_Query( array(
 		'post_type'      => $args['post_types'],
 		'post_status'    => join( ',', array( bbp_get_public_status_id(), bbp_get_closed_status_id() ) ),
-		'posts_per_page' => $args['number'],
-		'meta_query'     => array( bbp_exclude_forum_ids( 'meta_query' ) )
+		'posts_per_page' => $args['number']
 	) );
 
 	
@@ -123,10 +122,9 @@ function recent_forums_widget( $args = '' ) {
 		<header class="widget-header"><h3 class="widget-title">Forum Activity</h3></header>
 		<ul class="recent-discussion-list">
 		
-
 		<?php $post_alt = 1;
-		while ( $widget_query->have_posts() ) : $widget_query->the_post(); 		
-		
+		while ( $widget_query->have_posts() ) : $widget_query->the_post(); 
+
 			// Get some info about the post 
 			$post_id		= $widget_query->post->ID;
 			$author_id 		= $widget_query->post->post_author;
@@ -312,7 +310,6 @@ function guild_twitch_streams() {
 	$streamers = array( 
 		'phazius' 			=> 'phazius', 
 		'atropos' 			=> 'atropos_nyx', 
-		'boontaker' 		=> 'boontaker', 
 		'nybling' 			=> 'nybling',
 		'erlex' 			=> 'erlexxx', 
 	);

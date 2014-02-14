@@ -12,11 +12,11 @@ $apoc = apocrypha();
 
 // Determine the search context
 $context 	= isset( $_REQUEST['type'] ) ? $_REQUEST['type'] : 'posts';
-$search		= trim( $_REQUEST['s'] );
+$search		= isset( $_REQUEST['s'] ) ? trim( $_REQUEST['s'] ) : "";
 $paged		= isset( $_REQUEST['page'] ) ? $_REQUEST['page'] : 1;
 
 // Was a search string provided OR was the form submitted?
-if ( !empty( $search ) || $_POST['submitted'] ) :
+if ( !empty( $search ) || isset( $_POST['submitted'] ) ) :
 
 	// Get the data by context
 	switch ( $context ) {
@@ -173,7 +173,7 @@ endif; ?>
 						'echo'					=> true,
 						'name'					=> 'search-author',
 						'who'					=> 'authors',
-						'selected'				=> $author_id,				
+						'selected'				=> isset( $author_id ) ? $author_id : NULL,				
 					) ); ?>
 				</li>
 
@@ -186,7 +186,7 @@ endif; ?>
 						'exclude'				=> get_cat_ID( 'entropy rising' ) . ',' . get_cat_ID( 'guild news' ),
 						'echo'					=> true,
 						'name'					=> 'search-category',
-						'selected'				=> $category_id,
+						'selected'				=> isset( $category_id ) ? $category_id : NULL,
 					) ); ?>
 				</li>					
 			</ol>
@@ -201,7 +201,7 @@ endif; ?>
 					<?php bbp_dropdown( $args = array(
 						'post_type'				=> 'forum',
 						'show_none'          	=> 'Any Forum',
-						'selected'				=> $forum_id,
+						'selected'				=> isset( $forum_id ) ? $forum_id : NULL,
 						'select_id'          	=> 'search-forum',
 					) ); ?>
 				</li>
@@ -212,6 +212,7 @@ endif; ?>
 				<li class="select">
 					<label for="member-faction"><i class="icon-flag icon-fixed-width"></i>User Alliance:</label>
 					<select name="member-faction">
+						<?php $member_faction = isset( $member_faction) ? $member_faction : ""; ?>
 						<option value="">Any Alliance</option>
 						<option value="aldmeri" class="aldmeri" <?php selected( $member_faction , 'aldmeri' , true ); ?>>Aldmeri Dominion</option>
 						<option value="daggerfall" class="daggerfall" <?php selected( $member_faction , 'daggerfall' , true ); ?>>Daggerfall Covenant</option>
@@ -226,6 +227,7 @@ endif; ?>
 				<li class="select">
 					<label for="group-faction"><i class="icon-flag icon-fixed-width"></i>Guild Alliance:</label>
 					<select name="group-faction">
+						<?php $group_faction = isset( $group_faction) ? $group_faction : ""; ?>
 						<option value="">Any Alliance</option>
 						<option value="aldmeri" class="aldmeri" <?php selected( $group_faction , 'aldmeri' , true ); ?>>Aldmeri Dominion</option>
 						<option value="daggerfall" class="daggerfall" <?php selected( $group_faction , 'daggerfall' , true ); ?>>Daggerfall Covenant</option>
@@ -249,12 +251,12 @@ endif; ?>
 		</form><!-- #advanced-search -->
 		
 		<?php // Search results container
-		if ( $submitted ) : ?>
+		if ( isset( $submitted ) ) : ?>
 		<div id="search-results" role="main">
 		<?php endif; ?>
 		
 		<?php // Posts and Pages Results
-		if ( $query_posts || $query_pages ) : 
+		if ( isset( $query_posts ) || isset( $query_pages ) ) : 
 		$type = $query_posts ? 'posts' : 'pages'; ?>
 		<div id="posts" class="archive">
 			<?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post();
@@ -276,7 +278,7 @@ endif; ?>
 		</div>
 		
 		<?php // Topics Results
-		elseif ( $query_topics ) : ?>
+		elseif ( isset( $query_topics ) ) : ?>
 		<div id="forums">
 			<?php if ( bbp_has_topics( $topic_args ) ) :
 			bbp_get_template_part( 'loop', 'topics' ); ?>	
@@ -299,7 +301,7 @@ endif; ?>
 		</div>	
 		
 		<?php // Members Results
-		elseif ( $query_members ) : ?>
+		elseif ( isset( $query_members ) ) : ?>
 		<header class="discussion-header" id="subnav" role="navigation">
 				<div class="directory-member">Member</div>
 				<div class="directory-content">Current Status</div>
@@ -354,7 +356,7 @@ endif; ?>
 		
 		
 		<?php // Groups Results
-		elseif ( $query_groups ) : ?>
+		elseif ( isset( $query_groups ) ) : ?>
 		<header class="discussion-header" id="subnav" role="navigation">
 			<div class="directory-member">Guild</div>
 			<div class="directory-content">Description</div>
@@ -405,7 +407,7 @@ endif; ?>
 		</div>		
 		<?php endif; ?>
 		
-		<?php if ( $submitted ) : ?>
+		<?php if ( isset( $submitted ) ) : ?>
 		</div><!-- #search-results -->
 		<?php endif; ?>
 	</div><!-- #content -->

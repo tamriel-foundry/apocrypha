@@ -1,7 +1,0 @@
-##  DOWN FOR MAINTENANCE FOR EVERYONE EXCEPT US  ##
-Options +FollowSymlinks
-RewriteEngine on
-RewriteCond %{REQUEST_URI} !/maintenance.html$
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REMOTE_HOST} !^174\.21\.95\.251
-RewriteRule $ /maintenance.html [R=302,L]

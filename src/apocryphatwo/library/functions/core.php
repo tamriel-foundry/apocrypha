@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme Core Functions
  * Andrew Clayton
- * Version 1.0.0
- * 8-1-2013
+ * Version 1.0.1
+ * 2-13-2013
  */
  
 // Exit if accessed directly
@@ -156,5 +156,19 @@ function apoc_custom_kses( $content ) {
 	$content = force_balance_tags( $content );
 	return $content;
 	}
+
+/*---------------------------------------------
+4.0 - HELPER FUNCTIONS
+----------------------------------------------*/	
+	
+/** 
+ * Get the current page URL for redirection.
+ * @since 1.0.1
+ */
+function get_current_url() {
+	$current_url = esc_attr( $_SERVER['HTTP_HOST'] );
+	$current_url .= esc_attr( $_SERVER['REQUEST_URI'] );
+	return esc_url( $current_url );
+}
 
 ?>

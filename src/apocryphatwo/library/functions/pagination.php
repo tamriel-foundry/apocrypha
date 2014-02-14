@@ -124,7 +124,7 @@ class Apoc_Pagination {
 	
 		// If a url was not passed, get the current page
 		if ( empty( $baseurl ) )
-			$baseurl = $_SERVER['HTTP_REFERER'];
+			$baseurl = get_current_url();
 			
 		// Format the URL differently depending on context
 		switch ( $context ) {

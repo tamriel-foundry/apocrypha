@@ -8,9 +8,8 @@
  
 // Get some info
 $apoc		= apocrypha();
-$user		= $apoc->user->data;
-$user_id	= $user->ID;
-$name		= $user->display_name;
+$user_id	= $apoc->user->ID;
+$name		= $user_id > 0 ? $apoc->user->data->display_name : NULL;
 ?>
 
 <?php // Display the header unless its an edit

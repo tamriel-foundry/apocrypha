@@ -399,10 +399,86 @@ $( 'ol#comment-list' ).on( "click" , "a.delete-comment-link" , function(event){
 ;function bbp_ajax_call(d,e,c,a){var b={action:d,id:e,nonce:c};$.post(bbpTopicJS.bbp_ajaxurl,b,function(f){if(f.success){$(a).html(f.content)}else{if(!f.content){f.content=bbpTopicJS.generic_ajax_error}alert(f.content)}})}$("#subscription-controls").on("click","a.favorite-toggle",function(a){a.preventDefault();bbp_ajax_call("favorite",$(this).attr("data-topic"),bbpTopicJS.fav_nonce,"#subscription-controls #favorite-toggle")});$("#subscription-controls").on("click","a.subscription-toggle",function(a){a.preventDefault();bbp_ajax_call("subscription",$(this).attr("data-topic"),bbpTopicJS.subs_nonce,"#subscription-controls #subscription-toggle")});
 
 /*! Post Reporting */
-;$("#comments,#forums,#private-messages").on("click","a.report-post",function(b){confirmation=confirm("Report this post? Please make sure this is a valid report.");if(confirmation){var a=postid=postnum=author=reason="";reason=prompt("Reason For Report","Why you are reporting this post...");if("Why you are reporting this post..."==reason){reason="No reason given by reporter."}a=$(this).data("type");postid=$(this).data("id");postnum=$(this).data("number");user=$(this).data("user");$(this).remove();$.post(ajaxurl,{action:"apoc_report_post",type:a,id:postid,num:postnum,user:user,reason:reason},function(c){if(c==1){alert("Report sent successfully, thank you.")}});return false}});
+$("#comments,#forums,#private-messages").on( "click" , "a.report-post" , function( event ){
+
+	// Prevent default
+	event.preventDefault();
+
+	// Confirm the user's desire to report
+	var confirmation = confirm("Report this post? Please make sure this is a valid report.");
+	if(confirmation){
+		
+		// Get the reason for reporting
+		var reason = prompt( "Reason For Report" , "Why you are reporting this post..." );
+		if ( "Why you are reporting this post..." == reason ) {
+			reason = "No reason given by reporter.";
+		}
+	
+		// Get the arguments
+		var type 	= $(this).data('type');
+		var postid 	= $(this).data('id');
+		var postnum	= $(this).data('number');
+		var user	= $(this).data('user');
+		
+		// Remove the button
+		$(this).remove();
+		
+		// Submit the POST AJAX
+		$.post( apoc_ajax, { 
+				'action'	: 'apoc_report_post',
+				'type'		: type,
+				'id' 		: postid,
+				'num'		: postnum,
+				'user'		: user,
+				'reason'	: reason,
+				},
+			function(resp){
+				if( resp == 1 ){
+					alert('Report sent successfully, thank you.');
+				}
+			}
+		);
+	}
+});
 
 /*! Trash Replies */
-;$("#forums").on("click","a.bbp-reply-trash-link",function(a){a.preventDefault();confirmation=confirm("Permanently delete this post?");if(confirmation){button=$(this);button.html('<i class="icon-spinner icon-spin"></i>Deleting');reply_id=get_url_var(button.attr("href"),"reply_id");context=get_url_var(button.attr("href"),"action");nonce=get_url_var(button.attr("href"),"_wpnonce");$.post(ajaxurl,{action:"apoc_delete_reply",context:context,reply_id:reply_id,_wpnonce:nonce},function(b){if(b=="1"){thereply=button.parents("li.reply");replybody=thereply.children("div.reply-body");replybody.slideUp("slow",function(){thereply.remove()})}})}});
+$("#forums").on("click","a.bbp-reply-trash-link",function( event ){
+	
+	// Prevent default
+	event.preventDefault();
+
+	// Confirm the user's desire to delete the comment
+	var confirmation = confirm("Permanently delete this post?");
+	if(confirmation){
+	
+		// Visual tooltip
+		var button = $(this);
+		button.html('<i class="icon-spinner icon-spin"></i>Deleting');
+		
+		// Get the arguments
+		var reply_id	= get_url_var( button.attr('href') , 'reply_id' );
+		var context		= get_url_var( button.attr('href') , 'action' 	);
+		var nonce		= get_url_var( button.attr('href') , '_wpnonce' );
+
+		// Submit the POST AJAX
+		$.post( apoc_ajax, { 
+			'action'	: 'apoc_delete_reply',
+			'context'	: context,
+			'reply_id'	: reply_id,
+			'_wpnonce'	: nonce,
+			},
+			function( resp ){
+				if( resp == "1" ){
+					var thereply 	= button.parents('li.reply');
+					var replybody	= thereply.children('div.reply-body');
+					replybody.slideUp( 'slow', function() { 
+						thereply.remove(); 
+					});			
+				}
+			}
+		);
+	}
+});
 
 
 /*! --------------------------------------- 
@@ -410,10 +486,62 @@ $( 'ol#comment-list' ).on( "click" , "a.delete-comment-link" , function(event){
 ----------------------------------------- */
 
 /*! Clear Infraction */
-;$("a.clear-infraction").click(function(){var a=$(this);var b=get_var_in_url(a.attr("href"),"_wpnonce");var c=get_var_in_url(a.attr("href"),"id");a.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");$.post(ajaxurl,{action:"apoc_clear_infraction",_wpnonce:b,id:c},function(d){if(d==1){$("li#infraction-"+c).slideUp()}});return false});
+$("a.clear-infraction").click( function() {
+		
+	// Get some info about what we are doing
+	var button	= $(this);
+	var nonce	= get_url_var( button.attr('href') , '_wpnonce' );
+	var id 		= get_url_var( button.attr('href') , 'id' );
+	
+	// Disable the button
+	button.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");
+
+	// Submit the POST AJAX
+	$.post( apoc_ajax, { 
+			'action': 'apoc_clear_infraction',
+			'_wpnonce': nonce,
+			'id' : id,
+		},
+		function( resp ) {
+			if( resp == 1 ) {
+				$( "li#infraction-" + id ).slideUp();
+			}
+		}
+	);
+		
+	// Prevent the default pageload
+	return false;
+});
 
 /*! Clear Mod Notes */
-;$("a.clear-mod-note").click(function(){var a=$(this);var b=get_var_in_url(a.attr("href"),"_wpnonce");var c=get_var_in_url(a.attr("href"),"id");a.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");$.post(ajaxurl,{action:"apoc_clear_mod_note",_wpnonce:b,id:c},function(d){if(d==1){$("li#modnote-"+c).slideUp()}});return false});
+$("a.clear-mod-note").click( function() {
+		
+	// Get some info about what we are doing
+	var button	= $(this);
+	var nonce	= get_var_in_url( button.attr('href') , '_wpnonce' );
+	var id 		= get_var_in_url( button.attr('href') , 'id' );
+	
+	// Disable the button
+	button.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");
+
+	// Submit the POST AJAX
+	$.post( apoc_ajax, { 
+			'action': 'apoc_clear_mod_note',
+			'_wpnonce': nonce,
+			'id' : id,
+		},
+		function( resp ) {
+			if( resp == 1 ) {
+				$( "li#modnote-" + id ).slideUp();
+			}
+		}
+	);
+		
+	// Prevent the default pageload
+	return false;
+});
+
+
 
 /*! Advanced Search Fields */
 ;$("ol.adv-search-fields").not("ol.active").hide();$("select#search-for").bind("change",function(){$("#search-results").slideUp();var a=$("select#search-for").val();var b=$("ol#adv-search-"+a);$("ol.adv-search-fields").removeClass("active").hide();b.addClass("active").fadeIn()});

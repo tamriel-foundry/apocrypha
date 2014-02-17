@@ -52,7 +52,7 @@ $apoc_search = new Apoc_Search;
  */
 function is_adv_search() {
 	global $wp_query;
-	if ( $wp_query->query['name'] == 'advsearch' )
+	if ( isset( $wp_query->query['name'] ) && $wp_query->query['name'] == 'advsearch' )
 		return true;
 	else return false;
 }

@@ -55,7 +55,7 @@ global $user;
 			</header>
 			<ul id="detail-post-count">
 				<?php $posts = $user->posts; 
-				if ( $posts['articles'] > 0 ) : ?>
+				if ( isset( $posts['articles'] ) && $posts['articles'] > 0 ) : ?>
 					<li><i class="icon-tag icon-fixed-width"></i>Articles <span class="activity-count"><?php echo $posts['articles']; ?></span></li>
 				<?php endif; ?>
 				<li><i class="icon-comment icon-fixed-width"></i>Comments <span class="activity-count"><?php echo $posts['comments']; ?></span></li>

@@ -38,7 +38,7 @@
 		
 		<div id="footer">
 			<p>Copyright &copy; 2013 <a href="<?php echo SITEURL; ?>" title="Tamriel Foundry" rel="home">Tamriel Foundry</a>. Questions, comments, or concerns? <a href="<?php echo SITEURL; ?>/contact-us/" title="Contact Tamriel Foundry">Contact Us</a>.<br>Tamriel Foundry was created using content and materials from <a href="http://elderscrollsonline.com/" title="Official Game Website" target="_blank">The Elder Scrolls Online</a> &copy; ZeniMax Online Studios, LLC or its licensors.</p>
-		</div><!-- #footer -->	
+		</div><!-- #footer -->
 	</div><!-- #footer-container -->
 
 <?php wp_footer(); ?>

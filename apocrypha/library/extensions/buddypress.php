@@ -72,6 +72,12 @@ class Apoc_BuddyPress {
 	
 	function actions() {
 	
+		// Remove BuddyPress Header Actions
+		remove_action( 'wp_head'			, 	'bp_core_add_ajax_url_js'					);
+		remove_action( 'wp_head'			,	'bp_core_confirmation_js'			, 100	);
+		remove_action( 'bp_actions'			,	'messages_add_autocomplete_js'				);
+		remove_action( 'wp_head'			,	'messages_add_autocomplete_css'				);
+	
 		// Profile Navigation
 		add_action( 'bp_setup_nav'			, array( $this , 'navigation' ) , 99 );
 		
@@ -375,22 +381,33 @@ class Apoc_Notifications extends BP_Core_Notification {
 	function __construct( $user_id ) {
 	
 		$this->user_id 			= $user_id;
-		$this->notifications	= $this->get_notifications();	
+		$this->notifications	= $this->get_notifications();
+		$this->output			= $this->format_notifications();
 	}
 
-	
+	/**
+	 * Get the notifications from BuddyPress 
+	 */
 	function get_notifications() {
 		
 		// Setup notification array
 		$notifications = array();
 		
+		// Keep counts
+		$notifications['counts'] = array(
+			'activity' 	=> 0,
+			'messages' 	=> 0,
+			'friends'	=> 0,
+			'groups'	=> 0,
+		);
+		
 		// Configure arguments
 		$args = array(
 			'user_id'      => $this->user_id,
 			'is_new'       => true,
-			'page'         => 1,
-			'per_page'     => 25,
-			'max'          => 25,
+			'page'         => '',
+			'per_page'     => '',
+			'max'          => '',
 			'search_terms' => ''
 		);
 		
@@ -399,29 +416,89 @@ class Apoc_Notifications extends BP_Core_Notification {
 		
 			while ( bp_the_notifications() ) : bp_the_notification();
 			
-				// Get the notification info
-				$type	= bp_get_the_notification_component_name();
-				$action	= bp_get_the_notification_component_action();
-				$id 	= bp_get_the_notification_id();
-				$desc	= bp_get_the_notification_description(); 
+				// Get the notification
+				global $bp;
+				$notification 	= $bp->notifications->query_loop->notification;
 				
-
-				// Lump forums in with activity
+				// Consolidate some actions
+				$type = $notification->component_name;
 				if ( $type == "forums" ) $type = "activity";
 				if ( $type == "events" ) $type = "groups";
 				
-				// Bucket notifications by component
-				$notifications[$type][] = array( 
-					'id'		=> $id , 
-					'action'	=> $action ,
-					'desc'		=> $desc 
-				);
-		
+				// Populate some description for non activities
+				$notification->desc = ( $type != 'activity' ) ? bp_get_the_notification_description() : "";
+							
+				// Add notifications to the array
+				$notifications[$type][] = $notification;
+				
+				// Increment the count
+				$notifications['counts'][$type]++;		
 			endwhile; 
 		endif;
 		
 		// Return the notifications
 		return $notifications;
+		
+	}
+	
+	function format_notifications() {
+	
+		// Get the notifications
+		$notifications 	= $this->notifications;
+		
+		// Are there activities?
+		if( count( $notifications['activity'] > 0 ) ) :
+			$activity 	= $notifications['activity'];
+			$activities	= array();
+			
+			// Loop over activities, grouping them by item_id
+			for ( $i = 0; $i < count( $activity ); $i++ ) {	
+				$item_id 						= ( $activity[$i]->component_action == 'new_at_mention' ) ? $activity[$i]->secondary_item_id : $activity[$i]->item_id;		
+				$activity[$i]->counts			= isset( $activities[$item_id]->counts ) ? $activities[$item_id]->counts + 1 : 1;			
+				$activities[$item_id] 			= $activity[$i];	
+			}
+			$activities = array_values( $activities );
+			
+			// Loop over grouped activities, getting their descriptions
+			for ( $i = 0; $i < count( $activities ); $i++ ) {
+				$activities[$i]->desc = $this->format_activity( $activities[$i]->component_action , $activities[$i]->item_id , $activities[$i]->counts );
+			}
+			
+			// Add the activities back into notifications object
+			$notifications['activity'] = $activities;
+			
+		endif;
+	
+		// Return them to the class object
+		return $notifications;
+		
+	}
+	
+	
+	function format_activity( $action , $item_id , $count ) {
+	
+		// Placeholder for description
+		$desc = '';
+	
+		// Switch context based on activity action
+		switch( $action ) {
+			
+			// Activity Component
+			case 'new_at_mention':
+				$grammar			= ( $count > 1 ) ? ' times.' : ' time.';
+				$link 				= bp_loggedin_user_domain() . bp_get_activity_slug() . '/mentions/';
+				$desc				= '<a href="' . $link . '">You were mentioned in discussion ' . $count . $grammar . '</a>';
+				break;
+
+			case 'bbp_new_reply' :
+				$grammar 		= ( $count > 1 ) ? ' new replies.' : ' new reply.';
+				$link 			= bbp_get_topic_last_reply_url( $item_id );
+				$desc				= '<a href="' . $link . '">Your topic "' . bbp_get_topic_title( $item_id ) . '" has ' . $count . $grammar . '</a>';
+				break;
+		}
+		
+		// Return the description
+		return $desc;
 	}
 }
 
@@ -431,7 +508,7 @@ class Apoc_Notifications extends BP_Core_Notification {
  */
 function apoc_user_notifications( $user_id ) {
 	$notifications = new Apoc_Notifications( $user_id );
-	return $notifications->notifications;
+	return $notifications->output;
 }
 
 

@@ -63,7 +63,7 @@ function apoc_clear_notification() {
  * Mark all notifications as read
  * @version 1.0.2
  */
-add_action( 'apoc_ajax_apoc_mark_notifications_read' , 'apoc_mark_notifications_read' );
+add_action( 'wp_ajax_apoc_mark_notifications_read' , 'apoc_mark_notifications_read' );
 function apoc_mark_notifications_read() {
 
 	// Get the user data
@@ -80,7 +80,7 @@ function apoc_mark_notifications_read() {
  * Delete all notifications for user
  * @version 1.0.2
  */
-add_action( 'apoc_ajax_apoc_delete_all_notifications' , 'apoc_delete_all_notifications' );
+add_action( 'wp_ajax_apoc_delete_all_notifications' , 'apoc_delete_all_notifications' );
 function apoc_delete_all_notifications() {
 
 	// Get the user data
@@ -464,13 +464,11 @@ function apoc_load_topics() {
 	die( $content );
 }
 
-
-
 /**
  * Delete replies using AJAX!
  * @version 1.0.0
  */
-add_action( 'wp_ajax_apoc_delete_reply' , 'apoc_delete_reply' );
+add_action( 'apoc_ajax_apoc_delete_reply' , 'apoc_delete_reply' );
 function apoc_delete_reply() {
 
 	// Get the data
@@ -479,8 +477,6 @@ function apoc_delete_reply() {
 	
 	// Make sure it's a trash action
 	if ( $context == "bbp_toggle_reply_trash" ) {
-	
-		// Trash it
 		wp_trash_post($reply_id);
 		echo "1";
 	}
@@ -489,13 +485,11 @@ function apoc_delete_reply() {
 	exit(0);
 }
 
-
-
 /**
  * Process post reports using AJAX
- * @version 1.0.0
+ * @version 1.0.1
  */
-add_action( 'wp_ajax_apoc_report_post' , 'apoc_report_post' );
+add_action( 'apoc_ajax_apoc_report_post' , 'apoc_report_post' );
 function apoc_report_post() {
 	
 	/* Get the needed data */
@@ -540,14 +534,14 @@ function apoc_report_post() {
 }
 
 /*--------------------------------------------------------------
-X.X - INFRACTIONS
+6.0 - MODERATION
 --------------------------------------------------------------*/
 
 /** 
  * Clear an Infraction using AJAX
  * @since 0.5
  */
-add_action( 'wp_ajax_apoc_clear_infraction' , 'apoc_clear_infraction' );
+add_action( 'apoc_ajax_apoc_clear_infraction' , 'apoc_clear_infraction' );
 function apoc_clear_infraction() {
 
 	// Get the data
@@ -582,7 +576,7 @@ function apoc_clear_infraction() {
  * Clear a moderator note using AJAX handler
  * @since 0.5
  */
-add_action( 'wp_ajax_apoc_clear_mod_note' , 'apoc_clear_mod_note' );
+add_action( 'apoc_ajax_apoc_clear_mod_note' , 'apoc_clear_mod_note' );
 function apoc_clear_mod_note() {
 	
 	// Get the data

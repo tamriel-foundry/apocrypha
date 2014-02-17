@@ -92,5 +92,8 @@ $map = new Apoc_Map();
 
 function is_interactive_map() {
 	global $wp_query;
-	return $wp_query->is_map;
+	if ( isset( $wp_query->is_map ) )
+		return true;
+	else
+		return false;
 }

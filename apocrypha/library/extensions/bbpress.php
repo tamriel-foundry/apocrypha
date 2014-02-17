@@ -38,6 +38,9 @@ class Apoc_bbPress {
 	 */	
 	function actions() {
 	
+		// Modify bbPress header contents
+		add_action( 'bbp_theme_compat_actions'	, array( $this , 'remove_head' ) );
+	
 		// Increment Favorite Counts
 		add_action( 'bbp_add_user_favorite' 	, array( $this , 'fav_count_plus' )	, 10 , 2 );
 		add_action( 'bbp_remove_user_favorite' 	, array( $this , 'fav_count_minus' ), 10 , 2 );
@@ -81,9 +84,17 @@ class Apoc_bbPress {
 		add_filter( 'bbp_activity_reply_create_excerpt' 				, array( $this , 'quote_mention' ) );
 	}
 	
+	/**
+	 * Prevent bbPress from including scripts and styles in the header
+	 * @version 1.0.2
+	 */	
+	function remove_head( $admin ) {
+		remove_action( 'bbp_enqueue_scripts' 	, array( $admin, 'enqueue_styles'  	) );
+		remove_action( 'bbp_head'				, array( $admin, 'head_scripts' 	) );
+	}
 	
 	/**
-	 * Set an intelligent maximum topic title length
+	 * Prevent bbPress from including editor javascript on every page
 	 * @version 1.0.2
 	 */
 	function remove_scripts( $scripts ) {

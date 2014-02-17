@@ -26,7 +26,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
 /**
  * This function initializes the Apocrypha theme framework.
  * It runs immediately after WordPress loads core libraries.
- * Some other "run once per pageload" things are done here also.
+ * Most "run once per pageload" things are done here also.
  *
  * @see Apocrypha
  * @version 1.0.0
@@ -42,106 +42,57 @@ function apocrypha_theme_setup() {
 }
 
 /*--------------------------------------------------------------
-2.0 - HEAD FUNCTIONS
+2.0 - SCRIPTS AND STYLES
 --------------------------------------------------------------*/
 
 /**
- * Remove default WordPress head entries
- * @version 1.0.0
- */
-remove_action( 'wp_head'	,	'wp_generator'								);
-remove_action( 'wp_head'	,	'feed_links'						, 2		); 
-remove_action( 'wp_head'	,	'feed_links_extra'					, 3		); 
-remove_action( 'wp_head'	,	'rsd_link'									);
-remove_action( 'wp_head'	,	'wlwmanifest_link'							);
-remove_action( 'wp_head'	,	'rel_canonical'								);
-remove_action( 'wp_head'	,	'wp_shortlink_wp_head'						);
-remove_action( 'wp_head'	,	'adjacent_posts_rel_link_wp_head'	, 10, 0 );
-
-/**
- * Remove default BuddyPress head entries
- * @version 1.0.0
- */
-remove_action( 'wp_head'	, 	'bp_core_add_ajax_url_js'					);
-remove_action( 'wp_head'	,	'bp_core_confirmation_js'			, 100	);
-remove_action( 'bp_actions'	,	'messages_add_autocomplete_js'				);
-remove_action( 'wp_head'	,	'messages_add_autocomplete_css'				);
-
-/**
- * Remove default bbPress head entries
- * @version 1.0.0
- */
-add_action( 'bbp_theme_compat_actions' , 'remove_bbpress_head' );
-function remove_bbpress_head( $admin ) {
-    remove_action( 'bbp_enqueue_scripts' 	, array( $admin, 'enqueue_styles'  	) );
-	remove_action( 'bbp_head'				, array( $admin, 'head_scripts' 	) );
-}
-
-/*---------------------------------------------
-	2.1 - Stylesheets
-----------------------------------------------*/
-
-/**
- * Load stylesheets based on context
- * @version 1.0.0
- */
-add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_styles' );
-function apoc_enqueue_styles() {
-
-	/* Register first */
-	wp_register_style( 'primary' , THEME_URI . '/style.css' , false , $ver=filemtime( THEME_DIR . "/style.css" ) );
-	wp_register_style( 'google-fonts' , 'http://fonts.googleapis.com/css?family=Cinzel|PT+Serif|Open+Sans' , false );
-	wp_register_style( 'font-awesome' , 'http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css' , false );
-	
-	/* Then enqueue - some styles are only needed on specific pages */
-	wp_enqueue_style( 'google-fonts' );
-	wp_enqueue_style( 'font-awesome' );
-	wp_enqueue_style( 'primary' );
-}
-
-/*---------------------------------------------
-	2.2 - JavaScript
-----------------------------------------------*/
-
-/**
- * Include the primary theme JavaScript
+ * Load stylesheets and JavaScript based on context
  * @version 1.0.0
  */
 add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_scripts' );
 function apoc_enqueue_scripts() {
 
-	// Register first
-	wp_register_script( 'foundry' 		, THEME_URI . '/library/js/foundry.js' 			, 'jquery' , $ver='0.52' , true	);
-	wp_register_script( 'flexslider' 	, THEME_URI . '/library/js/flexslider.min.js' 	, 'jquery' , $ver='0.1' , true  );
-	wp_register_script( 'buddypress'	, THEME_URI . '/library/js/buddypress.js' 		, 'jquery' , $ver='0.33' , true 	);	
-	wp_register_script( 'colorbox' 		, THEME_URI . '/library/js/colorbox.min.js' 	, 'jquery' , $ver='1.0' , true	);
-
-	// Deregister WordPress default jQuery and get from Google CDN
-	wp_deregister_script( 'jquery' );
-	wp_register_script( 'jquery' 		, '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' ,'jquery' , $ver ='1.10.2' , true );
+	// Register Styles
+	wp_register_style( 'primary' 		, THEME_URI . '/style.css' , false , $ver=filemtime( THEME_DIR . "/style.css" ) );
+	wp_register_style( 'google-fonts' 	, 'http://fonts.googleapis.com/css?family=Cinzel|PT+Serif|Open+Sans' , false );
+	wp_register_style( 'font-awesome' 	, 'http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css' , false );
 	
-	// Then enqueue
+	// Enqueue Styles
+	wp_enqueue_style( 'google-fonts' );
+	wp_enqueue_style( 'font-awesome' );
+	wp_enqueue_style( 'primary' );
+
+	// Deregister Scripts
+	wp_deregister_script( 'jquery' );
+	
+	// Register Scripts
+	wp_register_script( 'jquery' 		, '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' ,'jquery' , $ver ='1.10.2' , true );
+	wp_register_script( 'foundry' 		, THEME_URI.'/library/js/foundry.js' 		, 'jquery' , $ver='0.53' 	, true	);
+	wp_register_script( 'flexslider' 	, THEME_URI.'/library/js/flexslider.min.js' , 'jquery' , $ver='0.1' 	, true  );
+	wp_register_script( 'buddypress'	, THEME_URI.'/library/js/buddypress.js' 	, 'jquery' , $ver='0.33' 	, true 	);	
+	wp_register_script( 'colorbox' 		, THEME_URI.'/library/js/colorbox.min.js'	, 'jquery' , $ver='1.0' 	, true	);
+
+	// Enqueue Scripts
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'buddypress' );
 	wp_enqueue_script( 'colorbox' );
+	wp_enqueue_script( 'foundry' );
 	
-	// Some scripts are only needed on specific pages
+	// Conditional Scripts
 	if ( is_home() || is_page_template( 'guild/guild-home.php' ) ) 
 		wp_enqueue_script( 'flexslider' );
-	if ( is_page( 'contact-us' ) ) {
-		wp_register_script( 'contactform' 	, THEME_URI . '/library/js/contactform.js' 	, 'jquery' , $ver='0.1' , true 	);
+	elseif ( is_page( 'contact-us' ) ) {
+		wp_register_script( 'contactform'	, THEME_URI.'/library/js/contactform.js' , 'jquery' , $ver='0.1' , true 	);
 		wp_enqueue_script( 'contactform' );
 	}
-	
-	// My JS file comes last
-	wp_enqueue_script( 'foundry' );
 }
+
 /* 
  * Display the google analytics tracking code for Tamriel Foundry
  * @version 1.0.0
  */
 function google_analytics_js() {
-	echo '<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-33555290-2"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})();</script>' . "\n";
+	echo '<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-33555290-2"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})();</script>' . "\r\n";
 }
 
 

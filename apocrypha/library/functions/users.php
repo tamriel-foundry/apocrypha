@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme User Functions
  * Andrew Clayton
- * Version 1.0.0
- * 8-1-2013
+ * Version 1.0.2
+ * 2-14-2014
  */
  
 // Exit if accessed directly
@@ -325,7 +325,7 @@ class Apoc_User {
 	
 	/* 
 	 * Get a users earned forum badges
-	 * @since 0.1
+	 * @since 1.0.2
 	 */
 	function badges() {
 	
@@ -376,7 +376,7 @@ class Apoc_User {
 				'class'		=> 'posting',
 				'tier'		=> $badge_tier 
 		);}
-		if ( $this->posts['articles'] > 0 ) {
+		if ( isset( $this->posts['articles'] ) && $this->posts['articles'] > 0 ) {
 			$badges['author'] = array(
 				'name'		=> 'Contributor',
 				'class'		=> 'author',
@@ -803,6 +803,7 @@ function get_user_comment_count( $user_id ) {
 function get_user_article_count( $user_id ) {
 	global $wpdb;
     $count = $wpdb->get_var('SELECT COUNT(ID) FROM ' . $wpdb->posts . ' WHERE post_type = "post" AND post_author = ' . $user_id . ' AND post_status = "publish"' );
+	$count = $count > 0 ? $count : 0;
     return $count;
 }
 

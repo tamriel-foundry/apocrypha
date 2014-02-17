@@ -259,27 +259,27 @@ $( '#bbp_topic_title' ).bind( 'keydown.editor-focus', function(e) {
 	}
 });
 
-/*! Trash Replies and Topics */
+/*! Trash Replies */
 $("#forums").on("click","a.bbp-reply-trash-link",function( event ){
 	
 	// Prevent default
 	event.preventDefault();
 
 	// Confirm the user's desire to delete the comment
-	confirmation = confirm("Permanently delete this post?");
+	var confirmation = confirm("Permanently delete this post?");
 	if(confirmation){
 	
 		// Visual tooltip
-		button = $(this);
+		var button = $(this);
 		button.html('<i class="icon-spinner icon-spin"></i>Deleting');
 		
 		// Get the arguments
-		reply_id	= get_url_var( button.attr('href') , 'reply_id' );
-		context		= get_url_var( button.attr('href') , 'action' 	);
-		nonce		= get_url_var( button.attr('href') , '_wpnonce' );
+		var reply_id	= get_url_var( button.attr('href') , 'reply_id' );
+		var context		= get_url_var( button.attr('href') , 'action' 	);
+		var nonce		= get_url_var( button.attr('href') , '_wpnonce' );
 
 		// Submit the POST AJAX
-		$.post( ajaxurl, { 
+		$.post( apoc_ajax, { 
 			'action'	: 'apoc_delete_reply',
 			'context'	: context,
 			'reply_id'	: reply_id,
@@ -287,8 +287,8 @@ $("#forums").on("click","a.bbp-reply-trash-link",function( event ){
 			},
 			function( resp ){
 				if( resp == "1" ){
-					thereply 	= button.parents('li.reply')
-					replybody	= thereply.children('div.reply-body')
+					var thereply 	= button.parents('li.reply');
+					var replybody	= thereply.children('div.reply-body');
 					replybody.slideUp( 'slow', function() { 
 						thereply.remove(); 
 					});			
@@ -296,7 +296,6 @@ $("#forums").on("click","a.bbp-reply-trash-link",function( event ){
 			}
 		);
 	}
-
 });
 
 /*! bbPress Favorites / Subs */

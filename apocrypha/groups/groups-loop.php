@@ -14,7 +14,8 @@ $groupquery		= bp_ajax_querystring( 'groups' );
 if ( $groupquery ) {
 	$splitquery		= explode( '&' , $groupquery);
 	$grouptype		= preg_grep( '#scope=#' , $splitquery);
-	$faction		= array_pop( explode( '=' , implode( $grouptype ) ));
+	$factions		= explode( '=' , implode( $grouptype ) );
+	$faction		= array_pop( $factions );
 }
 	
 /* If we are targetting a specific faction, apply the meta filter */

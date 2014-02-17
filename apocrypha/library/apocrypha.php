@@ -87,7 +87,7 @@ class Apocrypha {
 			
 		// Basic site info
 		$this->site 					= SITENAME;
-		$this->version					= '1.0.0';
+		$this->version					= '1.0.2';
 		
 		// User information
 		$this->device 					= '';
@@ -144,17 +144,12 @@ class Apocrypha {
 		require( $this->extensions_dir 	. 'map.php' );
 
 		// Integrated Plugins
-		if ( class_exists( 'BuddyPress' ) )
-			require( $this->extensions_dir . 'buddypress.php' );
-		if ( class_exists( 'bbPress' ) )
-			require( $this->extensions_dir . 'bbpress.php' );
+		if ( class_exists( 'BuddyPress' ) )				require( $this->extensions_dir . 'buddypress.php' );
+		if ( class_exists( 'bbPress' ) ) 				require( $this->extensions_dir . 'bbpress.php' );
 
 		// Admin-Only Functions
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			require( $this->admin_dir . 'ajax.php' );		
-		} elseif ( is_admin() ) {
-			require( $this->admin_dir . 'postmeta.php' );
-		}
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX )	require( $this->admin_dir . 'ajax.php' );		
+		elseif ( is_admin() )							require( $this->admin_dir . 'postmeta.php' );
 	}
 	
 	/**
@@ -173,10 +168,12 @@ class Apocrypha {
 		show_admin_bar( false );
 		
 		// Custom bbPress modifications
-		$apoc_bbpress		= new Apoc_bbPress();
+		if ( class_exists( 'bbPress' ) )
+			$apoc_bbpress		= new Apoc_bbPress();
 		
 		// Custom BuddyPress modifications
-		$apoc_buddypress	= new Apoc_BuddyPress();
+		if ( class_exists( 'BuddyPress' ) )
+			$apoc_buddypress	= new Apoc_BuddyPress();
 		
 		// Add supported post types
 		$apoc_posts 		= new Apoc_Posts();
@@ -196,14 +193,24 @@ class Apocrypha {
 	 */
 	private function actions() {
 	
+		// Modify WordPress header contents
+		remove_action( 'wp_head'	,	'wp_generator'								);
+		remove_action( 'wp_head'	,	'feed_links'						, 2		); 
+		remove_action( 'wp_head'	,	'feed_links_extra'					, 3		); 
+		remove_action( 'wp_head'	,	'rsd_link'									);
+		remove_action( 'wp_head'	,	'wlwmanifest_link'							);
+		remove_action( 'wp_head'	,	'rel_canonical'								);
+		remove_action( 'wp_head'	,	'wp_shortlink_wp_head'						);
+		remove_action( 'wp_head'	,	'adjacent_posts_rel_link_wp_head'	, 10, 0 );
+			
 		// Block admin dashboard
-		add_action('admin_init'			, array( $this , 'init_admin' ) );
+		add_action( 'admin_init'		, array( $this , 'init_admin' ) );
 	
 		// Populate apocrypha globals
-		add_action( 'template_redirect'	, array( $this , 'populate_globals' ) , 1 );	
+		add_action( 'template_redirect'	, array( $this , 'populate_globals' ) , 1 );
 		
 		// Support more allowed tags in KSES
-		add_action('init'				, array( $this , 'kses' ) );
+		add_action( 'init'				, array( $this , 'kses' ) );
 	}
 
 	/**

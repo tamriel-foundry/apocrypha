@@ -1,28 +1,30 @@
 /*! Post Reporting */
 $("#comments,#forums,#private-messages").on( "click" , "a.report-post" , function( event ){
 
+	// Prevent default
+	event.preventDefault();
+
 	// Confirm the user's desire to report
-	confirmation = confirm("Report this post? Please make sure this is a valid report.");
+	var confirmation = confirm("Report this post? Please make sure this is a valid report.");
 	if(confirmation){
-				
-		var type = postid = postnum = author = reason = '';
 		
-		reason = prompt( "Reason For Report" , "Why you are reporting this post..." );
+		// Get the reason for reporting
+		var reason = prompt( "Reason For Report" , "Why you are reporting this post..." );
 		if ( "Why you are reporting this post..." == reason ) {
 			reason = "No reason given by reporter.";
 		}
 	
 		// Get the arguments
-		type 	= $(this).data('type');
-		postid 	= $(this).data('id');
-		postnum	= $(this).data('number');
-		user	= $(this).data('user');
+		var type 	= $(this).data('type');
+		var postid 	= $(this).data('id');
+		var postnum	= $(this).data('number');
+		var user	= $(this).data('user');
 		
 		// Remove the button
 		$(this).remove();
 		
 		// Submit the POST AJAX
-		$.post( ajaxurl, { 
+		$.post( apoc_ajax, { 
 				'action'	: 'apoc_report_post',
 				'type'		: type,
 				'id' 		: postid,
@@ -34,9 +36,7 @@ $("#comments,#forums,#private-messages").on( "click" , "a.report-post" , functio
 				if( resp == 1 ){
 					alert('Report sent successfully, thank you.');
 				}
-			});
-		
-		// Prevent the default pageload
-		return false;
+			}
+		);
 	}
 });

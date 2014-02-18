@@ -18,7 +18,7 @@ global $bp;
 $action_url = $bp->displayed_user->domain . 'infractions/notes';
 
 // Process the form
-if ( wp_verify_nonce( $_POST['moderator_note_nonce'] , 'moderator-note' ) )  {
+if ( isset( $_POST['moderator_note_nonce'] ) && wp_verify_nonce( $_POST['moderator_note_nonce'] , 'moderator-note' ) )  {
 
 	// Get some data
 	$notes 			= ( $count > 0 ) ? $user->mod_notes['history'] : array();

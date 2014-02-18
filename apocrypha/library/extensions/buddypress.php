@@ -447,7 +447,7 @@ class Apoc_Notifications extends BP_Core_Notification {
 		$notifications 	= $this->notifications;
 		
 		// Are there activities?
-		if( count( $notifications['activity'] > 0 ) ) :
+		if( isset( $notifications['activity'] ) && count( $notifications['activity'] > 0 ) ) :
 			$activity 	= $notifications['activity'];
 			$activities	= array();
 			

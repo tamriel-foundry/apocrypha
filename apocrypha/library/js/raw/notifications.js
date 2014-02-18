@@ -1,33 +1,35 @@
 /*! Buddypress Frontend Notifications */
 $("a.clear-notification").click( function( event ){
+
+	// Prevent default
+	event.preventDefault();		
 	
 	// Get some info about what we are doing 
 	var button	= $(this);
-	var nonce	= get_url_var( button.attr('href') , '_wpnonce' );
-	var notid 	= get_url_var( button.attr('href') , 'notid' );
-	var type 	= get_url_var( button.attr('href') , 'type' );
-	
-	// Prevent default
-	event.preventDefault();		
+	var type 	= button.data('type');
+	var id 		= button.data('id');
+	var count	= button.data('count') || 1;
 
 	// Tooltip
-	button.removeAttr('href');
 	button.html('<i class="icon-spinner icon-spin"></i>' );
 			
 	// Submit the POST AJAX 
 	$.post( apoc_ajax, {
 			'action'	: 'apoc_clear_notification',
-			'_wpnonce'	: nonce,
-			'notid' 	: notid,
+			'type'		: type,
+			'id' 		: id,
+			'count'		: count,
 		},
 		function( response ){
 			if( response ){
 				
 				// Change the notification count and remove the notification
-				var counter = $( "li#notifications-" + type + " span.notifications-number" );
-				var count = parseInt( counter.text() );
-				if ( count > 1 ) {
-					counter.text( count - 1 );
+				var counter	= button.closest( 'li.notification-type' ).children('span.notifications-number');
+				var total	= parseInt( counter.text() );				
+				
+				// Are we removing all notifications, or just some?
+				if ( total - count > 0 ) {
+					counter.text( total - count );
 					button.parent().remove();
 				} else {
 					counter.remove();
@@ -35,10 +37,10 @@ $("a.clear-notification").click( function( event ){
 				}
 				
 				// Update the document title
-				var title = $('title').text();
-				count = title.split(']')[0].substr(1);
-				if ( 1 < count ) {
-					title = title.replace( count , count-1 );
+				var title 	= $('title').text();
+				total 		= title.split(']')[0].substr(1);
+				if ( total - count > 0 ) {
+					title = title.replace( total , total - count );
 				} else {
 					title = title.replace(/\[.*\]/,'');
 				}

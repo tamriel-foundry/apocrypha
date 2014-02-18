@@ -17,7 +17,7 @@ global $bp;
 $action_url = $bp->displayed_user->domain . 'infractions';
 
 // Process new warnings
-if ( wp_verify_nonce( $_POST['issue_warning_nonce'] , 'issue-warning' ) ) {
+if ( isset( $_POST['issue_warning_nonce'] ) && wp_verify_nonce( $_POST['issue_warning_nonce'] , 'issue-warning' ) ) {
 	
 	// Flush any cached stuff
 	if ( function_exists( 'w3tc_pgcache_flush' ) ) w3tc_pgcache_flush();
@@ -60,6 +60,14 @@ if ( wp_verify_nonce( $_POST['issue_warning_nonce'] , 'issue-warning' ) ) {
 		// Update user meta
 		update_user_meta( $user_id , 'infraction_history' , $warnings );
 		bp_core_add_message( 'Warning successfully issued!' , 'success' );
+		
+		// Maybe ban the user
+		if ( $level + $points == 5 ) {
+			$u = new WP_User( $user_id );
+			$u->set_role('banned');	
+		}
+		
+		// Flag success
 		$success = true;
 		
 		// Email people

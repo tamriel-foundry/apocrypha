@@ -12,7 +12,7 @@ $user_id	= $user->ID;
 if ( $user_id > 0 ) {
 	$name 			= $user->display_name;
 	$avatar			= new Apoc_Avatar( array( 'user_id' => $user_id , 'type' => 'thumb' , 'size' => 25 ) );
-	$link			= trailingslashit( SITEURL ) . trailingslashit( BP_MEMBERS_SLUG ) . $user->user_nicename;
+	$link			= trailingslashit( SITEURL ) . trailingslashit( BP_MEMBERS_SLUG ) . $user->data->user_nicename;
 	$redirect 		= wp_logout_url( get_current_url() );
 	$notifications 	= apoc_user_notifications( $user_id );
 }

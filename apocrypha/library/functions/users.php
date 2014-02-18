@@ -69,6 +69,7 @@ class Apoc_User {
 		$this->id		= $user_id;
 		$this->fullname = $meta['nickname'];
 		$this->roles	= array_keys( unserialize( $meta[ $prefix . 'capabilities' ] ) );
+		$this->roles[1]	= isset( $this->roles[1] ) ? $this->roles[1] : NULL;
 		$this->status	= isset( $meta['bp_latest_update'] ) ? maybe_unserialize( $meta['bp_latest_update'] ) : NULL;
 		$this->faction	= isset( $meta['faction'] ) ? $meta['faction'] : NULL;
 		$this->race		= isset( $meta['race'] ) ? $meta['race'] : NULL;

@@ -344,7 +344,7 @@ function apoc_topic_header_class( $topic_id = 0 ) {
 	$classes[] = 'page-header-' . rand(1,6);
 	$classes[] = bbp_is_topic_sticky( $topic_id, false ) ? 'sticky'       : '';
 	$classes[] = bbp_is_topic_super_sticky( $topic_id  ) ? 'super-sticky' : '';
-	$classes[] = 'status-' . get_post_status( $ID );
+	$classes[] = 'status-' . get_post_status( $topic_id );
 	
 	// Output it
 	echo join( ' ', $classes );

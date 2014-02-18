@@ -53,6 +53,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 					<h3>Resources</h3>
 					<ul class="submenu">
 						<li><a href="<?php echo SITEURL . '/development-faq/' ?>">Development FAQ</a></li>
+						<li><a href="<?php echo SITEURL . '/map/' ?>">Interactive Map</a></li>
 						<?php /*
 						<li><a href="#">Guides</a></li>
 						<li><a href="#">Maps</a></li>
@@ -96,10 +97,10 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 				<div class="sub col">
 					<h3>Your Account</h3>
 					<ul class="submenu">						
-						<li><a href="<?php echo bp_loggedinuser_link(); ?>">Your Profile</a></li>
-						<li><a href="<?php echo bp_loggedinuser_link() . 'profile/edit/' ?>">Edit Profile</a></li>
-						<li><a href="<?php echo bp_loggedinuser_link() . 'messages/' ?>">Private Messages</a></li>
-						<li><a href="<?php echo bp_loggedinuser_link() . 'settings/' ?>">Account Settings</a></li>
+						<li><a href="<?php echo bp_loggedin_user_link(); ?>">Your Profile</a></li>
+						<li><a href="<?php echo bp_loggedin_user_link() . 'profile/edit/' ?>">Edit Profile</a></li>
+						<li><a href="<?php echo bp_loggedin_user_link() . 'messages/' ?>">Private Messages</a></li>
+						<li><a href="<?php echo bp_loggedin_user_link() . 'settings/' ?>">Account Settings</a></li>
 					</ul>
 				</div>
 				<?php endif; ?>
@@ -114,7 +115,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 						<li><a href="<?php echo SITEURL . '/topics/' ?>">Recent Topics</a></li>
 						<li><a href="<?php echo SITEURL . '/best-of/' ?>">Best Weekly Topics</a></li>
 					<?php if ( $loggedin ) : ?>
-						<li><a href="<?php echo bp_loggedinuser_link() . 'forums/subscriptions/' ?>">Your Subscribed Topics</a></li>
+						<li><a href="<?php echo bp_loggedin_user_link() . 'forums/subscriptions/' ?>">Your Subscribed Topics</a></li>
 					<?php endif; ?>
 					</ul>
 				</div>	

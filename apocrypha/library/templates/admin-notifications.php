@@ -9,6 +9,7 @@
 // Get the notifications
 $user 			= apocrypha()->user;
 $user_id		= $user->ID;
+$link			= trailingslashit( SITEURL ) . trailingslashit( BP_MEMBERS_SLUG ) . $user->data->user_nicename;
 $notifications 	= apoc_user_notifications( $user_id );
 ?>
  
@@ -22,7 +23,8 @@ $notifications 	= apoc_user_notifications( $user_id );
 			
 			<?php if ( !empty( $notifications['activity'] ) ) : for( $i = 0; $i < count( $notifications['activity'] ); $i++ ) : ?>
 				<li id="notification-<?php echo $notifications['activity'][$i]->id; ?>" class="notification-entry"><i class="icon-li icon-chevron-right"></i>
-					<a class="clear-notification" data-type="<?php echo $notifications['activity'][$i]->component_action; ?>" data-id="<?php echo $notifications['activity'][$i]->item_id; ?>"><i class="icon-remove"></i></a>
+					<?php $id = ( $notifications['activity'][$i]->component_action == "new_at_mention" ) ? $user_id : $notifications['activity'][$i]->item_id; ?>
+					<a class="clear-notification" data-type="<?php echo $notifications['activity'][$i]->component_action; ?>" data-id="<?php echo $id; ?>" data-count="<?php echo $notifications['activity'][$i]->counts; ?>"><i class="icon-remove"></i></a>
 					<?php echo $notifications['activity'][$i]->desc; ?>
 				</li>
 			<?php endfor; else: ?>

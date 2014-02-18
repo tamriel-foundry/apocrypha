@@ -67,7 +67,7 @@ function apoc_enqueue_scripts() {
 	
 	// Register Scripts
 	wp_register_script( 'jquery' 		, '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' ,'jquery' , $ver ='1.10.2' , true );
-	wp_register_script( 'foundry' 		, THEME_URI.'/library/js/foundry.js' 		, 'jquery' , $ver='0.53' 	, true	);
+	wp_register_script( 'foundry' 		, THEME_URI.'/library/js/foundry.js' 		, 'jquery' , $ver='0.54' 	, true	);
 	wp_register_script( 'flexslider' 	, THEME_URI.'/library/js/flexslider.min.js' , 'jquery' , $ver='0.1' 	, true  );
 	wp_register_script( 'buddypress'	, THEME_URI.'/library/js/buddypress.js' 	, 'jquery' , $ver='0.33' 	, true 	);	
 	wp_register_script( 'colorbox' 		, THEME_URI.'/library/js/colorbox.min.js'	, 'jquery' , $ver='1.0' 	, true	);

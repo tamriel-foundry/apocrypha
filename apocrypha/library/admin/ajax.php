@@ -42,21 +42,28 @@ function apoc_debug() {
  */
 add_action( 'apoc_ajax_apoc_clear_notification' , 'apoc_clear_notification' );
 function apoc_clear_notification() {
-
-	// Check the nonce
-	check_ajax_referer( 'clear-single-notification' , '_wpnonce' );
 	
-	// Get some data
+	// Get the data
 	global $bp, $wpdb;
-	$user_id = get_current_user_id();
-	$notification_id = $_POST['notid'];
+	$user_id 	= get_current_user_id();
+	$id 		= $_POST['id'];
+	$type		= $_POST['type'];
 	
-	// Delete the notification
-	$wpdb->query( $wpdb->prepare( "DELETE FROM " . $bp->core->table_name_notifications . " WHERE user_id = %d AND id = %s", $user_id , $notification_id ) );
+	// Clear all mentions at once
+	if ( $type == "new_at_mention" ) :
+		$wpdb->query( $wpdb->prepare( "DELETE FROM " . $bp->core->table_name_notifications . " WHERE user_id = %d AND component_action = %s", $user_id , $type ) );	
+	
+	// Delete all reply notifications for a single topic
+	elseif ( $type == "bbp_new_reply" ) :
+		$wpdb->query( $wpdb->prepare( "DELETE FROM " . $bp->core->table_name_notifications . " WHERE user_id = %d AND item_id = %d", $user_id , $id ) );	
+	
+	// Otherwise, delete the single notification	
+	else :
+		$wpdb->query( $wpdb->prepare( "DELETE FROM " . $bp->core->table_name_notifications . " WHERE user_id = %d AND id = %d", $user_id , $id ) );
+	endif;
 	
 	// Send a response
-	echo "1";
-	die();
+	die("1");
 }
 
 /**
@@ -72,8 +79,7 @@ function apoc_mark_notifications_read() {
 	// Mark all notifications as read
 	BP_Notifications_Notification::mark_all_for_user( $user_id );
 
-	echo "1";
-	die();
+	die("1");
 }
 
 /**
@@ -89,8 +95,7 @@ function apoc_delete_all_notifications() {
 	// Delete all notifications
 	BP_Notifications_Notification::delete( array( 'user_id' => $user_id ) );
 
-	echo "1";
-	die();
+	die("1");
 }
 
 /*---------------------------------------------

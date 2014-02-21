@@ -1,0 +1,13 @@
+locations = new Array();
+locations[0]=['Port Hunding','castle','This town and pirate haven is the main port on Stros M&#039;Kai. A bustling center for trade, it is also run by the deadly and corrupt Headman Bhosek.',-11.806,-94.702];
+locations[1]=['The Grave','cave','This underground prison lies directly below Headman Bhosek&#039;s palace, and is home to any who incur the Headman&#039;s wrath.',-10.75,-94.834];
+locations[2]=['Port Hunding Wayshrine','wayshrine','The main wayshrine in Port Hunding is just outside the western gates of town.',-11.633,-97.163];
+locations[3]=['Stros M&#039;Kai Skyshard 1','skyshard','&lt;em&gt;Across the water from the western wall.&lt;/em&gt; A skyshard is on atop a small cliff overlooking the water just south of the wayshrine.',-12.45,-97.625];
+locations[4]=['Stros M&#039;Kai Skyshard 2','skyshard','&lt;em&gt;The mouth of The Grave stands open.&lt;/em&gt; This skyshard sits just south of the entrance to The Grave.',-10.858,-94.57];
+locations[5]=['Sandy Grotto Wayshrine','wayshrine','A wayshrine sits on the tiny island in the far northeast of Stros M&#039;Kai.',-7.147,-91.78];
+locations[6]=['Dogeater Goblin Camp','landmark','The small mine on the northern end of the island is infested with Goblins from the Dogeater Clan.',-7.756,-93.406];
+locations[7]=['Rash Merchan&#039;t Plummet','landmark','There used to be a rickety bridge that lead to the small islands off the northwest shore of Stros M&#039;Kai. The last merchant to attempt using the bridge met his end as it collasped beneath him.',-8.062,-97.339];
+locations[8]=['Bthzark','dwemer','The Dwemer ruins of Bthzark contain ancient secrets for those brave enough to unlock them.',-11.535,-98.558];
+locations[9]=['Saintsport Wayshrine','wayshrine','This wayshrine on the southern end of the island allows easy access to the town of Saintsport.',-16.217,-97.449];
+locations[10]=['Saintsport','town','This lawless small town on the southern end of the island of Stros M&#039;Kai is overrun by pirate gangs.',-16.175,-96.394];
+locations[11]=['Stros M&#039;Kai Skyshard 3','skyshard','&lt;em&gt;Crashed through a Saintsport roof.&lt;/em&gt; Sits in a ruined house in the center of town of Saintsport.',-16.079,-96.021];

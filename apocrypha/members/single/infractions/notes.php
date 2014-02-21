@@ -11,7 +11,7 @@ global $user;
 $user 		= new Apoc_User( bp_displayed_user_id() , 'profile' );
 $user_id 	= $user->id;
 $count		= $user->mod_notes['count'];
-$level		= $user->warnings['level'];
+$level		= $user->warnings['level'] > 0 ? $user->warnings['level'] : 0;
 
 // Get the url
 global $bp;

@@ -26,5 +26,12 @@ endif; ?>
 		</div><!-- #group-forums -->
 					
 	</div><!-- #content -->
+	
+	<?php if ( bbp_is_single_topic() ) : ?>
+	<div id="respond" class="create-reply">
+		<?php bbp_get_template_part( 'form', 'reply' ); ?>
+	</div><!-- #respond -->
+	<?php endif; ?>	
+	
 <?php get_footer(); // Load the footer ?>
 <?php endwhile; endif; ?>

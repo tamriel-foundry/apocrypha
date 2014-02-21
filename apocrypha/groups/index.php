@@ -7,7 +7,7 @@
  */
  
 // Get the current user info
-$user 		= apocrypha()->user->data;
+$user 		= apocrypha()->user;
 $user_id	= $user->ID;
 ?>
 

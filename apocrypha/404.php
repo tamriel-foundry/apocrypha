@@ -22,13 +22,13 @@
 			
 			<form role="search" method="get" class="search-form" id="search-404" action="<?php echo SITEURL . '/advsearch/'; ?>">
 				<select name="type" id="search-for">
-					<option value="posts" <?php selected( $context , 'posts' ); ?>>Articles</option>
-					<option value="pages" <?php selected( $context , 'pages' ); ?>>Pages</option>
-					<option value="topics" <?php selected( $context , 'topics' ); ?>>Topics</option>
-					<option value="members" <?php selected( $context , 'members' ); ?>>Members</option>
-					<option value="groups" <?php selected( $context , 'groups' ); ?>>Guilds</option>
+					<option value="posts">Articles</option>
+					<option value="pages">Pages</option>
+					<option value="topics">Topics</option>
+					<option value="members">Members</option>
+					<option value="groups">Guilds</option>
 				</select>
-				<input class="search-text <?php echo $search_class; ?>" type="text" name="s" value="Search Tamriel Foundry" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"/>
+				<input class="search-text" type="text" name="s" value="Search Tamriel Foundry" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;"/>
 		</div>
 		
 	</div><!-- #content -->

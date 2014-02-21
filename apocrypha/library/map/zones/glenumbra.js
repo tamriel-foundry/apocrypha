@@ -1,0 +1,16 @@
+locations = new Array();
+locations[0]=['Glenumbra Skyshard 3','skyshard','Next to the Remly Brothers &quot;search amoungst the shrieks&quot;',35.915,-125.365];
+locations[1]=['The Werewolves Hide','lorebook','Sits on a crate under a small fishing hut.',36.875,-126.826];
+locations[2]=['Glenumbra Skyshard 1','skyshard','&quot;Guarding Daggerfall&#039;s Eastern Gate&quot; sits behind a rock just outside.',31.456,-123.585];
+locations[3]=['Glenumbra Skyshard 6','skyshard','&lt;em&gt;Beneath a Hag&#039;s Footbridge&lt;/em&gt;. A skyshard sits next to the bridge in Hag Fen.',42.366,-108.314];
+locations[4]=['The True Nature of Orcs','lorebook','Harpies killed some orc here and he dropped his book.',37.752,-124.31];
+locations[5]=['The True Nature of Orcs','lorebook','Harpies killed some orc here and he dropped his book.',37.752,-124.31];
+locations[6]=['Guide to the Daggerfall Covenant','lorebook','Sits in a cultist camp by The Wyrd Tree',39.917,-121.816];
+locations[7]=['Varieties of Faith: The Bretons','lorebook','Sits to a ruined wagon on the road.',37.752,-118.784];
+locations[8]=['Varieties of Faith: The Bretons','lorebook','Sits to a ruined wagon on the road.',37.752,-118.784];
+locations[9]=['Glenumbra Skyshard 2','skyshard','Before Dresan&#039;s headless sentinel',38.989,-117.686];
+locations[10]=['Glenumbra Skyshard 10','skyshard','&lt;em&gt;A tower explored is Llessen learned.&lt;/em&gt; This skyshard inside the dungeon in middle of a hallway.',32.544,-122.344];
+locations[11]=['Glenumbra Skyshard 11','skyshard','&lt;em&gt;Near Silumm&#039;s well on Daggerfall shores.&lt;/em&gt; This skyshard can be found just after the dungeon boss in the corner.',34.194,-125.64];
+locations[12]=['Glenumbra Treasure Map 6','treasure','The buried treasure indicated by this map is in a cleft of the rock looking across the bay at a wrecked ship.',47.849,-115.027];
+locations[13]=['Glenumbra Skyshard 9','skyshard','&quot;A climb above Crosswych&quot; On the upper catwalks of the Crosswych mine.',51.719,-103.359];
+locations[14]=['Glenumbra Skyshard 7','skyshard','&quot;Where vines choke the sleeping dead&quot; Bloodthorn necromancers have unearthed this skyshard from some coffins on the eastern side of this graveyard.',49.681,-107.249];

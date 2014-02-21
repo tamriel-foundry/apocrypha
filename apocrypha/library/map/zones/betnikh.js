@@ -1,0 +1,15 @@
+locations = new Array();
+locations[0]=['Stonetooth Wayshrine','wayshrine','The main wayshrine in Betnikh stands within the town of Stonetooth as you enter from the docks.',15.959,-119.553];
+locations[1]=['Moriseli','ayleid','The Ayleid ruins of Moriseli are awake with undead spirits seeking vengeance.',19.371,-121.794];
+locations[2]=['Eyearata','landmark','The ruins of Eyearata are sunken off the northwest coast of Betnikh.',19.018,-125.002];
+locations[3]=['Grimfield Wayshrine','wayshrine','A wayshrine stands by the northern entrance to the Grimfield Graveyard.',16.814,-123.805];
+locations[4]=['Betnikh Skyshard 1','skyshard','&lt;em&gt;In the dig site.&lt;/em&gt; A skyshard sits next to the entrance to the ruin at the southwest end of the dig site.',19.267,-122.124];
+locations[5]=['Betnikh Skyshard 3','skyshard','&lt;em&gt;Outside a house for the dead.&lt;/em&gt; A skyshard is within the cemetery to the left of the mausoleum. ',14.985,-122.08];
+locations[6]=['Betnikh Skyshard 2','skyshard','&lt;em&gt;Where the wolves prowl eastern ruins.&lt;/em&gt; A skyshard sits on the northern side of a ruined wall.',14.793,-118.279];
+locations[7]=['Carved Hills Wayshrine','wayshrine','A wayshrine stands beside the road to Carved Hills on the southern end of the island.',12.885,-120.125];
+locations[8]=['Carved Hills','tree','The druidic shrines in the Carved Hills have been traditionally used by Orsimer tribes for various rituals.',13.879,-118.85];
+locations[9]=['Gilbard&#039;s Nook','landmark','A crafty Orc has become accustomed to using this hidey-hole for storing his precious cargo.',15.048,-117.092];
+locations[10]=['Grimfield','tomb','The large graveyard of Grimfield is an ancestral burial site for the orc tribes that live in Betnikh.',15.218,-123.201];
+locations[11]=['Carzog&#039;s Demise','ayleid','The Bloodthorn cult is enacting their dire plot within these Ayleid ruins at the northeast end of the island.',19.371,-118.125];
+locations[12]=['Stonetooth Docks','dock','This small dockyard allows for the orc tribes of Betnikh to engage in trade with the lands of High Rock.',15.854,-118.059];
+locations[13]=['Stonetooth','town','The town of Stonetooth is the solitary civilization on Betnikh and is the stronghold of the local Orsimer tribe.',16.992,-119.125];

@@ -10,6 +10,7 @@
 global $user;
 $user 		= new Apoc_User( bp_displayed_user_id() , 'profile' );
 $user_id 	= $user->id;
+$level		= $user->warnings['level'] > 0 ? $user->warnings['level'] : 0;
 ?>
 
 <?php get_header(); ?>
@@ -42,9 +43,9 @@ $user_id 	= $user->id;
 				</div>
 				
 				<?php if ( bp_is_my_profile() ) : ?>
-					<div class="warning">Your current warning level is <?php echo $user->warnings['level']; ?> points.</div>
+					<div class="warning">Your current warning level is <?php echo $level; ?> points.</div>
 				<?php else : ?>
-					<div class="warning">The current warning level for <?php bp_displayed_user_username(); ?> is <?php echo $user->warnings['level']; ?> points.</div>
+					<div class="warning">The current warning level for <?php bp_displayed_user_username(); ?> is <?php echo $level; ?> points.</div>
 				<?php endif; ?>
 
 				<h3>Infraction History</h3>

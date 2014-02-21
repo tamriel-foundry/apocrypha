@@ -56,7 +56,7 @@ if ( !empty( $search ) || isset( $_POST['submitted'] ) ) :
 		case 'topics' :
 		
 			// Get arguments
-			$forum_id		= ( $_POST['search-forum'] != '' ) ? $_POST['search-forum'] : 'any';
+			$forum_id		= ( isset( $_POST['search-forum'] ) && $_POST['search-forum'] != '' ) ? $_POST['search-forum'] : 'any';
 
 			// Construct a query		
 			$topic_args = array(
@@ -257,7 +257,7 @@ endif; ?>
 		
 		<?php // Posts and Pages Results
 		if ( isset( $query_posts ) || isset( $query_pages ) ) : 
-		$type = $query_posts ? 'posts' : 'pages'; ?>
+			$type = isset( $query_posts ) ? 'posts' : 'pages'; ?>
 		<div id="posts" class="archive">
 			<?php if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post();
 				apoc_display_post();

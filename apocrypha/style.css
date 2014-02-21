@@ -86,6 +86,28 @@ ins{text-decoration:none;}
 del{text-decoration:line-through;}
 table{border-collapse:collapse;border-spacing:0;}
 
+/*---------------------------------------------
+	1.1 - Import Custom Fonts
+----------------------------------------------*/
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Cinzel-Regular'), url(http://themes.googleusercontent.com/static/fonts/cinzel/v2/mLL0ZqnXRx3m16FnBy9gcg.woff) format('woff');
+}
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v7/cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+@font-face {
+  font-family: 'PT Serif';
+  font-style: normal;
+  font-weight: 400;
+  src: local('PT Serif'), local('PTSerif-Regular'), url(http://themes.googleusercontent.com/static/fonts/ptserif/v6/sDRi4fY9bOiJUbgq53yZCfesZW2xOQ-xsNqO47m55DA.woff) format('woff');
+}
+
 /*--------------------------------------------------------------
 2.0 - PRIMARY STRUCTURE
 --------------------------------------------------------------*/
@@ -95,14 +117,14 @@ body {
 	font-weight: normal;
 	line-height: 1.5em;
 	color: #CCC;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/bg-loop.jpg");
+	background-image: url("images/backgrounds/bg-loop.jpg");
 	background-position: 50% 0;
 	position: relative;
 	}
 div#header-container {
 	width: 100%;
 	height: 400px;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/tf-banner.jpg");
+	background-image: url("images/backgrounds/tf-banner.jpg");
 	background-repeat: repeat-x;
 	background-position: 50% 0;
 	}
@@ -133,7 +155,7 @@ a#main-banner {
 	width: 460px;
 	height: 210px;
 	display: block;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/headers/tf-header.png");
+	background-image: url("images/headers/tf-header.png");
 	background-repeat: no-repeat;
 	position: absolute;
 	z-index: 1;
@@ -551,7 +573,7 @@ input[type='checkbox'] + label {
 	top: 0px;
 	cursor: pointer;
 	padding: 5px 3px 5px 24px;
-	background: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/checkboxes.png") 4px -50px no-repeat;
+	background: url("images/icons/checkboxes.png") 4px -50px no-repeat;
 	}
 input[type='checkbox']:hover + label,
 input[type='checkbox']:hover + label,
@@ -811,7 +833,7 @@ div.error:before {	content: "\F12A"; }
 /* Instructions */
 .instructions {
 	float: left;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/dark-denim.jpg");
+	background-image: url("images/backgrounds/dark-denim.jpg");
 	font-family: 'Open Sans' , sans-serif;
 	font-size: 0.8em;
 	color: #BBB;
@@ -975,7 +997,7 @@ nav#admin-bar {
 	float: right;
 	margin: 0;
 	padding: 3px 0;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/dark-denim.jpg");
+	background-image: url("images/backgrounds/dark-denim.jpg");
 	border: 1px solid #222;
 	border-top: none;
 	border-radius: 0 0 5px 5px;
@@ -1015,10 +1037,10 @@ input#password {
 	padding: 2px 24px 0 3px;
 	font-size: 12px;
 	background: #bbb;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/login-icons.png"), -ms-linear-gradient(top, #BBB, #b3a695);
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/login-icons.png"), -moz-linear-gradient(top, #BBB, #b3a695);
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/login-icons.png"), -o-linear-gradient(top, #BBB, #b3a695);
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/login-icons.png"), -webkit-linear-gradient(top, #BBB, #b3a695);
+	background-image: url("images/icons/login-icons.png"), -ms-linear-gradient(top, #BBB, #b3a695);
+	background-image: url("images/icons/login-icons.png"), -moz-linear-gradient(top, #BBB, #b3a695);
+	background-image: url("images/icons/login-icons.png"), -o-linear-gradient(top, #BBB, #b3a695);
+	background-image: url("images/icons/login-icons.png"), -webkit-linear-gradient(top, #BBB, #b3a695);
 	background-repeat: no-repeat;
 	background-position: 100% 100%;
 	}
@@ -1061,7 +1083,7 @@ li.notification-type {
 	height: 24px;
 	margin: 0 5px;
 	float: left;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/notifications.png");
+	background-image: url("images/icons/notifications.png");
 	background-repeat: no-repeat;
 	cursor: pointer;
 	}
@@ -1099,7 +1121,7 @@ div.admin-bar-dropdown {
 	position: absolute;
 	top: 0;
 	right: 0;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/denim.jpg");
+	background-image: url("images/backgrounds/denim.jpg");
 	border: 1px solid #333;
 	border-top: 1px solid #000;
 	border-radius: 0 0 5px 5px;
@@ -1121,7 +1143,7 @@ div.admin-bar-dropdown ul {
 	line-height: 1.25em;
 	}
 ul.notification-list {
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/notification-drop-arrow.png");
+	background-image: url("images/icons/notification-drop-arrow.png");
 	background-repeat: no-repeat;
 	border-bottom: 1px solid #000;
 	margin: -13px 0 0;
@@ -1159,7 +1181,7 @@ div#header-search {
 	width: 24px;
 	height: 24px;
 	margin: 3px 5px 5px 0px;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/notifications.png");
+	background-image: url("images/icons/notifications.png");
 	background-repeat: no-repeat;
 	background-position: 100% 0;
 	float: right;
@@ -1229,12 +1251,12 @@ div.pagination-count {
 	}
 nav.pagination .page-numbers {
 	padding: 2px 8px;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/dark-denim.jpg");
+	background-image: url("images/backgrounds/dark-denim.jpg");
 	border: 1px solid #000;
 	box-shadow: 0 0 2px #666 inset;
 	}
 nav.pagination .page-numbers.current {
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/light-denim.jpg");
+	background-image: url("images/backgrounds/light-denim.jpg");
 	}
 	
 	
@@ -1291,7 +1313,7 @@ a#anvil-link {
 	height: 50px;
 	width: 100px;
 	display: block;
-	background: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/footer-anvil.png") 0 100% no-repeat;
+	background: url("images/icons/footer-anvil.png") 0 100% no-repeat;
 	}
 a#anvil-link:hover { background-position: 0 0; }
 
@@ -1384,7 +1406,7 @@ header.entry-header {
 	margin: 0 0 1em 0;
 	position: relative;
 	clear: both;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/headers/post-headers.jpg");
+	background-image: url("images/headers/post-headers.jpg");
 	border: 1px solid #000;
 	border-radius: 3px;
 	box-shadow: 0 0 20px #000;
@@ -1403,7 +1425,7 @@ header.entry-header {
 	height: 75px;
 	margin: 0 0 0.5em 0;
 	box-shadow: 0 0 8px #111;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/headers/home-headers.jpg");
+	background-image: url("images/headers/home-headers.jpg");
 	}
 .archive .post .entry-header:hover {	box-shadow: 0 0 5px #c60; }
 .home-header-1 { background-position: 0 0; }
@@ -1415,13 +1437,13 @@ header.entry-header {
 
 /* Full Width Headers */
 .no-sidebar .entry-header { 
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/headers/page-headers.jpg"); 
+	background-image: url("images/headers/page-headers.jpg"); 
 	}
 .archive .entry-header { 
 	height: 75px;
 	margin: 0 0 0.5em 0;
 	box-shadow: 0 0 8px #111;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/headers/home-headers.jpg");
+	background-image: url("images/headers/home-headers.jpg");
 	}
 .page-header-1 { background-position: 0 0; }
 .page-header-2 { background-position: 0 -100px; }
@@ -1522,7 +1544,7 @@ header.reply-header {
 	height: 24px;
 	position: relative;
 	padding: 0.5em 0%;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/dark-denim.jpg");
+	background-image: url("images/backgrounds/dark-denim.jpg");
 	border: 1px solid #000;
 	border-radius: 3px 3px 0 0;
 	box-shadow: 0 0 2px #444 inset;
@@ -1821,7 +1843,7 @@ div.entry-meta {
 	float: left;
 	margin: -1px 0 0;
 	padding: 1px 10px;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/dark-denim.jpg");
+	background-image: url("images/backgrounds/dark-denim.jpg");
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 2px #444 inset;
@@ -1888,7 +1910,7 @@ li.recent-discussion div.recent-discussion-content{
 	height: 50px;
 	position: relative;
 	margin: 0 0 0 60px;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/denim.jpg");
+	background-image: url("images/backgrounds/denim.jpg");
 	border: 1px solid #000;
 	border-radius: 3px;
 	box-shadow: 0 0 2px #666 inset;
@@ -1896,14 +1918,14 @@ li.recent-discussion div.recent-discussion-content{
 	line-height: 1.5em;
 	}
 li.recent-discussion.even div.recent-discussion-content { 
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/light-denim.jpg");
+	background-image: url("images/backgrounds/light-denim.jpg");
 	margin-right: 0.5em;
 	}
 li.recent-discussion span.recent-discussion-title {
 	display: block;
 	margin: 4px 0 0 -6px;
 	padding: 0 0 0 14px;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/recent-discussion-arrow.png");
+	background-image: url("images/icons/recent-discussion-arrow.png");
 	background-repeat: no-repeat;
 	background-position: 0 3px;
 	text-shadow: 1px 1px #000;
@@ -1946,7 +1968,7 @@ div.social-icons {
 	width: 50px;
 	float: left;
 	margin: 0 0 0 5px;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/social-icons.jpg");
+	background-image: url("images/icons/social-icons.jpg");
 	background-repeat: no-repeat;
 	border: 1px solid #444;
 	border-radius: 8px;
@@ -1985,12 +2007,12 @@ li.whos-online-member {
 	padding: 1px 6px;
 	border: 1px solid #000;
 	border-radius: 5px;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/light-denim.jpg");
+	background-image: url("images/backgrounds/light-denim.jpg");
 	box-shadow: 0 0 2px #666 inset;
 	font-size: 0.75em;
 	}
 li.whos-online-member.even {
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/dark-denim.jpg");
+	background-image: url("images/backgrounds/dark-denim.jpg");
 	}
 	
 /* Featured Guild Box */
@@ -2018,7 +2040,7 @@ div#stat-counter { height: 350px; }
 p.stat-counter-total {
 	padding: 5px 10px;
 	margin: 0;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/dark-denim.jpg");
+	background-image: url("images/backgrounds/dark-denim.jpg");
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 2px #666 inset;
@@ -2030,7 +2052,7 @@ div#stat-counter div.banner-top {
 	margin: 0 0 0.5em -5px;
 	float: left;
 	position: relative;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/counter-top.png");
+	background-image: url("images/backgrounds/counter-top.png");
 	background-repeat: no-repeat;
 	}
 div.banner-top.aldmeri {	background-position: 0 0; }
@@ -2041,7 +2063,7 @@ div.banner-top div.banner-bottom {
 	height: 100px;
 	position: absolute;
 	bottom: -90px;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/counter-bottom.png");
+	background-image: url("images/backgrounds/counter-bottom.png");
 	background-repeat: no-repeat;
 	}
 div.banner-bottom.aldmeri {	background-position: 0 0; }
@@ -2194,7 +2216,7 @@ p.slide-content:before {	display: none; }
 	width: 30px; 
 	height: 30px; 
 	display: block; 
-	background: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/slideshow-nav.png") no-repeat 0 0; 
+	background: url("images/icons/slideshow-nav.png") no-repeat 0 0; 
 	position: absolute; 
 	bottom: 10px;
 	z-index: 10; 
@@ -2235,7 +2257,7 @@ header#archive-header {
 	margin: 0 0 1em 0;
 	padding: 1em 2% 0;
 	position: relative;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/dark-denim.jpg");
+	background-image: url("images/backgrounds/dark-denim.jpg");
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 2px #666 inset;
@@ -2310,7 +2332,7 @@ div#search-results {
 .taxonomy-calendar .entry-header {
 	height: 100px;
 	margin: 0 0 1em 0;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/headers/post-headers.jpg");
+	background-image: url("images/headers/post-headers.jpg");
 	box-shadow: 0 0 20px #000;
 	}
 .taxonomy-calendar .entry-title {
@@ -2420,7 +2442,7 @@ div#error-404 {
 	width: 900px;
 	height: 300px;
 	margin: 2em auto;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/404-banner.jpg");
+	background-image: url("images/backgrounds/404-banner.jpg");
 	border: 1px solid #000;
 	border-radius: 10px;
 	box-shadow: 0 0 20px #000;
@@ -2497,7 +2519,7 @@ header.forum-header {
 	height: 24px;
 	padding: 0.5em 0;
 	overflow: hidden;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/dark-denim.jpg");
+	background-image: url("images/backgrounds/dark-denim.jpg");
 	border: 1px solid #000;
 	border-radius: 3px;
 	box-shadow: 0 0 2px #444 inset;
@@ -2885,7 +2907,7 @@ ul.user-badges li.user-badge {
 	height: 50px;
 	float: left;
 	margin: 0 5px 5px 0;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/badges.jpg");
+	background-image: url("images/icons/badges.jpg");
 	border: 1px solid #111;
 	border-radius: 3px;
 	}
@@ -2925,7 +2947,7 @@ div#character-sheet {
 	width: 300px;
 	height: 169px;
 	margin: 0.5em 0;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/backgrounds/flags.jpg");
+	background-image: url("images/backgrounds/flags.jpg");
 	border: 1px solid #000;
 	border-radius: 5px;
 	box-shadow: 0 0 3px #111 inset;
@@ -3113,7 +3135,7 @@ li.guild-style-icon {
 	width: 24px;
 	float: left;
 	margin: 1px;
-	background-image: url("http://tamrielfoundry.objects.dreamhost.com/images/icons/guild-style-icons.png");
+	background-image: url("images/icons/guild-style-icons.png");
 	}
 li.guild-style-icon.pvp { background-position: 0px 0px; }
 li.guild-style-icon.pve { background-position: -24px 0px; }

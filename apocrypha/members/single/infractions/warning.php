@@ -10,7 +10,7 @@
 global $user;
 $user 		= new Apoc_User( bp_displayed_user_id() , 'profile' );
 $user_id 	= $user->id;
-$level		= $user->warnings['level'];
+$level		= $user->warnings['level'] > 0 ? $user->warnings['level'] : 0;
 $points		= 1;
 
 global $bp;
@@ -18,11 +18,6 @@ $action_url = $bp->displayed_user->domain . 'infractions';
 
 // Process new warnings
 if ( isset( $_POST['issue_warning_nonce'] ) && wp_verify_nonce( $_POST['issue_warning_nonce'] , 'issue-warning' ) ) {
-	
-	// Flush any cached stuff
-	if ( function_exists( 'w3tc_pgcache_flush' ) ) w3tc_pgcache_flush();
-	if ( function_exists( 'w3tc_objectcache_flush' ) ) w3tc_objectcache_flush();
-	if ( function_exists( 'apc_clear_cache' ) ) apc_clear_cache('user');
 	
 	// Validate data
 	$warnings 		= ( $level > 0 ) ? $user->warnings['history'] : array();

@@ -54,11 +54,9 @@ function apoc_enqueue_scripts() {
 
 	// Register Styles
 	wp_register_style( 'primary' 		, THEME_URI . '/style.css' , false , $ver=filemtime( THEME_DIR . "/style.css" ) );
-	wp_register_style( 'google-fonts' 	, 'http://fonts.googleapis.com/css?family=Cinzel|PT+Serif|Open+Sans' , false );
 	wp_register_style( 'font-awesome' 	, 'http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css' , false );
 	
 	// Enqueue Styles
-	wp_enqueue_style( 'google-fonts' );
 	wp_enqueue_style( 'font-awesome' );
 	wp_enqueue_style( 'primary' );
 
@@ -67,16 +65,18 @@ function apoc_enqueue_scripts() {
 	
 	// Register Scripts
 	wp_register_script( 'jquery' 		, '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' ,'jquery' , $ver ='1.10.2' , true );
-	wp_register_script( 'foundry' 		, THEME_URI.'/library/js/foundry.js' 		, 'jquery' , $ver='0.54' 	, true	);
-	wp_register_script( 'flexslider' 	, THEME_URI.'/library/js/flexslider.min.js' , 'jquery' , $ver='0.1' 	, true  );
-	wp_register_script( 'buddypress'	, THEME_URI.'/library/js/buddypress.js' 	, 'jquery' , $ver='0.33' 	, true 	);	
-	wp_register_script( 'colorbox' 		, THEME_URI.'/library/js/colorbox.min.js'	, 'jquery' , $ver='1.0' 	, true	);
+	wp_register_script( 'foundry' 		, THEME_URI.'/library/js/foundry.js' 		, 'jquery' 	, $ver='0.54' 	, true	);
+	wp_register_script( 'flexslider' 	, THEME_URI.'/library/js/flexslider.min.js' , 'jquery' 	, $ver='0.1' 	, true  );
+	wp_register_script( 'buddypress'	, THEME_URI.'/library/js/buddypress.js' 	, 'jquery' 	, $ver='0.34' 	, true 	);	
+	wp_register_script( 'analytics'		, THEME_URI.'/library/js/ga.js' 			, false 	, $ver='0.1' 	, false	);	
+	// wp_register_script( 'colorbox' 		, THEME_URI.'/library/js/colorbox.min.js'	, 'jquery' , $ver='1.0' 	, true	);
 
 	// Enqueue Scripts
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'buddypress' );
 	wp_enqueue_script( 'colorbox' );
 	wp_enqueue_script( 'foundry' );
+	wp_enqueue_script( 'analytics' );
 	
 	// Conditional Scripts
 	if ( is_home() || is_page_template( 'guild/guild-home.php' ) ) 
@@ -85,14 +85,6 @@ function apoc_enqueue_scripts() {
 		wp_register_script( 'contactform'	, THEME_URI.'/library/js/contactform.js' , 'jquery' , $ver='0.1' , true 	);
 		wp_enqueue_script( 'contactform' );
 	}
-}
-
-/* 
- * Display the google analytics tracking code for Tamriel Foundry
- * @version 1.0.0
- */
-function google_analytics_js() {
-	echo '<script type="text/javascript">var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-33555290-2"]);_gaq.push(["_trackPageview"]);(function(){var b=document.createElement("script");b.type="text/javascript";b.async=true;b.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)})();</script>' . "\r\n";
 }
 
 

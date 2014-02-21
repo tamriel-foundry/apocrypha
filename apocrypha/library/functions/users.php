@@ -93,10 +93,10 @@ class Apoc_User {
 			$this->nicename 	= $user->user_nicename;
 			$this->regdate 		= strtotime( $user->user_registered );
 			$this->byline		= $this->byline();
-			$this->first_name	= $meta['first_name'];
-			$this->last_name	= $meta['last_name'];
+			$this->first_name	= isset( $meta['first_name'] ) ? $meta['first_name'] : "";
+			$this->last_name	= isset( $meta['last_name'] ) ? $meta['last_name'] : "";
 			$this->charname		= implode( ' ' , array( $meta['first_name'] , $meta['last_name'] ) );
-			$this->prefrole		= $meta['prefrole'];
+			$this->prefrole		= isset( $meta['prefrole'] ) ? $meta['prefrole'] : NULL;
 			$this->badges		= $this->badges();
 			$this->warnings		= isset( $meta['infraction_history'] ) ? $this->warnings( $meta['infraction_history'] ) : NULL;
 			$this->mod_notes	= isset( $meta['moderator_notes'] ) ? $this->notes( $meta['moderator_notes'] ) : NULL;

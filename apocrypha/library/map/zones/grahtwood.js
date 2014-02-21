@@ -1,0 +1,15 @@
+locations = new Array();
+locations[0]=['Fisherman&#039;s Isle','crafting','At this camp Clothiers, Woodworkers and Smiths may visit to add the &quot;Spectre&#039;s Eye&quot; and &quot;Torug&#039;s Pact&quot; set bonuses to their items.',-60.722,-5.988];
+locations[1]=['Haven Wayshrine','wayshrine','Sitting on the edge of the town of Haven, this Wayshrine overlooks the swampy pools East of town.',-59.618,-8.866];
+locations[2]=['Haven Treasury','bank','The Haven Treasury is the local Haven bank.',-60.442,-9.108];
+locations[3]=['Grahtwood Skyshard 1','skyshard','Grahtwood Skyshard number one.',-59.092,-10.459];
+locations[4]=['Phynaster&#039;s Stride','undaunted','Phynaster&#039;s Stride plays host to the local chapter of the Undaunted.',-59.541,-11.766];
+locations[5]=['Mage&#039;s Guild','magesguild','This grand manor is the home of the Mage&#039;s Guild in Haven.',-58.883,-10.887];
+locations[6]=['The Tower','mundus','The Tower mundus stone sits a top this hill, overlooking Haven. ',-59.351,-13.304];
+locations[7]=['Cave of Broken Sails','cave','This cave hides beneath the mountains Southwest of Haven.',-61.192,-15.677];
+locations[8]=['Gray Mire Wayshrine','wayshrine','This wayshrine, West of Haven, calmly sits between the great trees of Grahtwood.',-59.823,-17.051];
+locations[9]=['Long Coast Dolmen','dolmen','This Dolmen overlooks the Southern part of Grahtwood.',-59.171,-16.447];
+locations[10]=['The Gray Mire','farm','This small Argonian village is coast-bound to the South of Grahtwood.',-61.054,-19.369];
+locations[11]=['Grahtwood Skyshard 2','skyshard','&lt;em&gt;The shrine of the south leads north.&lt;/em&gt; The Skyshard sits between two boulders. Follow the western road from Haven and you cannot miss it.',-59.978,-22.094];
+locations[12]=['Southpoint Wayshrine','wayshrine','The Southpoint Wayshrine stands East of Southpoint.',-60.636,-22.17];
+locations[13]=['Southpoint','tower','This demented town stands on the Southwestern edge of Grahtwood.',-60.888,-24.906];

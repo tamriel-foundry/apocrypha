@@ -8,7 +8,7 @@
  */
  
 // Get info on the logged in user
-$user 		= apocrypha()->user->data;
+$user 		= apocrypha()->user;
 $user_id	= $user->ID;
 
 // Let's do some basic PHP processing, in case JavaScript is disabled
@@ -87,9 +87,9 @@ if ( isset( $_POST['submitted'] ) ) {
 						<?php // If it's a registered user, get their info from the theme
 						if ( $user_id > 0 ) : ?>
 							<li>
-								<blockquote>Hey there, <?php echo $user->display_name; ?>. What can we help you with?</blockquote>
-								<input type="hidden" name="name" id="name" value="<?php echo $user->user_nicename; ?>"/>
-								<input type="hidden" name="email" id="email" value="<?php echo $user->user_email; ?>"/>
+								<blockquote>Hey there, <?php echo $user->data->display_name; ?>. What can we help you with?</blockquote>
+								<input type="hidden" name="name" id="name" value="<?php echo $user->data->user_nicename; ?>"/>
+								<input type="hidden" name="email" id="email" value="<?php echo $user->data->user_email; ?>"/>
 							</li>
 						<?php // Otherwise, give them name and email input fields
 						else : ?>

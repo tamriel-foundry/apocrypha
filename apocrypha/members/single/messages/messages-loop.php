@@ -34,7 +34,7 @@
 			
 			<div class="thread-options checkbox">
 				<input type="checkbox" name="message_ids[]" value="<?php bp_message_thread_id(); ?>" /><label>
-				<a class="button confirm delete-single-message" href="<?php bp_message_thread_delete_link(); ?>" title="<?php _e( "Delete Message", "buddypress" ); ?>"><i class="icon-remove"></i>Delete</a></label>
+				<a class="button delete-single-message" href="<?php bp_message_thread_delete_link(); ?>" title="<?php _e( "Delete Message", "buddypress" ); ?>"><i class="icon-remove"></i>Delete</a></label>
 			</div>
 		</div>	
 	

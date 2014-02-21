@@ -562,4 +562,42 @@ function bestof_has_topics() {
 }
 
 
+/**
+ * Store the bbPress group forum pages in a buffer to put my own headers
+ * @version 1.0.0
+ */
+add_action( 'bbp_before_group_forum_display' , 'apoc_group_forum_ob_start' );
+function apoc_group_forum_ob_start() {
+	ob_start();
+}
+add_action( 'bbp_after_group_forum_display' , 'apoc_group_forum_header' );
+function apoc_group_forum_header() {
+
+	// Get the buffered content
+	$content = ob_get_contents();
+	ob_end_clean();
+	
+	// Print the group forum header 
+	if ( !bbp_is_single_forum() ) :
+	
+		// Get the title prefix
+		$prefix = "";
+		if ( bbp_is_topic_edit() || bbp_is_reply_edit() ) $prefix = "Edit: ";
+		elseif ( bbp_is_topic_merge() ) $prefix = "Merge: ";
+		elseif ( bbp_is_topic_split() ) $prefix = "Split: "; ?>
+		
+		<header id="forum-header" class="entry-header <?php apoc_topic_header_class(); ?>">
+			<h1 class="entry-title"><?php echo $prefix . bbp_get_topic_title(); ?></h1>
+			<?php apoc_topic_description(); ?>
+			<div class="forum-actions">
+				<?php apoc_get_search_form( 'topic' ); ?>
+			</div>
+		</header>
+		<?php endif;
+
+	// Echo the buffered content
+	echo $content;
+}
+
+
 ?>

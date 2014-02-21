@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme Core Shortcodes
  * Andrew Clayton
- * Version 1.0.0
- * 8-13-2013
+ * Version 1.0.1
+ * 2-20-2014
  */
  
 // Exit if accessed directly
@@ -18,7 +18,7 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Provides methods for processing said shortcodes when detected.
  *
  * @author Andrew Clayton
- * @version 1.0.0
+ * @version 1.0.1
  */
 class Apoc_Shortcodes {
 
@@ -78,8 +78,8 @@ class Apoc_Shortcodes {
 		$src		= esc_url( $content );
 		
 		// Check that it's a valid image file
-		$info		= pathinfo( $src );
-		if ( !in_array( $info['extension'] , array( 'jpeg' , 'jpg' , 'png' , 'gif' ) ) )
+		$extension 	= substr( strrchr( $src , "." ) , 1 );
+		if ( !in_array( $extension , array( 'jpeg' , 'jpg' , 'png' , 'gif' ) ) )
 			return false;
 			
 		// Otherwise, extract shortcode attributes

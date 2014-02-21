@@ -7,7 +7,7 @@
  */
  
 // Get the current user info
-$user 		= apocrypha()->user->data;
+$user 		= apocrypha()->user;
 $user_id	= $user->ID;
 $avatar		= new Apoc_Avatar( array ( 'user_id' => $user_id , 'size' => 50 , 'link' => true ) );
 ?>
@@ -48,7 +48,7 @@ $avatar		= new Apoc_Avatar( array ( 'user_id' => $user_id , 'size' => 50 , 'link
 			<div id="activity-status">
 				<?php echo $avatar->avatar; ?>		
 				<blockquote id="profile-status" class="user-status">
-					<p><?php echo '@' . $user->user_nicename . ' &rarr; <span id="latest-status">' . bp_get_activity_latest_update( $user_id ); ?></span></p>
+					<p><?php echo '@' . $user->data->user_nicename . ' &rarr; <span id="latest-status">' . bp_get_activity_latest_update( $user_id ); ?></span></p>
 					<a class="update-status-button button"><i class="icon-pencil"></i>What's New?</a>
 				</blockquote>
 			</div>

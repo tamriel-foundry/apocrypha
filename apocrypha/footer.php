@@ -18,20 +18,20 @@
 		
 		<nav id="footer-navigation">
 			<a class="footer-nav-item" href="<?php echo SITEURL . '/about-us/'; ?>" title="Learn more about Tamriel Foundry">
-				<img id="footer-about" class="footer-nav-image" src="<?php echo THEME_URI; ?>/images/backgrounds/about-us.png" alt="About Tamriel Foundry"/>
+				<img id="footer-about" class="footer-nav-image" src="<?php echo THEME_URI; ?>/images/backgrounds/about-us.png" alt="About Tamriel Foundry" height="180" width="180"/>
 				<h3 class="double-border top">About Us</h3>
 			</a>
 			<a class="footer-nav-item" href="<?php echo SITEURL . '/activity/'; ?>" title="Browse recent Tamriel Foundry activity">
-				<img id="footer-guides" class="footer-nav-image" src="<?php echo THEME_URI; ?>/images/backgrounds/guides.png" alt="Elder Scrolls Online Guides"/>
+				<img id="footer-guides" class="footer-nav-image" src="<?php echo THEME_URI; ?>/images/backgrounds/guides.png" alt="Elder Scrolls Online Guides" height="180" width="180"/>
 				<h3 class="double-border top">Activity</h3>
 			</a>
 			<a class="footer-nav-item" href="<?php echo SITEURL . '/forums/'; ?>" title="Browse the forums">
-				<img id="footer-forums" class="footer-nav-image" src="<?php echo THEME_URI; ?>/images/backgrounds/forums.png" alt="Tamriel Foundry Forums"/>
+				<img id="footer-forums" class="footer-nav-image" src="<?php echo THEME_URI; ?>/images/backgrounds/forums.png" alt="Tamriel Foundry Forums" height="180" width="180"/>
 				<h3 class="double-border top">Forums</h3>
 
 			</a>
 			<a class="footer-nav-item" href="<?php echo SITEURL . '/groups/' ?>" title="Browse groups and guilds">
-				<img id="footer-guilds" class="footer-nav-image" src="<?php echo THEME_URI; ?>/images/backgrounds/guilds.png" alt="Guilds and Groups Directory"/>
+				<img id="footer-guilds" class="footer-nav-image" src="<?php echo THEME_URI; ?>/images/backgrounds/guilds.png" alt="Guilds and Groups Directory" height="180" width="180"/>
 				<h3 class="double-border top">Guilds</h3>
 			</a>
 		</nav><!-- #footer-navigation -->

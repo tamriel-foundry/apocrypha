@@ -1,11 +1,11 @@
 div#map-container {
 	width: 900px;
 	float: left;
-	margin: 50px 0;
 	}
 div#map-canvas {
 	width: 900px; 
 	height: 750px; 
+	margin: 20px 0;
 	max-width: none;
 	border: 2px solid #000;
 	border-radius: 3px;
@@ -16,13 +16,23 @@ div#map-canvas img { max-width: inherit; }
 div#map-sidebar {
 	width: 280px;
 	float: right;
-	margin: 50px 0;
+	margin: 20px 0;
+	}
+	
+	
+/* Markers */
+div.marker-window {
+	color: #000;
+	}
+h3.marker-title {
+	font-family: 'Palatino Linotype', 'Book Antiqua' , serif;
+	text-shadow: none;
+	font-weight: bold;
 	}
 	
 /* Form */
 form#map-controls {
-	width: 95%;
-	margin: 1em 2.5%;
+	margin: 0;
 	}
 ol#controls-list {
 	margin: 0;
@@ -66,3 +76,12 @@ h3.marker-title {
 p.marker-content { 
 	margin: 0.5em 0; 
 	}
+
+	
+@media only screen and (max-width: 1199px) {
+div#map-sidebar { 
+	width: 100%;
+	float: none;
+	margin: 0 0 20px;
+	}	
+}

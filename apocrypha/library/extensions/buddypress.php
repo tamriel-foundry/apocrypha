@@ -353,8 +353,9 @@ class Apoc_BuddyPress {
 		
 		// Otherwise check to see if they are on the whitelist
 		global $bp;
-		if( apocrypha()->user->user_nicename == 'juangalt' )
-			$can_create = true;
+		$user = apocrypha()->user;
+		if ( $user->ID > 0 )
+			$can_create = ( $user->data->user_nicename == 'juangalt' ) ? true : $can_create;
 		return $can_create;
 	}
 
@@ -768,13 +769,13 @@ class Apoc_Group {
 		$this->guild		= ( $allmeta['is_guild'] == 1 ) ? 1 : 0;
 		$this->type			= $this->type();
 		$this->members		= bp_get_group_member_count();
-		$this->alliance		= $allmeta['group_faction'];
+		$this->alliance		= isset( $allmeta['group_faction'] )	? $allmeta['group_faction'] : NULL;
 		$this->faction		= $this->allegiance();
-		$this->platform		= $allmeta['group_platform'];
-		$this->region		= $allmeta['group_region'];
-		$this->style		= $allmeta['group_style'];
-		$this->interests	= unserialize( $allmeta['group_interests'] );
-		$this->website		= isset( $allmeta['group_website'] ) ? $allmeta['group_website'] : NULL;
+		$this->platform		= isset( $allmeta['group_platform'] )	? $allmeta['group_platform'] : NULL;
+		$this->region		= isset( $allmeta['group_region'] )		? $allmeta['group_region'] : NULL;
+		$this->style		= isset( $allmeta['group_style'] )		? $allmeta['group_style'] : NULL;
+		$this->interests	= isset( $allmeta['group_interests'] )	? unserialize( $allmeta['group_interests'] ) : NULL;
+		$this->website		= isset( $allmeta['group_website'] )	? $allmeta['group_website'] : NULL;
 		
 		// Get some extra stuff on user profiles
 		if ( $this->context == 'profile' ) {

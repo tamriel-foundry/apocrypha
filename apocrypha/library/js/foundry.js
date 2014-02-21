@@ -1,7 +1,7 @@
 /*! --------------------------------------- 
 0.0 - DEFINE CONSTANTS
 ----------------------------------------- */
-var	siteurl		= (window.location.host === 'localhost') ? 'http://localhost/tamrielfoundry/' : 'http://tamrielfoundry.com/';
+var	siteurl		= (window.location.host === 'localhost') ? 'http://localhost/tamrielfoundry/' : 'http://216.178.226.249/';
 var themeurl	= siteurl	+ 'wp-content/themes/apocrypha/';
 var ajaxurl 	= siteurl	+ 'wp-admin/admin-ajax.php';
 var apoc_ajax 	= themeurl	+ "library/ajax.php";
@@ -489,7 +489,10 @@ $("#forums").on("click","a.bbp-reply-trash-link",function( event ){
 ----------------------------------------- */
 
 /*! Clear Infraction */
-$("a.clear-infraction").click( function() {
+$("a.clear-infraction").click( function(event) {
+
+	// Prevent default
+	event.preventDefault();
 		
 	// Get some info about what we are doing
 	var button	= $(this);
@@ -511,18 +514,18 @@ $("a.clear-infraction").click( function() {
 			}
 		}
 	);
-		
-	// Prevent the default pageload
-	return false;
 });
 
 /*! Clear Mod Notes */
-$("a.clear-mod-note").click( function() {
+$("a.clear-mod-note").click( function(event) {
+
+	// Prevent default
+	event.preventDefault();
 		
 	// Get some info about what we are doing
 	var button	= $(this);
-	var nonce	= get_var_in_url( button.attr('href') , '_wpnonce' );
-	var id 		= get_var_in_url( button.attr('href') , 'id' );
+	var nonce	= get_url_var( button.attr('href') , '_wpnonce' );
+	var id 		= get_url_var( button.attr('href') , 'id' );
 	
 	// Disable the button
 	button.html('<i class="icon-spinner icon-spin"></i>Deleting').attr("disabled","disabled");
@@ -539,9 +542,6 @@ $("a.clear-mod-note").click( function() {
 			}
 		}
 	);
-		
-	// Prevent the default pageload
-	return false;
 });
 
 

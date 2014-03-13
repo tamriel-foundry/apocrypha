@@ -2,25 +2,25 @@
 /**
  * Apocrypha Theme Single Event Template
  * Andrew Clayton
- * Version 1.0
- * 7-25-2013
+ * Version 1.0.1
+ * 2-20-2014
  */
  
-/* Who is it? */
-$user_id 	= get_current_user_id();
+// Get some information about the current user and the event
+$apoc		= apocrypha();
+$user		= $apoc->user;
+$user_id 	= $user->ID;
+$post		= $apoc->queried_object;
+$post_id 	= $post->ID;
 
-/* Get some information about the event */
-global $post;
-$post_id = $post->ID;
+// Get the calendars flagged for this event
+$calendars 	= wp_get_post_terms( $post_id , 'calendar' );
 
-/* Get some information on the calendars for which this event is posted */
-$calendars = wp_get_post_terms( $post_id , 'calendar' );
-
-/* Find the first calendar to which the user has access */
+// Does the user have access to any calendar?
 $can_view = false;
 foreach ( $calendars as $calendar ) {
 	
-	/* Is it a group calendar? */
+	// Is it a group calendar?
 	$term_id 	= $calendar->term_id;
 	$slug		= $calendar->slug;
 	if ( is_group_calendar( $term_id ) ) :
@@ -30,7 +30,7 @@ foreach ( $calendars as $calendar ) {
 		$can_view = true;
 	endif;
 	
-	/* If we find a calendar where the user is authorized, stop */
+	// If we find a calendar for which the user is authorized, go ahead and display it
 	if( true == $can_view ) :
 		global $allowed_calendar;
 		$header 	= ( 'entropy-rising' == $slug ) ? 'entropy_rising_header' 	: 'get_header';
@@ -40,19 +40,15 @@ foreach ( $calendars as $calendar ) {
 	endif;
 }
 
-/* If the user is not authorized to view any of the calendars, redirect them */
+// If the user is not authorized to view any calendar, redirect them
 if ( !$can_view ) :
 	$default_slug = $calendars[0]->slug;
-	if ( 'entropy-rising' == $slug ) $redirect	= SITEURL . '/entropy-rising/';
-	else 	$redirect	= SITEURL . '/groups/' . trailingslashit( $slug );
-
+	$redirect = ( 'entropy-rising' == $slug ) ? SITEURL . '/entropy-rising/' : SITEURL . '/groups/' . trailingslashit( $slug );
 	bp_core_add_message( 'You cannot access events on this calendar.' , 'error' );
 	bp_core_redirect( $redirect );	
 endif;
 
-
-
-/* OK, now we're in the clear to display the event */
+// Get event information
 $action_url = get_permalink();
 $title 		= $post->post_title;
 $content 	= $post->post_content;
@@ -62,28 +58,14 @@ $cap_label	= ( 9999 == $capacity ) ? '&infin;' : $capacity;
 $req_rsvp	= get_post_meta( $post_id , 'event_require_rsvp' , true );
 $req_role	= get_post_meta( $post_id , 'event_require_role' , true );
 $url		= get_post_permalink();
-
-/* Get the RSVPS and sort them alphabetically */
 $rsvps		= get_post_meta( $post_id , 'event_rsvps' , true );
-if( !empty( $rsvps ) ) :
-	$names = array();
-	foreach ($rsvps as $uid => $info) {
-		$name = bp_core_get_user_displayname( $uid );
-		$link = bp_core_get_userlink( $uid );
-		$rsvps[$uid]['name'] = $name;
-		$rsvps[$uid]['link'] = $link;
-		$names[$uid] = strtolower( $name );
-	}
-	array_multisort($names, SORT_STRING, $rsvps);
-else : $rsvps = array();
-endif;
 
-/* Lastly check if the RSVP was submitted, and verify the nonce */
+// Check if the form was submitted and update the responses
 if ( isset ( $_POST['submit'] ) && wp_verify_nonce( $_POST['event_rsvp_nonce'] , 'event-rsvp' ) ) :
 	
 	$new_rsvp = array();
 	
-	/* Clean each field individually */
+	// Clean each field individually
 	if( !isset ( $_POST['attendance'] ) )
 		$error = 'You must select your expected attendance!';
 	else
@@ -98,36 +80,56 @@ if ( isset ( $_POST['submit'] ) && wp_verify_nonce( $_POST['event_rsvp_nonce'] ,
 		$new_rsvp['comment'] = sanitize_text_field( $_POST['rsvp-comment'] );
 		
 		
-	/* If there are no errors, we can save the stuff */
+	// If there are no errors, we can save the stuff
 	if ( !$error ) :
 		
-		/* Update the postmeta */
+		// Update the postmeta
 		$rsvps[$user_id] = $new_rsvp;
 		update_post_meta( $post_id, 'event_rsvps' , $rsvps );
-		
-		
-		/* Flush the post cache */
-		if ( function_exists( 'w3tc_pgcache_flush_post' ) ) w3tc_pgcache_flush_post( $post_id );
-		
-		/* Say Thanks */
 		bp_core_add_message( 'Thank you for responding!' );
 
-		/* Clear notifications on each group calendar */
+		// Clear notifications on each group calendar
 		foreach ( $calendars as $calendar ) {
 			if ( is_group_calendar( $calendar->term_id ) ) :
 				global $bp;
 				$group_id	= groups_get_id( $calendar->slug );
-				bp_core_delete_notifications_by_item_id( $user_id , $group_id , $bp->groups->id , 'new_calendar_event' , $post_id );
+				
+				// Clear notifications
+				bp_notifications_delete_notifications_by_item_id( $user_id , $group_id , $bp->groups->id , 'new_calendar_event' , $post_id );
 			endif;
 		}
 	
-	/* Otherwise, throw the error message */
+	// Otherwise, throw the error message
 	else :
 		bp_core_add_message( $error	, 'error' );
 	endif;
 endif;
 
-/* Count Attendance */
+// Sort responses alphabetically by name
+if( !empty( $rsvps ) ) :
+	$names = array();
+	
+	// Get user information
+	foreach ($rsvps as $uid => $info) {
+		$name = bp_core_get_user_displayname( $uid );
+		$link = bp_core_get_userlink( $uid );
+		$rsvps[$uid]['id']		= $uid;
+		$rsvps[$uid]['name'] 	= $name;
+		$rsvps[$uid]['link'] 	= $link;
+		$names[$uid] 			= strtolower( $name );
+	}
+	
+	// Sort the array alphabetically
+	array_multisort($names, SORT_STRING, $rsvps);
+	
+	// Restore the user_id keys
+	$temp = array();
+	for ( $i = 0; $i < count( $rsvps ); $i++ )
+		$temp[$rsvps[$i]['id']] = $rsvps[$i];	
+	$rsvps = $temp;
+endif;
+
+// Count Attendance
 $confirmed 	= 0;
 $maybe 		= 0;
 $declined 	= 0;
@@ -140,7 +142,7 @@ foreach ( $rsvps as $response ) {
 		$declined++;
 }
 
-/* User Response */
+// User Response
 if ( isset( $rsvps[$user_ID] ) ) :
 	switch ( $rsvps[$user_id]['rsvp'] ) {
 		case "yes" :
@@ -157,16 +159,14 @@ else :
 	$rsvp = "RSVP";
 endif;
 
-/* Date */
+// Date and Time
 $event_date	= get_post_meta( $post_id , 'event_date' , true );
 $fulldate	= date('l F j, Y', strtotime( $event_date ) );
-
-/* Time */
 $start		= get_post_meta( $post_id , 'event_start' , true );
 $end		= get_post_meta( $post_id , 'event_end' , true );
 $fulltime 	= date('g:i', strtotime( $start ) ) . ' - ' . date('g:ia' , strtotime( $end ) ) . ' EST';
 
-/* Is the Event Over? */
+// Is the Event Over?
 $end_time	= strtotime( $end ) > strtotime( $start ) ? strtotime( $end ) : strtotime ( $end . ' tomorrow' );
 $is_past	= ( $end_time < strtotime( '-5 hours' ) ) ? true : false;
 

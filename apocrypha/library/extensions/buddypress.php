@@ -422,9 +422,9 @@ class Apoc_Notifications extends BP_Core_Notification {
 				$notification 	= $bp->notifications->query_loop->notification;
 				
 				// Consolidate some actions
+				if ( $notification->component_name == "forums" ) $notification->component_name = "activity";
+				if ( $notification->component_name == "events" ) $notification->component_name = "groups";
 				$type = $notification->component_name;
-				if ( $type == "forums" ) $type = "activity";
-				if ( $type == "events" ) $type = "groups";
 				
 				// Populate some description for non activities
 				$notification->desc = ( $type != 'activity' ) ? bp_get_the_notification_description() : "";

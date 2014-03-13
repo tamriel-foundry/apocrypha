@@ -52,6 +52,9 @@ function apocrypha_theme_setup() {
 add_action( 'wp_enqueue_scripts' , 'apoc_enqueue_scripts' );
 function apoc_enqueue_scripts() {
 
+	// Deregister Styles
+	add_filter( 'use_default_gallery_style' , '__return_false' );
+	
 	// Register Styles
 	wp_register_style( 'primary' 		, THEME_URI . '/style.css' , false , $ver=filemtime( THEME_DIR . "/style.css" ) );
 	wp_register_style( 'font-awesome' 	, 'http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css' , false );
@@ -65,9 +68,9 @@ function apoc_enqueue_scripts() {
 	
 	// Register Scripts
 	wp_register_script( 'jquery' 		, '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js' ,'jquery' , $ver ='1.10.2' , true );
-	wp_register_script( 'foundry' 		, THEME_URI.'/library/js/foundry.js' 		, 'jquery' 	, $ver='0.54' 	, true	);
+	wp_register_script( 'foundry' 		, THEME_URI.'/library/js/foundry.js' 		, 'jquery' 	, $ver='0.58' 	, true	);
 	wp_register_script( 'flexslider' 	, THEME_URI.'/library/js/flexslider.min.js' , 'jquery' 	, $ver='0.1' 	, true  );
-	wp_register_script( 'buddypress'	, THEME_URI.'/library/js/buddypress.js' 	, 'jquery' 	, $ver='0.34' 	, true 	);	
+	wp_register_script( 'buddypress'	, THEME_URI.'/library/js/buddypress.js' 	, 'jquery' 	, $ver='0.36' 	, true 	);	
 	wp_register_script( 'analytics'		, THEME_URI.'/library/js/ga.js' 			, false 	, $ver='0.1' 	, false	);	
 	// wp_register_script( 'colorbox' 		, THEME_URI.'/library/js/colorbox.min.js'	, 'jquery' , $ver='1.0' 	, true	);
 

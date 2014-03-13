@@ -33,9 +33,8 @@ class Apoc_Events {
 		add_action( 'init'							, array( $this , 'register_events' 			) );
 		add_action( 'init'							, array( $this , 'register_calendar' 		) );
 		
-		// Add universal filters
-		add_filter( 'bp_notifications_get_registered_components' 	, array( $this , 'register_notification' ) 	, 9 , 1 );
-		add_filter( 'bp_notifications_get_notifications_for_user' 	, array( $this , 'format_notification' ) 	, 9 , 5 );
+		// Add notification formatting (UNFORTUNATELY, CORE HACKED FOR NOW )
+		// add_action( 'groups_format_notifications'	, array( $this , 'format_notification' ) 	, 9 , 4 );
 
 		// Admin-only methods
 		if ( is_admin() ) {
@@ -395,14 +394,14 @@ class Apoc_Events {
 				if ( bp_group_has_members( $args = array( 'group_id' => $group_id, 'exclude_admins_mods' => false , 'per_page' => 99999 ) ) ) :	while ( bp_members() ) : bp_the_member();
 						
 					// Remove any existing notifications ( $user_id, $item_id, $component_name, $component_action, $secondary_item_id = false )
-					bp_notifications_delete_notifications_by_item_id( bp_get_group_member_id() , $group_id , 'events' , 'new_calendar_event' , $post_id );
+					bp_notifications_delete_notifications_by_item_id( bp_get_group_member_id() , $group_id , $bp->groups->id , 'new_calendar_event' , $post_id );
 			
 					// Send a notification ( itemid , groupid , component, action , secondary )
 					bp_notifications_add_notification( array(
 						'user_id'			=> bp_get_group_member_id(),
 						'item_id'			=> $group_id,
 						'secondary_item_id'	=> $post_id,
-						'component_name'	=> 'events',
+						'component_name'	=> $bp->groups->id,
 						'component_action'	=> 'new_calendar_event'					
 					));						
 				endwhile; endif;
@@ -411,19 +410,26 @@ class Apoc_Events {
 	}
 	
 	/**
-	 * Register "events" as a valid notification type
-	 * @since 1.0.0
-	 */	
-	function register_notification( $names ) {
-		$names[] = 'events';
-		return $names;
-	}
-	
-	/**
 	 * Format the text for calendar event notifications
 	 * @since 1.0.0
-	 */		
+
 	function format_notification( $action, $item_id, $secondary_item_id, $total_items , $format = 'string' ) {
+	
+	
+		// CORE HACK
+		case 'new_calendar_event' :
+			if ( 'string' == $format ) {
+				$group_id 		= $item_id;
+				$group 			= groups_get_group( array( 'group_id' => $group_id ) );
+				$event			= get_the_title( $secondary_item_id );
+				$link 			= SITEURL . '/calendar/' . $group->slug;
+				$text 			= $event .  ' added to the ' . $group->name . ' calendar.';
+				$description	= '<a href="'.$link.'" title="View Event">' . $text . '</a>';
+				return $description;
+			}
+		break;
+	
+		return 'test';
 		if ( 'new_calendar_event' == $action ) {
 			$event			= get_the_title( $secondary_item_id );
 			$group 			= groups_get_group( array( 'group_id' => $item_id ) );
@@ -433,7 +439,7 @@ class Apoc_Events {
 			return $description;
 		}
 		return $action;
-	}
+	}	 */		
 		
 	/**
 	 * Add group association to calendar taxonomies.

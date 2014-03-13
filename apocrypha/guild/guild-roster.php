@@ -26,7 +26,7 @@
 			</header><!-- #subnav -->
 		
 		
-			<?php if ( bp_group_has_members( $args = array( 'group_id' => 1, 'exclude_admins_mods' => false ) ) ) : ?>		
+			<?php if ( bp_group_has_members( $args = array( 'group_id' => 1, 'exclude_admins_mods' => false, 'per_page' => 100 , 'max' => false ) ) ) : ?>		
 			<ul id="members-list" class="directory-list" role="main">
 				<?php while ( bp_members() ) : bp_the_member(); 
 				$user = new Apoc_User( bp_get_member_user_id() , 'directory' );	?>

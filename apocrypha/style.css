@@ -718,6 +718,31 @@ a img:hover  {
 	border-color: #000;
 	}
 	
+/* Galleries */
+.gallery {
+	clear: both;
+	overflow: hidden;
+	margin: 0 auto 1em;
+}
+.gallery .gallery-item {
+	float: left;
+	margin: 0.5em 0 0;
+	text-align: center;
+}
+.gallery-caption {
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 0.75em;
+	text-align: center;
+	font-style: italic;
+	color: #AAA;
+}
+.gallery-columns-0 .gallery-item { width: 100%; }
+.gallery-columns-1 .gallery-item { width: 100%; }
+.gallery-columns-2 .gallery-item { width: 50%; }
+.gallery-columns-3 .gallery-item { width: 33.33%; }
+.gallery-columns-4 .gallery-item { width: 25%; }
+.gallery-columns-5 .gallery-item { width: 20%; }
+
 /* Captions */
 .wp-caption img {
 	display: block;
@@ -748,6 +773,17 @@ img.avatar {
 	border-radius: 5px;
 	box-shadow: 0 0 2px #666 inset;
 	}
+a.member-avatar.supporter > img {
+	border: 2px ridge #000;
+	padding: 0px;
+	box-shadow: 0 0 8px #444;
+	}
+a.member-avatar.supporter.aldmeri > img,
+div#profile-user a.member-avatar.supporter.aldmeri > img { box-shadow: 0 0 8px #C90; }
+a.member-avatar.supporter.daggerfall > img,
+div#profile-user a.member-avatar.supporter.daggerfall > img { box-shadow: 0 0 8px #33C; }
+a.member-avatar.supporter.ebonheart > img,
+div#profile-user a.member-avatar.supporter.ebonheart > img { box-shadow: 0 0 8px #900; }
 	
 /* Smileys */
 img.wp-smiley {
@@ -813,6 +849,7 @@ div.success > p {
 	
 /* Warnings */
 div.warning:before {	content: "\F071"; }
+div.warning a { color: #DDD; }
 
 /* Updates */
 div.updated {
@@ -1873,7 +1910,7 @@ header.widget-header {
 h3.widget-title {
 	width: 60%;
 	margin: -17px auto 0;
-	padding: 3px 1em;
+	padding: 2px 1em;
 	color: #BBB;
 	font-size: 1em;
 	text-align: center;
@@ -1952,7 +1989,9 @@ div.welcome-text {
 	border-radius: 3px;
 	box-shadow: 0 0 2px #666 inset;
 	color: #bbb;
-	font-size: 0.875em;
+	font-family: 'Open Sans' sans-serif;
+	font-size: 0.75em;
+	line-height: 1.5em;
 	font-style: italic;
 	text-align: center;
 	}
@@ -1985,16 +2024,6 @@ div.social-icons {
 .social-icons a.twitter:hover { background-position: -150px 0 }
 
 /* Who's Online Widgets */
-div#whos-online-block {
-	overflow: hidden;
-	padding-bottom: 0.5em;
-	border-bottom: 1px solid #000;
-	}
-div#newest-members-block {
-	overflow: hidden;
-	padding-top: 0.5em;
-	border-top: 1px solid #333;
-	}
 p.whos-online-total {
 	margin: 0;
 	clear: both;
@@ -2015,18 +2044,33 @@ li.whos-online-member.even {
 	background-image: url("images/backgrounds/dark-denim.jpg");
 	}
 	
+/* Paypal Donation Widget */
+div.paypal-donate-widget > p {
+	margin: 0;
+	clear: both;
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 0.75em;
+	line-height: 1.5em;
+	}
+div.paypal-donate-widget > form { margin: 0; }
+input#donate-image {
+	width: 200px;
+	display: block;
+	margin: 0 auto;
+	}
+	
 /* Featured Guild Box */
-div#featured-guild { margin: 0.5em 0.5em 0 }
+div#featured-guild { margin: 0 0.5em; }
 a#featured-guild-avatar img.avatar{ margin: 0; }
 div#featured-guild-meta {
 	height: 100px;
 	margin: 0 0 0 100px;
 	text-align: center;
 	}
-h4#featured-guild-name {
-	text-transform: none;
-	padding: 0.5em 0;
-	margin: 0;
+div#featured-guild-meta a.member-name {
+	margin: 3px 0;
+	font-size: 0.875em;
+	line-height: 1.25em;
 	}
 div#featured-guild-meta > p {
 	margin: 0;
@@ -2035,10 +2079,34 @@ div#featured-guild-meta > p {
 	line-height: 1.5em;
 	}
 	
+/* Featured Stream Widget */
+div#featured-stream {
+	width: 90%;
+	background: rgba( 17,17,17,0.75);
+	padding: 5px 5%;
+	border: 1px solid #000;
+	border-radius: 3px;
+	box-shadow: 0 0 2px #444 inset;
+	}
+div#featured-stream > a.offline { color: #BBB; }
+div#featured-stream > a.online { 
+	color: #090;
+	text-shadow: 0 0 10px #060;
+	}
+div#featured-stream > span.twitch-stream-count {
+	display: block;
+	float: right;
+	padding: 3px 5px;
+	
+	}
+	
 /* Foundry Stats Counter */
-div#stat-counter { height: 350px; }
+div#stat-counter { 
+	height: 350px; 
+	margin-top: 0.5em;
+	}
 p.stat-counter-total {
-	padding: 5px 10px;
+	padding: 2px 10px;
 	margin: 0;
 	background-image: url("images/backgrounds/dark-denim.jpg");
 	border: 1px solid #000;
@@ -2755,8 +2823,7 @@ div#profile-sidebar {
 div#profile-user a.member-avatar img {
 	background: #111;
 	padding: 0;
-	border: 1px solid #000;
-	box-shadow: 0 0 20px #000;
+	box-shadow: 0 0 8px #000;
 	}
 div#profile-user a.member-name {
 	font-size: 1.5em;
@@ -2907,7 +2974,7 @@ ul.user-badges li.user-badge {
 	height: 50px;
 	float: left;
 	margin: 0 5px 5px 0;
-	background-image: url("images/icons/badges.jpg");
+	background-image: url("images/icons/badges.jpg?v=0.1");
 	border: 1px solid #111;
 	border-radius: 3px;
 	}
@@ -2928,6 +2995,8 @@ li.user-badge.grouped 			{ background-position: -150px -100px; }
 li.user-badge.aldmeri 			{ background-position: 0 -150px; }
 li.user-badge.daggerfall 		{ background-position: -50px -150px; }
 li.user-badge.ebonheart 			{ background-position: -100px -150px; }
+
+li.user-badge.supporter 			{ background-position: -150px -150px; }
 
 
 /* Character Biography */

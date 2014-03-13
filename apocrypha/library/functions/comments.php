@@ -45,7 +45,7 @@ function apoc_comments_args() {
 	$args = array(
 		'style'        		=> 'ol',
 		'type'        		=> 'all',
-		'per_page'			=> 10,
+		'per_page'			=> get_option('comments_per_page'),
 		'reverse_top_level'	=> false,
 		'avatar_size'  		=> 100,
 		'callback'     		=> 'apoc_comments_template',

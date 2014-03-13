@@ -19,6 +19,8 @@
 		</div>
 	</div>
 	<?php community_online_widget(); ?>
+	<?php twitch_streams_widget(); ?>
+	<?php paypal_donate_box(); ?>
 	<?php featured_guild_box(); ?>
 	<?php community_stat_counter(); ?>
 </div><!-- #primary-sidebar -->

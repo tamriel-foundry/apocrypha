@@ -14,9 +14,9 @@
 		
 		<div id="map-sidebar">
 			<form method="post" id="map-controls">
-				<h2>Select Zone</h2>
 				<ol id="controls-list">
 					<li class="select">
+						<h2>Select Zone</h2>
 						<select name="zone" id="zone-select" class="ebonheart" onchange="get_markers()">
 							<option value=""></option>
 							<optgroup label="Aldmeri Dominion">
@@ -50,8 +50,19 @@
 							</optgroup>
 						</select>
 					</li>
+					
+					<li class="checkbox">
+						<h2>Filter Markers</h2>
+						<ul id="marker-filters" class="radio-options-list">
+							<li><input type="checkbox" name="filters" value="locales" checked="checked" onclick="get_markers()"/><label for="playstyle">Locales</label></li>
+							<li><input type="checkbox" name="filters" value="skyshard" checked="checked" onclick="get_markers()"/><label for="playstyle">Skyshards</label></li>
+							<li><input type="checkbox" name="filters" value="lorebook" checked="checked" onclick="get_markers()"/><label for="playstyle">Lorebooks</label></li>
+							<li><input type="checkbox" name="filters" value="boss" checked="checked" onclick="get_markers()"/><label for="playstyle">Bosses</label></li>
+							<li><input type="checkbox" name="filters" value="treasure" checked="checked" onclick="get_markers()"/><label for="playstyle">Treasure</label></li>
+						</ul>
+					</li>
+				</ol>
 			</form>
-			&nbsp;
 			<h2>About the Map</h2>
 			<p>Welcome to the Tamriel Foundry interactive map. This map allows you to interact with the entire continent of Tamriel to view important locations and share coordinates with your friends.</p>
 			<p>For now, most map marker layers are disabled in order to avoid extensive spoilers. We'll be rolling out additional layers of the map in stages in order to avoid ruining the hard work of the ZeniMax Online developers. Be sure to check back periodically for these additions as well as a number of planned improvements to the map itself!</p>

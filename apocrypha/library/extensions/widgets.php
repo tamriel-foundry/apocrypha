@@ -178,7 +178,6 @@ function community_online_widget() {
 
 	// Set up some parameters 
 	$online_number = 10;
-	$newest_number = 3; 
 	
 	// Display the widget  ?>
 	<div class="community-online-widget widget">
@@ -188,53 +187,28 @@ function community_online_widget() {
 		bp_has_members( 'type=online&per_page='.$online_number.'&user_id=0' );
 		global $members_template;
 		$online_total = $members_template->total_member_count; 
-		
-		// Display online members  ?>
-		<div id="whos-online-block">
-		<?php if ( $online_total == 0 ) : ?>
-			<p class="whos-online-total">There are no members currently online.</p>
-		<?php elseif ( $online_total == 1 ) : ?>
-			<p class="whos-online-total">There is currently <span class="activity-count"><?php echo $online_total; ?></span> member online:</p>
-		<?php else : ?>
-			<p class="whos-online-total">There are currently <span class="activity-count"><?php echo $online_total; ?></span> members online:</p>
-		<?php endif; ?>
-		
+	
+		// Display online members
+		if ( $online_total > 0 ) :
+			if ( $online_total == 1 ) : ?>
+				<p class="whos-online-total">There is currently <span class="activity-count"><?php echo $online_total; ?></span> member online:</p>
+			<?php else : ?>
+				<p class="whos-online-total">There are currently <span class="activity-count"><?php echo $online_total; ?></span> members online:</p>
+			<?php endif; ?>
+			
 			<ul class="whos-online-list">
 			<?php $count = 1;
 			while ( bp_members() ) : bp_the_member(); 
-			
-				// Count evens and odds 
 				$class = ( $count % 2 ) ? 'odd' : 'even';?>
 				<li class="whos-online-member <?php echo $class; ?>">
 					<a href="<?php echo bp_get_member_permalink(); ?>" title="<?php echo bp_get_member_name(); ?>"><?php echo bp_get_member_name(); ?></a>
 				</li>
 				<?php $count++;
 			endwhile; ?>
-			</ul>
-		</div>
-		
-		<?php // Loop new members 
-		bp_has_members( 'type=newest&max='.$newest_number.'&per_page='.$newest_number.'&user_id=0' );
-		global $members_template;
-		
-		
-		// Display newest members  ?>
-		<div id="newest-members-block">
-			<p class="whos-online-total newest">Please help welcome our newest members:</p>		
-			<ul class="whos-online-list">
-			<?php $count = 1;
-			while ( bp_members() ) : bp_the_member(); 
-			
-				// Count evens and odds 
-				$class = ( $count % 2 ) ? 'even' : 'odd';?>
-				<li class="whos-online-member <?php echo $class; ?>">
-					<a href="<?php echo bp_get_member_permalink(); ?>" title="<?php echo bp_get_member_name(); ?>"><?php echo bp_get_member_name(); ?></a>
-				</li>
-				<?php $count++;
-			endwhile; ?>
-			</ul>
-		</div>
-		
+			</ul>	
+		<?php else : ?>
+			<p class="whos-online-total">There are no members currently online.</p>
+		<?php endif; ?>
 	</div><!-- .community-online-widget --><?php
 }
 
@@ -244,38 +218,47 @@ function community_online_widget() {
  */
 function community_stat_counter() {
 	
-	// Get Faction Counts 
-	$o = bp_core_get_total_member_count();
-	$a = max( count_users_by_meta( 'faction' , 'aldmeri' ) 		, 1 );
-	$d = max( count_users_by_meta( 'faction' , 'daggerfall' ) 	, 1 );
-	$e = max( count_users_by_meta( 'faction' , 'ebonheart' ) 	, 1 );
-	$t = $a + $d + $e;
+	// Try to retrieve counts from cache
+	$counts = wp_cache_get( 'stat_counts' , 'apoc' );
+	if ( false === $counts ) {
+		
+		// Get Faction Counts 
+		$counts = new stdClass();
+		$counts->total		= bp_core_get_total_member_count();
+		$counts->aldmeri	= max( count_users_by_meta( 'faction' , 'aldmeri' ) 	, 1 );
+		$counts->daggerfall = max( count_users_by_meta( 'faction' , 'daggerfall' ) 	, 1 );
+		$counts->ebonheart	= max( count_users_by_meta( 'faction' , 'ebonheart' ) 	, 1 );
+		$counts->declared	= $counts->aldmeri + $counts->daggerfall + $counts->ebonheart;
+		// Cache them
+		wp_cache_add( 'stat_counts' , $counts , 'apoc' , 600 );
+	}
 	
 	// Compute Banner Heights - normalize max to 250px 
-	$largest = max( $a , $d , $e );
-	$aheight = round( ( $a / $largest ) * 200 ) + 50;
-	$dheight = round( ( $d / $largest ) * 200 ) + 50;
-	$eheight = round( ( $e / $largest ) * 200 ) + 50;
+	$largest = max( $counts->aldmeri , $counts->daggerfall , $counts->ebonheart );
+	$aheight = round( ( $counts->aldmeri / $largest ) * 200 ) + 50;
+	$dheight = round( ( $counts->daggerfall / $largest ) * 200 ) + 50;
+	$eheight = round( ( $counts->ebonheart / $largest ) * 200 ) + 50;
 	
+	// Get the group URL stub
 	$groups = SITEURL . '/groups/';
 	?>
 	
 	<div id="stat-counter" class="widget stat-counter">
 		<header class="widget-header"><h3 class="widget-title">Foundry Stats</h3></header>
-		<p class="stat-counter-total">Total Champions: <?php echo number_format( $o , 0 , '' , ',' ); ?></p>
+		<p class="stat-counter-total">Total Champions: <?php echo number_format( $counts->total , 0 , '' , ',' ); ?></p>
 		<div class="banner-top aldmeri" style="height:<?php echo $aheight; ?>px">
 			<div class="banner-bottom aldmeri">
-				<a class="banner-count" href="<?php echo $groups; ?>aldmeri-dominion" title="Aldmeri Dominion - <?php echo round( $a * 100 / $t ); ?>%"><?php echo number_format( $a , 0 , '' , ',' ); ?></a>
+				<a class="banner-count" href="<?php echo $groups; ?>aldmeri-dominion" title="Aldmeri Dominion - <?php echo round( $counts->aldmeri * 100 / $counts->declared ); ?>%"><?php echo number_format( $counts->aldmeri , 0 , '' , ',' ); ?></a>
 			</div>
 		</div>
 		<div class="banner-top daggerfall" style="height:<?php echo $dheight; ?>px">
 			<div class="banner-bottom daggerfall">
-				<a class="banner-count" href="<?php echo $groups; ?>daggerfall-covenant" title="Daggerfall Covenant - <?php echo round( $d * 100 / $t ); ?>%"><?php echo number_format( $d , 0 , '' , ',' ); ?></a>
+				<a class="banner-count" href="<?php echo $groups; ?>daggerfall-covenant" title="Daggerfall Covenant - <?php echo round( $counts->daggerfall * 100 / $counts->declared ); ?>%"><?php echo number_format( $counts->daggerfall , 0 , '' , ',' ); ?></a>
 			</div>
 		</div>
 		<div class="banner-top ebonheart" style="height:<?php echo $eheight; ?>px">
 			<div class="banner-bottom ebonheart">
-				<a class="banner-count" href="<?php echo $groups; ?>ebonheart-pact" title="Ebonheart Pact - <?php echo round( $e * 100 / $t ); ?>%"><?php echo number_format( $e , 0 , '' , ',' ); ?></a>
+				<a class="banner-count" href="<?php echo $groups; ?>ebonheart-pact" title="Ebonheart Pact - <?php echo round( $counts->ebonheart * 100 / $counts->declared ); ?>%"><?php echo number_format( $counts->ebonheart , 0 , '' , ',' ); ?></a>
 			</div>
 		</div>
 	</div><?php
@@ -300,6 +283,102 @@ function featured_guild_box() {
 		</div>
 	</div>
 	<?php endwhile;
+}
+
+
+/* 
+ * Show the PayPal donate button
+ */
+function paypal_donate_box() {
+
+	// Get the user's name
+	$user		= apocrypha()->user;
+	$user_id	= $user->ID;
+	$name		= ( $user_id == 0 ) ? 'Anonymous' : $user->data->display_name;
+
+	// Echo the HTML ?>
+	<div class="widget paypal-donate-widget">
+		<header class="widget-header"><h3 class="widget-title">Support Us!</h3></header>
+		<p>Donate to help fund Tamriel Foundry and support further community improvements.</p>
+		<form id="donation-form" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+			<input type="hidden" name="cmd" value="_donations">
+			<input type="hidden" name="business" value="admin@tamrielfoundry.com">
+			<input type="hidden" name="lc" value="US">
+			<input type="hidden" name="item_name" value="Tamriel Foundry">
+			<input type="hidden" name="item_number" value="Donation From <?php echo $name; ?> (<?php echo $user_id; ?>)">
+			<input type="hidden" name="currency_code" value="USD">
+			<input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+			<input type="image" id="donate-image" src="<?php echo THEME_URI . '/images/icons/donate.png'; ?>" border="0" name="submit" width="200" height="50" alt="Donate to support Tamriel Foundry!">
+		</form>
+	</div>
+	<?php
+}
+
+/* 
+ * Load Twitch Streams
+ * Use AJAX after page-load to reduce delay
+ */
+function twitch_streams_widget() {
+
+	// Try to retrieve a stream from cache to avoid external calls
+	$stream = wp_cache_get( 'featured_stream' , 'apoc' );
+	if ( false === $stream ) {
+	
+		// The list of valid streamers
+		$streamers = array( 
+			'Phazius' 			=> 'phazius', 
+			'Atropos' 			=> 'atropos_nyx', 
+			'Nybling' 			=> 'nybling',
+			'Erlex' 			=> 'erlexx', 
+			'Soma' 				=> 'somaplays', 
+			'Deagen'			=> 'deagen',
+			'typeRkrim'			=> 'typerkrim',
+			'Pryda'				=> 'ericprydz82',
+			'Rudrias'			=> 'rudrias',
+			'Tholren'			=> 'tholren',
+			'Moowi'				=> 'moomoney',
+		);
+		
+		// Shuffle the array
+		$keys 	= array_keys( $streamers );
+		shuffle( $keys );
+		$new	= array();
+		foreach($keys as $key) {
+			$new[$key] = $streamers[$key];
+		}
+		$streamers = $new;
+		
+		// Loop through streamers in a random order, and pull their info
+		foreach ( $streamers as $name => $user ) {
+		
+			// Get the Twitch data
+			$twitch_response 	= json_decode( @file_get_contents( "https://api.twitch.tv/kraken/streams/" . $user ) );
+			$is_online			= isset( $twitch_response->stream->game );
+			$game				= $is_online ? $twitch_response->stream->game : false;
+			
+			// Are they online and playing TESO?
+			if ( $is_online && $game == "The Elder Scrolls Online" ) break;
+		}
+		
+		// If we have an online user, report it
+		$url				= 'http://twitch.tv/'.$user;
+		$viewers			= $is_online ? intval( $twitch_response->stream->viewers ) . " Viewers" : "Offline";
+		$icon				= $is_online ? '<i class="icon-ok"></i>' : '<i class="icon-remove"></i>';
+		$status				= $is_online ? 'online' : 'offline';
+		$stream				= '<a class="twitch-stream-name '.$status.'" href="'.$url.'" target="_blank">'.$name.' '.$icon.'</a><span class="activity-count twitch-stream-count">'.$viewers.'</span>';
+		
+		// Set it to the cache
+		wp_cache_set( 'featured_stream' , $stream , 'apoc' , 180 ); 
+	} 
+	
+	// Display the widget ?>
+	<div class="widget featured-stream-widget">
+		<header class="widget-header"><h3 class="widget-title">Featured Stream</h3></header>
+		<div id="featured-stream">
+			<?php echo $stream; ?>
+		</div>
+	</div>
+	<?php
 }
 
 

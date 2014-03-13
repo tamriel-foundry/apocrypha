@@ -19,6 +19,9 @@ function get_moderator_emails() {
 		'grimalkin@tamrielfoundry.com', 
 		'nybling@outlook.com',
 		'miguel.albano.nogueira@gmail.com',
+		'charlesbrandt19@yahoo.com',
+		'Phazius@gmail.com',
+		'michaeldamron@gmail.com',
 	);
 	return $emails;
 }
@@ -74,10 +77,11 @@ class Apoc_User {
 		$this->faction	= isset( $meta['faction'] ) ? $meta['faction'] : NULL;
 		$this->race		= isset( $meta['race'] ) ? $meta['race'] : NULL;
 		$this->class	= isset( $meta['playerclass'] ) ? $meta['playerclass'] : NULL;
-		$this->posts	= maybe_unserialize( $meta['post_count'] );
+		$this->posts	= isset( $meta['post_count'] ) ? maybe_unserialize( $meta['post_count'] ) : array();
 		$this->guild	= isset( $meta['guild'] ) ? $meta['guild'] : NULL ;
 		$this->bio		= isset( $meta['description'] ) ? do_shortcode( $meta['description'] ) : NULL;
 		$this->sig		= isset( $meta['signature'] ) ? $meta['signature'] : NULL;
+		$this->donor	= isset( $meta['donation_amount'] ) ? $meta['donation_amount'] : NULL;
 		
 		// If the post count is not yet in the database, build it
 		if ( $user_id > 0 && empty( $this->posts ) )
@@ -95,7 +99,7 @@ class Apoc_User {
 			$this->byline		= $this->byline();
 			$this->first_name	= isset( $meta['first_name'] ) ? $meta['first_name'] : "";
 			$this->last_name	= isset( $meta['last_name'] ) ? $meta['last_name'] : "";
-			$this->charname		= implode( ' ' , array( $meta['first_name'] , $meta['last_name'] ) );
+			$this->charname		= implode( ' ' , array( $this->first_name , $this->last_name ) );
 			$this->prefrole		= isset( $meta['prefrole'] ) ? $meta['prefrole'] : NULL;
 			$this->badges		= $this->badges();
 			$this->warnings		= isset( $meta['infraction_history'] ) ? $this->warnings( $meta['infraction_history'] ) : NULL;
@@ -397,6 +401,12 @@ class Apoc_User {
 				'class'		=> 'ermember',
 				'tier'		=> 'gold',
 		);}
+		if ( $this->donor >= 5 ) {
+			$badges['supporter'] = array(
+				'name'		=> 'Tamriel Foundry Supporter',
+				'class'		=> 'supporter',
+				'tier'		=> 'gold',
+		);}		
 		
 		// Game Badges
 		if ( '' != $this->faction ) {
@@ -488,8 +498,9 @@ class Apoc_User {
 		}
 		
 		// Prepend the avatar
+		$donor			= ( $this->donor >= 10 ) ? 'supporter ' . $this->faction : '';
 		$avatar			= new Apoc_Avatar( $avatar_args );
-		$avatar			= '<a class="member-avatar" href="' . $this->domain . '" title="View ' . $this->fullname . '&apos;s Profile">' . $avatar->avatar . '</a>';
+		$avatar			= '<a class="member-avatar ' . $donor . '" href="' . $this->domain . '" title="View ' . $this->fullname . '&apos;s Profile">' . $avatar->avatar . '</a>';
 		$this->avatar 	= $avatar;
 		$block			= $avatar . $block;
 		
@@ -574,11 +585,11 @@ class Edit_Profile extends Apoc_User {
 			foreach ( $fields as $field ) {
 				
 				// There is a new value to save
-				if ( !empty( $_POST[$field] ) && $_POST[$field] != $originals[$field] )
+				if ( ( $_POST[$field] != "" ) && ( $_POST[$field] != $originals[$field] ) )
 					update_user_meta( $user_id	, $field , call_user_func( $treat , $_POST[$field] ) );
 					
 				// The value was removed
-				elseif ( empty( $_POST[$field] ) )
+				elseif ( $_POST[$field] == "" )
 					delete_user_meta( $user_id	, $field  )	;	
 			}			
 		}
@@ -653,8 +664,9 @@ class Apoc_Avatar {
 				));
 				
 			// If the user has not uploaded an avatar, get the default
-			if ( strrpos( $avatar , 'mystery-man.jpg' ) ) 
+			if ( strrpos( $avatar , BP_AVATAR_DEFAULT ) || strpos( $avatar , BP_AVATAR_DEFAULT_THUMB ) ) {
 				$avatar = $this->guest_avatar();
+			}
 		}
 		else 
 			$avatar = $this->guest_avatar();
@@ -828,4 +840,10 @@ function count_users_by_meta( $meta_key , $meta_value ) {
 			) 
 		);
 	return intval($user_meta_query);
+}
+
+
+function apoc_register_donation( $user_id , $amount ) {
+	$current = intval( get_user_meta( $user_id , 'donation_amount' , true ) );
+	update_user_meta( $user_id , 'donation_amount' , $current + $amount , $current );
 }

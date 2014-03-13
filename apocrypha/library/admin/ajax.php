@@ -190,7 +190,7 @@ function apoc_load_comments() {
 	
 	// Get the comment count and max pages
 	$count 		= get_comments_number( $postid );
-	$max_pages	= ceil( $count / 10 );
+	$max_pages	= ceil( $count / get_option('comments_per_page') );
 	
 	// Display the comments into the buffer
 	ob_start();
@@ -555,11 +555,6 @@ function apoc_clear_infraction() {
 	
 	// Check the nonce
 	check_ajax_referer( 'clear-single-infraction' );
-	
-	// Flush any cached stuff	
-	if ( function_exists( 'w3tc_pgcache_flush' ) ) w3tc_pgcache_flush();
-	if ( function_exists( 'w3tc_objectcache_flush' ) ) w3tc_objectcache_flush();
-	if ( function_exists( 'apc_clear_cache' ) ) apc_clear_cache('user');
 	
 	// Delete the infraction
 	$warnings = maybe_unserialize( get_user_meta( $userid , 'infraction_history' , true ) );

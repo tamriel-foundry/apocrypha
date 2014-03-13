@@ -12,7 +12,7 @@
  class Apoc_Map {
  
 	// Declare variables
-	public $version = 0.01;
+	public $version = 0.05;
 
 	// Construct the class
 	function __construct() {
@@ -37,8 +37,8 @@
 			// Check for eligibility
 			$can_view = false;
 			$roles = apocrypha()->user->roles;
-			if ( in_array( $roles[0] , array( 'administrator' , 'editor' , 'author' , 'guildinitiate' , 'guildmember' ) ) )
-				$can_view = true;
+			// if ( in_array( $roles[0] , array( 'administrator' , 'editor' , 'author' , 'guildinitiate' , 'guildmember' ) ) )
+			$can_view = true;
 			
 			// Grab the template
 			if ( $can_view ) :
@@ -92,8 +92,5 @@ $map = new Apoc_Map();
 
 function is_interactive_map() {
 	global $wp_query;
-	if ( isset( $wp_query->is_map ) )
-		return true;
-	else
-		return false;
+	return $wp_query->is_map;
 }

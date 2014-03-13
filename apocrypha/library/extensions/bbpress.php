@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme bbPress Functions
  * Andrew Clayton
- * Version 1.0.2
- * 2-13-2014
+ * Version 1.0.3
+ * 2-22-2014
 
 ----------------------------------------------------------------
 >>> TABLE OF CONTENTS:
@@ -263,7 +263,7 @@ class Apoc_bbPress {
 /**
  * Display forums hierarchically instead of the bbPress default
  * Parent categories are seperated with child subforums
- * @version 1.0.0
+ * @version 1.0.3
  */
 function apoc_list_subforums( $args = array() ) {
 
@@ -282,23 +282,19 @@ function apoc_list_subforums( $args = array() ) {
 		foreach ( $subforums as $subforum ) :
 			
 			// Get forum details
-			$sub_id		= $subforum->ID;
-			$title    = $subforum->post_title;
-			$desc		= $subforum->post_content;
-			$permalink 	= bbp_get_forum_permalink( $sub_id );
+			$sub_id			= $subforum->ID;
+			$title			= $subforum->post_title;
+			$desc			= $subforum->post_content;
+			$permalink		= bbp_get_forum_permalink( $sub_id );
 			
 			// Get topic counts
-			$topics	 	= bbp_get_forum_topic_count( $sub_id , false );
+			$topics	 		= bbp_get_forum_topic_count( $sub_id , false );
 			
 			// Get the most recent reply
-			$active_id		= bbp_get_forum_last_active_id( $sub_id );
-			if ( empty( $active_id ) )
-			$active_id 		= bbp_get_forum_last_reply_id( $sub_id );
-			if ( empty( $active_id ) )
-			$active_id		= bbp_get_forum_last_topic_id( $sub_id );
-				
-			// Get reply link
-			$link_url 		= bbp_is_reply( $active_id ) ? bbp_get_forum_last_reply_url( $sub_id ) : bbp_get_forum_last_topic_permalink( $sub_id );
+			$reply_id		= bbp_get_forum_last_reply_id( $sub_id );
+			$topic_id		= bbp_is_reply( $reply_id ) ? bbp_get_reply_topic_id( $reply_id ) : $reply_id;
+			$topic_title	= bbp_get_topic_title( $topic_id );
+			$link 			= bbp_get_reply_url( $reply_id );
 			
 			// Build the html class
 			$class = ( $i % 2 ) ? "sub-forum odd " : "sub-forum even ";
@@ -316,11 +312,11 @@ function apoc_list_subforums( $args = array() ) {
 				</div>
 
 				<div class="forum-freshness">
-					<?php bbp_author_link( array( 'post_id' => $active_id, 'type' => 'avatar' , 'size' => 50 ) ); ?>
+					<?php bbp_author_link( array( 'post_id' => $reply_id, 'type' => 'avatar' , 'size' => 50 ) ); ?>
 					<div class="freshest-meta">
-						<a class="freshest-title" href="<?php echo $link_url; ?>" title="<?php bbp_forum_last_topic_title( $sub_id ); ?>"><?php bbp_forum_last_topic_title( $sub_id ); ?></a>
-						<span class="freshest-author">By <?php bbp_author_link( array( 'post_id' => $active_id, 'type' => 'name' ) ); ?></span>
-						<span class="freshest-time"><?php bbp_forum_last_active_time( $sub_id ); ?></span>
+						<a class="freshest-title" href="<?php echo $link; ?>" title="<?php echo $topic_title; ?>"><?php echo $topic_title; ?></a>
+						<span class="freshest-author">By <?php bbp_author_link( array( 'post_id' => $reply_id, 'type' => 'name' ) ); ?></span>
+						<span class="freshest-time"><?php bbp_topic_last_active_time( $topic_id ); ?></span>
 					</div>
 				</div>
 			</li>
@@ -421,7 +417,7 @@ function apoc_forum_rules() {
 	// Check whether the forum has special rules
 	$rules = get_post_meta( $forum_id , 'forum-rules' , true );
 	if ( '' != $rules ) {
-		echo '<div class="instructions">' . $rules . '</div>';
+		echo '<div class="warning">' . $rules . '</div>';
 	}
 }
 

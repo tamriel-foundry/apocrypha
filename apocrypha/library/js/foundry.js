@@ -1,7 +1,7 @@
 /*! --------------------------------------- 
 0.0 - DEFINE CONSTANTS
 ----------------------------------------- */
-var	siteurl		= (window.location.host === 'localhost') ? 'http://localhost/tamrielfoundry/' : 'http://216.178.226.249/';
+var	siteurl		= (window.location.host === 'localhost') ? 'http://localhost/tamrielfoundry/' : 'http://tamrielfoundry.com/';
 var themeurl	= siteurl	+ 'wp-content/themes/apocrypha/';
 var ajaxurl 	= siteurl	+ 'wp-admin/admin-ajax.php';
 var apoc_ajax 	= themeurl	+ "library/ajax.php";
@@ -104,6 +104,17 @@ title_notification_count();
 /*! Top and Bottom Scrolling */
 $("a.backtotop").click(function(){$("html, body").animate({scrollTop:0},600);return false});
 ;$("a.downtobottom").click(function(){$("html, body").animate({scrollTop:$(document).height()},600);return false});
+
+/*! Donation Widget Verification */
+$('form#donation-form').submit(function(){
+
+	var user_id = $(this).children('input[name=user_id]').val();
+	if ( parseInt( user_id ) === 0 ) { 
+		if ( confirm( 'If you wish to recieve credit for your donation, please log in first. You may continue and donate anonymously if you wish!' ) ) return true; 
+		else return false;
+	}
+	return true;
+});
 
 
 /*! --------------------------------------- 
@@ -580,5 +591,3 @@ function apoc_ajax_debug() {
 		alert( response);
 	} );
 }
-
-

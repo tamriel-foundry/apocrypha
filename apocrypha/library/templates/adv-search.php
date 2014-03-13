@@ -268,7 +268,7 @@ endif; ?>
 						'context'			=> 'search',
 						'current'			=> $query->query_vars['paged'],
 						'total'       		=> $query->max_num_pages,
-						'add_fragment'		=> '&type='.$type.'&s='.$search,
+						'add_fragment'		=> '&type='.$type.'&s=' . str_replace( " " , "+" , $search )
 					) ); ?>
 				</div>
 			</nav>
@@ -344,7 +344,7 @@ endif; ?>
 						'context'			=> 'search',
 						'current'			=> $members_template->pag_page,
 						'total'       		=> ceil( $members_template->total_member_count / 12 ),
-						'add_fragment'		=> '&type=members&s=' . $search,
+						'add_fragment'		=> '&type=members&s=' . str_replace( " " , "+" , $search )
 					) ); ?>
 				</div>
 			</nav>
@@ -396,7 +396,7 @@ endif; ?>
 						'context'			=> 'search',
 						'current'			=> $groups_template->pag_page,
 						'total'       		=> ceil( $groups_template->total_group_count / 12 ),
-						'add_fragment'		=> '&type=groups&s=' . $search,
+						'add_fragment'		=> '&type=groups&s=' . str_replace( " " , "+" , $search )
 					) ); ?>
 				</div>
 			</nav>

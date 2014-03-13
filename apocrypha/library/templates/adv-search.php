@@ -65,7 +65,7 @@ if ( !empty( $search ) || isset( $_POST['submitted'] ) ) :
 				'meta_key'       	=> '_bbp_last_active_time', 
 				'orderby'       	=> 'meta_value',
 				'order'				=> 'DESC',
-				'posts_per_page'	=> 12,
+				'posts_per_page'	=> get_option('_bbp_topics_per_page'),
 				'paged' 			=> $paged,
 				's'					=> $search,
 				'show_stickies'		=> false,
@@ -291,7 +291,7 @@ endif; ?>
 						'context'			=> 'search',
 						'current'			=> bbpress()->topic_query->paged,
 						'total'       		=> bbpress()->topic_query->max_num_pages,
-						'add_fragment'		=> '&type=topics&s=' . $search,
+						'add_fragment'		=> '&type=topics&s=' . str_replace( " " , "+" , $search )
 					) ); ?>
 				</div>
 			</nav>

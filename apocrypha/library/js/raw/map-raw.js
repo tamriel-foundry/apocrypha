@@ -236,7 +236,7 @@ function get_filtered_types() {
 /* Limit available zones
 --------------------------------------------------*/
 function is_zone_enabled( zone ) {
-	var allowed = [ "roost" , "bleakrock" , "balfoyen" , "stros" , "betnikh" ];
+	var allowed = [ "roost" , "bleakrock" , "balfoyen" , "stros" , "betnikh" , "auridon" , "stonefalls" , "glenumbra" ];
 	for( i=0; i < allowed.length; i++ ) { 
 		if( allowed[i] == zone ) return true;
 	}

@@ -12,7 +12,7 @@
  class Apoc_Map {
  
 	// Declare variables
-	public $version = 0.06;
+	public $version = 0.09;
 
 	// Construct the class
 	function __construct() {

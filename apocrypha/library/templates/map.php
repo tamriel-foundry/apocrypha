@@ -45,6 +45,9 @@
 								<option value="therift">The Rift</option>
 								<option value="eastmarch">Eastmarch</option>
 							</optgroup>
+							<optgroup label="Planes of Oblivion">
+								<option value="coldharbour">Coldharbour</option>
+							</optgroup>
 							<optgroup label="Cyrodiil">
 								<option value="cyrodiil">Cyrodiil</option>
 							</optgroup>

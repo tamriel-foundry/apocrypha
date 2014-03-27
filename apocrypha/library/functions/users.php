@@ -22,6 +22,7 @@ function get_moderator_emails() {
 		'charlesbrandt19@yahoo.com',
 		'Phazius@gmail.com',
 		'michaeldamron@gmail.com',
+		'taventhebold@gmail.com',
 	);
 	return $emails;
 }
@@ -846,4 +847,15 @@ function count_users_by_meta( $meta_key , $meta_value ) {
 function apoc_register_donation( $user_id , $amount ) {
 	$current = intval( get_user_meta( $user_id , 'donation_amount' , true ) );
 	update_user_meta( $user_id , 'donation_amount' , $current + $amount , $current );
+}
+
+
+function apoc_is_donor( $user_id = NULL ) {
+
+	// If no user_id passed, retrieve it
+	$user_id = isset( $user_id )  ? $user_id : apocrypha()->user->ID;
+	
+	// Get the donation
+	$donation = get_user_meta( $user_id , 'donation_amount' , true );
+	return ( $donation >= 10 );
 }

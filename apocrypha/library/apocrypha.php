@@ -220,9 +220,8 @@ class Apocrypha {
 	private function filters() {
 	
 		// Filter email name and from address
-		remove_filter	( 'wp_mail_from_name' , 'bp_core_email_from_name_filter' );
-		add_filter		( 'wp_mail_from_name' , array( $this , 'email_name' ) );
-		add_filter		( 'wp_mail_from'	  , array( $this , 'email_address' ) );
+		add_filter		( 'wp_mail_from_name' , array( $this , 'email_name' ) , 11 );
+		add_filter		( 'wp_mail_from'	  , array( $this , 'email_address' ) , 11 );
 	
 		// Override WordPress default avatars
 		add_filter( 'get_avatar' , array( $this , 'filter_avatar' ) , 10 , 3 );
@@ -346,6 +345,8 @@ class Apocrypha {
 	}
 	function email_address( $email ) {
 		if ( 'wordpress@tamrielfoundry.com' == $email )
+			return 'noreply@tamrielfoundry.com';
+		elseif ( strpos( $email , '@tamrielfoundry.com' ) !== false ) 
 			return 'noreply@tamrielfoundry.com';
 		else
 			return $email;

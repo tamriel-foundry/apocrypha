@@ -27,7 +27,9 @@
 				<?php apoc_admin_bar(); ?>
 			</nav><!-- #admin-bar -->	
 			
-			<a id="main-banner" href="<?php echo SITEURL; ?>"></a>	
+			<a id="main-banner" href="<?php echo SITEURL; ?>"></a>
+			
+			<div id="azk60495"></div><!-- QuantCast -->
 			
 		</header>
 	</div><!-- #header-container -->

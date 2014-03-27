@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme BuddyPress Functions
  * Andrew Clayton
- * Version 1.0.1
- * 1-7-2013
+ * Version 1.0.4
+ * 3-19-2013
  
 ----------------------------------------------------------------
 >>> TABLE OF CONTENTS:
@@ -26,7 +26,7 @@ class Apoc_BuddyPress {
 
 	/**
 	 * Construct the BuddyPress Class
-	 * @version 1.0.0
+	 * @version 1.0.2
 	 */
 	function __construct() {
 	
@@ -85,6 +85,9 @@ class Apoc_BuddyPress {
 		add_action( 'bp_actions' 			, array( $this , 'registration_hack' ) 		, 1 );
 		add_action( 'bp_core_signup_user' 	, array( $this , 'store_registration_ip' ) 	, 10 , 1 );
 		add_action( 'bp_signup_validate'	, array( $this , 'registration_check' ) );
+		
+		// Profile Features
+		add_action( 'groups_uninvite_user'	, array( $this , 'leave_group' )			, 10 , 2 );
 	}
 	
 	function filters() {
@@ -127,17 +130,21 @@ class Apoc_BuddyPress {
 		$bp->bp_nav['settings']['position'] = 100;
 	
 		// Profile sub-navigation
-		$bp->bp_options_nav['activity']['just-me']['name'] 			= 'All Activity';
-		$bp->bp_options_nav['profile']['public']['name'] 			= 'Player Biography';
-		$bp->bp_options_nav['profile']['change-avatar']['link'] 	= $bp->displayed_user->domain . 'profile/change-avatar';
+		$bp->bp_options_nav['activity']['just-me']['name'] 					= 'All Activity';
+		
+		$bp->bp_options_nav['profile']['public']['name'] 					= 'Player Biography';
+		$bp->bp_options_nav['profile']['change-avatar']['link'] 			= $bp->displayed_user->domain . 'profile/change-avatar';
 		if ( !bp_is_my_profile() && !current_user_can( 'edit_users' ) )
-		$bp->bp_options_nav['profile']['change-avatar']				= false;
-		$bp->bp_options_nav['forums']['replies']['name'] 			= 'Recent Post Tracker';
+		$bp->bp_options_nav['profile']['change-avatar']['user_has_access']	= false;
+		
+		$bp->bp_options_nav['forums']['replies']['name'] 					= 'Recent Post Tracker';
 		if ( !current_user_can( 'moderate_comments' ) )
-		$bp->bp_options_nav['forums']['replies']					= false;
-		$bp->bp_options_nav['forums']['favorites']['name'] 			= 'Favorite Topics';
-		$bp->bp_options_nav['settings']['general']['name'] 			= 'Edit Account Info';
-		$bp->bp_options_nav['settings']['notifications']['name'] 	= 'Notification Preferences';
+		$bp->bp_options_nav['forums']['replies']['user_has_access']			= false;
+		$bp->bp_options_nav['forums']['favorites']['name'] 					= 'Favorite Topics';
+		
+		$bp->bp_options_nav['settings']['general']['name'] 					= 'Edit Account Info';
+		$bp->bp_options_nav['settings']['notifications']['name'] 			= 'Notification Preferences';
+		$bp->bp_options_nav['settings']['profile']['user_has_access'] 		= false;
 		
 		// Add notification counts to profile tabs
 		if ( bp_is_my_profile() ) {
@@ -358,6 +365,24 @@ class Apoc_BuddyPress {
 			$can_create = ( $user->data->user_nicename == 'juangalt' ) ? true : $can_create;
 		return $can_create;
 	}
+	
+	
+	/** 
+	 * Make sure the user's represented group is removed when they leave
+	 */
+	function leave_group( $group_id , $user_id ) {
+	
+		// Does the user have a guild?
+		$guild = get_user_meta( $user_id , 'guild' , true );
+		if ( $guild !== "" ) {
+			$group 	= groups_get_group( array( 'group_id' => $group_id ) );
+			$name	= $group->name;
+			
+			// If it was their flagged guild, unset it
+			if ( $name === $guild )
+				delete_user_meta( $user_id, 'guild' , $name );	
+		}	
+	}
 
 }
 	
@@ -370,7 +395,7 @@ class Apoc_BuddyPress {
  * Formats these notifications by grouping them by component
  * Disaggregates multiple notifications of the same type to display notifications individually
  *
- * @version 1.0.0
+ * @version 1.0.3
  */
 class Apoc_Notifications extends BP_Core_Notification {
 
@@ -454,7 +479,7 @@ class Apoc_Notifications extends BP_Core_Notification {
 			
 			// Loop over activities, grouping them by item_id
 			for ( $i = 0; $i < count( $activity ); $i++ ) {	
-				$item_id 						= ( $activity[$i]->component_action == 'new_at_mention' ) ? $activity[$i]->secondary_item_id : $activity[$i]->item_id;		
+				$item_id 						= ( $activity[$i]->component_action == 'new_at_mention' ) ? -999 : $activity[$i]->item_id;		
 				$activity[$i]->counts			= isset( $activities[$item_id]->counts ) ? $activities[$item_id]->counts + 1 : 1;			
 				$activities[$item_id] 			= $activity[$i];	
 			}
@@ -1017,6 +1042,7 @@ function count_groups_by_meta($meta_key, $meta_value) {
 
 /**
  * Helper function to check if a group is a guild
+ @version 1.0.2
  */
 function group_is_guild( $group_id ) {
 	$guild = groups_get_groupmeta( $group_id , 'is_guild' );

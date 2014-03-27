@@ -17,6 +17,7 @@
 			<a class="social-icon facebook" href="http://facebook.com/tamrielfoundry" title="Follow us on Facebook." target="_blank"></a>
 			<a class="social-icon feed" href="<?php echo SITEURL; ?>/feed/" title="Subscribe to RSS Feed." target="_blank"></a>
 		</div>
+		<?php if ( is_user_logged_in() ) : ?><p class="tf-teamspeak">TF Teamspeak - ts24.gameservers.com:9130</p><?php endif; ?>
 	</div>
 	<?php community_online_widget(); ?>
 	<?php twitch_streams_widget(); ?>

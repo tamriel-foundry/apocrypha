@@ -7,7 +7,6 @@ var esomap;
 
 // Locations
 var siteurl			= "http://tamrielfoundry.com/";
-var tileurl			= "http://tamriel.objects.dreamhost.com/";
 var assets			= "http://tamrielfoundry.com/wp-content/themes/apocrypha/library/map/";
 
 // Markers
@@ -27,44 +26,65 @@ var infowindow;
 // Initialization
 $(document).ready( function(){ interactiveMap( zone ); } );
 
-
 /* Initiate the Map API
 --------------------------------------------------*/
 function interactiveMap( zone ) {
 	
-	// Locate our map tiles
-	var base = "http://tamriel.objects.dreamhost.com/";
-	
-	// Define the map type
-	var mapTypeOptions = {
+	// Define the Tamriel map layer
+	var tamrielTiles	= "http://tamriel.objects.dreamhost.com/";
+	var tamrielOptions 	= {
+		name: "Tamriel",
+		mapTypeId: "tamriel",
 		getTileUrl: function(coord,zoom) {
 			var maxTile = Math.pow(2,zoom);
 			coord.x		= ( Math.abs(coord.x) < maxTile ) ? Math.abs(coord.x) : maxTile - 1;
 			coord.y		= ( Math.abs(coord.y) < maxTile ) ? Math.abs(coord.y) : maxTile - 1;
-			return 		tileurl + zoom + "_" + coord.x + "_" + coord.y + ".jpg?ver=" + tilever;
-	   },
-	   tileSize: new google.maps.Size(256, 256),
-	   maxZoom: 7,
-	   minZoom: 2,
-	   opacity: 1,
-	   name: "ESO Interactive Map"
+			return 		tamrielTiles + zoom + "_" + coord.x + "_" + coord.y + ".jpg?ver=" + tilever;
+		},
+		tileSize: new google.maps.Size(256, 256),
+		maxZoom: 7,
+		minZoom: 2,
+		opacity: 1,
 	};
-	var interactiveMapType = new google.maps.ImageMapType( mapTypeOptions );
+	var tamrielMapType = new google.maps.ImageMapType( tamrielOptions );
+	
+	// Define the Coldharbour map layer
+	var coldharbourTiles	= "http://coldharbour.objects.dreamhost.com/";
+	var coldharbourOptions 	= {
+		name: "Coldharbour",
+		mapTypeId: "coldharbour",
+		getTileUrl: function(coord,zoom) {
+			var maxTile = Math.pow(2,zoom);
+			coord.x		= ( Math.abs(coord.x) < maxTile ) ? Math.abs(coord.x) : maxTile - 1;
+			coord.y		= ( Math.abs(coord.y) < maxTile ) ? Math.abs(coord.y) : maxTile - 1;
+			return 		coldharbourTiles + zoom + "_" + coord.x + "_" + coord.y + ".jpg?ver=" + tilever;
+		},
+		tileSize: new google.maps.Size(256, 256),
+		maxZoom: 4,
+		minZoom: 2,
+		opacity: 1,
+	};
+	var coldharbourMapType = new google.maps.ImageMapType( coldharbourOptions );
 	
 	// Setup map options
 	var mapOptions = {
 		center: new google.maps.LatLng(0,0),
 		zoom: 2,
 		streetViewControl: false,
-		mapTypeControl: false,
+		scaleControl: false,
+		panControl: false,
+		zoomControl: true,
+		mapTypeControl: true,
+		mapTypeControlOptions: { mapTypeIds: [ 'tamriel' , 'coldharbour' ] },
 		backgroundColor: "black",
 		draggableCursor: "crosshair",
-	   };
-	   
-	// Instantiate the map
+	};
 	esomap = new google.maps.Map( document.getElementById('map-canvas') , mapOptions );
-	esomap.mapTypes.set( 'interactive-map' , interactiveMapType );
-	esomap.setMapTypeId( 'interactive-map' );
+	   
+	// Set the current map type
+	esomap.mapTypes.set( 'tamriel' , tamrielMapType );
+	esomap.mapTypes.set( 'coldharbour' , coldharbourMapType );
+	esomap.setMapTypeId( 'tamriel' );
 	
 	// Limit panning to legal bounds depending on the zoom level
 	allowedBounds = set_bounds( 'new' );
@@ -75,7 +95,7 @@ function interactiveMap( zone ) {
 	
 	// Add a movement listener to enforce the boundaries
 	var lastValidCenter = esomap.getCenter();
-	google.maps.event.addListener(esomap, 'center_changed', function() {    	
+	google.maps.event.addListener(esomap, 'center_changed', function() {   
 		if (allowedBounds.contains(esomap.getCenter())) {
 			lastValidCenter = esomap.getCenter();
 			return; 
@@ -83,15 +103,28 @@ function interactiveMap( zone ) {
     	esomap.panTo(lastValidCenter);
 	});
 	
-	// Add a click listener to display the coordiantes
-	google.maps.event.addListener(esomap, "click",  
-		function(event) {
+	// Add a mapTypeID listener to re-adjust zoom
+	google.maps.event.addListener( esomap , 'maptypeid_changed' , function() {
 		
-			// Populate the form fields
-        	document.getElementById("latFld").value = event.latLng.lat();
-        	document.getElementById("lngFld").value = event.latLng.lng();
-		}
-	);
+		// Get the new map type id
+		var map = esomap.getMapTypeId();
+		
+		// Get the currently requested zone
+		var zone = $( 'select#zone-select :selected' ).attr('value');
+
+		// Clear the zone dropdown
+		$( 'select#zone-select' ).val("");
+	
+		// Clear existing markers
+		clear_markers();
+			
+		// Pan to the center of the new map
+		coords = get_zone_coords( map );
+		zoneCoords = new google.maps.LatLng( coords[0] , coords[1] );
+		esomap.setZoom( coords[2] );
+		esomap.panTo( zoneCoords );	
+	});
+		
 	
 	// Add an info window
 	infowindow = new google.maps.InfoWindow();
@@ -168,11 +201,13 @@ function clear_markers() {
 /* Hide or display markers depending on the zoom level
 --------------------------------------------------*/
 function maybe_hide_markers() {
-	var zoom 		= esomap.getZoom();
+	
+	// Get the minimum allowed zoom for marker visibility
 	var visibility	= true;
+	var minZoom 	= ( esomap.getMapTypeId() == 'tamriel' ) ? 3 : 1;
 	
 	// Hide markers for big picture
-	if ( zoom <= 3 )
+	if ( esomap.getZoom() <= minZoom )
 		visibility = false; 
 		
 	// Set the visibility status for the zoom level
@@ -186,10 +221,14 @@ function maybe_hide_markers() {
 function get_zone_coords( zone ) {
 
 	// Make cyrodiil the default
-	zone = ( zone === "" ) ? 'cyrodiil' : zone;
+	var defaultZone = ( esomap.getMapTypeId() == 'tamriel' ) ? 'tamriel' : 'coldharbour';
+	zone = ( zone === "" ) ? defaultZone : zone;
 
 	// Supply the central coordinates for the requested zone [lat,lng,zoom]
 	var coords			= {};
+	
+	// Tamriel coordinates
+	coords.tamriel		= [0.00,0.00,2];
 	coords.roost 		= [-68.00,1.20,6];
 	coords.auridon 		= [-48.93,-76.40,5];
 	coords.grahtwood 	= [-55.42,-18.81,5];
@@ -217,11 +256,15 @@ function get_zone_coords( zone ) {
 	coords.tactics 		= [0,0,4];
 	coords.crafting 	= [0,0,4];
 	
+	// Coldharbour coordinates
+	coords.coldharbour 	= [0.00,0.00,2];
+	
 	// Return the coordinates
 	return coords[zone];
 }
 
-
+/* Get the currently applied filters
+--------------------------------------------------*/
 function get_filtered_types() {
 	
 	var filters = [ 'locales' , 'skyshard' , 'lorebook' , 'boss' , 'treasure' ];
@@ -250,9 +293,26 @@ function get_markers() {
 
 	// First clear any existing markers
 	clear_markers();
+	
+	// Get the current map and requested zone
+	var map		= esomap.getMapTypeId();
+	var zone 	= $( 'select#zone-select :selected' ).attr('value');
+	
+	// Change the map to Coldharbour if it is requested
+	if ( zone === 'coldharbour' ) {
+		if ( map !== 'coldharbour' ) {
+			esomap.setMapTypeId( 'coldharbour' );
+			return;
+		}
+	}
 		
-	// Get the requested zone
-	zone = $( 'select#zone-select :selected' ).attr('value');
+	// Otherwise we are in Tamriel
+	else if ( zone !== '' ) {
+		if ( map !== 'tamriel' ) {
+			esomap.setMapTypeId( 'tamriel' );
+			return;
+		}
+	}
 	
 	// Check what is filtered
 	var filters = get_filtered_types();
@@ -300,7 +360,7 @@ function get_markers() {
 					position: 	new google.maps.LatLng(locations[i][3], locations[i][4]),
 					map: 		esomap,
 					id: 		i,
-					title: 		locations[i][0],
+					title: 		$('<div/>').html(locations[i][0]).text(),
 					desc: 		locations[i][2],
 					type: 		locations[i][1],
 					icon: 		image,

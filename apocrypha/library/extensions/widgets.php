@@ -329,11 +329,10 @@ function twitch_streams_widget() {
 			'Phazius' 			=> 'phazius', 
 			'Atropos' 			=> 'atropos_nyx', 
 			'Nybling' 			=> 'nybling',
-			'Erlex' 			=> 'erlexx', 
+			'Erlexx' 			=> 'erlexx', 
 			'Soma' 				=> 'somaplays', 
 			'Deagen'			=> 'deagen',
 			'typeRkrim'			=> 'typerkrim',
-			'Pryda'				=> 'ericprydz82',
 			'Rudrias'			=> 'rudrias',
 			'Tholren'			=> 'tholren',
 			'Moowi'				=> 'moomoney',
@@ -390,7 +389,7 @@ function guild_twitch_streams() {
 		'phazius' 			=> 'phazius', 
 		'atropos' 			=> 'atropos_nyx', 
 		'nybling' 			=> 'nybling',
-		'erlex' 			=> 'erlexx', 
+		'erlexx' 			=> 'erlexx', 
 	);
 	$streams = array();
 	

@@ -7,6 +7,12 @@ var ajaxurl 	= siteurl	+ 'wp-admin/admin-ajax.php';
 var apoc_ajax 	= themeurl	+ "library/ajax.php";
 var $			= jQuery;
 
+/*!	Call QuantCast if the script is loaded
+========================================================================== */
+if ( typeof _qevents == 'object' ) {
+	_qevents.push( { qacct:"p-08C2tN1gz3kHY"} );
+}
+
 /*! jQuery Document Ready Functions */
 $(document).ready(function(){
 
@@ -408,9 +414,6 @@ $( 'ol#comment-list' ).on( "click" , "a.delete-comment-link" , function(event){
 
 /*! Tab Into TinyMCE From Topic Title */
 ;$("#bbp_topic_title").bind("keydown.editor-focus",function(b){if(b.which!==9){return}if(!b.ctrlKey&&!b.altKey&&!b.shiftKey){if(typeof(tinymce)!=="undefined"){if(!tinymce.activeEditor.isHidden()){var a=tinymce.activeEditor.editorContainer;$("#"+a+" td.mceToolbar > a").focus()}else{$("textarea.bbp-the-content").focus()}}else{$("textarea.bbp-the-content").focus()}b.preventDefault()}});
-
-/*! bbPress Favorites / Subs */
-;function bbp_ajax_call(d,e,c,a){var b={action:d,id:e,nonce:c};$.post(bbpTopicJS.bbp_ajaxurl,b,function(f){if(f.success){$(a).html(f.content)}else{if(!f.content){f.content=bbpTopicJS.generic_ajax_error}alert(f.content)}})}$("#subscription-controls").on("click","a.favorite-toggle",function(a){a.preventDefault();bbp_ajax_call("favorite",$(this).attr("data-topic"),bbpTopicJS.fav_nonce,"#subscription-controls #favorite-toggle")});$("#subscription-controls").on("click","a.subscription-toggle",function(a){a.preventDefault();bbp_ajax_call("subscription",$(this).attr("data-topic"),bbpTopicJS.subs_nonce,"#subscription-controls #subscription-toggle")});
 
 /*! Post Reporting */
 $("#comments,#forums,#private-messages").on( "click" , "a.report-post" , function( event ){

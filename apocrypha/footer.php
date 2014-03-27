@@ -41,6 +41,10 @@
 		</div><!-- #footer -->
 	</div><!-- #footer-container -->
 
+	
+	<!-- Quantcast Tag -->
+	<noscript><div style="display: none;"><img src="http://pixel.quantserve.com/pixel/p-test123.gif" height="1" width="1" alt="Quantcast"/></div></noscript>
+
 <?php wp_footer(); ?>
 <!-- <?php echo get_num_queries(); ?> queries in <?php timer_stop(1); ?> seconds. -->
 <!-- <?php echo round ( memory_get_peak_usage() / 1048576 , 2 ) . 'megabytes used.'; ?> -->

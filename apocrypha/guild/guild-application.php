@@ -54,8 +54,10 @@
 				<h1 id="home-posts-title">Application Form</h1>
 			</header>
 			
-			<?php if ( is_user_logged_in() ) : ?> 
+			<?php if ( is_user_logged_in() && guild_recruitment_status() != 'closed' ) : ?> 
 				<?php locate_template( array( 'guild/application-form.php' ), true ); ?>
+			<?php elseif ( guild_recruitment_status() == 'closed' ) : ?>
+				<div class="error">Entropy Rising guild recruitment is CLOSED at this time. We are not planning to add any further members for the next several weeks. If you are interested in joining and have exceptional MMO experience both in <em>ESO</em> as well as past games please check back periodically for any recruitment openings that we may have. Thank you for your interest!</div>
 			<?php else : ?>
 				<div class="warning">You must be a registered member of Tamriel Foundry in order to apply to join Entropy Rising.</div>
 			<?php endif; ?>				

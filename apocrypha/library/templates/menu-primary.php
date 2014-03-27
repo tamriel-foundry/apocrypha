@@ -2,8 +2,8 @@
 /** 
  * Apocrypha Primary Navigation Menu
  * Andrew Clayton
- * Version 1.0.0
- * 8-2-2012
+ * Version 1.0.3
+ * 3-24-2014
  */
 
 // Get some info on the current user
@@ -23,9 +23,6 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 						<li><a href="<?php echo SITEURL . '/groups/aldmeri-dominion/' ?>">Aldmeri Dominion</a></li>
 						<li><a href="<?php echo SITEURL . '/groups/daggerfall-covenant/' ?>">Daggerfall Covenant</a></li>
 						<li><a href="<?php echo SITEURL . '/groups/ebonheart-pact/' ?>">Ebonheart Pact</a></li>
-						<?php /*
-						<li><a href="#">Racial Comparison</a></li>
-						*/ ?>
 					</ul>
 				</div>
 				<div class="sub col">
@@ -43,10 +40,6 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 						<li><a href="<?php echo SITEURL . '/races/' ?>">Racial Bonuses</a></li>
 						<li><a href="<?php echo SITEURL . '/weapons/' ?>">Weapon Skills</a></li>
 						<li><a href="<?php echo SITEURL . '/armors/' ?>">Armor Types</a></li>
-						<?php /*
-						<li><a href="#">NPC Guilds</a></li>
-						<li><a href="#">Other Skills</a></li>
-						*/ ?>
 					</ul>
 				</div>	
 				<div class="sub col">
@@ -54,11 +47,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 					<ul class="submenu">
 						<li><a href="<?php echo SITEURL . '/development-faq/' ?>">Development FAQ</a></li>
 						<li><a href="<?php echo SITEURL . '/map/' ?>">Interactive Map</a></li>
-						<?php /*
-						<li><a href="#">Guides</a></li>
-						<li><a href="#">Maps</a></li>
-						<li><a href="#">Utilities</a></li>
-						*/ ?>
+						<li><a href="<?php echo SITEURL . '/crafting/' ?>">Crafting Hub</a></li>
 					</ul>
 				</div>		
 			</div>

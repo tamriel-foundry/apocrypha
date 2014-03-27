@@ -22,7 +22,7 @@
 	<div class="er-streams-widget widget">
 		<header class="widget-header"><h3 class="widget-title">ER Twitch Streams</h3></header>
 		<div class="er-streams">
-			<?php guild_twitch_streams(); ?>
+			<?php // guild_twitch_streams(); ?>
 		</div>
 	</div>
 

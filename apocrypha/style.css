@@ -160,6 +160,13 @@ a#main-banner {
 	position: absolute;
 	z-index: 1;
 	}
+div#azk60495 {
+	width: 728px;
+	height: 90px;
+	position: absolute;
+	top: 45px;
+	right: 5px;
+	}
 
 /*---------------------------------------------
 	2.2 - Content
@@ -333,6 +340,9 @@ sup{
 sub{
 	vertical-align: baseline;
 	top: 0.5em;
+	}
+pre {
+	font-size: 1.25em;
 	}
 	
 /* Tables */
@@ -2023,6 +2033,16 @@ div.social-icons {
 .social-icons a.twitter { background-position: -150px -50px; }
 .social-icons a.twitter:hover { background-position: -150px 0 }
 
+p.tf-teamspeak {
+	width: 100%;
+	float: left;
+	margin: 0.5em 0 0;
+	font-family: 'Open Sans' , sans-serif;
+	font-size: 0.75em;
+	line-height: 1.5em;
+	text-align: center;
+	}
+
 /* Who's Online Widgets */
 p.whos-online-total {
 	margin: 0;
@@ -2642,7 +2662,7 @@ p.forum-description {
 	text-shadow: 1px 1px #000;
 	}
 div.forum-count {
-	width: 10%;
+	width: 9.5%;
 	height: 100%;
 	float: left;
 	margin: 0 -1px 0;
@@ -2663,7 +2683,7 @@ li.topic:hover div.forum-content { border-right: 1px solid #c5772b; }
 div.forum-freshness {
 	width: 40%;
 	height: 100%;
-	float: right;
+	float: left;
 	border-left: 1px solid #000;
 	margin-left: -1px;
 	}

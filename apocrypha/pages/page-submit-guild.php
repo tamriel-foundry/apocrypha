@@ -8,7 +8,7 @@
  */
  
 // Set guild submission status
-$enabled 	= true;
+$enabled 	= false;
 $minposts 	= 25;
 $regtime	= '2 weeks';
 
@@ -157,7 +157,7 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 				
 		<?php // Make sure guild submission is currently allowed
 		elseif ( !$enabled ) : ?>
-		<div class="warning">Guild creation is temporarily disabled while we clear backlogged applications. Sorry for the inconvenience, please check back in a few days.</div>
+		<div class="warning">Guild creation is temporarily disabled while we allow our members and administrators to focus on the launch of <em>ESO</em>! Remember, we're players too, and so for the next month this feature is disabled in order to allow the TF staff to enjoy the game that we've worked so hard to promote. Thank you for your patience and understanding. Guild submission will re-open on May 1, 2014. Please email admin@tamrielfoundry.com if you have any questions.</div>
 				
 		<?php // Make sure the user has enough posts to submit
 		elseif ( !$canreg ) : ?>

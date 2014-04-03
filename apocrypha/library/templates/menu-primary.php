@@ -2,8 +2,8 @@
 /** 
  * Apocrypha Primary Navigation Menu
  * Andrew Clayton
- * Version 1.0.3
- * 3-24-2014
+ * Version 1.3
+ * 4-3-2014
  */
 
 // Get some info on the current user
@@ -45,9 +45,10 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 				<div class="sub col">
 					<h3>Resources</h3>
 					<ul class="submenu">
-						<li><a href="<?php echo SITEURL . '/development-faq/' ?>">Development FAQ</a></li>
+						<li><a href="<?php echo SITEURL . '/development-faq/' ?>">Development Timeline</a></li>
 						<li><a href="<?php echo SITEURL . '/map/' ?>">Interactive Map</a></li>
 						<li><a href="<?php echo SITEURL . '/crafting/' ?>">Crafting Hub</a></li>
+						<li><a href="<?php echo SITEURL . '/ftc/' ?>">Foundry Tactical Combat</a></li>
 					</ul>
 				</div>		
 			</div>
@@ -76,9 +77,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 						<li><a href="<?php echo SITEURL . '/about-us/' ?>">About Tamriel Foundry</a></li>
 						<li><a href="<?php echo SITEURL . '/contact-us/' ?>">Contact Us</a></li>
 						<li><a href="<?php echo SITEURL . '/entropy-rising/' ?>">Entropy Rising</a></li>
-						<?php /*
-						<li><a href="#">Partnerships</a></li>
-						*/ ?>
+						<li><a href="http://www.guildlaunch.com/" target="_blank">Guild Launch</a></li>
 					</ul>
 				</div>
 			

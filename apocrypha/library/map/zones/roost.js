@@ -21,3 +21,6 @@ locations[18]=['Windcatcher Plantation','farm','This small form is just across t
 locations[19]=['Khenarthi Skyshard 6','skyshard','&lt;em&gt;Surly root-chewers burrow nearby.&lt;/em&gt; A skyshard sits just to the right of the cave mouth into the cavern which contains the great tree.',-66.597,-3.395];
 locations[20]=['Bolga&#039;s Hunting Camp','landmark','This small fishing and trapping camp rests on the north shore of the island, across the bay from Mistral.',-66.382,-1.868];
 locations[21]=['Cat&#039;s Eye Quay','dock','These dockyards house many of the trade goods which great trade ships route through Mistral.',-66.749,3.999];
+locations[22]=['Collector&#039;s Khenarthi Treasure I','treasure','This buried treasure is available for those who purchased the Imperial Edition and can be found on the beach near where you land on Khenarthi&#039;s Roost.',-70.364,4.076];
+locations[23]=['Collector&#039;s Khenarthi Treasure II','treasure','This buried treasure can be found on this small island behind a rocky outcropping.',-66.619,-0.637];
+locations[24]=['Khenarthi&#039;s Roost Treasure Map I','treasure','This map is buried behind a large rock, found shortly to the west of Eagle&#039;s Strand.',-69.81,4.043];

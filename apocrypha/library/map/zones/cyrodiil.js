@@ -109,3 +109,5 @@ locations[106]=['Breakneck Cave','cave','Skyshard, Fighters Guild Bounty Quest: 
 locations[107]=['Cyrodiil Ebonheart Skyshard ','skyshard','On the second floor of this house.',-2.09,33.135];
 locations[108]=['Cyrodiil Ebonheart Skyshard 5','skyshard','On the second floor of this house.',-2.09,33.135];
 locations[109]=['Cyrodiil Ebonheart Skyshard 5','skyshard','On the second floor of this house.',-2.178,33.201];
+locations[110]=['Sedor','ayleid','Some small ruins with apparitions awaiting!',18.697,30.234];
+locations[111]=['Ebonheart Skyshard 9','skyshard','&lt;em&gt; Wedged well in Sedor. &lt;/em&gt; Located near the ruins.',18.81,30.256];

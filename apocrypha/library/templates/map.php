@@ -33,8 +33,8 @@
 								<option value="glenumbra">Glenumbra</option>
 								<option value="stormhaven">Stormhaven</option>
 								<option value="rivenspire">Rivenspire</option>
-								<option value="bangkorai">Bangkorai</option>
 								<option value="alikr">Alik'r Desert</option>
+								<option value="bangkorai">Bangkorai</option>
 							</optgroup>
 							<optgroup label="Ebonheart Pact">
 								<option value="bleakrock">Bleakrock Isle</option>
@@ -42,8 +42,8 @@
 								<option value="stonefalls">Stonefalls</option>
 								<option value="deshaan">Deshaan</option>
 								<option value="shadowfen">Shadowfen</option>
-								<option value="therift">The Rift</option>
 								<option value="eastmarch">Eastmarch</option>
+								<option value="therift">The Rift</option>
 							</optgroup>
 							<optgroup label="Planes of Oblivion">
 								<option value="coldharbour">Coldharbour</option>

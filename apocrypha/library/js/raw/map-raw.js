@@ -276,17 +276,6 @@ function get_filtered_types() {
 	 return filters;
 }
 
-/* Limit available zones
---------------------------------------------------*/
-function is_zone_enabled( zone ) {
-	var allowed = [ "roost" , "bleakrock" , "balfoyen" , "stros" , "betnikh" , "auridon" , "stonefalls" , "glenumbra" ];
-	for( i=0; i < allowed.length; i++ ) { 
-		if( allowed[i] == zone ) return true;
-	}
-	return false;
-}
-
-
 /* Place markers onto the map
 --------------------------------------------------*/
 function get_markers() {
@@ -325,68 +314,66 @@ function get_markers() {
 	esomap.panTo( zoneCoords );
 		
 	// Get markers for that zone
-	if ( is_zone_enabled( zone ) ) {
-		$.getScript( assets + 'zones/' + zone + '.js' , function() {
+	$.getScript( assets + 'zones/' + zone + '.js' , function() {
 
-			// Loop through each marker - [ 'name' , 'description' , 'type' , 'zone' , 'lat' , 'lng' ]
-			for (i = 0; i < locations.length; i++) {
+		// Loop through each marker - [ 'name' , 'description' , 'type' , 'zone' , 'lat' , 'lng' ]
+		for (i = 0; i < locations.length; i++) {
+		
+			// Make sure the marker is appropriately filtered
+			var toFilter = locations[i][1];
+			if ( filterTypes.indexOf(toFilter) === -1 ) toFilter = "locales";
 			
-				// Make sure the marker is appropriately filtered
-				var toFilter = locations[i][1];
-				if ( filterTypes.indexOf(toFilter) === -1 ) toFilter = "locales";
-				
-				var shown = true;
-				for ( j = 0; j < filters.length; j++ ) {
-					if ( toFilter == filters[j] ) {
-						shown = false;
-					}
+			var shown = true;
+			for ( j = 0; j < filters.length; j++ ) {
+				if ( toFilter == filters[j] ) {
+					shown = false;
 				}
-				
-				// Skip the marker if it's not in the filters
-				if ( shown === false ) {
-					continue;
-				}
-				
-				// Choose an icon
-				var image = {
-					url: 		assets + "icons/" + locations[i][1] + ".png?ver=" + iconver,
-					size:		new google.maps.Size(24,24),
-					origin:		new google.maps.Point(0,0),
-					anchor: 	new google.maps.Point(12,12)
-				};
-				
-				// Define the marker
-				marker = new google.maps.Marker({
-					position: 	new google.maps.LatLng(locations[i][3], locations[i][4]),
-					map: 		esomap,
-					id: 		i,
-					title: 		$('<div/>').html(locations[i][0]).text(),
-					desc: 		locations[i][2],
-					type: 		locations[i][1],
-					icon: 		image,
-				});
-				
-				// Add it to the active markers array
-				activeMarkers.push(marker);
-				
-				// Set up a click listener for it
-				google.maps.event.addListener( marker, 'click', ( function() {
-				
-					// Use a jQuery trick to include HTML
-					var desc = $('<div />').html(this.desc).text();
-					var title = $('<div />').html(this.title).text();
-				
-					// Set up some HTML for the info window
-					var marker_content = '<div class="marker-window">'+
-					'<h3 class="marker-title">' + title + '</h3>'+
-					'<p class="marker-content">' + desc + '</p>'+
-					'</div>';	
-				
-					// Show the tooltip
-					infowindow.setContent( marker_content );
-					infowindow.open( esomap, this );
-				}));
 			}
-		});
-	}
+			
+			// Skip the marker if it's not in the filters
+			if ( shown === false ) {
+				continue;
+			}
+			
+			// Choose an icon
+			var image = {
+				url: 		assets + "icons/" + locations[i][1] + ".png?ver=" + iconver,
+				size:		new google.maps.Size(24,24),
+				origin:		new google.maps.Point(0,0),
+				anchor: 	new google.maps.Point(12,12)
+			};
+			
+			// Define the marker
+			marker = new google.maps.Marker({
+				position: 	new google.maps.LatLng(locations[i][3], locations[i][4]),
+				map: 		esomap,
+				id: 		i,
+				title: 		$('<div/>').html(locations[i][0]).text(),
+				desc: 		locations[i][2],
+				type: 		locations[i][1],
+				icon: 		image,
+			});
+			
+			// Add it to the active markers array
+			activeMarkers.push(marker);
+			
+			// Set up a click listener for it
+			google.maps.event.addListener( marker, 'click', ( function() {
+			
+				// Use a jQuery trick to include HTML
+				var desc = $('<div />').html(this.desc).text();
+				var title = $('<div />').html(this.title).text();
+			
+				// Set up some HTML for the info window
+				var marker_content = '<div class="marker-window">'+
+				'<h3 class="marker-title">' + title + '</h3>'+
+				'<p class="marker-content">' + desc + '</p>'+
+				'</div>';	
+			
+				// Show the tooltip
+				infowindow.setContent( marker_content );
+				infowindow.open( esomap, this );
+			}));
+		}
+	});
 }

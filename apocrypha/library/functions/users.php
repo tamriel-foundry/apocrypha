@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme User Functions
  * Andrew Clayton
- * Version 1.0.2
- * 2-14-2014
+ * Version 1.2
+ * 4-17-2014
  */
  
 // Exit if accessed directly
@@ -596,7 +596,7 @@ class Edit_Profile extends Apoc_User {
 		}
 		
 		// Save the user_url to the users table
-		if ( !empty( $_POST['user_url'] ) && $_POST['user_url'] != $originals['user_url'] )
+		if ( $_POST['user_url'] != $originals['user_url'] )
 			wp_update_user( array ( 'ID' => $user_id , 'user_url' => esc_url( $_POST['user_url'] ) ) ) ;
 		
 		// Let plugins save their stuff

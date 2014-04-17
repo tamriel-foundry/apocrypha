@@ -16,15 +16,7 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 		<li id="home" class="top nodrop"><a href="<?php echo SITEURL; ?>">Home</a></li>
 	
 		<li id="gameinfo" class="top drop"><a href="#">Game Info<i class="drop-icon icon-angle-down"></i></a>
-			<div class="dropdown col4">
-				<div class="sub col">
-					<h3>Factions</h3>
-					<ul class="submenu">
-						<li><a href="<?php echo SITEURL . '/groups/aldmeri-dominion/' ?>">Aldmeri Dominion</a></li>
-						<li><a href="<?php echo SITEURL . '/groups/daggerfall-covenant/' ?>">Daggerfall Covenant</a></li>
-						<li><a href="<?php echo SITEURL . '/groups/ebonheart-pact/' ?>">Ebonheart Pact</a></li>
-					</ul>
-				</div>
+			<div class="dropdown col3">
 				<div class="sub col">
 					<h3>Classes</h3>
 					<ul class="submenu">
@@ -35,19 +27,18 @@ $loggedin	= ( $user_id > 0 ) ? true : false;
 					</ul>
 				</div>
 				<div class="sub col">
-					<h3>Skill Lines</h3>
+					<h3>Guides</h3>
 					<ul class="submenu">
-						<li><a href="<?php echo SITEURL . '/races/' ?>">Racial Bonuses</a></li>
-						<li><a href="<?php echo SITEURL . '/weapons/' ?>">Weapon Skills</a></li>
-						<li><a href="<?php echo SITEURL . '/armors/' ?>">Armor Types</a></li>
+						<li><a href="<?php echo SITEURL . '/guides/' ?>">PvE Guides</a></li>
+						<li><a href="<?php echo SITEURL . '/crafting/' ?>">Crafting Hub</a></li>
+						<li><a href="<?php echo SITEURL . '/races/' ?>">Racial Comparison</a></li>
 					</ul>
-				</div>	
+				</div>
 				<div class="sub col">
 					<h3>Resources</h3>
 					<ul class="submenu">
 						<li><a href="<?php echo SITEURL . '/development-faq/' ?>">Development Timeline</a></li>
 						<li><a href="<?php echo SITEURL . '/map/' ?>">Interactive Map</a></li>
-						<li><a href="<?php echo SITEURL . '/crafting/' ?>">Crafting Hub</a></li>
 						<li><a href="<?php echo SITEURL . '/ftc/' ?>">Foundry Tactical Combat</a></li>
 					</ul>
 				</div>		

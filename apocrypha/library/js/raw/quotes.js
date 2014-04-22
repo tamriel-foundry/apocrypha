@@ -1,29 +1,27 @@
 /*! Forum Quotes */
-$("#comments,#forums,#bbpress-forums").on( "click" , "a.quote-link" , function( event ){
+$("#comments,#forums").on( "click" , "a.quote-link" , function( event ){
 
 	// Declare some variables
-	var quoteParent = '';
-	var quoteSource = '';
-	var posttext = '';
+	var context=quoteParent=quoteSource=posttext=quote='';
 	
 	// Prevent the default
 	event.preventDefault();
 	
 	// Get the passed arguments
-	var context	= $(this).data('context');
-	var postid 	= $(this).data('id');
-	var author 	= $(this).data('author');
-	var date	= $(this).data('date');
+	context	= $(this).data('context');
+	postid 	= $(this).data('id');
+	author 	= $(this).data('author');
+	date	= $(this).data('date');
 	
 	// Determine the context
 	if ( 'reply' == context ) {
 		quoteParent = '#post-' + postid;
 		quoteSource = '#post-' + postid + ' .reply-content';
-		editor		= 'bbp_reply_content';
+		editor		= 'bbp_reply_content'
 	} else if ( 'comment' == context ) {
 		quoteParent = '#comment-' + postid;
 		quoteSource = '#comment-' + postid + ' .reply-content';
-		editor		= 'comment';
+		editor		= 'comment'
 	}
 	
 	// Look first for a specific text selection		
@@ -35,7 +33,7 @@ $("#comments,#forums,#bbpress-forums").on( "click" , "a.quote-link" , function( 
 	else return;
 			
 	// If there is a selection, make sure it came from the right place
-	if ( '' !== posttext ) {
+	if ( '' != posttext ) {
 		
 		// Split the selection to grab the first and last lines
 		postlines = posttext.split(/\r?\n/);
@@ -43,18 +41,19 @@ $("#comments,#forums,#bbpress-forums").on( "click" , "a.quote-link" , function( 
 		lastline 	= postlines[postlines.length-1];
 		
 		// If both the first line AND the last line come from within the target area, it must be valid
-		if ( 0 === $( quoteSource ).find( ":contains(" + firstline + ")" ).length || 0 === $( quoteSource ).find( ":contains(" + lastline + ")" ).length ) {
+		if ( 0 == $( quoteSource ).find( ":contains(" + firstline + ")" ).length || 0 == $( quoteSource ).find( ":contains(" + lastline + ")" ).length ) {
 			alert( 'This is not a valid quote selection. Either select a specific passage or select nothing to quote the full post.' );
 			return;
 		}
 	}
 		
 	// Otherwise, if there's no selection, grab the whole post
-	if ( '' === posttext )
+	if ( '' == posttext )
 		posttext = $( quoteSource ).html();
 		
 	// Remove revision log
 	posttext = posttext.replace(/<ul id="bbp-reply-revision((.|\n)*?)(<\/ul>)/,"");
+	posttext = posttext.replace(/<ul id="bbp-topic-revision((.|\n)*?)(<\/ul>)/,"");
 	
 	// Remove spoilers (greedily)
 	posttext = posttext.replace(/<div class="spoiler">((.|\n)*?)(<\/div>)/g,"");
@@ -73,7 +72,7 @@ $("#comments,#forums,#bbpress-forums").on( "click" , "a.quote-link" , function( 
 	posttext = posttext.replace(/display: none;/g,"");
 
 	// Build the quote
-	var quote = '\r\n\r\n[quote author="' + author + '|' +quoteParent.substring(1)+ '|' +date+ '"]';
+	quote = '\r\n\r\n[quote author="' + author + '|' +quoteParent.substring(1)+ '|' +date+ '"]';
 	quote += '\r\n' +posttext;
 	quote += '\r\n[/quote]\r\n\r\n&nbsp;';
 	
@@ -89,6 +88,7 @@ $("#comments,#forums,#bbpress-forums").on( "click" , "a.quote-link" , function( 
 		switchEditors.switchto(editor_tmce);
 			
 	 $('html, body').animate({ scrollTop: $( '#respond' ).offset().top }, 600);
+		
 });
 
 

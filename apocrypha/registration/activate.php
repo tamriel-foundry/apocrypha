@@ -31,7 +31,7 @@
 		<?php else : ?>	
 			<div class="instructions">
 				<h3 class="double-border bottom">Activate an Account</h3>
-				<p>If you followed the activation link from your email, your account has already been activated and you can now log in with the username and password you provided at registration. Otherwise you can manually activate a pending account using a valid activation key.</p>
+				<p>If you already followed the activation link from your email, your account has been activated and you can now log in with the username and password you provided at registration. Otherwise you can manually activate a pending account using a valid activation key.</p>
 			</div>
 			
 			<form action="<?php the_permalink(); ?>" method="get" class="standard-form" id="activation-form">

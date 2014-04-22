@@ -1,5 +1,5 @@
 /*---------------------------------------------
-	11.2 - TINYMCE
+	11.1 - TINYMCE
 ----------------------------------------------*/
 div.wp-editor-wrap {
 	width: 98%;
@@ -15,23 +15,22 @@ div.wp-editor-container {
 	border-radius: 3px;
 	box-shadow: 0 0 8px #000;
 	}
-td.mceIframeContainer > iframe{ 
-	min-height:150px; 
-	max-height: 600px;
-	}
 textarea.wp-editor-area {
 	max-width: 100%;
 	background: #151515;
 	color: #CCC;
-	font-size: 0.875em;
+	font-size: 0.75em;
 	font-family: 'Open Sans' , sans-serif;
+	}
+div.wp-editor-container div.mce-edit-area {
+	background: #000;
 	}
 
 /* Toolbars */	
 div.wp-editor-container .quicktags-toolbar,
-table.mceLayout tr.mceFirst td.mceToolbar,
-table.mceLayout tr.mceLast td.mceStatusbar {
-	padding: 5px 10px;
+div.wp-editor-container .mce-toolbar-grp,
+div.wp-editor-container .mce-statusbar {
+	padding: 5px 0;
 	border-bottom: 3px solid #111;
 	background: #AAA;
 	background: -ms-linear-gradient(top, #BBB, #b3a695);
@@ -41,22 +40,8 @@ table.mceLayout tr.mceLast td.mceStatusbar {
 	box-shadow: 0 0 3px #000 inset;
 	border: 1px solid #000;
 	}
-table.mceLayout tr.mceLast td.mceStatusbar { padding: 2px 10px; }
-table.mceLayout tr.mceFirst td.mceToolbar { padding: 5px 0; }
-table.mceLayout tr.mceLast td.mceStatusbar * { color: #000; }
-table.mceLayout tr.mceLast td.mceStatusbar a.mceResize { background-image: none; }
-table.mceLayout tr.mceLast td.mceStatusbar a.mceResize:before {
-	position: absolute;
-	top: 2px;
-	right: 0;
-	font-family: FontAwesome;
-	color: #111;
-	content: "\F065";
-    -moz-transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg);
-    transform: rotate(-90deg);
-    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1)
-	}
+div.wp-editor-container .mce-statusbar { padding: 2px 10px; }
+div.wp-editor-container .mce-statusbar > * { color: #000; }
 
 /* Editor Control Tabs */
 .wp-editor-tools .wp-switch-editor {
@@ -94,73 +79,97 @@ table.mceLayout tr.mceLast td.mceStatusbar a.mceResize:before {
 	}
 	
 /* Icons */
-table.mceToolbar td > a.mceButton:hover,
+div.mce-toolbar div.mce-btn-group {
+	margin: 3px 0.5em;
+	}
+div.wp-editor-container div.quicktags-toolbar {
+	padding: 3px 0.5em;
+	}
+div.mce-toolbar div.mce-btn-group div.mce-btn,
 .quicktags-toolbar input.ed_button {
+	background: none;
+	border: none;
+	margin: 0 0.5em 0 0;
+	}
+.mce-toolbar .mce-btn button,
+.quicktags-toolbar input.ed_button {
+	box-shadow: none;
+	border: 1px solid transparent;
+	border-radius: 0;
+	}
+.mce-toolbar .mce-btn i.mce-ico,
+.quicktags-toolbar input.ed_button { 
+	color: #444; 
+	}
+.mce-toolbar .mce-btn button:hover,
+.quicktags-toolbar input.ed_button:hover {
 	background: #b3a695;
 	border: 1px solid #000;
+	border-radius: 0;
 	}
-.quicktags-toolbar input.ed_button {
-	margin: 0 3px;
-	color: #000;
-	box-shadow: none;
-	}
-table.mceToolbar td > a.mceButtonActive,
+.mce-toolbar .mce-btn:hover i.mce-ico,
 .quicktags-toolbar input.ed_button:hover {
-	background: #BBB;
-	border: 1px solid #000;
+	color: #000;
 	}
-a.mceButton	> span.mceIcon {	color: #444; }
-a.mceButton:hover	> span.mceIcon {	color: #000; }
+
 
 /* Dropdowns */
-table.mceToolbar table.mceListBox {
+.mce-toolbar .mce-btn-group div.mce-btn.mce-listbox,
+.mce-toolbar .mce-btn-group div.mce-btn.mce-listbox:hover {
 	background: #b3a695;
+	border: 1px solid transparent;
+	}
+.mce-toolbar .mce-btn-group div.mce-btn.mce-listbox button {
 	border: 1px solid #444;
 	}
-table.mceListBox a.mceText { color: #111; }
-div.mceListBoxMenu div.mceMenu { border-color: #444; }
-div.mceListBoxMenu div.mceMenu > table { background: #b3a695; }
-div.mceMenu td.mceMenuItemTitle a { 
+div.mce-panel.mce-menu,
+div.mce-panel.mce-floatpanel {
 	padding: 0;
-	background: #666; 
-	border: none;
+	background: #b3a695;
+	border: 1px solid #000;
 	}
 
 /* Color Picker */
-table.mceSplitButton td.mceFirst,
-table.mceSplitButton td.mceLast {
-	background: #b3a695;
+.mce-toolbar .mce-btn-group div.mce-btn.mce-colorbutton,
+.mce-toolbar .mce-btn-group div.mce-btn.mce-colorbutton:hover  {
+	border: 1px solid #444;
+	background: transparent;
 	}
-table.mceSplitButton:hover td.mceFirst,
-table.mceSplitButton:hover td.mceLast {
-	background: #CCC;
-	} 
-table.mceSplitButton td a.mceAction,
-table.mceSplitButton td a.mceOpen {
-	border: 1px solid #444 !important;
-	}
-table.mceSplitButton td a.mceOpen { border-left: none !important; }
-.wp_themeSkin div.mceColorSplitMenu > table.mceColorSplitMenu {
-	background: #b3a695;
-	border: 1px solid #000;
-	}
-div.mceColorSplitMenu table.mceColorSplitMenu	a.mceMoreColors {
-	color: #000;
+.mce-toolbar .mce-btn-group div.mce-btn.mce-colorbutton > button,
+.mce-toolbar .mce-btn-group div.mce-btn.mce-colorbutton:hover > button,
+.mce-toolbar .mce-btn-group div.mce-btn.mce-colorbutton > button:hover {
+	background: none;
 	border: none;
 	}
+.mce-grid.mce-colorbutton-grid td div { border: 1px solid #000; }
 	
 /* Popup Dialogues */
-.wp-dialog {
-	background: #AAA;
-	background: -ms-linear-gradient(top, #BBB, #999 );
-    background: -moz-linear-gradient(top, #BBB, #999 );
-	background: -o-linear-gradient(top, #BBB, #999 );
-	background: -webkit-linear-gradient(top, #BBB, #999 );
+div#wp-link-wrap {
+	overflow: visible;
+	background: #CCC;
+	background: -ms-linear-gradient(top, #CCC, #BBB );
+    background: -moz-linear-gradient(top, #CCC, #BBB );
+	background: -o-linear-gradient(top, #CCC, #BBB );
+	background: -webkit-linear-gradient(top, #CCC, #BBB );
+	font-size: 12px;
 	}
-.wp-dialog .ui-dialog-titlebar {
-	border-bottom: 1px solid #000;
-	}
-#wp-link {
-	background: none !important;
+form#wp-link {
 	color: #000;
+	}
+form#wp-link div#link-modal-title {
+	margin: 0 0.5em;
+	border-bottom: 1px solid #000;
+	background: none;
+	}
+form#wp-link .submitbox {
+	background: none;
+	margin: 0.5em;
+	border: none;
+	bottom: 5px;
+	}
+form#wp-link input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+	position: relative;
+	opacity: 100;
 	}

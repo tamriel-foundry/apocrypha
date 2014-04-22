@@ -14,15 +14,14 @@ function get_moderator_emails() {
 	$emails = array(
 		'atropos@tamrielfoundry.com',
 		'rial@tamrielfoundry.com',
-		'isarii@tamrielfoundry.com',
 		'tonsha@tamrielfoundry.com', 
 		'grimalkin@tamrielfoundry.com', 
 		'nybling@outlook.com',
-		'miguel.albano.nogueira@gmail.com',
 		'charlesbrandt19@yahoo.com',
 		'Phazius@gmail.com',
 		'michaeldamron@gmail.com',
 		'taventhebold@gmail.com',
+		'pete.ocarroll@gmail.com',
 	);
 	return $emails;
 }

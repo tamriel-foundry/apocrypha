@@ -330,11 +330,9 @@ function twitch_streams_widget() {
 			'Atropos' 			=> 'atropos_nyx', 
 			'Nybling' 			=> 'nybling',
 			'Erlexx' 			=> 'erlexx', 
-			'Soma' 				=> 'somaplays', 
 			'Deagen'			=> 'deagen',
 			'typeRkrim'			=> 'typerkrim',
 			'Rudrias'			=> 'rudrias',
-			'Tholren'			=> 'tholren',
 			'Moowi'				=> 'moomoney',
 		);
 		

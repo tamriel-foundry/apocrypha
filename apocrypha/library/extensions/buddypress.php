@@ -708,6 +708,9 @@ class Apoc_Profile {
 			
 		if ( $_POST['group-interests']  )
 			groups_update_groupmeta( $id, 'group_interests', $_POST['group-interests'] );
+			
+		// Clear the cached metadata
+		wp_cache_delete( 'bp_groups_allmeta_' . $id , 'bp' );
 	}
 }
 

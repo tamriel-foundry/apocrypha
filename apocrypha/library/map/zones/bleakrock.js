@@ -17,3 +17,4 @@ locations[14]=['Bleakrock Lighthouse','tower','This lighthouse controls the pass
 locations[15]=['Last Rest','barrow','This ancient barrow serves as both resting place for Bleakrock&#039;s hallowed dead, and an emergency refuge for it&#039;s townsfolk in times of peril.',55.335,53.481];
 locations[16]=['Bleakrock Treasure 1','treasure','This buried treasure is underneath the bridge along the road west from Bleakrock Wayshrine.',56.595,53.042];
 locations[17]=['Bleakrock Treasure 2','treasure','This buried treasure rests between two trees where a polar bear wanders through the area.',57.509,52.932];
+locations[18]=['Bleakrock Collector&#039;s Treasure','treasure','The collectors edition treasure location for Bleakrock isle is on the right side of the Last Rest barrow.',55.297,53.24];

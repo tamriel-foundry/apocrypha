@@ -85,3 +85,6 @@ locations[82]=['Direfrost keep','instance','A 4 man dungeon. Adventurer&#039;s r
 locations[83]=['Dreamwalkers','lorebook','Behind some crates close to the sewer entrance for direfrost keep. This lorebook belongs to the Eastmarch lore library.',43.435,49.263];
 locations[84]=['The Stormfist Clan','lorebook','A little in the hills on top of a tree stump. Belongs to the Eastmarch lorebook library.',45.165,49.197];
 locations[85]=['To Posterity','lorebook','This tome of dungeon lore is within Direfrost Keep at the feet of a kneeling ice-covered adventurer part-way into the dungeon.',42.268,49.373];
+locations[86]=['The Ritual Stone','mundus','This Mundus stone is in a snowy glade to the northwest of Cragwallow.',50.408,42.968];
+locations[87]=['Eastmarch Treasure IV','treasure','This buried treasure is on the western shore of the large pond to the east of Fort Amol.',46.384,33.464];
+locations[88]=['Tinkerer Tobin&#039;s Workshop','crafting','This small outdoor crafting camp allows players to create items with the &quot;Song of Lamae&quot; set bonus.',50,38.499];

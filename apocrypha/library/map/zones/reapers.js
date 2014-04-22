@@ -103,3 +103,4 @@ locations[100]=['Moon Sugar for Glossy-Fur? Yes!','lorebook','This tome of Reape
 locations[101]=['Reapers March Skyshard 2','skyshard','&lt;em&gt;Where temple became tree-house.&lt;/em&gt; This skyshard stands atop the rocky bluffs behind the temple at Greenhill.',-25.037,-13.557];
 locations[102]=['Pa&#039;alat','town','The Khajiit village of Pa&#039;alat is home to embassies of all three of the major political alliances that preserve an uneasy truce within the town for some strange reasons.',-24.55,-5.779];
 locations[103]=['Litter-Mates of Darkness','lorebook','Litter-Mates of Darkness lorebook, guarded by a Troll.',-20.243,-4.274];
+locations[104]=['A Looter&#039;s Paradise','lorebook','This Reaper&#039;s March lorebook can be found on a crate inside the house.',-26.992,-2.406];

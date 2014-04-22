@@ -109,3 +109,4 @@ locations[106]=['Remember Me','lorebook','This Shadowfen lorebook can be found b
 locations[107]=['Remember Me','lorebook','This Shadowfen lorebook can be found behind some rocks near the Ayleid Ruins.',-25.822,77.014];
 locations[108]=['Hatching Pools','tree','Progress the Shadowfen story quests at the Hatching Pools.',-23.224,79.937];
 locations[109]=['A Mother&#039;s Nursery Rhyme','lorebook','This Shadowfen lorebook can be found near this pool near an overturned basket.',-23.931,74.487];
+locations[110]=['Shadowfen CE Treasure','treasure','The collectors edition buried treasure in Shadowfen is found at the base of a large tree to the south of Ten-Maur-Wolk.',-19.416,83.694];

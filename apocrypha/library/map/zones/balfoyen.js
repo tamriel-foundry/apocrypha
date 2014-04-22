@@ -13,3 +13,4 @@ locations[10]=['Foyen Docks Wayshrine','wayshrine','An old Argonian wayshrine si
 locations[11]=['Hidden Dagger Landing Site','landmark','This small cove is where Daggerfall Covenant commandos have made their landing on the shores of Bal Foyen.',18.186,98.646];
 locations[12]=['Bal Foyen Treasure 1','treasure','This hidden treasure is buried in a Guar pasture to the west of the Dhalmora Wayshrine.',13.613,97.405];
 locations[13]=['Bal Foyen Treasure 2','treasure','This buried treasure is located on a grassy bluff to the right of the twin staircases leading up towards Stonefield.',15.96,92.571];
+locations[14]=['Bal Foyen CE Treasure','treasure','The collectors edition buried treasure is located on a ledge to the north of the Dhalmora Watchtower.',17.496,96.339];

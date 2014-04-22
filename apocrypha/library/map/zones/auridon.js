@@ -124,3 +124,4 @@ locations[121]=['Collector&#039;s Auridon Treasure','treasure','A mound of dirt 
 locations[122]=['Crimes of the Daggerfall Covenet','lorebook','This Auridon Lore book lies on top of a broken crate.',-29.972,-88.066];
 locations[123]=['Auridon Treasure II','treasure','Location for the Auridon Treasure Map II',-50.072,-80.618];
 locations[124]=['Ayleid Inscriptions Translated','lorebook','Sitting on a crate beside the ladder to Valano Manor from the beach.',-55.148,-70.181];
+locations[125]=['Auridon Treasure III','treasure','This hidden treasure is at the base of a distinctive rock archway which forms the island of Smuggler&#039;s Cove.',-45.899,-82.507];

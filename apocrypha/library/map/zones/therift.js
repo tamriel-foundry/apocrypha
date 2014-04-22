@@ -91,3 +91,5 @@ locations[88]=['Lost Prospect','battle','Save refugees from the cultists!',31.87
 locations[89]=['A Lorebook','lorebook','A lorebook',30.086,54.734];
 locations[90]=['The Rift Skyshard 16','skyshard','&lt;em&gt;Protected by wraiths in a beast&#039;s den.&lt;/em&gt; Towards the rear of the instance in a nook protected by wraiths.',35.42,17.798];
 locations[91]=['Giant Camp','boss','This giant and his companion are not messing around. 3+ Adventurers recommended.',34.486,51.877];
+
+locations[92]=['The Rift Treasure II','treasure','This hidden treasure location is on the shore of the lake northwest of Faldar&#039;s Tooth.',35.279,38.013];

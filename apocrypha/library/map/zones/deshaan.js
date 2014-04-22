@@ -109,3 +109,4 @@ locations[106]=['Knife Ear Grotto','daedric','Explore this Daedric Ruin and clea
 locations[107]=['Deshaan Skyshard 11','skyshard','&lt;em&gt;Lend me your ear.&lt;/em&gt; This skyshard can be found at the very end of Knife Ear Grotto, obtain it before you leave!',0.474,104.474];
 locations[108]=['Deshaan Skyshard 14','skyshard','&lt;em&gt;Mine your step where the water drops in.&lt;/em&gt; Near the end of Triple Circle Mine, the skyshard will be in an open crate.',-0.24,88.412];
 locations[109]=['Eidolon&#039;s Hollow','ruin','Face down the Maulborn and Daedra threats to Deshaan once and for all.',3.339,101.948];
+locations[110]=['Deshaan Treasure II','treasure','This buried treasure is hidden between two gnarled trees on the bank of the river north of Narsis.',-1.188,70.302];

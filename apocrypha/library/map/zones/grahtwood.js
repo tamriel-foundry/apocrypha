@@ -104,3 +104,4 @@ locations[101]=['Ebony Blade History','lorebook','This book can be found just to
 locations[102]=['Grahtwood Skyshard 12','skyshard','&lt;em&gt;Six-legged thunder invades.&lt;/em&gt; This skyshard can be found inside the Burroot Kwama Mine.',-53.886,-20.72];
 locations[103]=['Grahtwood Skyshard 13','skyshard','&lt;em&gt;Not yet dead on the vine.&lt;/em&gt;This skyshard can be found inside the Vindeath Cave.',-51.769,-11.107];
 locations[104]=['Grahtwood Skyshard 16','skyshard','&lt;em&gt;Crocs claimed a meal in the sunder.&lt;/em&gt;This skyshard can be found inside Root Sunder Ruins.',-57.327,-13.81];
+locations[105]=['Grahtwood CE Treasure','treasure','The collectors edition treasure map location is on a small island off the western shore of the mainland behind a low stone wall.',-57.381,-27.554];

@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme bbPress Functions
  * Andrew Clayton
- * Version 1.0.3
- * 2-22-2014
+ * Version 1.0.4
+ * 8-12-2014
 
 ----------------------------------------------------------------
 >>> TABLE OF CONTENTS:
@@ -82,6 +82,9 @@ class Apoc_bbPress {
 		
 		// Quote Mentions
 		add_filter( 'bbp_activity_reply_create_excerpt' 				, array( $this , 'quote_mention' ) );
+		
+		// Block topic spam
+		add_filter( 'bbp_new_topic_pre_title' 	, array( $this , 'block_spam' ) );
 	}
 	
 	/**
@@ -201,6 +204,57 @@ class Apoc_bbPress {
 		// Otherwise, allow the link
 		else return $html;
 	}
+	
+	/**
+	 * Block certain recurring spam topics
+	 * @version 1.0.4
+	 */	
+	function block_spam( $topic_title ) {
+	
+		// Set up an array of (lowercase) bad words and their point value
+		$illegals = array(
+			'vashikaran',
+			'baba ji',
+			'love problem',
+			'marriage problem',
+			'+91',
+			'+91',
+			'+O99',
+			'91-85',
+			'91-99',
+			'919914',
+		);
+		
+		// Get the all-lowercase title
+		$spam_title = strtolower( $topic_title );
+		
+		// Check for any of the illegals in the title
+		foreach ( $illegals as $illegal ) {
+			if ( strpos( $spam_title , $illegal ) !== false ) {
+			
+				// If the topic matches as spam, let's ban the user
+				$user = new WP_User( get_current_user_id() );
+				$user->set_role('banned');	
+				
+				// Send an email letting me know
+				$headers 	= "From: Foundry Discipline Bot <noreply@tamrielfoundry.com>\r\n";
+				$headers	.= "Content-Type: text/html; charset=UTF-8";
+				$subject 	= 'User ' . $user->user_login . ' banned for spamming.';
+				$body 		= 'The user ' . bp_core_get_userlink( $user->ID ) . ' was banned for attempting to post the topic: "' . $topic_title . '".';
+				wp_mail( 'atropos@tamrielfoundry.com' , $subject , $body , $headers );
+			
+				// Trigger an error, preventing the topic from posting
+				bbp_add_error( 'apoc_topic_spam' , '<strong>ERROR</strong>: Die, filthy spammer!' );
+				
+				// Log the user out
+				wp_logout();
+				break;
+			}
+		}
+		
+		return $topic_title;
+	}
+
 	
 	/**
 	 * Special bbPress allowed KSES

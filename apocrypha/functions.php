@@ -133,7 +133,8 @@ function apoc_mce_buttons( $buttons ) {
 	if ( is_admin() ) return $buttons;
 	
 	// Remove buttons and return
-	$remove = array('wp_more','wp_adv','fullscreen');
+	//$remove = array('wp_more','wp_adv','fullscreen');
+	$remove = array('wp_more','fullscreen');
 	return array_diff($buttons,$remove);
 
 }
@@ -154,7 +155,7 @@ function apoc_mce_buttons_2( $buttons ) {
  * Set ER Recruitment Status and Class Needs
  */
 function guild_recruitment_status() {
-	$status = 'closed';
+	$status = 'open';
 	return $status;
 }
 function get_class_recruitment_status() {
@@ -165,9 +166,9 @@ function get_class_recruitment_status() {
 		'nightblade' => 'low',
 	) : array (
 		'dragonknight' => 'medium',
-		'templar' => 'medium',
-		'sorcerer' => 'medium',
-		'nightblade' => 'medium',
+		'templar' => 'low',
+		'sorcerer' => 'low',
+		'nightblade' => 'low',
 	);
 	return $classes;
 }

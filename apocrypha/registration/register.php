@@ -101,7 +101,7 @@
 				
 				<h3 class="registration-header double-border bottom">Confirm Your Humanity</h3>
 				<div id="humanity-section">
-					<img id="humanity-image" class="avatar" src="<?php echo THEME_URI; ?>/images/avatars/argonian.png" alt="HINT: This is an Argonian!" title="HINT: This is an Argonian!" width="220" height="250" />
+					<img id="humanity-image" class="avatar" src="<?php echo THEME_URI; ?>/images/avatars/registration.png" alt="HINT: This is a Khajiit!" title="HINT: This is a Khajiit!" width="220" height="250" />
 					<div id="humanity-fields">		
 						<?php do_action( 'bp_confirm_humanity_errors' ); ?>
 						<label for="confirm_humanity"><i class="icon-search"></i>Identify which iconic Elder Scrolls race is shown in the image to the left:</label><br><br>

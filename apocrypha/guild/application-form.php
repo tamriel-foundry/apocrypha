@@ -2,8 +2,8 @@
 /**
  * Apocrypha Theme Entropy Rising Application Form
  * Andrew Clayton
- * Version 1.1
- * 1-21-2014
+ * Version 1.2
+ * 4-29-2014
  */
 
  
@@ -33,6 +33,11 @@ if( isset( $_POST['submitted']) ) {
 		} else $character_name = trim($_POST['character-name']);
 		
 		$character_class = $_POST['character-class'];
+		
+		if(trim($_POST['character-level']) === '') {
+			$levelError = 'Please enter your character level.';
+			$hasError = true;
+		} else $character_level = trim($_POST['character-level']);
 
 		if(trim($_POST['your-age']) === '') {
 			$ageError = 'Please state your age.';
@@ -104,6 +109,7 @@ if( isset( $_POST['submitted']) ) {
 			$body .= "<li>Age: $your_age</li>";
 			$body .= "<li>Character Name: $character_name</li>";
 			$body .= "<li>Character Class: $character_class</li>";
+			$body .= "<li>Character Level: $character_level</li>";
 			$body .= "<li>Character Build: $character_build</li>";
 			$body .= "<li>Playstyle: $playstyle</li>";
 			$body .= "<li>Member of Another Guild: $otherguild, $otherguildurl</li>";
@@ -144,19 +150,29 @@ if( isset( $_POST['submitted']) ) {
 <form action="<?php the_permalink(); ?>" id="guild-application-form" method="post">
 	<ol id="guild-application-list">	
 		<li class="text">
-			<label for="character-name"><i class="icon-bookmark icon-fixed-width"></i>Character Name (intended):</label>
+			<label for="character-name"><i class="icon-bookmark icon-fixed-width"></i>Character Name:</label>
 			<input type="text" name="character-name" value="<?php if(isset($_POST['character-name'])) echo $_POST['character-name'];?>" size="50" />
 			<?php if( isset( $nameError ) && $nameError ) echo '<div class="error">' . $nameError . '</div>'; ?> 
 		</li>
 	
 		<li class="select">
-			<label for="character-class"><i class="icon-gear icon-fixed-width"></i>Character Class (intended):</label>
+			<label for="character-class"><i class="icon-gear icon-fixed-width"></i>Character Class:</label>
 			<select name="character-class">
 			<?php $classes = array ( 'dragonknight', 'templar', 'sorcerer', 'nightblade' ); 
 				foreach ( $classes as $key => $class ) :
 				echo '<option value="' . $class . '" ' . selected( $_POST['character-class'] , $class , true ) . '>' . ucfirst($class) . '</option>';
 				endforeach; ?>
 			</select>
+		</li>
+		
+		<li class="text">
+			<label for="character-level"><i class="icon-bookmark icon-fixed-width"></i>Veteran Rank:</label>
+			<select name="character-level">
+				<option value=""></option>
+				<option value="VR10">VR12</option>
+				<option value="declined">Don't Bother Applying</option>
+			</select>
+			<?php if( isset( $levelError ) && $levelError ) echo '<div class="error">' . $levelError . '</div>'; ?> 
 		</li>
 		
 		<li class="text">		

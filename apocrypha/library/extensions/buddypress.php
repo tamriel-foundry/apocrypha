@@ -305,7 +305,7 @@ class Apoc_BuddyPress {
 		if ( empty( $_POST['confirm_coc_box'] ) )
 			$bp->signup->errors['confirm_coc_box'] = 'You must indicate your acknowledgement of the Tamriel Foundry code of conduct.';
 			
-		if ( 'argonian'	!=	trim( strtolower ( $_POST['confirm_humanity'] ) ) )
+		if ( 'khajiit'	!=	trim( strtolower ( $_POST['confirm_humanity'] ) ) )
 			$bp->signup->errors['confirm_humanity'] = 'That is incorrect. Hover on the image if you require a hint.';
 	}
 	

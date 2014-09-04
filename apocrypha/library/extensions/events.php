@@ -573,6 +573,7 @@ function apoc_calendar_upcoming_events( $calendar = '' ) {
 									'compare'	=> 'BETWEEN',
 								) ),
 		'orderby'			=> 'event_date',
+		'order'				=> 'ASC'
 	) );
 	return $events_loop;
 }
@@ -601,6 +602,7 @@ function apoc_calendar_past_events( $calendar = '' , $number = 3 ) {
 									'compare'	=> '<',
 								) ),
 		'orderby'			=> 'event_date',
+		'order'				=> 'DESC'
 	) );
 	return $events_loop;
 }

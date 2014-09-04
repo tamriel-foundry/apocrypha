@@ -4,11 +4,11 @@
  * Andrew Clayton
  * Template Name: Submit Guild
  * Version 1.0.0
- * 9-30-2013
+ * 4-29-2014 
  */
  
 // Set guild submission status
-$enabled 	= false;
+$enabled 	= true;
 $minposts 	= 25;
 $regtime	= '2 weeks';
 
@@ -111,7 +111,7 @@ if( 0 < $user_id && isset( $_POST['submitted'] ) ) {
 		$body 		= '<p><b>From:</b> <a href="http://tamrielfoundry.com/members/'.$login.'" title="view profile" target="_blank">'.$username.'</a></p>';
 		$body 		.= "<p><b>Email:</b> $user_email</p>";
 		$body 		.= "<p><b>Guild Name:</b> $group_name</p>";
-		$body 		.= "<p><b>Guild Description:</b></p> $group_description";
+		$body 		.= "<p><b>Guild Description:</b></p><div>$group_description</div>";
 		$body 		.= "<p><b>Guild Website:</b> $group_website</p>";
 		$body 		.= "<p><b>Guild Platform:</b> $group_platform</p>";
 		$body 		.= "<p><b>Guild Faction:</b> $group_faction</p>";

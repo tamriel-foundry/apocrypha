@@ -165,10 +165,10 @@ function get_class_recruitment_status() {
 		'sorcerer' => 'low',
 		'nightblade' => 'low',
 	) : array (
-		'dragonknight' => 'medium',
-		'templar' => 'low',
-		'sorcerer' => 'low',
-		'nightblade' => 'low',
+		'dragonknight' => 'high',
+		'templar' => 'medium',
+		'sorcerer' => 'medium',
+		'nightblade' => 'medium',
 	);
 	return $classes;
 }

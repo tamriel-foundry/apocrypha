@@ -8,8 +8,7 @@
  */
  
 // Load up the ER group
-$group = groups_get_group( array( 'group_id' => 1 ) );
-?>
+$group = groups_get_group( array( 'group_id' => 1 , 'populate_extras' => true ) ); ?>
 
 <?php entropy_rising_header(); ?>
 

@@ -346,8 +346,6 @@ class Apocrypha {
 	function email_address( $email ) {
 		if ( 'wordpress@tamrielfoundry.com' == $email )
 			return 'noreply@tamrielfoundry.com';
-		elseif ( strpos( $email , '@tamrielfoundry.com' ) !== false ) 
-			return 'noreply@tamrielfoundry.com';
 		else
 			return $email;
 	}

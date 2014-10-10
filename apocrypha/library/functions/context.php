@@ -84,8 +84,8 @@ class Apoc_Context {
 		
 		// Set up some intial variables
 		$context 	= array();
-		$object 	= $this->queried_object;
-		$object_id 	= $this->queried_object_id;
+		$object 	= get_queried_object();
+		$object_id 	= $object->ID;
 		
 		// Home page
 		if ( is_home() ) {

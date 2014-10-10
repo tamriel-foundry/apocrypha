@@ -3,8 +3,8 @@
  * Apocrypha Theme Entropy Rising Guild Application Template
  * Template Name: Entropy Rising Application
  * Andrew Clayton
- * Version 1.1
- * 1-21-2014
+ * Version 1.2
+ * 10-10-2014
  */
 ?>
 
@@ -16,7 +16,7 @@
 			<div id="showcase">
 				<div id="recruitment-video">
 				<header class="widget-header"><h3 class="widget-title">Recruitment Video</h3></header>
-					<?php if( !isset($_POST['submitted']) ) $autoplay = 'autoplay=1';
+					<?php $autoplay = !isset($_POST['submitted']) ? 'autoplay=0' : '';
 					$source = 'http://www.youtube.com/embed/yXW3E8pBw4M';
 					$options = '?' . $autoplay . '&vq=hd720'; ?>
 					<iframe width="640" height="360" src="<?php echo $source . $options; ?>" frameborder="0" allowfullscreen></iframe>

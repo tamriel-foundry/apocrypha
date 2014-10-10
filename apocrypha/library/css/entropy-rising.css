@@ -122,15 +122,17 @@ div#recruitment-video  {
 div.guild-status div.instructions {
 	margin: 0.5em 0;
 	}
-div#er-application {
+#er-application {
 	width: 100%;
 	float: left;
 	margin: 0 0 1em;
 	}
-form#guild-application-form { margin: 0 0 1em; }
-ol#guild-application-list {
+#guild-application-form { margin: 0 0 1em; }
+#guild-application-list {
 	list-style: decimal;
 	padding: 0 0 0 2em;
 	}
-form#guild-application-form li.text label,
-form#guild-application-form li.select label { width: 250px; }
+#guild-application-form li.text label,
+#guild-application-form li.select label { width: 250px; }
+#guild-application-form li.wp-editor > ul li { margin: 0; }
+#guild-application-form div.wp-editor-wrap { margin-top: 1em; }

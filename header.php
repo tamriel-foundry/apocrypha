@@ -29,7 +29,7 @@
 			
 			<a id="main-banner" href="<?php echo SITEURL; ?>"></a>
 			
-			<div id="azk60495"></div><!-- QuantCast -->
+			<div id="div-gpt-ad-1414005680010-0"></div><!-- Google Ads -->
 			
 		</header>
 	</div><!-- #header-container -->

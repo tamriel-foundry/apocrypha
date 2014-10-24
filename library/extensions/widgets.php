@@ -270,7 +270,7 @@ function community_stat_counter() {
  */
 function featured_guild_box() {
 
-	// Pick a random guild 
+	// Pick five recently active guilds
 	bp_has_groups( 'type=random&max=1&populate_extras=0' );
 	while ( bp_groups() ) : bp_the_group(); 
 	

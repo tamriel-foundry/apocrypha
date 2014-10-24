@@ -79,11 +79,14 @@ function apoc_enqueue_scripts() {
 	wp_enqueue_script( 'analytics' );
 
 	
-	// QuantCast
-	if ( !apoc_is_donor() ) {
-		wp_register_script( 'quantcast'		, THEME_URI.'/library/js/qc.js' 			, false 	, $ver='0.1' 	, false	);	
-		wp_enqueue_script( 'quantcast' );
-	}
+	// Advertisments
+	//if ( !apoc_is_donor() ) {
+		// wp_register_script( 'quantcast'		, THEME_URI.'/library/js/qc.js' 			, false 	, $ver='0.1' 	, false	);	
+		// wp_enqueue_script( 'quantcast' );
+
+		wp_register_script( 'googletag'		, THEME_URI.'/library/js/gpt.js' 			, 'jquery' 	, $ver='0.1' 	, false	);	
+		wp_enqueue_script( 'googletag' );
+	//}
 	
 	// FlexSlider
 	if ( is_home() || is_page_template( 'guild/guild-home.php' ) ) {

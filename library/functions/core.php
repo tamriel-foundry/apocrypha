@@ -130,19 +130,17 @@ function entropy_rising_have_posts() {
 	$posts_per_page = 6;
 	$paged 			= ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 	$offset 		= ( $posts_per_page * $paged ) - $posts_per_page;
-	$public 		= get_cat_ID( 'entropy rising' );
-	$private 		= get_cat_ID( 'guild news' );
-	$guild_cats		= is_user_guild_member() ? $public . ',' . $private : $public;
 
 	$args = array( 
 		'paged'=> $paged, 
 		'posts_per_page'=> $posts_per_page,
 		'offset' => $offset,
-		'cat' => $guild_cats,
+		'cat' => get_cat_ID( 'entropy rising' ) . ',' . get_cat_ID( 'guild news' ),
 		);
 		
 	query_posts( $args );
 }
+
 
 /* 
  * My own default filtering set

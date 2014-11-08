@@ -28,8 +28,10 @@
 			</nav><!-- #admin-bar -->	
 			
 			<a id="main-banner" href="<?php echo SITEURL; ?>"></a>
-			
-			<div id="div-gpt-ad-1414005680010-0"></div><!-- Google Ads -->
+
+			<div id='div-gpt-ad-1414127616072-0'>
+				<script type='text/javascript'>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1414127616072-0'); });</script>
+			</div><!-- Google Ads -->
 			
 		</header>
 	</div><!-- #header-container -->

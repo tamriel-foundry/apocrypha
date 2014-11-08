@@ -13,13 +13,8 @@ var node = document.getElementsByTagName('script')[0];
 node.parentNode.insertBefore(gads, node);
 })();
 
-/*! Initialize ads
-========================================================================== */
-$(document).ready(function(){
-	googletag.cmd.push(function() {
-	googletag.defineSlot('/1045124/_TF_Leaderboard', [728, 90], 'div-gpt-ad-1414005680010-0').addService(googletag.pubads());
-	// googletag.defineSlot('/1045124/_TF_Sidebar', [300, 250], 'div-gpt-ad-1414005680010-1').addService(googletag.pubads());
-	googletag.pubads().enableSingleRequest();
-	googletag.enableServices();
-	});
+googletag.cmd.push(function() {
+googletag.defineSlot('/1045124/_TF_Leaderboard', [728, 90], 'div-gpt-ad-1414127616072-0').addService(googletag.pubads());
+googletag.pubads().enableSingleRequest();
+googletag.enableServices();
 });

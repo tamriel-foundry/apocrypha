@@ -5,7 +5,7 @@
  * Version 1.0.0
  * 9-28-2013
  */
- 
+
 // Load the queried group
 if ( bp_has_groups() ) : while ( bp_groups() ) : bp_the_group(); 
 

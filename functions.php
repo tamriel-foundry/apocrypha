@@ -84,7 +84,7 @@ function apoc_enqueue_scripts() {
 		// wp_register_script( 'quantcast'		, THEME_URI.'/library/js/qc.js' 			, false 	, $ver='0.1' 	, false	);	
 		// wp_enqueue_script( 'quantcast' );
 
-		wp_register_script( 'googletag'		, THEME_URI.'/library/js/gpt.js' 			, 'jquery' 	, $ver='0.1' 	, false	);	
+		wp_register_script( 'googletag'		, THEME_URI.'/library/js/gpt.js' 			, 'jquery' 	, $ver='0.5' 	, false	);	
 		wp_enqueue_script( 'googletag' );
 	//}
 	
@@ -98,6 +98,16 @@ function apoc_enqueue_scripts() {
 	elseif ( is_page( 'contact-us' ) ) {
 		wp_register_script( 'contactform'	, THEME_URI.'/library/js/contactform.js' 	, 'jquery' 	, $ver='0.1' 	, true 	);
 		wp_enqueue_script( 'contactform' );
+	}
+
+	// Enchanting Guide
+	elseif ( is_page( 'enchanting' )) {
+		wp_register_script( 'enchanting'	, THEME_URI.'/library/js/enchanting.js' 	, 'jquery' 	, $ver='0.7' 	, true 	);
+		wp_enqueue_script( 'enchanting' );
+		
+		// Enqueue CSS
+		wp_register_style( 'enchanting' 	, THEME_URI.'/library/css/enchanting.css'  , 'foundry' , $ver='0.7' );
+		wp_enqueue_style( 'enchanting' );
 	}
 }
 

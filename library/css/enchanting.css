@@ -1,0 +1,300 @@
+
+/* Enchanting Page CSS */
+h3.race-title { color: #FF9900; }
+h3.race-title > span { font-size: 0.75em; }
+.entry-content p { text-align: justify; }
+
+/* Grid Tables */
+table.grid-table { width: 100%; }
+table.half {
+	width: 49%;
+	float: left;
+}
+table.half + table.half { float: right; }
+
+thead.grid-header th { color: #FF9900; }
+table.grid-table tfoot td{text-align: left; padding-left: 10px; color: #919191;}
+table.grid-table td + td,
+table.grid-table th + th { text-align: left; }
+tbody > tr:hover {background-color: rgba(255,255,255,0.05);}
+
+
+table.grid-table td > .health { color: #990700;}
+table.grid-table td > .stamina { color: #008000;}
+table.grid-table td > .magicka { color: #3366ff;}
+
+/* Multiple text rows */
+table.grid-table td > .row {
+	display: block;
+	line-height: 20px;
+}
+table.grid-table td > .translation { 
+	color: #919191; 
+	font-size: 0.875em;
+}
+
+/* Item colors */
+.normal {color: #cccccc;}
+.orange {color: #FF9900;}
+.green {color: #2dc50e;}
+.blue {color: #3a92ff;}
+.purple{color: #a02ef7;}
+.yellow{color: #eeca2a;}
+
+/* Grid images */
+div.grid-image {
+	width: 48px;
+	height: 48px;
+	margin: 0 auto;
+	padding: 0;
+	position: relative;
+	background-image: url('http://tamrielfoundry.com/wp-content/uploads/2014/10/enchanting-sprite.png');
+	}
+div.grid-image:hover{background-color: none;}
+div.runestone {
+	width: 52px;
+	height: 94px;
+	margin: 0 auto;
+	padding: 0;
+	background-image: url('http://tamrielfoundry.com/wp-content/uploads/2014/10/runestones-spirte.png');
+	float: right;
+	margin-left: 1em;
+}
+div.grid-image.grid-1-1 {background-position:    0px   0px;}
+div.grid-image.grid-1-2 {background-position:  -48px   0px;}
+div.grid-image.grid-1-3 {background-position:  -96px   0px;}
+div.grid-image.grid-1-4 {background-position: -144px   0px;}
+div.grid-image.grid-1-5 {background-position: -192px   0px;}
+div.grid-image.grid-1-6 {background-position: -240px   0px;}
+div.grid-image.grid-1-7 {background-position: -288px   0px;}
+div.grid-image.grid-2-1 {background-position:    0px -48px;}
+div.grid-image.grid-2-2 {background-position:  -48px -48px;}
+div.grid-image.grid-2-3 {background-position:  -96px -48px;}
+div.grid-image.grid-2-4 {background-position: -144px -48px;}
+div.grid-image.grid-2-5 {background-position: -192px -48px;}
+div.grid-image.grid-2-6 {background-position: -240px -48px;}
+div.grid-image.grid-2-7 {background-position: -288px -48px;}
+div.grid-image.grid-3-1 {background-position: 0px -96px;}
+div.grid-image.grid-3-2 {background-position:  -48px -96px;}
+div.grid-image.grid-3-3 {background-position:  -96px -96px;}
+div.grid-image.grid-4-1 {background-position:    0px -144px;}
+div.grid-image.grid-4-2 {background-position:  -48px -144px;}
+div.grid-image.grid-4-3 {background-position:  -96px -144px;}
+div.grid-image.grid-4-4 {background-position: -144px -144px;}
+div.grid-image.grid-4-5 {background-position: -192px -144px;}
+div.grid-image.grid-4-6 {background-position: -240px -144px;}
+div.grid-image.grid-4-7 {background-position: -288px -144px;}
+div.grid-image.grid-5-1 {background-position: 0px -192px;}
+div.grid-image.grid-5-2 {background-position:  -48px -192px;}
+div.grid-image.grid-5-3 {background-position:  -96px -192px;}
+div.grid-image.grid-5-4 {background-position: -144px -192px;}
+div.grid-image.grid-5-5 {background-position: -192px -192px;}
+div.grid-image.grid-5-6 {background-position: -240px -192px;}
+div.grid-image.grid-5-7 {background-position: -288px -192px;}
+div.grid-image.grid-6-1 {background-position:  0px   -240px;}
+div.grid-image.grid-6-2 {background-position: -48px  -240px;}
+div.grid-image.grid-6-3 {background-position: -96px  -240px;}
+div.grid-image.grid-6-4 {background-position: -144px  -240px;}
+div.grid-image.grid-6-5 {background-position: -192px  -240px;}
+div.grid-image.grid-6-6 {background-position: -240px -240px;}
+div.grid-image.grid-6-7 {background-position: -288px -240px;}
+div.grid-image.grid-7-1 {background-position:  0px 	 -288px;}
+div.grid-image.grid-7-2 {background-position: -48px  -288px;}
+div.grid-image.grid-7-3 {background-position: -96px  -288px;}
+div.grid-image.grid-7-4 {background-position: -144px  -288px;}
+div.grid-image.grid-7-5 {background-position: -192px -288px;}
+div.grid-image.grid-7-6 {background-position: -240px -288px;}
+div.grid-image.grid-7-7 {background-position: -288px -288px;}
+div.grid-image.grid-8-1 {background-position:  0px   -336px;}
+div.grid-image.grid-8-2 {background-position: -48px  -336px;}
+div.grid-image.grid-8-3 {background-position: -48px  -336px;}
+div.grid-image.grid-8-4 {background-position: -96px  -336px;}
+div.grid-image.grid-8-5 {background-position: -144px  -336px;}
+div.grid-image.grid-9-1 {background-position:  0px   -384px;}
+div.grid-image.grid-9-2 {background-position: -48px  -384px;}
+div.grid-image.grid-9-3 {background-position: -96px  -384px;}
+div.grid-image.grid-9-4 {background-position: -144px  -384px;}
+div.grid-image.grid-9-5 {background-position: -192px  -384px;}
+div.runestone.grid-10-1 {background-position:   0px    0px;}
+div.runestone.grid-10-2 {background-position: -52px    0px;}
+div.runestone.grid-10-3 {background-position: -104px   0px;}
+
+/* Enchanting Simulator */
+#simulator {
+	background-image: url('http://tamrielfoundry.com/wp-content/uploads/2014/10/enchanting-sim-bg.jpg');
+	width: 800px;
+	height: 600px;
+	float: none;
+	margin: 2em auto;
+	border: 1px solid #222;
+	border-radius: 5px;
+	box-shadow: 0 0 20px #000;
+	position: relative;
+}
+#simulator * { 	box-sizing: border-box; }
+#simulator-title {
+	width: 400px;
+	position: absolute;
+	left: 200px;
+	text-align: center;
+	top: 25px;
+}
+
+/* Output Glyph */
+#glyph {
+	width: 400px;
+	height: 300px;
+	padding: 1em;
+	position: absolute;
+	top: 65px;
+	left: 200px;
+	background-color: rgba(0,0,0,0.75);
+	border: 1px solid rgba(255,225,132,0.6);
+	border-radius: 2px;
+	box-shadow: 0 0 10px #000;
+	text-align: center;
+}
+#glyph .glyph-name { 
+	height: 50px;
+	margin: 0.5em 0;
+}
+#glyph > p { 
+	color: #A29C8E; 
+	font-size: 0.875em; 
+	text-align: center;
+	margin: 0;
+}
+#glyph .effect-value, .effect-value2 {color: #ff9900;}
+.glyph-img {
+	background-image: url('http://tamrielfoundry.com/wp-content/uploads/2014/10/noglyph.png');
+	width: 64px;
+	height: 64px;
+	margin: 0.5em auto;
+}
+
+/* Input Runes */
+#simulator .rune-container {
+	background: rgba(0,0,0,0.75);
+	border: 1px solid #000;
+	border-radius: 2px;
+	box-shadow: 0 0 3px #333 inset;
+}
+#simulator ul.display-runes {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#essence > ul.display-runes { margin-top: 15px; }
+#potency { 
+	width: 150px;
+	height: 540px;
+	position: absolute;
+	top: 25px;
+	left: 25px;
+}
+#essence {
+	width: 150px;
+	height: 540px;
+	position: absolute;
+	top: 25px;
+	right: 25px;
+}
+#aspect {
+	width: 200px;
+	padding: 10px 0;
+	position: absolute;
+	left: 300px;
+	bottom: 35px;
+}
+#simulator .subtractive { display: none; }
+select#selector { 
+	width: 130px;
+	margin: 10px 10px 25px;
+}
+.display-runes li {
+	height: 30px;
+	position: relative;
+}
+.display-runes li:hover {
+	background: rgba(153,153,153,0.25);
+}
+.display-runes p {
+	margin: 0;
+	font-size: 1.125em;
+	line-height: 28px;
+}
+#simulator .display-runes label {
+	display: block;
+	padding: 0 0 0 40px;
+	background: none;
+}
+.display-runes input:checked + label {
+	color: #FFF;
+	text-shadow: 0 0 10px #FFF;
+}
+
+/* Rune Qualities */
+label.common, .display-runes input:checked + label.common { color: #cccccc; }
+label.uncommon, .display-runes input:checked + label.uncommon  { color: #2dc50e; }
+label.rare, .display-runes input:checked + label.rare  { color: #3a92ff; }
+label.epic, .display-runes input:checked + label.epic  { color: #a02ef7; }
+label.legendary, .display-runes input:checked + label.legendary  { color: #eeca2a; }
+
+/* Grid Images */
+.display-runes .grid-image-calc {
+	width: 24px;
+	height: 24px;
+	float: left;
+	margin: 3px 3px 3px 10px;
+	background-image: url('http://tamrielfoundry.com/wp-content/uploads/2014/10/rune-sprite-extra-small.png');
+}
+div.grid-image-calc.grid-1-1 {background-position:  0px   0px;}
+div.grid-image-calc.grid-1-2 {background-position: -24px  0px;}
+div.grid-image-calc.grid-1-3 {background-position: -48px  0px;}
+div.grid-image-calc.grid-1-4 {background-position: -72px  0px;}
+div.grid-image-calc.grid-1-5 {background-position: -96px 0px;}
+div.grid-image-calc.grid-1-6 {background-position: -120px 0px;}
+div.grid-image-calc.grid-1-7 {background-position: -144px 0px;}
+div.grid-image-calc.grid-2-1 {background-position:  0px   -24px;}
+div.grid-image-calc.grid-2-2 {background-position: -24px  -24px;}
+div.grid-image-calc.grid-2-3 {background-position: -48px  -24px;}
+div.grid-image-calc.grid-2-4 {background-position: -72px  -24px;}
+div.grid-image-calc.grid-2-5 {background-position: -96px -24px;}
+div.grid-image-calc.grid-2-6 {background-position: -120px -24px;}
+div.grid-image-calc.grid-2-7 {background-position: -144px -24px;}
+div.grid-image-calc.grid-3-1 {background-position:  0px  -48px;}
+div.grid-image-calc.grid-3-2 {background-position: -24px -48px;}
+div.grid-image-calc.grid-3-3 {background-position: -48px -48px;}
+div.grid-image-calc.grid-4-1 {background-position:  0px   -72px;}
+div.grid-image-calc.grid-4-2 {background-position: -24px  -72px;}
+div.grid-image-calc.grid-4-3 {background-position: -48px  -72px;}
+div.grid-image-calc.grid-4-4 {background-position: -72px  -72px;}
+div.grid-image-calc.grid-4-5 {background-position: -96px  -72px;}
+div.grid-image-calc.grid-4-6 {background-position: -120px -72px;}
+div.grid-image-calc.grid-4-7 {background-position: -144px -72px;}
+div.grid-image-calc.grid-5-1 {background-position:  0px 	 -96px;}
+div.grid-image-calc.grid-5-2 {background-position: -24px  -96px;}
+div.grid-image-calc.grid-5-3 {background-position: -48px  -96px;}
+div.grid-image-calc.grid-5-4 {background-position: -72px  -96px;}
+div.grid-image-calc.grid-5-5 {background-position: -96px  -96px;}
+div.grid-image-calc.grid-5-6 {background-position: -120px -96px;}
+div.grid-image-calc.grid-5-7 {background-position: -144px -96px;}
+div.grid-image-calc.grid-6-1 {background-position:  0px   -120px;}
+div.grid-image-calc.grid-6-2 {background-position: -24px  -120px;}
+div.grid-image-calc.grid-6-3 {background-position: -48px  -120px;}
+div.grid-image-calc.grid-6-4 {background-position: -72px  -120px;}
+div.grid-image-calc.grid-6-5 {background-position: -96px  -120px;}
+div.grid-image-calc.grid-6-6 {background-position: -120px -120px;}
+div.grid-image-calc.grid-6-7 {background-position: -144px -120px;}
+div.grid-image-calc.grid-7-1 {background-position:  0px 	 -144px;}
+div.grid-image-calc.grid-7-2 {background-position: -24px  -144px;}
+div.grid-image-calc.grid-7-3 {background-position: -48px  -144px;}
+div.grid-image-calc.grid-7-4 {background-position: -72px  -144px;}
+div.grid-image-calc.grid-7-5 {background-position: -96px -144px;}
+div.grid-image-calc.grid-7-6 {background-position: -120px -144px;}
+div.grid-image-calc.grid-7-7 {background-position: -144px -144px;}
+div.grid-image-calc.grid-8-1 {background-position:  0px   -168px;}
+div.grid-image-calc.grid-8-2 {background-position: -24px  -168px;}
+div.grid-image-calc.grid-8-3 {background-position: -48px  -168px;}
+div.grid-image-calc.grid-8-4 {background-position: -72px  -168px;}
+div.grid-image-calc.grid-8-5 {background-position: -96px  -168px;}
